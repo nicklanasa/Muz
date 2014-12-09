@@ -33,7 +33,7 @@ NSFetchedResultsControllerDelegate {
         tableView.registerNib(UINib(nibName: "ArtistCell", bundle: nil), forCellReuseIdentifier: "Cell")
         tableView.alpha = 0.0
         
-        MusicSession.sharedSession.openSessionWithCompletionBlock { (success) -> () in
+        MediaSession.sharedSession.openSessionWithCompletionBlock { (success) -> () in
             self.fetchArtists()
         }
         
@@ -41,7 +41,7 @@ NSFetchedResultsControllerDelegate {
     }
     
     func fetchArtists() {
-        self.artists = MusicSession.sharedSession.dataManager.datastore.artistsWithSortKey("artist",
+        self.artists = MediaSession.sharedSession.dataManager.datastore.artistsWithSortKey("artist",
             ascending: true,
             sectionNameKeyPath: nil)
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -49,7 +49,6 @@ NSFetchedResultsControllerDelegate {
             self.tableView.reloadData()
             self.activityIndicator.stopAnimating()
         })
-
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {

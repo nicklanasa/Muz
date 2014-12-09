@@ -9,13 +9,18 @@
 import Foundation
 import MediaPlayer
 
-let _sharedSession = MusicSession()
+let _sharedSession = MediaSession()
 
-@objc class MusicSession {
+//protocol MediaSessionDelegate {
+//    func mediaSessionDidUpdate
+//}
+
+@objc class MediaSession {
     
-    var dataManager = DataManager.manager
+    let dataManager = DataManager.manager
     
-    class var sharedSession : MusicSession {
+    
+    class var sharedSession : MediaSession {
         return _sharedSession
     }
     
