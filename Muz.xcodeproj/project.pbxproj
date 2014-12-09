@@ -1,0 +1,477 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CE444BB61A36A25500153F77 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE444BB51A36A25500153F77 /* AppDelegate.swift */; };
+		CE444BB81A36A25500153F77 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE444BB71A36A25500153F77 /* ViewController.swift */; };
+		CE444BBB1A36A25500153F77 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE444BB91A36A25500153F77 /* Main.storyboard */; };
+		CE444BBD1A36A25500153F77 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE444BBC1A36A25500153F77 /* Images.xcassets */; };
+		CE444BC01A36A25500153F77 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE444BBE1A36A25500153F77 /* LaunchScreen.xib */; };
+		CE444BCC1A36A25500153F77 /* MuzTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE444BCB1A36A25500153F77 /* MuzTests.swift */; };
+		CE444BDB1A36A27200153F77 /* ArtistsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE444BD71A36A27200153F77 /* ArtistsViewController.swift */; };
+		CE444BDC1A36A27200153F77 /* ArtistsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE444BD81A36A27200153F77 /* ArtistsViewController.xib */; };
+		CE444BDD1A36A27200153F77 /* ArtistCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE444BD91A36A27200153F77 /* ArtistCell.swift */; };
+		CE444BDE1A36A27200153F77 /* ArtistCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE444BDA1A36A27200153F77 /* ArtistCell.xib */; };
+		CE444BE41A36A28700153F77 /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE444BDF1A36A28700153F77 /* Song.swift */; };
+		CE444BE51A36A28700153F77 /* Song+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE444BE01A36A28700153F77 /* Song+Helpers.swift */; };
+		CE444BE61A36A28700153F77 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE444BE11A36A28700153F77 /* DataManager.swift */; };
+		CE444BE71A36A28700153F77 /* Datastore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE444BE21A36A28700153F77 /* Datastore.swift */; };
+		CE444BE81A36A28700153F77 /* MuzSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE444BE31A36A28700153F77 /* MuzSession.swift */; };
+		CE9BBDBB1A36A87B00878C09 /* Muz.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CE9BBDB91A36A87B00878C09 /* Muz.xcdatamodeld */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		CE444BC61A36A25500153F77 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CE444BA81A36A25500153F77 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CE444BAF1A36A25500153F77;
+			remoteInfo = Muz;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		CE444BB01A36A25500153F77 /* Muz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Muz.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE444BB41A36A25500153F77 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CE444BB51A36A25500153F77 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		CE444BB71A36A25500153F77 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		CE444BBA1A36A25500153F77 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		CE444BBC1A36A25500153F77 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		CE444BBF1A36A25500153F77 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		CE444BC51A36A25500153F77 /* MuzTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MuzTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE444BCA1A36A25500153F77 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CE444BCB1A36A25500153F77 /* MuzTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuzTests.swift; sourceTree = "<group>"; };
+		CE444BD71A36A27200153F77 /* ArtistsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArtistsViewController.swift; sourceTree = "<group>"; };
+		CE444BD81A36A27200153F77 /* ArtistsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ArtistsViewController.xib; sourceTree = "<group>"; };
+		CE444BD91A36A27200153F77 /* ArtistCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArtistCell.swift; sourceTree = "<group>"; };
+		CE444BDA1A36A27200153F77 /* ArtistCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ArtistCell.xib; sourceTree = "<group>"; };
+		CE444BDF1A36A28700153F77 /* Song.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Song.swift; sourceTree = "<group>"; };
+		CE444BE01A36A28700153F77 /* Song+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Song+Helpers.swift"; sourceTree = "<group>"; };
+		CE444BE11A36A28700153F77 /* DataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
+		CE444BE21A36A28700153F77 /* Datastore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Datastore.swift; sourceTree = "<group>"; };
+		CE444BE31A36A28700153F77 /* MuzSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MuzSession.swift; sourceTree = "<group>"; };
+		CE9BBDBA1A36A87B00878C09 /* Muz.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Muz.xcdatamodel; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CE444BAD1A36A25500153F77 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CE444BC21A36A25500153F77 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		CE444BA71A36A25500153F77 = {
+			isa = PBXGroup;
+			children = (
+				CE444BB21A36A25500153F77 /* Muz */,
+				CE444BC81A36A25500153F77 /* MuzTests */,
+				CE444BB11A36A25500153F77 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		CE444BB11A36A25500153F77 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CE444BB01A36A25500153F77 /* Muz.app */,
+				CE444BC51A36A25500153F77 /* MuzTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CE444BB21A36A25500153F77 /* Muz */ = {
+			isa = PBXGroup;
+			children = (
+				CE9BBDB91A36A87B00878C09 /* Muz.xcdatamodeld */,
+				CE444BD71A36A27200153F77 /* ArtistsViewController.swift */,
+				CE444BD81A36A27200153F77 /* ArtistsViewController.xib */,
+				CE444BD91A36A27200153F77 /* ArtistCell.swift */,
+				CE444BDA1A36A27200153F77 /* ArtistCell.xib */,
+				CE444BDF1A36A28700153F77 /* Song.swift */,
+				CE444BE01A36A28700153F77 /* Song+Helpers.swift */,
+				CE444BE11A36A28700153F77 /* DataManager.swift */,
+				CE444BE21A36A28700153F77 /* Datastore.swift */,
+				CE444BE31A36A28700153F77 /* MuzSession.swift */,
+				CE444BB51A36A25500153F77 /* AppDelegate.swift */,
+				CE444BB71A36A25500153F77 /* ViewController.swift */,
+				CE444BB91A36A25500153F77 /* Main.storyboard */,
+				CE444BBC1A36A25500153F77 /* Images.xcassets */,
+				CE444BBE1A36A25500153F77 /* LaunchScreen.xib */,
+				CE444BB31A36A25500153F77 /* Supporting Files */,
+			);
+			path = Muz;
+			sourceTree = "<group>";
+		};
+		CE444BB31A36A25500153F77 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				CE444BB41A36A25500153F77 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		CE444BC81A36A25500153F77 /* MuzTests */ = {
+			isa = PBXGroup;
+			children = (
+				CE444BCB1A36A25500153F77 /* MuzTests.swift */,
+				CE444BC91A36A25500153F77 /* Supporting Files */,
+			);
+			path = MuzTests;
+			sourceTree = "<group>";
+		};
+		CE444BC91A36A25500153F77 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				CE444BCA1A36A25500153F77 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		CE444BAF1A36A25500153F77 /* Muz */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CE444BCF1A36A25500153F77 /* Build configuration list for PBXNativeTarget "Muz" */;
+			buildPhases = (
+				CE444BAC1A36A25500153F77 /* Sources */,
+				CE444BAD1A36A25500153F77 /* Frameworks */,
+				CE444BAE1A36A25500153F77 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Muz;
+			productName = Muz;
+			productReference = CE444BB01A36A25500153F77 /* Muz.app */;
+			productType = "com.apple.product-type.application";
+		};
+		CE444BC41A36A25500153F77 /* MuzTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CE444BD21A36A25500153F77 /* Build configuration list for PBXNativeTarget "MuzTests" */;
+			buildPhases = (
+				CE444BC11A36A25500153F77 /* Sources */,
+				CE444BC21A36A25500153F77 /* Frameworks */,
+				CE444BC31A36A25500153F77 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CE444BC71A36A25500153F77 /* PBXTargetDependency */,
+			);
+			name = MuzTests;
+			productName = MuzTests;
+			productReference = CE444BC51A36A25500153F77 /* MuzTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CE444BA81A36A25500153F77 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0610;
+				ORGANIZATIONNAME = "Nytek Productions";
+				TargetAttributes = {
+					CE444BAF1A36A25500153F77 = {
+						CreatedOnToolsVersion = 6.1.1;
+					};
+					CE444BC41A36A25500153F77 = {
+						CreatedOnToolsVersion = 6.1.1;
+						TestTargetID = CE444BAF1A36A25500153F77;
+					};
+				};
+			};
+			buildConfigurationList = CE444BAB1A36A25500153F77 /* Build configuration list for PBXProject "Muz" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = CE444BA71A36A25500153F77;
+			productRefGroup = CE444BB11A36A25500153F77 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CE444BAF1A36A25500153F77 /* Muz */,
+				CE444BC41A36A25500153F77 /* MuzTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CE444BAE1A36A25500153F77 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CE444BDE1A36A27200153F77 /* ArtistCell.xib in Resources */,
+				CE444BBB1A36A25500153F77 /* Main.storyboard in Resources */,
+				CE444BC01A36A25500153F77 /* LaunchScreen.xib in Resources */,
+				CE444BBD1A36A25500153F77 /* Images.xcassets in Resources */,
+				CE444BDC1A36A27200153F77 /* ArtistsViewController.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CE444BC31A36A25500153F77 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CE444BAC1A36A25500153F77 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CE444BE41A36A28700153F77 /* Song.swift in Sources */,
+				CE444BE61A36A28700153F77 /* DataManager.swift in Sources */,
+				CE9BBDBB1A36A87B00878C09 /* Muz.xcdatamodeld in Sources */,
+				CE444BB81A36A25500153F77 /* ViewController.swift in Sources */,
+				CE444BB61A36A25500153F77 /* AppDelegate.swift in Sources */,
+				CE444BE71A36A28700153F77 /* Datastore.swift in Sources */,
+				CE444BDD1A36A27200153F77 /* ArtistCell.swift in Sources */,
+				CE444BE81A36A28700153F77 /* MuzSession.swift in Sources */,
+				CE444BDB1A36A27200153F77 /* ArtistsViewController.swift in Sources */,
+				CE444BE51A36A28700153F77 /* Song+Helpers.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CE444BC11A36A25500153F77 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CE444BCC1A36A25500153F77 /* MuzTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		CE444BC71A36A25500153F77 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CE444BAF1A36A25500153F77 /* Muz */;
+			targetProxy = CE444BC61A36A25500153F77 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		CE444BB91A36A25500153F77 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CE444BBA1A36A25500153F77 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		CE444BBE1A36A25500153F77 /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CE444BBF1A36A25500153F77 /* Base */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		CE444BCD1A36A25500153F77 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		CE444BCE1A36A25500153F77 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		CE444BD01A36A25500153F77 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = Muz/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		CE444BD11A36A25500153F77 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = Muz/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		CE444BD31A36A25500153F77 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = MuzTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Muz.app/Muz";
+			};
+			name = Debug;
+		};
+		CE444BD41A36A25500153F77 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = MuzTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Muz.app/Muz";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CE444BAB1A36A25500153F77 /* Build configuration list for PBXProject "Muz" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CE444BCD1A36A25500153F77 /* Debug */,
+				CE444BCE1A36A25500153F77 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CE444BCF1A36A25500153F77 /* Build configuration list for PBXNativeTarget "Muz" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CE444BD01A36A25500153F77 /* Debug */,
+				CE444BD11A36A25500153F77 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CE444BD21A36A25500153F77 /* Build configuration list for PBXNativeTarget "MuzTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CE444BD31A36A25500153F77 /* Debug */,
+				CE444BD41A36A25500153F77 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		CE9BBDB91A36A87B00878C09 /* Muz.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				CE9BBDBA1A36A87B00878C09 /* Muz.xcdatamodel */,
+			);
+			currentVersion = CE9BBDBA1A36A87B00878C09 /* Muz.xcdatamodel */;
+			path = Muz.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = CE444BA81A36A25500153F77 /* Project object */;
+}
