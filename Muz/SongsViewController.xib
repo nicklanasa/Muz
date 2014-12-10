@@ -4,9 +4,8 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ArtistsViewController" customModule="Muz" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SongsViewController" customModule="Muz" customModuleProvider="target">
             <connections>
-                <outlet property="activityIndicator" destination="3oQ-kl-H1m" id="GiK-9g-BXb"/>
                 <outlet property="tableView" destination="LTZ-Jz-cQ7" id="2y2-Rn-tDq"/>
                 <outlet property="view" destination="ZPP-Pc-n5o" id="22o-Qh-Hed"/>
             </connections>
@@ -20,9 +19,10 @@
                     <rect key="frame" x="0.0" y="63" width="320" height="460"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <color key="separatorColor" red="0.55676333109537768" green="0.55676333109537768" blue="0.55676333109537768" alpha="0.26000000000000001" colorSpace="calibratedRGB"/>
                     <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    <color key="sectionIndexColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <color key="sectionIndexTrackingBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <connections>
@@ -30,13 +30,9 @@
                         <outlet property="delegate" destination="-1" id="9mE-dd-ycc"/>
                     </connections>
                 </tableView>
-                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" id="3oQ-kl-H1m">
-                    <rect key="frame" x="150" y="274" width="20" height="20"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
             <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
             <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>

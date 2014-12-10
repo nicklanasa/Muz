@@ -11,6 +11,8 @@ import UIKit
 import CoreData
 import MediaPlayer
 
+let ArtistsCacheName = "artists"
+
 class Datastore {
     
     let storeName: String
@@ -127,13 +129,85 @@ class Datastore {
         
         var error = NSErrorPointer()
         return self.mainQueueContext.executeFetchRequest(request, error: error)
+    }
+    
+    func artistsControllerWithSortKey(sortKey: NSString, ascending: Bool, sectionNameKeyPath: NSString?) -> NSFetchedResultsController {
         
-        /*
+        var request = NSFetchRequest()
+        request.entity = NSEntityDescription.entityForName("Song",
+            inManagedObjectContext: self.mainQueueContext)
+        
+        let predicate = NSPredicate(format: "(artist.length > 0)")
+        request.predicate = predicate
+        
+        var properties = NSMutableArray()
+        
+        if let artistProperty: AnyObject = request.entity?.propertiesByName["artist"] {
+            properties.addObject(artistProperty)
+        }
+        
+        request.propertiesToGroupBy = properties
+        request.propertiesToFetch = properties
+        request.returnsDistinctResults = true
+        request.resultType = NSFetchRequestResultType.DictionaryResultType
+        
+        var sort = NSSortDescriptor(key: sortKey, ascending: ascending)
+        request.sortDescriptors = [sort]
+        
+        return NSFetchedResultsController(fetchRequest: request,
+        managedObjectContext: self.mainQueueContext,
+        sectionNameKeyPath: sectionNameKeyPath,
+        cacheName: ArtistsCacheName)
+    }
+    
+    func songsControllerWithSortKey(sortKey: NSString, ascending: Bool, sectionNameKeyPath: NSString?) -> NSFetchedResultsController {
+        
+        var request = NSFetchRequest()
+        request.entity = NSEntityDescription.entityForName("Song",
+            inManagedObjectContext: self.mainQueueContext)
+        
+        var fetchProperties = NSMutableArray()
+        
+        if let property: AnyObject = request.entity?.propertiesByName["title"] {
+            fetchProperties.addObject(property)
+            //request.propertiesToGroupBy = [property]
+        }
+        
+        if let artworkProperty: AnyObject = request.entity?.propertiesByName["artwork"] {
+            fetchProperties.addObject(artworkProperty)
+        }
+        
+        request.propertiesToFetch = fetchProperties
+        request.resultType = NSFetchRequestResultType.DictionaryResultType
+        request.returnsDistinctResults = true
+                
+        var sort = NSSortDescriptor(key: sortKey, ascending: ascending)
+        request.sortDescriptors = [sort]
+        
         return NSFetchedResultsController(fetchRequest: request,
             managedObjectContext: self.mainQueueContext,
             sectionNameKeyPath: sectionNameKeyPath,
-            cacheName: nil)
-        */
+            cacheName: ArtistsCacheName)
+    }
+    
+    func lovedControllerWithSortKey(sortKey: NSString, ascending: Bool, sectionNameKeyPath: NSString?) -> NSFetchedResultsController {
+        
+        var request = NSFetchRequest()
+        request.entity = NSEntityDescription.entityForName("Song",
+            inManagedObjectContext: self.mainQueueContext)
+        
+        var predicate = NSPredicate(format: "rating > 3")
+        request.predicate = predicate
+        
+        request.returnsDistinctResults = true
+        
+        var sort = NSSortDescriptor(key: sortKey, ascending: ascending)
+        request.sortDescriptors = [sort]
+        
+        return NSFetchedResultsController(fetchRequest: request,
+            managedObjectContext: self.mainQueueContext,
+            sectionNameKeyPath: sectionNameKeyPath,
+            cacheName: ArtistsCacheName)
     }
     
     // MARK: Fetching

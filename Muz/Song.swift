@@ -2,41 +2,42 @@
 //  Song.swift
 //  Muz
 //
-//  Created by Nick Lanasa on 12/7/14.
-//
+//  Created by Nick Lanasa on 12/10/14.
+//  Copyright (c) 2014 Nytek Productions. All rights reserved.
 //
 
 import Foundation
 import CoreData
-import MediaPlayer
 
 @objc(Song)
 class Song: NSManagedObject {
 
-    @NSManaged var mediaType: NSNumber
-    @NSManaged var title: String
-    @NSManaged var albumTitle: String
-    @NSManaged var artist: String
     @NSManaged var albumArtist: String
-    @NSManaged var genre: String
-    @NSManaged var composer: String
-    @NSManaged var playbackDuration: NSNumber
-    @NSManaged var albumTrackNumber: NSNumber
+    @NSManaged var albumTitle: String
     @NSManaged var albumTrackCount: NSNumber
-    @NSManaged var discNumber: NSNumber
-    @NSManaged var discCount: NSNumber
-    @NSManaged var lyrics: String
-    @NSManaged var compilation: NSNumber
-    @NSManaged var releaseDate: NSDate
-    @NSManaged var beatsPerMinute: NSNumber
-    @NSManaged var comments: String
+    @NSManaged var albumTrackNumber: NSNumber
+    @NSManaged var artist: String
     @NSManaged var assetURL: String
-    @NSManaged var cloudItem: NSNumber
-    @NSManaged var podcastTitle: String
-    @NSManaged var playCount: NSNumber
-    @NSManaged var skipCount: NSNumber
-    @NSManaged var rating: NSNumber
-    @NSManaged var lastPlayedDate: NSDate
-    @NSManaged var userGrouping: String
+    @NSManaged var beatsPerMinute: NSNumber
     @NSManaged var bookmarkTime: NSNumber
+    @NSManaged var cloudItem: NSNumber
+    @NSManaged var comments: String
+    @NSManaged var compilation: NSNumber
+    @NSManaged var composer: String
+    @NSManaged var discCount: NSNumber
+    @NSManaged var discNumber: NSNumber
+    @NSManaged var genre: String
+    @NSManaged var lastPlayedDate: NSDate
+    @NSManaged var lyrics: String
+    @NSManaged var mediaType: NSNumber
+    @NSManaged var playbackDuration: NSNumber
+    @NSManaged var playCount: NSNumber
+    @NSManaged var podcastTitle: String
+    @NSManaged var rating: NSNumber
+    @NSManaged var releaseDate: NSDate
+    @NSManaged var skipCount: NSNumber
+    @NSManaged var title: String
+    @NSManaged var userGrouping: String
+    @NSManaged var artwork: NSData
+
 }

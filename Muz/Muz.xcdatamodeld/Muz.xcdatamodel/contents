@@ -6,6 +6,7 @@
         <attribute name="albumTrackCount" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="albumTrackNumber" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="artist" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="artwork" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" storedInTruthFile="YES" syncable="YES"/>
         <attribute name="assetURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="beatsPerMinute" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="bookmarkTime" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
@@ -29,6 +30,6 @@
         <attribute name="userGrouping" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Song" positionX="-63" positionY="-18" width="128" height="435"/>
+        <element name="Song" positionX="-63" positionY="-18" width="128" height="450"/>
     </elements>
 </model>

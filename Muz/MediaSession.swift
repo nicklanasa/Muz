@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreData
 import MediaPlayer
 
 let _sharedSession = MediaSession()
@@ -30,5 +31,20 @@ let _sharedSession = MediaSession()
         dataManager.datastore.addSongs(results, completion: { (success) -> () in
             completionBlock(success: success)
         })
+    }
+    
+    func artworkForArtists() -> NSArray {
+        
+        var artistsArr = NSMutableArray()
+        let query = MPMediaQuery.artistsQuery()
+        let results = query.collections as NSArray
+        return results
+    }
+    
+    func artworkForSongs() -> NSArray {
+        var artistsArr = NSMutableArray()
+        let query = MPMediaQuery.songsQuery()
+        let results = query.items as NSArray
+        return results
     }
 }

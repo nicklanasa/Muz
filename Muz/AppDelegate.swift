@@ -14,11 +14,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     private func muzWindow() -> UIWindow {
+        
+        UITabBarItem.appearance().setTitleTextAttributes([NSFontAttributeName: UIFont.systemFontOfSize(11)], forState: UIControlState.Normal)
+        
         let mainScreen = UIScreen.mainScreen()
         let window = UIWindow(frame: mainScreen.bounds)
-        window.backgroundColor = UIColor.darkGrayColor()
-        window.rootViewController = ArtistsViewController()
+        
+        let tabbar = TabBarController()
+        let nav = NavBarController(rootViewController: ArtistsViewController())
+        let navLoved = NavBarController(rootViewController: LovedViewController())
+        let navSongs = NavBarController(rootViewController: SongsViewController())
+        let navMore = NavBarController(rootViewController: MoreViewController())
+        let navNowPlaying = NavBarController(rootViewController: NowPlayingViewController())
+        tabbar.setViewControllers([nav, navSongs, navNowPlaying, navLoved, navMore], animated: false)
+        window.rootViewController = tabbar
         window.makeKeyAndVisible()
+        
         return window
     }
 
