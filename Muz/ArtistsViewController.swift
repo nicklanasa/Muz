@@ -27,13 +27,14 @@ UITableViewDataSource,
 NSFetchedResultsControllerDelegate {
     
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     // The NSFetchedResultsController used to pull tasks for the selected date.
     var artists: [AnyObject]?
     var artistsController: NSFetchedResultsController!
     var artistsCollections: NSArray!
-    var artistsImages = NSMutableDictionary()
+    var artistsInfo = NSMutableDictionary()
     
     override init() {
         super.init(nibName: "ArtistsViewController", bundle: nil)
@@ -55,12 +56,12 @@ NSFetchedResultsControllerDelegate {
         super.viewDidLoad()
         
         tableView.registerNib(UINib(nibName: "ArtistCell", bundle: nil), forCellReuseIdentifier: "Cell")
+        tableView.registerNib(UINib(nibName: "ArtistsHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "Header")
         
-        /*
-        MediaSession.sharedSession.openSessionWithCompletionBlock { (success) -> () in
-            self.fetchArtists()
-        }
-        */
+//        MediaSession.sharedSession.openSessionWithCompletionBlock { (success) -> () in
+//            self.fetchArtists()
+//        }
+
         
         fetchArtists()
         self.navigationItem.title = "Artists"
@@ -75,20 +76,29 @@ NSFetchedResultsControllerDelegate {
         var error: NSError?
         if artistsController.performFetch(&error) {
             
-            artistsCollections = MediaSession.sharedSession.artworkForArtists()
+            artistsCollections = MediaSession.sharedSession.infoForArtists()
+            var albumCounter = NSCountedSet()
             
-            for artistCollection in artistsCollections {
-                if let collection = artistCollection as? MPMediaItemCollection {
+            for albumCollection in artistsCollections {
+                if let collection = albumCollection as? MPMediaItemCollection {
+                    var artistInfo = NSMutableDictionary()
+                    let repItem = collection.representativeItem
+                    albumCounter.addObject(repItem.valueForProperty(MPMediaItemPropertyArtist))
+                    
                     for artistItem in collection.items {
                         if let item = artistItem as? MPMediaItem {
                             if let artwork = item.valueForProperty(MPMediaItemPropertyArtwork) as? MPMediaItemArtwork {
                                 if let image = artwork.imageWithSize(CGSizeMake(40, 40)) {
-                                    self.artistsImages.setObject(image, forKey: item.artist)
+                                    artistInfo.setObject(image, forKey: "artwork")
                                     break
                                 }
                             }
                         }
                     }
+                    
+                    artistInfo.setObject(NSNumber(integer: albumCounter.countForObject(repItem.valueForProperty(MPMediaItemPropertyArtist))), forKey: "albumCount")
+                    
+                    artistsInfo.setObject(artistInfo, forKey: repItem.artist)
                 }
             }
             
@@ -98,12 +108,18 @@ NSFetchedResultsControllerDelegate {
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return artistsController.sections?.count ?? 0
+        if let controller = artistsController {
+            return artistsController.sections?.count ?? 0
+        }
+        return 0
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let sectionInfo = artistsController.sections![section] as NSFetchedResultsSectionInfo
-        return sectionInfo.numberOfObjects
+        if let controller = artistsController {
+            let sectionInfo = artistsController.sections![section] as NSFetchedResultsSectionInfo
+            return sectionInfo.numberOfObjects
+        }
+        return 0
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -112,10 +128,19 @@ NSFetchedResultsControllerDelegate {
         let song = artistsController.objectAtIndexPath(indexPath) as NSDictionary
         let artist = song.objectForKey("artist") as NSString
         cell.artistLabel.text = artist
-        if let image = artistsImages.objectForKey(artist) as? UIImage {
-            cell.artistImageView.image = image
+        if let artistInfo = artistsInfo.objectForKey(artist) as? NSDictionary {
+            
+            let albumCount = artistInfo.objectForKey("albumCount") as NSInteger
+            cell.infoLabel.text = NSString(format: "%d %@", albumCount, albumCount == 1 ? "album" : "albums")
+            
+            if let image = artistInfo.objectForKey("artwork") as? UIImage {
+                cell.artistImageView.image = image
+            } else {
+                cell.artistImageView.image = UIImage(named: "noArtwork")
+            }
         } else {
             cell.artistImageView.image = UIImage(named: "noArtwork")
+            cell.infoLabel.text = NSString(format: "0 albums")
         }
         
         return cell
@@ -129,21 +154,28 @@ NSFetchedResultsControllerDelegate {
         
         let sectionInfo = artistsController.sections![section] as NSFetchedResultsSectionInfo
         
-        let header = UIView(frame: CGRectMake(0, 0, 320, 30))
-        header.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.2)
-        header.autoresizingMask = .FlexibleWidth
+        let header = tableView.dequeueReusableHeaderFooterViewWithIdentifier("Header") as ArtistsHeader
         
-        var label = UILabel(frame: CGRectMake(5, 5, 200, 25))
-        label.autoresizingMask = .FlexibleWidth
-        label.text = sectionInfo.name
-        label.textColor = UIColor.whiteColor()
-        header.addSubview(label)
+        header.infoLabel.text = sectionInfo.name
         
         return header
     }
     
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        
+        let song = artistsController.objectAtIndexPath(indexPath) as NSDictionary
+        let artist = song.objectForKey("artist") as NSString
+        
+        let artistAlbumsViewController = ArtistAlbumsViewController(artist: artist)
+        navigationController?.pushViewController(artistAlbumsViewController, animated: true)
+    }
+    
     func sectionIndexTitlesForTableView(tableView: UITableView) -> [AnyObject]! {
-        return artistsController.sectionIndexTitles
+        if let controller = artistsController {
+            return artistsController.sectionIndexTitles
+        }
+        return []
     }
     
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
@@ -164,5 +196,9 @@ NSFetchedResultsControllerDelegate {
         })
         
         return [deleteAction, addToPlaylistAction]
+    }
+    
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        searchBar.resignFirstResponder()
     }
 }

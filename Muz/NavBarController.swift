@@ -34,7 +34,7 @@ class NavBarController: UINavigationController {
         
         navigationBar.setBackgroundImage(transparentImage, forBarMetrics: .Default)
         navigationBar.shadowImage = transparentImage
-        
-        navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
+        navigationBar.tintColor = UIColor.whiteColor()
+        navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: MuzColor, NSFontAttributeName: MuzTitleFont]
     }
 }

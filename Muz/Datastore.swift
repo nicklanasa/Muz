@@ -106,6 +106,29 @@ class Datastore {
         }
     }
     
+    func songForSongName(songName: String) -> Song? {
+        var request = NSFetchRequest()
+        request.entity = NSEntityDescription.entityForName("Song",
+            inManagedObjectContext: self.mainQueueContext)
+        
+        request.fetchLimit = 1
+        
+        let predicate = NSPredicate(format: "title = %@", songName)
+        request.predicate = predicate
+        
+        var error = NSErrorPointer()
+        let results = self.workerContext.executeFetchRequest(request, error: error)
+        
+        if results?.count > 0 {
+            if let song = results?[0] as? Song {
+                return song
+            }
+            
+            return nil
+        }
+        return nil
+    }
+    
     // MARK: NSFetchedResultsControllers
     
     func artistsWithSortKey(sortKey: NSString, ascending: Bool, sectionNameKeyPath: NSString?) -> [AnyObject]? {
@@ -160,27 +183,88 @@ class Datastore {
         cacheName: ArtistsCacheName)
     }
     
+    func artistsAlbumsControllerWithSortKey(artist: NSString, sortKey: NSString, ascending: Bool, sectionNameKeyPath: NSString?) -> NSFetchedResultsController {
+        
+        var request = NSFetchRequest()
+        request.entity = NSEntityDescription.entityForName("Song",
+            inManagedObjectContext: self.mainQueueContext)
+        
+        let predicate = NSPredicate(format: "artist like %@", artist)
+        request.predicate = predicate
+        
+        var groupBy = NSMutableArray()
+        var fetch = NSMutableArray()
+        
+        if let albumProperty: AnyObject = request.entity?.propertiesByName["albumTitle"] {
+            groupBy.addObject(albumProperty)
+            fetch.addObject(albumProperty)
+        }
+        
+        if let titleProperty: AnyObject = request.entity?.propertiesByName["title"] {
+            groupBy.addObject(titleProperty)
+            fetch.addObject(titleProperty)
+        }
+        
+        if let albumTrackNumberProperty: AnyObject = request.entity?.propertiesByName["albumTrackNumber"] {
+            groupBy.addObject(albumTrackNumberProperty)
+            fetch.addObject(albumTrackNumberProperty)
+        }
+        
+        if let artworkProperty: AnyObject = request.entity?.propertiesByName["artwork"] {
+            groupBy.addObject(artworkProperty)
+            fetch.addObject(artworkProperty)
+        }
+        
+        if let albumTrackCountProperty: AnyObject = request.entity?.propertiesByName["albumTrackCount"] {
+            groupBy.addObject(albumTrackCountProperty)
+            fetch.addObject(albumTrackCountProperty)
+        }
+        
+        if let playbackDurationProperty: AnyObject = request.entity?.propertiesByName["playbackDuration"] {
+            groupBy.addObject(playbackDurationProperty)
+            fetch.addObject(playbackDurationProperty)
+        }
+        
+        request.propertiesToGroupBy = groupBy
+        request.propertiesToFetch = fetch
+        request.returnsDistinctResults = true
+        request.resultType = NSFetchRequestResultType.DictionaryResultType
+        
+        var sort = NSSortDescriptor(key: sortKey, ascending: ascending)
+        var sortTrackNumber = NSSortDescriptor(key: "albumTrackNumber", ascending: true)
+        request.sortDescriptors = [sort, sortTrackNumber]
+        
+        return NSFetchedResultsController(fetchRequest: request,
+            managedObjectContext: self.mainQueueContext,
+            sectionNameKeyPath: sectionNameKeyPath,
+            cacheName: ArtistsCacheName)
+    }
+    
     func songsControllerWithSortKey(sortKey: NSString, ascending: Bool, sectionNameKeyPath: NSString?) -> NSFetchedResultsController {
         
         var request = NSFetchRequest()
         request.entity = NSEntityDescription.entityForName("Song",
             inManagedObjectContext: self.mainQueueContext)
         
-        var fetchProperties = NSMutableArray()
+        var properties = NSMutableArray()
         
-        if let property: AnyObject = request.entity?.propertiesByName["title"] {
-            fetchProperties.addObject(property)
-            //request.propertiesToGroupBy = [property]
+        if let titleProperty: AnyObject = request.entity?.propertiesByName["title"] {
+            properties.addObject(titleProperty)
         }
         
-        if let artworkProperty: AnyObject = request.entity?.propertiesByName["artwork"] {
-            fetchProperties.addObject(artworkProperty)
+        if let artistProperty: AnyObject = request.entity?.propertiesByName["artist"] {
+            properties.addObject(artistProperty)
         }
         
-        request.propertiesToFetch = fetchProperties
-        request.resultType = NSFetchRequestResultType.DictionaryResultType
+        if let albumProperty: AnyObject = request.entity?.propertiesByName["albumTitle"] {
+            properties.addObject(albumProperty)
+        }
+        
+        request.propertiesToGroupBy = properties
+        request.propertiesToFetch = properties
         request.returnsDistinctResults = true
-                
+        request.resultType = NSFetchRequestResultType.DictionaryResultType
+        
         var sort = NSSortDescriptor(key: sortKey, ascending: ascending)
         request.sortDescriptors = [sort]
         

@@ -16,6 +16,7 @@ UITableViewDataSource,
 NSFetchedResultsControllerDelegate {
     
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     // The NSFetchedResultsController used to pull tasks for the selected date.
@@ -58,10 +59,8 @@ NSFetchedResultsControllerDelegate {
         
         var error: NSError?
         if lovedController.performFetch(&error) {
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                self.tableView.reloadData()
-                self.activityIndicator.stopAnimating()
-            })
+            self.tableView.reloadData()
+            self.activityIndicator.stopAnimating()
         }
     }
     
@@ -79,6 +78,21 @@ NSFetchedResultsControllerDelegate {
             forIndexPath: indexPath) as ArtistCell
         let song = lovedController.objectAtIndexPath(indexPath) as Song
         cell.artistLabel.text = song.title
+        if let image = UIImage(data: song.artwork) {
+            cell.artistImageView.image = image
+        } else {
+            cell.artistImageView.image = UIImage(named: "noArtwork")
+        }
         return cell
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let song = lovedController.objectAtIndexPath(indexPath) as Song
+        presentNowPlayViewControllerWithSongInfo(song)
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    }
+    
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        searchBar.resignFirstResponder()
     }
 }

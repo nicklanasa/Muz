@@ -41,6 +41,7 @@ extension Song: Printable {
         
         self.playbackDuration = item.playbackDuration
         self.albumTrackCount = item.albumTrackCount
+        self.albumTrackNumber = item.albumTrackNumber
         self.discNumber = item.discNumber
         self.discCount = item.discCount
         

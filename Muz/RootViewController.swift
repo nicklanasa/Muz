@@ -11,6 +11,8 @@ import UIKit
 
 class RootViewController: UIViewController {
     
+    var backgroundImageView = UIImageView(frame: UIScreen.mainScreen().bounds)
+    
     override init() {
         super.init()
     }
@@ -24,12 +26,44 @@ class RootViewController: UIViewController {
     }
     
     override func viewDidLoad() {
-        let image = UIImage(named: "random.jpg")
-        var imageView = UIImageView(frame: UIScreen.mainScreen().bounds)
-        imageView.image = image?.applyDarkEffect()
-        imageView.contentMode = UIViewContentMode.ScaleAspectFill   
-        imageView.autoresizingMask = .FlexibleWidth
-        view.insertSubview(imageView, atIndex: 0)
+        let image = UIImage(named: "blue.jpg")
+        
+        backgroundImageView.image = image?.applyDarkEffect()
+        backgroundImageView.contentMode = UIViewContentMode.ScaleAspectFill
+        backgroundImageView.autoresizingMask = .FlexibleWidth
+        view.insertSubview(backgroundImageView, atIndex: 0)
+    }
+    
+    func presentNowPlayViewControllerWithSongInfo(songInfo: NSDictionary) {
+        if let song = MediaSession.sharedSession.dataManager.datastore.songForSongName(songInfo.objectForKey("title") as NSString) {
+            if let delegate = UIApplication.sharedApplication().delegate as? AppDelegate {
+                if let tabBarController = delegate.window?.rootViewController as? UITabBarController {
+                    if let fromView = tabBarController.selectedViewController {
+                        if let vcs = tabBarController.viewControllers {
+                            if let navController = vcs[2] as? NavBarController {
+                                if let nowPlayingViewController = navController.viewControllers.first as? NowPlayingViewController {
+                                    let toView = nowPlayingViewController.view
+                                    UIView.transitionFromView(fromView.view,
+                                        toView: toView,
+                                        duration: 0.2,
+                                        options: .TransitionCrossDissolve,
+                                        completion: { (success) -> Void in
+                                            tabBarController.selectedIndex = 2
+                                            nowPlayingViewController.playSong(song)
+                                    })
+                                }
+                                
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    func presentNowPlayViewControllerWithSongInfo(song: Song) {
+        let songInfo = ["title" : song.title]
+        presentNowPlayViewControllerWithSongInfo(songInfo)
     }
     
 }

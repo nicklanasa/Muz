@@ -33,10 +33,10 @@ let _sharedSession = MediaSession()
         })
     }
     
-    func artworkForArtists() -> NSArray {
+    func infoForArtists() -> NSArray {
         
         var artistsArr = NSMutableArray()
-        let query = MPMediaQuery.artistsQuery()
+        let query = MPMediaQuery.albumsQuery()
         let results = query.collections as NSArray
         return results
     }
@@ -47,4 +47,6 @@ let _sharedSession = MediaSession()
         let results = query.items as NSArray
         return results
     }
+    
+    
 }

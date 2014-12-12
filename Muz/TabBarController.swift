@@ -21,6 +21,6 @@ class TabBarController: UITabBarController {
         
         tabBar.backgroundImage = transparentImage
         tabBar.shadowImage = transparentImage
-        tabBar.tintColor = UIColor.cyanColor()
+        tabBar.tintColor = MuzColor
     }
 }
