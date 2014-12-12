@@ -3,3 +3,5 @@
 //
 
 #import "UIImage+ImageEffects.h"
+#import "HTMLParser.h"
+#import "NSString+Lyrics.h"

@@ -27,7 +27,7 @@
 		CE444BE71A36A28700153F77 /* Datastore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE444BE21A36A28700153F77 /* Datastore.swift */; };
 		CE444BE81A36A28700153F77 /* MediaSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE444BE31A36A28700153F77 /* MediaSession.swift */; };
 		CE49F35E1A3A3693008DE25E /* artwork.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CE49F35D1A3A3693008DE25E /* artwork.jpg */; };
-		CE49F3601A3A83C8008DE25E /* MonthPageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE49F35F1A3A83C8008DE25E /* MonthPageController.swift */; };
+		CE49F3601A3A83C8008DE25E /* NowPlayingPageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE49F35F1A3A83C8008DE25E /* NowPlayingPageController.swift */; };
 		CE6EF5001A38F07D001FE858 /* ArtistAlbumsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6EF4FF1A38F07D001FE858 /* ArtistAlbumsViewController.swift */; };
 		CE6EF5021A38F08C001FE858 /* ArtistAlbumsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE6EF5011A38F08C001FE858 /* ArtistAlbumsViewController.xib */; };
 		CE6EF5061A392B6F001FE858 /* back.png in Resources */ = {isa = PBXBuildFile; fileRef = CE6EF5031A392B6F001FE858 /* back.png */; };
@@ -37,6 +37,10 @@
 		CEB200CE1A378B5D00E857D8 /* gg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CEB200CD1A378B5D00E857D8 /* gg.jpg */; };
 		CEB200D21A378B6400E857D8 /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB200D11A378B6400E857D8 /* UIImage+ImageEffects.m */; };
 		CEB200D41A379C7000E857D8 /* ArtistsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEB200D31A379C7000E857D8 /* ArtistsViewController.xib */; };
+		CEB524DE1A3B758B00027C71 /* MPMediaItem+Lyrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB524DD1A3B758B00027C71 /* MPMediaItem+Lyrics.swift */; };
+		CEB524E11A3B75E600027C71 /* Lyrics.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB524E01A3B75E600027C71 /* Lyrics.m */; };
+		CEB524E31A3B766000027C71 /* LyricsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB524E21A3B766000027C71 /* LyricsRequest.swift */; };
+		CEBB56161A3B951D00AE8CAA /* NSString+Lyrics.m in Sources */ = {isa = PBXBuildFile; fileRef = CEBB56151A3B951C00AE8CAA /* NSString+Lyrics.m */; };
 		CEC66D8C1A37EFA700560754 /* ArtistCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE444BD91A36A27200153F77 /* ArtistCell.swift */; };
 		CEC66D8F1A38A6A500560754 /* noArtwork.png in Resources */ = {isa = PBXBuildFile; fileRef = CEC66D8E1A38A6A500560754 /* noArtwork.png */; };
 		CEC66D951A38C62800560754 /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC66D941A38C62800560754 /* Song.swift */; };
@@ -82,6 +86,13 @@
 		CEDB61ED1A37DE6100B90B2D /* NowPlayingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEDB61EC1A37DE6100B90B2D /* NowPlayingViewController.xib */; };
 		CEDB61EF1A37ECFC00B90B2D /* blue.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CEDB61EE1A37ECFC00B90B2D /* blue.jpg */; };
 		CEDB61F11A37ED6800B90B2D /* random.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CEDB61F01A37ED6800B90B2D /* random.jpg */; };
+		CEE153451A3B41CD00BB16EB /* NowPlayingInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE153441A3B41CD00BB16EB /* NowPlayingInfoViewController.swift */; };
+		CEE153471A3B41D900BB16EB /* NowPlayingInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEE153461A3B41D900BB16EB /* NowPlayingInfoViewController.xib */; };
+		CEE1534E1A3B567C00BB16EB /* NowPlayingInfoLyricsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE1534D1A3B567C00BB16EB /* NowPlayingInfoLyricsCell.swift */; };
+		CEE153501A3B568400BB16EB /* NowPlayingInfoLyricsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEE1534F1A3B568400BB16EB /* NowPlayingInfoLyricsCell.xib */; };
+		CEE153551A3B5B4B00BB16EB /* HTMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE153521A3B5B4B00BB16EB /* HTMLNode.m */; };
+		CEE153561A3B5B4B00BB16EB /* HTMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE153541A3B5B4B00BB16EB /* HTMLParser.m */; };
+		CEE1535C1A3B5CF700BB16EB /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CEE1535B1A3B5CF700BB16EB /* libxml2.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -120,7 +131,7 @@
 		CE444BE21A36A28700153F77 /* Datastore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Datastore.swift; sourceTree = "<group>"; };
 		CE444BE31A36A28700153F77 /* MediaSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSession.swift; sourceTree = "<group>"; };
 		CE49F35D1A3A3693008DE25E /* artwork.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = artwork.jpg; sourceTree = "<group>"; };
-		CE49F35F1A3A83C8008DE25E /* MonthPageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MonthPageController.swift; sourceTree = "<group>"; };
+		CE49F35F1A3A83C8008DE25E /* NowPlayingPageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NowPlayingPageController.swift; sourceTree = "<group>"; };
 		CE6EF4FF1A38F07D001FE858 /* ArtistAlbumsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArtistAlbumsViewController.swift; sourceTree = "<group>"; };
 		CE6EF5011A38F08C001FE858 /* ArtistAlbumsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ArtistAlbumsViewController.xib; sourceTree = "<group>"; };
 		CE6EF5031A392B6F001FE858 /* back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back.png; sourceTree = "<group>"; };
@@ -132,6 +143,12 @@
 		CEB200D01A378B6400E857D8 /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
 		CEB200D11A378B6400E857D8 /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
 		CEB200D31A379C7000E857D8 /* ArtistsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ArtistsViewController.xib; sourceTree = "<group>"; };
+		CEB524DD1A3B758B00027C71 /* MPMediaItem+Lyrics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MPMediaItem+Lyrics.swift"; sourceTree = "<group>"; };
+		CEB524DF1A3B75E600027C71 /* Lyrics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Lyrics.h; sourceTree = "<group>"; };
+		CEB524E01A3B75E600027C71 /* Lyrics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Lyrics.m; sourceTree = "<group>"; };
+		CEB524E21A3B766000027C71 /* LyricsRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LyricsRequest.swift; sourceTree = "<group>"; };
+		CEBB56141A3B951C00AE8CAA /* NSString+Lyrics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Lyrics.h"; sourceTree = "<group>"; };
+		CEBB56151A3B951C00AE8CAA /* NSString+Lyrics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Lyrics.m"; sourceTree = "<group>"; };
 		CEC66D8E1A38A6A500560754 /* noArtwork.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = noArtwork.png; sourceTree = "<group>"; };
 		CEC66D941A38C62800560754 /* Song.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Song.swift; path = ../Song.swift; sourceTree = "<group>"; };
 		CEC66D961A38D5F400560754 /* headphones.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = headphones.png; sourceTree = "<group>"; };
@@ -176,6 +193,15 @@
 		CEDB61EC1A37DE6100B90B2D /* NowPlayingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NowPlayingViewController.xib; sourceTree = "<group>"; };
 		CEDB61EE1A37ECFC00B90B2D /* blue.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = blue.jpg; sourceTree = "<group>"; };
 		CEDB61F01A37ED6800B90B2D /* random.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = random.jpg; sourceTree = "<group>"; };
+		CEE153441A3B41CD00BB16EB /* NowPlayingInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NowPlayingInfoViewController.swift; sourceTree = "<group>"; };
+		CEE153461A3B41D900BB16EB /* NowPlayingInfoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NowPlayingInfoViewController.xib; sourceTree = "<group>"; };
+		CEE1534D1A3B567C00BB16EB /* NowPlayingInfoLyricsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NowPlayingInfoLyricsCell.swift; sourceTree = "<group>"; };
+		CEE1534F1A3B568400BB16EB /* NowPlayingInfoLyricsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NowPlayingInfoLyricsCell.xib; sourceTree = "<group>"; };
+		CEE153511A3B5B4B00BB16EB /* HTMLNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTMLNode.h; sourceTree = "<group>"; };
+		CEE153521A3B5B4B00BB16EB /* HTMLNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTMLNode.m; sourceTree = "<group>"; };
+		CEE153531A3B5B4B00BB16EB /* HTMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTMLParser.h; sourceTree = "<group>"; };
+		CEE153541A3B5B4B00BB16EB /* HTMLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTMLParser.m; sourceTree = "<group>"; };
+		CEE1535B1A3B5CF700BB16EB /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -183,6 +209,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CEE1535C1A3B5CF700BB16EB /* libxml2.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -199,6 +226,7 @@
 		CE444BA71A36A25500153F77 = {
 			isa = PBXGroup;
 			children = (
+				CEE1535B1A3B5CF700BB16EB /* libxml2.dylib */,
 				CE444BB21A36A25500153F77 /* Muz */,
 				CE444BC81A36A25500153F77 /* MuzTests */,
 				CE444BB11A36A25500153F77 /* Products */,
@@ -289,7 +317,11 @@
 				CE444BE21A36A28700153F77 /* Datastore.swift */,
 				CE444BE31A36A28700153F77 /* MediaSession.swift */,
 				CE9BBDB91A36A87B00878C09 /* Muz.xcdatamodeld */,
+				CEB524DF1A3B75E600027C71 /* Lyrics.h */,
+				CEB524E01A3B75E600027C71 /* Lyrics.m */,
 				CEC66D941A38C62800560754 /* Song.swift */,
+				CEB524DD1A3B758B00027C71 /* MPMediaItem+Lyrics.swift */,
+				CEB524E21A3B766000027C71 /* LyricsRequest.swift */,
 			);
 			name = Data;
 			sourceTree = "<group>";
@@ -297,6 +329,10 @@
 		CE4931EA1A3A1B3700B3A4BE /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				CEE153511A3B5B4B00BB16EB /* HTMLNode.h */,
+				CEE153521A3B5B4B00BB16EB /* HTMLNode.m */,
+				CEE153531A3B5B4B00BB16EB /* HTMLParser.h */,
+				CEE153541A3B5B4B00BB16EB /* HTMLParser.m */,
 				CEB200D01A378B6400E857D8 /* UIImage+ImageEffects.h */,
 				CEB200D11A378B6400E857D8 /* UIImage+ImageEffects.m */,
 			);
@@ -306,7 +342,6 @@
 		CE4931EB1A3A1B4400B3A4BE /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
-				CE49F35F1A3A83C8008DE25E /* MonthPageController.swift */,
 				CEDB618C1A37C40000B90B2D /* LovedViewController.swift */,
 				CEDB618D1A37C40000B90B2D /* LovedViewController.xib */,
 				CEDB61861A37BA2B00B90B2D /* NavBarController.swift */,
@@ -338,8 +373,15 @@
 		CE4931ED1A3A1B8700B3A4BE /* NowPlaying */ = {
 			isa = PBXGroup;
 			children = (
+				CE49F35F1A3A83C8008DE25E /* NowPlayingPageController.swift */,
 				CEDB61EC1A37DE6100B90B2D /* NowPlayingViewController.xib */,
 				CEDB61EA1A37DE5400B90B2D /* NowPlayingViewController.swift */,
+				CEE1534D1A3B567C00BB16EB /* NowPlayingInfoLyricsCell.swift */,
+				CEE1534F1A3B568400BB16EB /* NowPlayingInfoLyricsCell.xib */,
+				CEE153441A3B41CD00BB16EB /* NowPlayingInfoViewController.swift */,
+				CEE153461A3B41D900BB16EB /* NowPlayingInfoViewController.xib */,
+				CEBB56141A3B951C00AE8CAA /* NSString+Lyrics.h */,
+				CEBB56151A3B951C00AE8CAA /* NSString+Lyrics.m */,
 			);
 			name = NowPlaying;
 			sourceTree = "<group>";
@@ -490,9 +532,11 @@
 				CEDB61D51A37DB9600B90B2D /* search@2x.png in Resources */,
 				CEDB61D21A37DB9600B90B2D /* albums@2x.png in Resources */,
 				CEDB61E01A37DB9600B90B2D /* loved.png in Resources */,
+				CEE153471A3B41D900BB16EB /* NowPlayingInfoViewController.xib in Resources */,
 				CEC66DA11A38DB9300560754 /* SongCell.xib in Resources */,
 				CEDB61D81A37DB9600B90B2D /* airplay@2x.png in Resources */,
 				CEDB61E21A37DB9600B90B2D /* loved@3x.png in Resources */,
+				CEE153501A3B568400BB16EB /* NowPlayingInfoLyricsCell.xib in Resources */,
 				CEB200D41A379C7000E857D8 /* ArtistsViewController.xib in Resources */,
 				CE3338271A39D7E400281146 /* ArtistAlbumsSongCell.xib in Resources */,
 				CE6EF5021A38F08C001FE858 /* ArtistAlbumsViewController.xib in Resources */,
@@ -539,24 +583,32 @@
 				CE444BE61A36A28700153F77 /* DataManager.swift in Sources */,
 				CEDB61871A37BA2B00B90B2D /* NavBarController.swift in Sources */,
 				CEDB617E1A37AF9700B90B2D /* RootViewController.swift in Sources */,
+				CEBB56161A3B951D00AE8CAA /* NSString+Lyrics.m in Sources */,
+				CEE153561A3B5B4B00BB16EB /* HTMLParser.m in Sources */,
 				CE9BBDBB1A36A87B00878C09 /* Muz.xcdatamodeld in Sources */,
 				CE6EF5001A38F07D001FE858 /* ArtistAlbumsViewController.swift in Sources */,
 				CE3338291A39D7EB00281146 /* ArtistAlbumsSongCell.swift in Sources */,
+				CEE153451A3B41CD00BB16EB /* NowPlayingInfoViewController.swift in Sources */,
 				CEDB61E71A37DCE300B90B2D /* MoreViewController.swift in Sources */,
 				CEB200D21A378B6400E857D8 /* UIImage+ImageEffects.m in Sources */,
 				CE33385D1A3A0A7D00281146 /* SongsHeader.swift in Sources */,
 				CEC66D8C1A37EFA700560754 /* ArtistCell.swift in Sources */,
 				CEDB618E1A37C40000B90B2D /* LovedViewController.swift in Sources */,
+				CEE153551A3B5B4B00BB16EB /* HTMLNode.m in Sources */,
 				CEDB61EB1A37DE5400B90B2D /* NowPlayingViewController.swift in Sources */,
+				CEB524E31A3B766000027C71 /* LyricsRequest.swift in Sources */,
 				CE444BB61A36A25500153F77 /* AppDelegate.swift in Sources */,
 				CEC66D9E1A38DA2400560754 /* SongCell.swift in Sources */,
 				CE444BE71A36A28700153F77 /* Datastore.swift in Sources */,
 				CE3338211A393B6C00281146 /* ArtistAlbumsAlbumHeader.swift in Sources */,
 				CE444BE81A36A28700153F77 /* MediaSession.swift in Sources */,
-				CE49F3601A3A83C8008DE25E /* MonthPageController.swift in Sources */,
+				CE49F3601A3A83C8008DE25E /* NowPlayingPageController.swift in Sources */,
 				CEDB61941A37D21B00B90B2D /* SongsViewController.swift in Sources */,
 				CE444BDB1A36A27200153F77 /* ArtistsViewController.swift in Sources */,
+				CEB524E11A3B75E600027C71 /* Lyrics.m in Sources */,
+				CEE1534E1A3B567C00BB16EB /* NowPlayingInfoLyricsCell.swift in Sources */,
 				CE33385B1A3A0A7300281146 /* ArtistsHeader.swift in Sources */,
+				CEB524DE1A3B758B00027C71 /* MPMediaItem+Lyrics.swift in Sources */,
 				CE444BE51A36A28700153F77 /* Song+Helpers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -683,6 +735,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					/usr/include/libxml2,
+				);
 				INFOPLIST_FILE = Muz/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -697,6 +754,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					/usr/include/libxml2,
+				);
 				INFOPLIST_FILE = Muz/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";

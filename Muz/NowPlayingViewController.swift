@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 import CoreData
-import AVFoundation
 import MediaPlayer
 
 class NowPlayingViewController: RootViewController {
@@ -18,6 +17,12 @@ class NowPlayingViewController: RootViewController {
     var songTimer: NSTimer?
     var collection: MPMediaItemCollection?
     var indexOfCurrentlyPlayingSong = 1
+    var pinchGesture: UIPinchGestureRecognizer!
+    
+    lazy var nowPlayingInfoController: NowPlayingInfoViewController = {
+        var nowPlayingInfoViewController = NowPlayingInfoViewController()
+        return nowPlayingInfoViewController
+    }()
     
     @IBOutlet weak var artwork: UIImageView!
     @IBOutlet weak var songLabel: UILabel!
@@ -56,6 +61,7 @@ class NowPlayingViewController: RootViewController {
         
             indexOfCurrentlyPlayingSong = item.albumTrackNumber
             updateNowPlayingWithItem(item)
+            updateView(item)
         }
     }
     
@@ -97,6 +103,9 @@ class NowPlayingViewController: RootViewController {
         tapGesture.numberOfTapsRequired = 1
         artwork.addGestureRecognizer(tapGesture)
         
+        pinchGesture = UIPinchGestureRecognizer(target: self, action: "showInfoController:")
+        view.addGestureRecognizer(pinchGesture)
+        
         NSNotificationCenter.defaultCenter().addObserver(self,
             selector: "playPause",
             name: UIApplicationWillTerminateNotification,
@@ -113,6 +122,47 @@ class NowPlayingViewController: RootViewController {
             object: nil)
         
         playerController.beginGeneratingPlaybackNotifications()
+        
+        addChildViewController(nowPlayingInfoController)
+        nowPlayingInfoController.didMoveToParentViewController(self)
+        view.insertSubview(nowPlayingInfoController.view, belowSubview: self.view)
+        
+        nowPlayingInfoController.view.alpha = 0.0
+    }
+    
+    func showInfoController(gesture: UIPinchGestureRecognizer) {
+        view.removeGestureRecognizer(gesture)
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.artwork.alpha = 0.0
+            self.songLabel.alpha = 0.0
+            self.progressView.alpha = 0.0
+            
+            UIView.animateWithDuration(0.3, animations: { () -> Void in
+                self.nowPlayingInfoController.view.alpha = 1.0
+                
+                self.pinchGesture = UIPinchGestureRecognizer(target: self, action: "hideInfoController:")
+                self.view.addGestureRecognizer(self.pinchGesture)
+            })
+            
+        })
+    }
+    
+    func hideInfoController(gesture: UIPinchGestureRecognizer) {
+        view.removeGestureRecognizer(gesture)
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            
+            self.nowPlayingInfoController.view.alpha = 0.0
+            
+            UIView.animateWithDuration(0.3, animations: { () -> Void in
+                self.artwork.alpha = 1.0
+                self.songLabel.alpha = 1.0
+                self.progressView.alpha = 1.0
+                
+                var pinchGesture = UIPinchGestureRecognizer(target: self, action: "showInfoController:")
+                self.view.addGestureRecognizer(pinchGesture)
+            })
+            
+        })
     }
     
     func applicationDidEnterBackground() {
@@ -138,7 +188,9 @@ class NowPlayingViewController: RootViewController {
     }
     
     func playerControllerDidNowPlayingItemDidChange() {
-        updateView(playerController.nowPlayingItem)
+        if let item = playerController.nowPlayingItem {
+            updateView(item)
+        }
     }
     
     func updateNowPlayingItem() {
@@ -154,26 +206,31 @@ class NowPlayingViewController: RootViewController {
             
         }
         
-        if let item = collection?.items[indexOfCurrentlyPlayingSong] as? MPMediaItem {
-            updateNowPlayingWithItem(item)
+        if indexOfCurrentlyPlayingSong < collection?.items.count {
+            if let item = collection?.items[indexOfCurrentlyPlayingSong] as? MPMediaItem {
+                updateNowPlayingWithItem(item)
+            }
         }
     }
     
     func updateView(item: MPMediaItem) {
         let noArtwork = UIImage(named: "noArtwork")
+        let delegate = UIApplication.sharedApplication().delegate as AppDelegate
         
         if let artwork = item.artwork {
             if let image = artwork.imageWithSize(CGSize(width:500, height:500)) {
                 self.artwork.image = image
-                self.backgroundImageView.image = image.applyDarkEffect()
+                delegate.currentAppBackgroundImage = image.applyDarkEffect()
             } else {
                 self.artwork.image = noArtwork
-                self.backgroundImageView.image = noArtwork!.applyDarkEffect()
+                delegate.currentAppBackgroundImage = noArtwork!.applyDarkEffect()
             }
         } else {
             self.artwork.image = noArtwork
-            self.backgroundImageView.image = noArtwork!.applyDarkEffect()
+            delegate.currentAppBackgroundImage = noArtwork!.applyDarkEffect()
         }
+        
+        self.backgroundImageView.image = delegate.currentAppBackgroundImage.applyDarkEffect()
         
         let songInfo = NSString(format: "%@\n%@\n%@", item.title, item.artist, item.albumTitle)
         let attributedSongInfo = NSMutableAttributedString(string: songInfo)
@@ -194,6 +251,8 @@ class NowPlayingViewController: RootViewController {
     func updateNowPlayingWithItem(item: MPMediaItem) {
         playerController.nowPlayingItem = item
         playerController.play()
+        updateView(item)
+        nowPlayingInfoController.updateWithItem(item)
     }
     
     func startSongTimer() {

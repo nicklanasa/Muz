@@ -8,10 +8,11 @@
 
 import Foundation
 import UIKit
+import MediaPlayer
 
 class RootViewController: UIViewController {
     
-    var backgroundImageView = UIImageView(frame: UIScreen.mainScreen().bounds)
+    var backgroundImageView: UIImageView!
     
     override init() {
         super.init()
@@ -25,13 +26,34 @@ class RootViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func viewWillAppear(animated: Bool) {
+        configureBackgroundImage()
+    }
+    
     override func viewDidLoad() {
-        let image = UIImage(named: "blue.jpg")
         
-        backgroundImageView.image = image?.applyDarkEffect()
+        backgroundImageView = UIImageView(frame: UIScreen.mainScreen().bounds)
         backgroundImageView.contentMode = UIViewContentMode.ScaleAspectFill
         backgroundImageView.autoresizingMask = .FlexibleWidth
+    
+        configureBackgroundImage()
+        
         view.insertSubview(backgroundImageView, atIndex: 0)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self,
+            selector: "mediaLibraryDidChange",
+            name: MPMediaLibraryDidChangeNotification,
+            object: nil)
+    }
+    
+    func configureBackgroundImage() {
+        let delegate = UIApplication.sharedApplication().delegate as AppDelegate
+        let image = delegate.currentAppBackgroundImage
+        backgroundImageView.image = image.applyDarkEffect()
+    }
+    
+    func mediaLibraryDidChange() {
+        
     }
     
     func presentNowPlayViewControllerWithSongInfo(songInfo: NSDictionary) {

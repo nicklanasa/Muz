@@ -18,6 +18,7 @@ let MuzColor = UIColor(red:55/255, green: 216/255, blue: 200/255, alpha: 1.0)
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    var currentAppBackgroundImage: UIImage = UIImage(named: "blue.jpg")!
 
     private func muzWindow() -> UIWindow {
         
