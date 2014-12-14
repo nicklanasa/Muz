@@ -24,24 +24,22 @@ extension NSString {
 class ArtistsViewController: RootViewController,
 UITableViewDelegate,
 UITableViewDataSource,
-NSFetchedResultsControllerDelegate {
+NSFetchedResultsControllerDelegate, UISearchBarDelegate, UISearchControllerDelegate, UISearchDisplayDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
-    // The NSFetchedResultsController used to pull tasks for the selected date.
-    var artists: [AnyObject]?
-    var artistsController: NSFetchedResultsController!
-    var artistsCollections: NSArray!
-    var artistsInfo = NSMutableDictionary()
+    var artists: NSArray?
+    var artistsQuery: MPMediaQuery?
+    var artistsSections = NSMutableArray()
     
     override init() {
         super.init(nibName: "ArtistsViewController", bundle: nil)
         
-        self.tabBarItem = UITabBarItem(title: "Artists",
+        self.tabBarItem = UITabBarItem(title: nil,
             image: UIImage(named: "artists"),
             selectedImage: UIImage(named: "artists"))
+        self.tabBarItem.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0)
     }
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
@@ -51,6 +49,10 @@ NSFetchedResultsControllerDelegate {
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,89 +60,61 @@ NSFetchedResultsControllerDelegate {
         tableView.registerNib(UINib(nibName: "ArtistCell", bundle: nil), forCellReuseIdentifier: "Cell")
         tableView.registerNib(UINib(nibName: "ArtistsHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "Header")
         
-//        MediaSession.sharedSession.openSessionWithCompletionBlock { (success) -> () in
-//            self.fetchArtists()
-//        }
+        self.searchDisplayController?.searchResultsTableView.registerNib(UINib(nibName: "ArtistCell", bundle: nil), forCellReuseIdentifier: "Cell")
 
+        self.navigationItem.title = "Artists"
         
         fetchArtists()
-        self.navigationItem.title = "Artists"
     }
     
     func fetchArtists() {
         
-        artistsController = MediaSession.sharedSession.dataManager.datastore.artistsControllerWithSortKey("artist",
-            ascending: true,
-            sectionNameKeyPath: "artist.stringByGroupingByFirstLetter")
+        artistsQuery = MPMediaQuery.artistsQuery()
+        artists = artistsQuery?.collections
         
-        var error: NSError?
-        if artistsController.performFetch(&error) {
-            
-            artistsCollections = MediaSession.sharedSession.infoForArtists()
-            var albumCounter = NSCountedSet()
-            
-            for albumCollection in artistsCollections {
-                if let collection = albumCollection as? MPMediaItemCollection {
-                    var artistInfo = NSMutableDictionary()
-                    let repItem = collection.representativeItem
-                    albumCounter.addObject(repItem.valueForProperty(MPMediaItemPropertyArtist))
-                    
-                    for artistItem in collection.items {
-                        if let item = artistItem as? MPMediaItem {
-                            if let artwork = item.valueForProperty(MPMediaItemPropertyArtwork) as? MPMediaItemArtwork {
-                                if let image = artwork.imageWithSize(CGSizeMake(40, 40)) {
-                                    artistInfo.setObject(image, forKey: "artwork")
-                                    break
-                                }
-                            }
-                        }
-                    }
-                    
-                    artistInfo.setObject(NSNumber(integer: albumCounter.countForObject(repItem.valueForProperty(MPMediaItemPropertyArtist))), forKey: "albumCount")
-                    
-                    artistsInfo.setObject(artistInfo, forKey: repItem.artist)
+        if let query = artistsQuery {
+            for section in query.collectionSections {
+                if let songSection = section as? MPMediaQuerySection {
+                    artistsSections.addObject(songSection.title)
                 }
             }
-            
-            self.tableView.reloadData()
-            self.activityIndicator.stopAnimating()
         }
-    }
+     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        if let controller = artistsController {
-            return artistsController.sections?.count ?? 0
-        }
-        return 0
+        return artistsQuery?.collectionSections.count ?? 0
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let controller = artistsController {
-            let sectionInfo = artistsController.sections![section] as NSFetchedResultsSectionInfo
-            return sectionInfo.numberOfObjects
-        }
-        return 0
+        let section = artistsQuery?.collectionSections[section] as? MPMediaQuerySection
+        return section?.range.length ?? 0
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
+        if tableView == self.searchDisplayController?.searchResultsTableView {
+            let cell = self.searchDisplayController?.searchResultsTableView.dequeueReusableCellWithIdentifier("Cell") as ArtistCell
+            cell.artistLabel.text = "test"
+            return cell
+        }
+        
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell",
             forIndexPath: indexPath) as ArtistCell
-        let song = artistsController.objectAtIndexPath(indexPath) as NSDictionary
-        let artist = song.objectForKey("artist") as NSString
-        cell.artistLabel.text = artist
-        if let artistInfo = artistsInfo.objectForKey(artist) as? NSDictionary {
-            
-            let albumCount = artistInfo.objectForKey("albumCount") as NSInteger
-            cell.infoLabel.text = NSString(format: "%d %@", albumCount, albumCount == 1 ? "album" : "albums")
-            
-            if let image = artistInfo.objectForKey("artwork") as? UIImage {
-                cell.artistImageView.image = image
-            } else {
-                cell.artistImageView.image = UIImage(named: "noArtwork")
+        
+        let section = self.artistsQuery?.collectionSections[indexPath.section] as MPMediaQuerySection
+        
+        if let songs = artists?[indexPath.row + section.range.location] as? MPMediaItemCollection {
+            if let song = songs.representativeItem {
+                cell.artistLabel.text = song.artist
+                cell.infoLabel.text = song.artist
+                cell.infoLabel.text = NSString(format: "%d %@", songs.count, songs.count == 1 ? "song" : "songs")
+                
+                if let artwork = song.artwork {
+                    cell.artistImageView?.image = song.artwork.imageWithSize(cell.artistImageView.frame.size)
+                } else {
+                    cell.artistImageView?.image = UIImage(named: "noArtwork")
+                }
             }
-        } else {
-            cell.artistImageView.image = UIImage(named: "noArtwork")
-            cell.infoLabel.text = NSString(format: "0 albums")
         }
         
         return cell
@@ -152,30 +126,33 @@ NSFetchedResultsControllerDelegate {
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
-        let sectionInfo = artistsController.sections![section] as NSFetchedResultsSectionInfo
+        if tableView == self.searchDisplayController?.searchResultsTableView {
+            return nil
+        }
         
-        let header = tableView.dequeueReusableHeaderFooterViewWithIdentifier("Header") as ArtistsHeader
-        
-        header.infoLabel.text = sectionInfo.name
-        
-        return header
+        if let section = artistsQuery?.collectionSections[section] as? MPMediaQuerySection {
+            let header = tableView.dequeueReusableHeaderFooterViewWithIdentifier("Header") as ArtistsHeader
+            header.infoLabel.text = section.title
+            return header
+        } else {
+            return nil
+        }
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        
-        let song = artistsController.objectAtIndexPath(indexPath) as NSDictionary
-        let artist = song.objectForKey("artist") as NSString
-        
-        let artistAlbumsViewController = ArtistAlbumsViewController(artist: artist)
-        navigationController?.pushViewController(artistAlbumsViewController, animated: true)
+    
+        // Get song.
+        let section = artistsQuery?.collectionSections[indexPath.section] as MPMediaQuerySection
+        if let albums = artists?[indexPath.row + section.range.location] as? MPMediaItemCollection {
+            let artistAlbumsViewController = ArtistAlbumsViewController(artist: albums.representativeItem.artist)
+            navigationController?.pushViewController(artistAlbumsViewController, animated: true)
+        }
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
     func sectionIndexTitlesForTableView(tableView: UITableView) -> [AnyObject]! {
-        if let controller = artistsController {
-            return artistsController.sectionIndexTitles
-        }
-        return []
+        return artistsSections
     }
     
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
@@ -201,4 +178,9 @@ NSFetchedResultsControllerDelegate {
     func scrollViewDidScroll(scrollView: UIScrollView) {
         searchBar.resignFirstResponder()
     }
+    
+    func searchDisplayControllerWillBeginSearch(controller: UISearchDisplayController) {
+        controller.searchBar.setShowsCancelButton(false, animated: true)
+    }
+
 }

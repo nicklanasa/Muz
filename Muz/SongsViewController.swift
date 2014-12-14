@@ -20,16 +20,19 @@ NSFetchedResultsControllerDelegate {
     @IBOutlet weak var searchBar: UISearchBar!
     
     // The NSFetchedResultsController used to pull tasks for the selected date.
-    var songs: NSArray!
-    var songsController: NSFetchedResultsController!
+    var songs: NSArray?
+    var songsQuery: MPMediaQuery?
+    var songsSections = NSMutableArray()
+    
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     override init() {
         super.init(nibName: "SongsViewController", bundle: nil)
         
-        self.tabBarItem = UITabBarItem(title: "Songs",
+        self.tabBarItem = UITabBarItem(title: nil,
             image: UIImage(named: "songs"),
             selectedImage: UIImage(named: "songs"))
+        self.tabBarItem.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0)
     }
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
@@ -45,7 +48,6 @@ NSFetchedResultsControllerDelegate {
         
         tableView.registerNib(UINib(nibName: "SongCell", bundle: nil), forCellReuseIdentifier: "Cell")
         tableView.registerNib(UINib(nibName: "SongsHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "Header")
-        tableView.alpha = 0.0
         
         fetchSongs()
                 
@@ -53,44 +55,39 @@ NSFetchedResultsControllerDelegate {
     }
     
     func fetchSongs() {
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            self.songsController = MediaSession.sharedSession.dataManager.datastore.songsControllerWithSortKey("title",
-                ascending: true,
-                sectionNameKeyPath: "title.stringByGroupingByFirstLetter")
-            
-            var error: NSError?
-            if self.songsController.performFetch(&error) {
-                self.tableView.alpha = 1.0
-                self.activityIndicator.stopAnimating()
-                self.tableView.reloadData()
+        
+        songsQuery = MPMediaQuery.songsQuery()
+        songs = songsQuery?.items
+        
+        if let query = songsQuery {
+            for section in query.itemSections {
+                if let songSection = section as? MPMediaQuerySection {
+                    songsSections.addObject(songSection.title)
+                }
             }
-        })
+        }
+        
+        self.activityIndicator.stopAnimating()
+        self.tableView.reloadData()
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        if let controller = songsController {
-            return songsController.sections?.count ?? 0
-        }
-        return 0
+        return songsQuery?.itemSections.count ?? 0
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let controller = songsController {
-            let sectionInfo = songsController.sections![section] as NSFetchedResultsSectionInfo
-            return sectionInfo.numberOfObjects
-        }
-        
-        return 0
+        let section = songsQuery?.itemSections[section] as? MPMediaQuerySection
+        return section?.range.length ?? 0
     }
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let sectionInfo = songsController.sections![section] as NSFetchedResultsSectionInfo
-        
-        let header = tableView.dequeueReusableHeaderFooterViewWithIdentifier("Header") as SongsHeader
-        
-        header.infoLabel.text = sectionInfo.name
-        
-        return header
+        if let section = songsQuery?.itemSections[section] as? MPMediaQuerySection {
+            let header = tableView.dequeueReusableHeaderFooterViewWithIdentifier("Header") as SongsHeader
+            header.infoLabel.text = section.title
+            return header
+        } else {
+            return nil
+        }
     }
     
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -100,33 +97,36 @@ NSFetchedResultsControllerDelegate {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell",
             forIndexPath: indexPath) as SongCell
-        let song = songsController.objectAtIndexPath(indexPath) as NSDictionary
-        cell.songLabel.text = song.objectForKey("title") as NSString
+
+        let section = self.songsQuery?.itemSections[indexPath.section] as MPMediaQuerySection
         
-        if let artist = song.objectForKey("artist") as? NSString {
-            cell.infoLabel.text = NSString(format: "%@", artist)
+        if let song = songs?[indexPath.row + section.range.location] as? MPMediaItem {
+            cell.songLabel.text = song.title
+            cell.infoLabel.text = song.artist
+            cell.infoLabel.text = NSString(format: "%@ %@", cell.infoLabel.text!, song.albumTitle)
+            
+            if let artwork = song.artwork {
+                cell.songImageView?.image = song.artwork.imageWithSize(cell.songImageView.frame.size)
+            } else {
+                cell.songImageView?.image = UIImage(named: "noArtwork")
+            }
+            
         }
-        
-        if let album = song.objectForKey("albumTitle") as? NSString {
-            cell.infoLabel.text = NSString(format: "%@ %@", cell.infoLabel.text!, album)
-        }
-        
+    
         return cell
     }
     
     func sectionIndexTitlesForTableView(tableView: UITableView) -> [AnyObject]! {
-        if let controller = songsController {
-            return songsController.sectionIndexTitles
-        }
-        return []
+        return songsSections
     }
     
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
         // Get song.
-        let songInfo = songsController.objectAtIndexPath(indexPath) as NSDictionary
-        presentNowPlayViewControllerWithSongInfo(songInfo)
+        let section = self.songsQuery?.itemSections[indexPath.section] as MPMediaQuerySection
+        if let song = songs?[indexPath.row + section.range.location] as? MPMediaItem {
+            presentNowPlayViewControllerWithItem(song)
+        }        
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     

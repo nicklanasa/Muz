@@ -33,12 +33,14 @@ class RootViewController: UIViewController {
     override func viewDidLoad() {
         
         backgroundImageView = UIImageView(frame: UIScreen.mainScreen().bounds)
-        backgroundImageView.contentMode = UIViewContentMode.ScaleAspectFill
+        backgroundImageView.contentMode = UIViewContentMode.ScaleToFill
         backgroundImageView.autoresizingMask = .FlexibleWidth
     
         configureBackgroundImage()
         
-        view.insertSubview(backgroundImageView, atIndex: 0)
+        if backgroundImageView.superview == nil {
+            view.insertSubview(backgroundImageView, atIndex: 0)
+        }
         
         NSNotificationCenter.defaultCenter().addObserver(self,
             selector: "mediaLibraryDidChange",
@@ -57,7 +59,10 @@ class RootViewController: UIViewController {
     }
     
     func presentNowPlayViewControllerWithSongInfo(songInfo: NSDictionary) {
-        if let song = MediaSession.sharedSession.dataManager.datastore.songForSongName(songInfo.objectForKey("title") as NSString) {
+        let song = songInfo.objectForKey("title") as NSString
+        let artist = songInfo.objectForKey("artist") as NSString
+        
+        if let song = MediaSession.sharedSession.dataManager.datastore.songForSongName(song, artist: artist) {
             if let delegate = UIApplication.sharedApplication().delegate as? AppDelegate {
                 if let tabBarController = delegate.window?.rootViewController as? UITabBarController {
                     if let fromView = tabBarController.selectedViewController {
@@ -83,9 +88,22 @@ class RootViewController: UIViewController {
         }
     }
     
-    func presentNowPlayViewControllerWithSongInfo(song: Song) {
-        let songInfo = ["title" : song.title]
+    func presentNowPlayViewControllerWithItem(item: MPMediaItem) {
+        let songInfo = ["title" : item.title, "artist" : item.artist]
         presentNowPlayViewControllerWithSongInfo(songInfo)
+    }
+    
+    func presentNowPlayViewControllerWithSongInfo(song: Song) {
+        let songInfo = ["title" : song.title, "artist" : song.artist]
+        presentNowPlayViewControllerWithSongInfo(songInfo)
+    }
+    
+    override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
+        if toInterfaceOrientation == .Portrait {
+            backgroundImageView.contentMode = UIViewContentMode.ScaleToFill
+        } else {
+            backgroundImageView.contentMode = UIViewContentMode.ScaleAspectFill
+        }
     }
     
 }

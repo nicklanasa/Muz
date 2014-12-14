@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import MediaPlayer
 
 class ArtistAlbumsAlbumHeader: UITableViewHeaderFooterView {
     @IBOutlet weak var albumLabel: UILabel!
@@ -22,19 +23,15 @@ class ArtistAlbumsAlbumHeader: UITableViewHeaderFooterView {
         
     }
     
-    func updateWithData(data: NSDictionary) {
+    func updateWithItem(item: MPMediaItem) {
         
-        if let artworkData = data.objectForKey("artwork") as? NSData {
-            if let image = UIImage(data: artworkData) {
-                albumImageView.image = image
-            } else {
-                albumImageView.image = UIImage(named: "noArtwork")
-            }
+        if let artwork = item.artwork {
+            self.albumImageView?.image = artwork.imageWithSize(self.albumImageView.frame.size)
         } else {
-            albumImageView.image = UIImage(named: "noArtwork")
+            self.albumImageView?.image = UIImage(named: "noArtwork")
         }
         
-        if let album = data.objectForKey("albumTitle") as? String {
+        if let album = item.albumTitle {
             albumLabel.text = album.isEmpty ? "Unknown Album" : album
         } else {
             albumLabel.text = "Unknown Album"

@@ -16,7 +16,7 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="500" sectionHeaderHeight="22" sectionFooterHeight="22" id="OAI-iT-YNN">
-                    <rect key="frame" x="0.0" y="92" width="320" height="429"/>
+                    <rect key="frame" x="0.0" y="92" width="320" height="430"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <connections>
@@ -31,13 +31,13 @@
                         <segment title="Lyrics"/>
                         <segment title="Last.fm"/>
                     </segments>
-                    <color key="tintColor" red="0.2156862745" green="0.84705882349999995" blue="0.7843137255" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </segmentedControl>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <nil key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
-            <point key="canvasLocation" x="423" y="370.99999999999989"/>
+            <point key="canvasLocation" x="423" y="370"/>
         </view>
     </objects>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

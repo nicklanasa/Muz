@@ -19,6 +19,10 @@ NSFetchedResultsControllerDelegate {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
+    var albums: NSArray?
+    var albumsQuery: MPMediaQuery?
+    var albumsSections = NSMutableArray()
+    
     var fetchedObjects: [AnyObject]?
     
     lazy var formatter: NSDateFormatter = {
@@ -62,38 +66,43 @@ NSFetchedResultsControllerDelegate {
     
     func fetchArtistAlbums() {
         
-        artistsAlbumsController = MediaSession.sharedSession.dataManager.datastore.artistsAlbumsControllerWithSortKey(artist,
-            sortKey: "albumTitle",
-            ascending: true,
-            sectionNameKeyPath: "albumTitle")
+        let artistPredicate = MPMediaPropertyPredicate(value: artist, forProperty: MPMediaItemPropertyArtist, comparisonType: .EqualTo)
+        albumsQuery = MPMediaQuery.albumsQuery()
+        albumsQuery?.addFilterPredicate(artistPredicate)
         
-        var error: NSError?
-        if artistsAlbumsController.performFetch(&error) {
-            self.tableView.reloadData()
-            self.activityIndicator.stopAnimating()
-      
+        albums = albumsQuery?.collections
+        
+        if let query = albumsQuery {
+            for section in query.collectionSections {
+                if let songSection = section as? MPMediaQuerySection {
+                    albumsSections.addObject(songSection.title)
+                }
+            }
         }
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return artistsAlbumsController.sections?.count ?? 0
+        return albums?.count ?? 0
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let sectionInfo = artistsAlbumsController.sections![section] as NSFetchedResultsSectionInfo
-        return sectionInfo.numberOfObjects
+        let section = albums?[section] as? MPMediaItemCollection
+        return section?.items.count ?? 0
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell",
             forIndexPath: indexPath) as ArtistAlbumsSongCell
-        let song = artistsAlbumsController.objectAtIndexPath(indexPath) as NSDictionary
-        cell.songLabel.text = song.objectForKey("title") as NSString
         
-        if let duration = song.objectForKey("playbackDuration") as? Float {
-            let min = floor(duration / 60)
-            let sec = floor(duration - (min * 60))
-            cell.infoLabel.text = NSString(format: "%.0f:%@%.0f", min, sec < 10 ? "0" : "", sec)
+        let section = self.albumsQuery?.collectionSections[indexPath.section] as MPMediaQuerySection
+        
+        if let songs = albums?[indexPath.section] as? MPMediaItemCollection {
+            if let song = songs.items[indexPath.row] as? MPMediaItem {
+                cell.songLabel.text = song.title
+                let min = floor(song.playbackDuration / 60)
+                let sec = floor(song.playbackDuration - (min * 60))
+                cell.infoLabel.text = NSString(format: "%.0f:%@%.0f", min, sec < 10 ? "0" : "", sec)
+            }
         }
         
         return cell
@@ -104,24 +113,28 @@ NSFetchedResultsControllerDelegate {
     }
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if tableView == self.searchDisplayController?.searchResultsTableView {
+            return nil
+        }
         
-        let sectionInfo = artistsAlbumsController.sections![section] as NSFetchedResultsSectionInfo
-        
-        let song = artistsAlbumsController.objectAtIndexPath(NSIndexPath(forRow: 0, inSection: section)) as NSDictionary
-        
-        let header = tableView.dequeueReusableHeaderFooterViewWithIdentifier("Header") as ArtistAlbumsAlbumHeader
-        header.updateWithData(song)
-        
-        header.infoLabel.text = NSString(format: "%d tracks", sectionInfo.numberOfObjects)
-        
-        return header
+        if let section = albums?[section] as? MPMediaItemCollection {
+            let header = tableView.dequeueReusableHeaderFooterViewWithIdentifier("Header") as ArtistAlbumsAlbumHeader
+            header.updateWithItem(section.representativeItem)
+            return header
+        } else {
+            return nil
+        }
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
         // Get song.
-        let songInfo = artistsAlbumsController.objectAtIndexPath(indexPath) as NSDictionary
-        presentNowPlayViewControllerWithSongInfo(songInfo)
+        let section = self.albumsQuery?.collectionSections[indexPath.section] as MPMediaQuerySection
+        
+        if let songs = albums?[indexPath.section] as? MPMediaItemCollection {
+            if let song = songs.items[indexPath.row] as? MPMediaItem {
+                presentNowPlayViewControllerWithItem(song)
+            }
+        }
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     

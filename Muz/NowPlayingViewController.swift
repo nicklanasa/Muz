@@ -43,7 +43,7 @@ class NowPlayingViewController: RootViewController {
         var query = MPMediaQuery.songsQuery()
         let titlePredicate = MPMediaPropertyPredicate(value: song.title, forProperty: MPMediaItemPropertyTitle, comparisonType: .Contains)
         let artistPredicate = MPMediaPropertyPredicate(value: song.artist, forProperty: MPMediaItemPropertyArtist, comparisonType: .Contains)
-        let albumPredicate = MPMediaPropertyPredicate(value: song.albumTitle, forProperty: MPMediaItemPropertyAlbumTitle, comparisonType: .Contains)
+        let albumPredicate = MPMediaPropertyPredicate(value: song.albumTitle, forProperty: MPMediaItemPropertyAlbumTitle, comparisonType: .EqualTo)
         
         query.addFilterPredicate(titlePredicate)
         query.addFilterPredicate(artistPredicate)
@@ -79,9 +79,10 @@ class NowPlayingViewController: RootViewController {
     override init() {
         super.init(nibName: "NowPlayingViewController", bundle: nil)
         
-        self.tabBarItem = UITabBarItem(title: "Now Playing",
+        self.tabBarItem = UITabBarItem(title: "",
             image: UIImage(named: "headphones"),
             selectedImage: UIImage(named: "headphones"))
+        self.tabBarItem.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0)
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -220,14 +221,14 @@ class NowPlayingViewController: RootViewController {
         if let artwork = item.artwork {
             if let image = artwork.imageWithSize(CGSize(width:500, height:500)) {
                 self.artwork.image = image
-                delegate.currentAppBackgroundImage = image.applyDarkEffect()
+                delegate.currentAppBackgroundImage = image
             } else {
                 self.artwork.image = noArtwork
-                delegate.currentAppBackgroundImage = noArtwork!.applyDarkEffect()
+                delegate.currentAppBackgroundImage = noArtwork!
             }
         } else {
             self.artwork.image = noArtwork
-            delegate.currentAppBackgroundImage = noArtwork!.applyDarkEffect()
+            delegate.currentAppBackgroundImage = noArtwork!
         }
         
         self.backgroundImageView.image = delegate.currentAppBackgroundImage.applyDarkEffect()

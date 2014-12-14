@@ -20,9 +20,10 @@ NSFetchedResultsControllerDelegate {
     override init() {
         super.init(nibName: "MoreViewController", bundle: nil)
         
-        self.tabBarItem = UITabBarItem(title: "More",
+        self.tabBarItem = UITabBarItem(title: nil,
             image: UIImage(named: "more"),
             selectedImage: UIImage(named: "more"))
+        self.tabBarItem.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0)
     }
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {

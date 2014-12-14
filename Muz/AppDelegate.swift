@@ -12,13 +12,14 @@ let MuzFontName = "HelveticaNeue-Thin"
 let MuzFontNameMedium = "HelveticaNeue-Medium"
 let MuzFont = UIFont(name: MuzFontName, size: 11)!
 let MuzTitleFont = UIFont(name: MuzFontNameMedium, size: 18)!
-let MuzColor = UIColor(red:55/255, green: 216/255, blue: 200/255, alpha: 1.0)
+//let MuzColor = UIColor(red:55/255, green: 216/255, blue: 200/255, alpha: 1.0)
+let MuzColor = UIColor.whiteColor()
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    var currentAppBackgroundImage: UIImage = UIImage(named: "blue.jpg")!
+    var currentAppBackgroundImage: UIImage = UIImage(named: "random.jpg")!
 
     private func muzWindow() -> UIWindow {
         
@@ -26,7 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         colorView.backgroundColor = UIColor.lightGrayColor().colorWithAlphaComponent(0.5)
         
         UITabBarItem.appearance().setTitleTextAttributes([NSFontAttributeName: MuzFont], forState: UIControlState.Normal)
-        UIBarButtonItem.appearance().setTitleTextAttributes([NSFontAttributeName: MuzTitleFont, NSForegroundColorAttributeName: UIColor.whiteColor()], forState: UIControlState.Normal)
+        UIBarButtonItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.whiteColor()], forState: UIControlState.Normal)
         UITableViewCell.appearance().selectedBackgroundView = colorView
         UITableViewCell.appearance().backgroundColor = UIColor.clearColor()
         UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffsetMake(-100, 0), forBarMetrics: UIBarMetrics.Default)

@@ -56,6 +56,10 @@ class NowPlayingInfoViewController: RootViewController, UITableViewDelegate, UIT
         return 1
     }
     
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return tableView.frame.height
+    }
+    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCellWithIdentifier("Cell") as NowPlayingInfoLyricsCell
         cell.updateWithLyrics(self.lyrics)

@@ -65,7 +65,7 @@ class Datastore {
     
     // MARK: Add songs
     
-    func addSongs(songs: NSArray, completion: (success: Bool) -> ()) {
+    func addSongs(songs: NSArray, updateBlock: (percentage: Float, error: NSErrorPointer, song: Song?) -> ()) {
         let addSongsBlock = { () -> Void in
             let context = self.workerContext
             context.performBlock { () -> Void in
@@ -75,19 +75,26 @@ class Datastore {
                 
                 var addedSongs = NSMutableArray(capacity: songs.count)
                 
+                var count = 0
+                
                 for item in songs {
+                    count++
                     if let song = item as? MPMediaItem {
                         let newSong: Song = NSEntityDescription.insertNewObjectForEntityForName("Song", inManagedObjectContext: self.workerContext) as Song
                         newSong.parseItem(song)
                         addedSongs.addObject(newSong)
+                        
+                        updateBlock(percentage: Float(count) / Float(songs.count), error: nil, song: newSong)
                     }
                 }
                 
+                updateBlock(percentage: 99.0, error: nil, song: nil)
+                
                 self.saveDatastoreWithCompletion({ (error) -> () in
                     if error != nil {
-                        completion(success: false)
+                        updateBlock(percentage: 100.0, error: nil, song: nil)
                     } else {
-                        completion(success: true)
+                        updateBlock(percentage: 100.0, error: error, song: nil)
                     }
                     
                     let endTime = NSDate()
@@ -106,14 +113,14 @@ class Datastore {
         }
     }
     
-    func songForSongName(songName: String) -> Song? {
+    func songForSongName(songName: String, artist: NSString) -> Song? {
         var request = NSFetchRequest()
         request.entity = NSEntityDescription.entityForName("Song",
             inManagedObjectContext: self.mainQueueContext)
         
         request.fetchLimit = 1
         
-        let predicate = NSPredicate(format: "title = %@", songName)
+        let predicate = NSPredicate(format: "title = %@ AND artist = %@", songName, artist)
         request.predicate = predicate
         
         var error = NSErrorPointer()
@@ -205,6 +212,11 @@ class Datastore {
             fetch.addObject(titleProperty)
         }
         
+        if let artistProperty: AnyObject = request.entity?.propertiesByName["artist"] {
+            groupBy.addObject(artistProperty)
+            fetch.addObject(artistProperty)
+        }
+        
         if let albumTrackNumberProperty: AnyObject = request.entity?.propertiesByName["albumTrackNumber"] {
             groupBy.addObject(albumTrackNumberProperty)
             fetch.addObject(albumTrackNumberProperty)
@@ -258,6 +270,10 @@ class Datastore {
         
         if let albumProperty: AnyObject = request.entity?.propertiesByName["albumTitle"] {
             properties.addObject(albumProperty)
+        }
+        
+        if let artworkProperty: AnyObject = request.entity?.propertiesByName["artwork"] {
+            properties.addObject(artworkProperty)
         }
         
         request.propertiesToGroupBy = properties
