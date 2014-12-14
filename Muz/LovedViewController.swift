@@ -8,20 +8,20 @@
 
 import Foundation
 import UIKit
+import MediaPlayer
 import CoreData
 
 class LovedViewController: RootViewController,
 UITableViewDelegate,
-UITableViewDataSource,
-NSFetchedResultsControllerDelegate {
+UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     // The NSFetchedResultsController used to pull tasks for the selected date.
     var loved: [AnyObject]?
-    var lovedController: NSFetchedResultsController!
+    var lovedQuery: MPMediaQuery!
+    var sortedResults = NSMutableArray()
     
     override init() {
         super.init(nibName: "LovedViewController", bundle: nil)
@@ -43,9 +43,7 @@ NSFetchedResultsControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let tableView = self.tableView {
-            tableView.registerNib(UINib(nibName: "ArtistCell", bundle: nil), forCellReuseIdentifier: "Cell")
-        }
+        tableView.registerNib(UINib(nibName: "ArtistCell", bundle: nil), forCellReuseIdentifier: "Cell")
         
         fetchLoved()
                 
@@ -54,42 +52,52 @@ NSFetchedResultsControllerDelegate {
     
     func fetchLoved() {
         
-        lovedController = MediaSession.sharedSession.dataManager.datastore.lovedControllerWithSortKey("title",
-            ascending: true,
-            sectionNameKeyPath: nil)
+        lovedQuery = MPMediaQuery.songsQuery()
         
-        var error: NSError?
-        if lovedController.performFetch(&error) {
-            self.tableView.reloadData()
-            self.activityIndicator.stopAnimating()
+        var results = lovedQuery.items as NSArray
+        
+        let sort = NSSortDescriptor(key: "playCount", ascending: false)
+        results = results.sortedArrayUsingDescriptors([sort])
+        
+        for item in results {
+            if let song = item as? MPMediaItem {
+                if song.rating > 3 {
+                    sortedResults.addObject(song)
+                }
+            }
         }
+        
+        tableView.reloadData()
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return lovedController.sections?.count ?? 0
+        return 1
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let sectionInfo = lovedController.sections![section] as NSFetchedResultsSectionInfo
-        return sectionInfo.numberOfObjects
+        return sortedResults.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell",
             forIndexPath: indexPath) as ArtistCell
-        let song = lovedController.objectAtIndexPath(indexPath) as Song
+        let song = sortedResults[indexPath.row] as MPMediaItem
+        
         cell.artistLabel.text = song.title
-        if let image = UIImage(data: song.artwork) {
-            cell.artistImageView.image = image
+        cell.infoLabel.text = song.artist
+        
+        if let artwork = song.artwork {
+            cell.artistImageView.image = artwork.imageWithSize(cell.artistImageView.frame.size)
         } else {
             cell.artistImageView.image = UIImage(named: "noArtwork")
         }
+        
         return cell
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let song = lovedController.objectAtIndexPath(indexPath) as Song
-        presentNowPlayViewControllerWithSongInfo(song)
+        let song = sortedResults[indexPath.row] as MPMediaItem
+        presentNowPlayViewControllerWithItem(song)
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     

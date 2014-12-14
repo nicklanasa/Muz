@@ -32,6 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UITableViewCell.appearance().backgroundColor = UIColor.clearColor()
         UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffsetMake(-100, 0), forBarMetrics: UIBarMetrics.Default)
         UIBarButtonItem.appearance().setBackgroundImage(UIImage(named: "back"), forState: .Normal, barMetrics: .Default)
+
         
         let mainScreen = UIScreen.mainScreen()
         let window = UIWindow(frame: mainScreen.bounds)
@@ -52,6 +53,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         self.window = muzWindow()
+        
         return true
     }
 
@@ -71,6 +73,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        
+        MediaSession.sharedSession.openSessionWithUpdateBlock { (percentage, error, song) -> () in
+            println("iPod Library Sync percentage \(percentage * 100)%")
+        }
     }
 
     func applicationWillTerminate(application: UIApplication) {

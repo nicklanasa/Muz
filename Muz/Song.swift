@@ -2,7 +2,7 @@
 //  Song.swift
 //  Muz
 //
-//  Created by Nick Lanasa on 12/10/14.
+//  Created by Nick Lanasa on 12/13/14.
 //  Copyright (c) 2014 Nytek Productions. All rights reserved.
 //
 
@@ -38,6 +38,5 @@ class Song: NSManagedObject {
     @NSManaged var skipCount: NSNumber
     @NSManaged var title: String
     @NSManaged var userGrouping: String
-    @NSManaged var artwork: NSData
 
 }

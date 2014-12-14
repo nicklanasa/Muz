@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import MediaPlayer
 
 class ArtistCell: UITableViewCell {
     @IBOutlet weak var artistLabel: UILabel!
@@ -18,5 +19,16 @@ class ArtistCell: UITableViewCell {
     
     override func prepareForReuse() {
         artistImageView.image = nil
+    }
+    
+    func updateWithItem(song: MPMediaItem) {
+        artistLabel.text = song.artist
+        infoLabel.text = song.artist
+        
+        if let artwork = song.artwork {
+            artistImageView?.image = song.artwork.imageWithSize(artistImageView.frame.size)
+        } else {
+            artistImageView?.image = UIImage(named: "noArtwork")
+        }
     }
 }

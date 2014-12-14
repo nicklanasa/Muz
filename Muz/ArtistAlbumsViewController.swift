@@ -93,9 +93,7 @@ NSFetchedResultsControllerDelegate {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell",
             forIndexPath: indexPath) as ArtistAlbumsSongCell
-        
-        let section = self.albumsQuery?.collectionSections[indexPath.section] as MPMediaQuerySection
-        
+                
         if let songs = albums?[indexPath.section] as? MPMediaItemCollection {
             if let song = songs.items[indexPath.row] as? MPMediaItem {
                 cell.songLabel.text = song.title

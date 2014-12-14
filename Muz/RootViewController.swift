@@ -55,47 +55,33 @@ class RootViewController: UIViewController {
     }
     
     func mediaLibraryDidChange() {
-        
+       
     }
     
-    func presentNowPlayViewControllerWithSongInfo(songInfo: NSDictionary) {
-        let song = songInfo.objectForKey("title") as NSString
-        let artist = songInfo.objectForKey("artist") as NSString
-        
-        if let song = MediaSession.sharedSession.dataManager.datastore.songForSongName(song, artist: artist) {
-            if let delegate = UIApplication.sharedApplication().delegate as? AppDelegate {
-                if let tabBarController = delegate.window?.rootViewController as? UITabBarController {
-                    if let fromView = tabBarController.selectedViewController {
-                        if let vcs = tabBarController.viewControllers {
-                            if let navController = vcs[2] as? NavBarController {
-                                if let nowPlayingViewController = navController.viewControllers.first as? NowPlayingViewController {
-                                    let toView = nowPlayingViewController.view
-                                    UIView.transitionFromView(fromView.view,
-                                        toView: toView,
-                                        duration: 0.2,
-                                        options: .TransitionCrossDissolve,
-                                        completion: { (success) -> Void in
-                                            tabBarController.selectedIndex = 2
-                                            nowPlayingViewController.playSong(song)
-                                    })
-                                }
-                                
+    func presentNowPlayViewControllerWithItem(item: MPMediaItem) {
+        if let delegate = UIApplication.sharedApplication().delegate as? AppDelegate {
+            if let tabBarController = delegate.window?.rootViewController as? UITabBarController {
+                if let fromView = tabBarController.selectedViewController {
+                    if let vcs = tabBarController.viewControllers {
+                        if let navController = vcs[2] as? NavBarController {
+                            if let nowPlayingViewController = navController.viewControllers.first as? NowPlayingViewController {
+                                let toView = nowPlayingViewController.view
+                                UIView.transitionFromView(fromView.view,
+                                    toView: toView,
+                                    duration: 0.2,
+                                    options: .TransitionCrossDissolve,
+                                    completion: { (success) -> Void in
+                                        tabBarController.selectedIndex = 2
+                                        nowPlayingViewController.playItem(item)
+                                })
                             }
+                            
                         }
                     }
                 }
             }
         }
-    }
-    
-    func presentNowPlayViewControllerWithItem(item: MPMediaItem) {
-        let songInfo = ["title" : item.title, "artist" : item.artist]
-        presentNowPlayViewControllerWithSongInfo(songInfo)
-    }
-    
-    func presentNowPlayViewControllerWithSongInfo(song: Song) {
-        let songInfo = ["title" : song.title, "artist" : song.artist]
-        presentNowPlayViewControllerWithSongInfo(songInfo)
+
     }
     
     override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {

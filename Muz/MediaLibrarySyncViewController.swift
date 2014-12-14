@@ -67,11 +67,14 @@ class MediaLibrarySyncViewController: RootViewController {
                 if let s = song {
                     
                     UIView.animateWithDuration(0.3, animations: { () -> Void in
+                        
+                        /*
                         if let image = UIImage(data: s.artwork) {
                             self.imageView.image = image
                         }
                         
-                        //self.songLabel.text = song?.title
+                        self.songLabel.text = song?.title
+                        */
                         self.songLabel.text = NSString(format: "%.0f%%", percentage * 100)
                     })
                 } else {

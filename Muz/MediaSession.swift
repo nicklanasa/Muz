@@ -48,5 +48,35 @@ let _sharedSession = MediaSession()
         return results
     }
     
+    // Artists
+    
+    func artistsCollectionWithQuery(artistsQuery: MPMediaQuery) -> [AnyObject]? {
+        return artistsQuery.collections
+    }
+    
+    func artistsQueryWithFilters(filters: [MPMediaPredicate]?) -> MPMediaQuery {
+        let artistsQuery = MPMediaQuery.artistsQuery()
+        
+        if let predicates = filters {
+            for predicate in predicates {
+                artistsQuery.addFilterPredicate(predicate)
+            }
+        }
+        
+        return artistsQuery
+    }
+    
+    func artistsSectionIndexTitles(artistsQuery: MPMediaQuery) -> [AnyObject] {
+        var artistsSections = NSMutableArray()
+        if let sections = artistsQuery.collectionSections {
+            for section in sections {
+                if let songSection = section as? MPMediaQuerySection {
+                    artistsSections.addObject(songSection.title)
+                }
+            }
+        }
+        
+        return artistsSections
+    }
     
 }

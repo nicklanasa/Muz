@@ -85,11 +85,5 @@ extension Song: Printable {
         }
         
         self.bookmarkTime = item.bookmarkTime
-        
-        if let artwork = item.valueForProperty(MPMediaItemPropertyArtwork) as? MPMediaItemArtwork {
-            if let image = artwork.imageWithSize(CGSizeMake(50, 50)) {
-                self.artwork = UIImagePNGRepresentation(image)
-            }
-        }
     }
 }

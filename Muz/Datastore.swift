@@ -80,11 +80,24 @@ class Datastore {
                 for item in songs {
                     count++
                     if let song = item as? MPMediaItem {
-                        let newSong: Song = NSEntityDescription.insertNewObjectForEntityForName("Song", inManagedObjectContext: self.workerContext) as Song
-                        newSong.parseItem(song)
-                        addedSongs.addObject(newSong)
                         
-                        updateBlock(percentage: Float(count) / Float(songs.count), error: nil, song: newSong)
+                        var error: NSError?
+                        
+                        if let artist = song.artist {
+                            let predicate = NSPredicate(format: "title = %@ AND artist = %@", song.title, song.artist)
+                            request.fetchLimit = 1
+                            let results = self.workerContext.executeFetchRequest(request, error: &error)
+                            
+                            if results?.count > 0 {
+                                
+                            } else {
+                                let newSong: Song = NSEntityDescription.insertNewObjectForEntityForName("Song", inManagedObjectContext: self.workerContext) as Song
+                                newSong.parseItem(song)
+                                addedSongs.addObject(newSong)
+                            }
+                        }
+                        
+                        updateBlock(percentage: Float(count) / Float(songs.count), error: nil, song: nil)
                     }
                 }
                 
@@ -104,6 +117,9 @@ class Datastore {
             }
         }
         
+        addSongsBlock()
+        
+        /*
         deleteAllObjectsInStoreWithCompletion { (error) -> () in
             if let e = error {
                 print(e)
@@ -111,6 +127,7 @@ class Datastore {
                 addSongsBlock()
             }
         }
+        */
     }
     
     func songForSongName(songName: String, artist: NSString) -> Song? {

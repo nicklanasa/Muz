@@ -13,7 +13,7 @@ import MediaPlayer
 
 class NowPlayingViewController: RootViewController {
     
-    var song: Song!
+    var item: MPMediaItem!
     var songTimer: NSTimer?
     var collection: MPMediaItemCollection?
     var indexOfCurrentlyPlayingSong = 1
@@ -31,19 +31,17 @@ class NowPlayingViewController: RootViewController {
     let playerController = MPMusicPlayerController.iPodMusicPlayer()
     
     init(song: Song) {
-        self.song = song
         super.init(nibName: "NowPlayingViewController", bundle: nil)
         
-        configureWithSong()
+        configureWithItem()
     }
     
-    private func configureWithSong() {
-        
+    private func configureWithItem() {
         // Get MPMediaItem
         var query = MPMediaQuery.songsQuery()
-        let titlePredicate = MPMediaPropertyPredicate(value: song.title, forProperty: MPMediaItemPropertyTitle, comparisonType: .Contains)
-        let artistPredicate = MPMediaPropertyPredicate(value: song.artist, forProperty: MPMediaItemPropertyArtist, comparisonType: .Contains)
-        let albumPredicate = MPMediaPropertyPredicate(value: song.albumTitle, forProperty: MPMediaItemPropertyAlbumTitle, comparisonType: .EqualTo)
+        let titlePredicate = MPMediaPropertyPredicate(value: item.title, forProperty: MPMediaItemPropertyTitle, comparisonType: .Contains)
+        let artistPredicate = MPMediaPropertyPredicate(value: item.artist, forProperty: MPMediaItemPropertyArtist, comparisonType: .Contains)
+        let albumPredicate = MPMediaPropertyPredicate(value: item.albumTitle, forProperty: MPMediaItemPropertyAlbumTitle, comparisonType: .EqualTo)
         
         query.addFilterPredicate(titlePredicate)
         query.addFilterPredicate(artistPredicate)
@@ -58,7 +56,7 @@ class NowPlayingViewController: RootViewController {
                 collection = MPMediaItemCollection(items: items)
                 playerController.setQueueWithItemCollection(collection)
             }
-        
+            
             indexOfCurrentlyPlayingSong = item.albumTrackNumber
             updateNowPlayingWithItem(item)
             updateView(item)
@@ -66,14 +64,14 @@ class NowPlayingViewController: RootViewController {
     }
     
     func updateProgress() {
-        if let s = song {
-            progressView.progress = Float(playerController.currentPlaybackTime) / song.playbackDuration.floatValue
+        if let currentlyPlayingItem = item {
+            progressView.progress = Float(playerController.currentPlaybackTime) / Float(currentlyPlayingItem.playbackDuration)
         }
     }
     
-    func playSong(song: Song) {
-        self.song = song
-        configureWithSong()
+    func playItem(item: MPMediaItem) {
+        self.item = item
+        configureWithItem()
     }
     
     override init() {
