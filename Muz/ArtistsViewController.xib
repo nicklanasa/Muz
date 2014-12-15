@@ -6,7 +6,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ArtistsViewController" customModule="Muz" customModuleProvider="target">
             <connections>
-                <outlet property="searchBar" destination="xVl-0v-fCS" id="P8z-nN-yIo"/>
+                <outlet property="searchBar" destination="HEe-4h-BX2" id="3Dl-Qx-tVN"/>
+                <outlet property="searchDisplayController" destination="3zo-cE-gih" id="Amj-NX-EzR"/>
                 <outlet property="tableView" destination="LTZ-Jz-cQ7" id="2y2-Rn-tDq"/>
                 <outlet property="view" destination="ZPP-Pc-n5o" id="22o-Qh-Hed"/>
             </connections>
@@ -17,7 +18,7 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="65" sectionHeaderHeight="30" sectionFooterHeight="22" id="LTZ-Jz-cQ7">
-                    <rect key="frame" x="0.0" y="62.999998941777207" width="320" height="460"/>
+                    <rect key="frame" x="0.0" y="62.999997693616812" width="320" height="460"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -25,13 +26,12 @@
                     <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                     <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <color key="sectionIndexTrackingBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <searchBar key="tableHeaderView" contentMode="redraw" searchBarStyle="minimal" text="" placeholder="Search artists" id="xVl-0v-fCS">
+                    <searchBar key="tableHeaderView" contentMode="redraw" searchBarStyle="minimal" id="HEe-4h-BX2">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                        <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <textInputTraits key="textInputTraits"/>
                         <connections>
-                            <outlet property="delegate" destination="-1" id="ijz-Ca-YtI"/>
+                            <outlet property="delegate" destination="-1" id="zpv-Jf-HKX"/>
                         </connections>
                     </searchBar>
                     <connections>
@@ -48,6 +48,15 @@
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
             <point key="canvasLocation" x="140" y="-180"/>
         </view>
+        <searchDisplayController id="3zo-cE-gih">
+            <connections>
+                <outlet property="delegate" destination="-1" id="nPY-yd-udK"/>
+                <outlet property="searchBar" destination="HEe-4h-BX2" id="zcO-cf-B9G"/>
+                <outlet property="searchContentsController" destination="-1" id="gr8-4g-V1I"/>
+                <outlet property="searchResultsDataSource" destination="-1" id="ZuX-fB-Tdp"/>
+                <outlet property="searchResultsDelegate" destination="-1" id="aLk-gF-jRs"/>
+            </connections>
+        </searchDisplayController>
     </objects>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

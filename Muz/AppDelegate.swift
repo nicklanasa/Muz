@@ -31,7 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UITableViewCell.appearance().selectedBackgroundView = colorView
         UITableViewCell.appearance().backgroundColor = UIColor.clearColor()
         UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffsetMake(-100, 0), forBarMetrics: UIBarMetrics.Default)
-        UIBarButtonItem.appearance().setBackgroundImage(UIImage(named: "back"), forState: .Normal, barMetrics: .Default)
+        UIBarButtonItem.appearance().setBackButtonBackgroundImage(UIImage(named: "back"), forState: .Normal, barMetrics: .Default)
 
         
         let mainScreen = UIScreen.mainScreen()

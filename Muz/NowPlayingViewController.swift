@@ -36,6 +36,13 @@ class NowPlayingViewController: RootViewController {
         configureWithItem()
     }
     
+    override func viewWillAppear(animated: Bool) {
+        if let item = playerController.nowPlayingItem {
+            updateView(item)
+            nowPlayingInfoController.updateWithItem(item)
+        }
+    }
+    
     private func configureWithItem() {
         // Get MPMediaItem
         var query = MPMediaQuery.songsQuery()
@@ -105,6 +112,11 @@ class NowPlayingViewController: RootViewController {
         pinchGesture = UIPinchGestureRecognizer(target: self, action: "showInfoController:")
         view.addGestureRecognizer(pinchGesture)
         
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "info"),
+            style: .Plain,
+            target: self,
+            action: "showInfoController:");
+        
         NSNotificationCenter.defaultCenter().addObserver(self,
             selector: "playPause",
             name: UIApplicationWillTerminateNotification,
@@ -141,6 +153,9 @@ class NowPlayingViewController: RootViewController {
                 
                 self.pinchGesture = UIPinchGestureRecognizer(target: self, action: "hideInfoController:")
                 self.view.addGestureRecognizer(self.pinchGesture)
+                
+                self.navigationItem.rightBarButtonItem?.action = "hideInfoController:"
+                self.navigationItem.rightBarButtonItem?.image = UIImage(named: "headphones")
             })
             
         })
@@ -159,6 +174,9 @@ class NowPlayingViewController: RootViewController {
                 
                 var pinchGesture = UIPinchGestureRecognizer(target: self, action: "showInfoController:")
                 self.view.addGestureRecognizer(pinchGesture)
+                
+                self.navigationItem.rightBarButtonItem?.action = "showInfoController:"
+                self.navigationItem.rightBarButtonItem?.image = UIImage(named: "info")
             })
             
         })

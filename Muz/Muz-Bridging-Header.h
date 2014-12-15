@@ -5,3 +5,7 @@
 #import "UIImage+ImageEffects.h"
 #import "HTMLParser.h"
 #import "NSString+Lyrics.h"
+#import "LastFm.h"
+
+#import "LastFmArtist.h"
+#import <SDWebImage/UIImageView+WebCache.h>

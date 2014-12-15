@@ -23,7 +23,7 @@
                     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </progressView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="16" adjustsLetterSpacingToFitWidth="YES" id="LpC-aF-hm4">
-                    <rect key="frame" x="23" y="39" width="274" height="134"/>
+                    <rect key="frame" x="23" y="46" width="274" height="134"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="18"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

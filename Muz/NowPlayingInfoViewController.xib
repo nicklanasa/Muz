@@ -6,6 +6,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NowPlayingInfoViewController" customModule="Muz" customModuleProvider="target">
             <connections>
+                <outlet property="segmentedControl" destination="lwJ-hU-qXs" id="XUb-ed-3xA"/>
                 <outlet property="tableView" destination="OAI-iT-YNN" id="7K5-n9-DJA"/>
                 <outlet property="view" destination="ZSM-71-gjj" id="Y64-mx-zT8"/>
             </connections>
@@ -15,8 +16,8 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="500" sectionHeaderHeight="22" sectionFooterHeight="22" id="OAI-iT-YNN">
-                    <rect key="frame" x="0.0" y="92" width="320" height="430"/>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" allowsSelection="NO" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="500" sectionHeaderHeight="22" sectionFooterHeight="22" id="OAI-iT-YNN">
+                    <rect key="frame" x="0.0" y="102" width="320" height="420"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <connections>
@@ -25,7 +26,7 @@
                     </connections>
                 </tableView>
                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="lwJ-hU-qXs">
-                    <rect key="frame" x="8" y="49" width="304" height="29"/>
+                    <rect key="frame" x="8" y="66" width="304" height="29"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <segments>
                         <segment title="Lyrics"/>

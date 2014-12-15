@@ -125,9 +125,7 @@ NSFetchedResultsControllerDelegate {
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        // Get song.
-        let section = self.albumsQuery?.collectionSections[indexPath.section] as MPMediaQuerySection
-        
+        // Get song.        
         if let songs = albums?[indexPath.section] as? MPMediaItemCollection {
             if let song = songs.items[indexPath.row] as? MPMediaItem {
                 presentNowPlayViewControllerWithItem(song)

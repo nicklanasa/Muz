@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		18FE78E2938CE235720BDF0D /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CC5E238686D44A286C24637D /* libPods.a */; };
+		CE3038D81A3E033100DCC5EB /* SimiliarArtistCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE3038D71A3E033100DCC5EB /* SimiliarArtistCollectionViewCell.xib */; };
+		CE3038DA1A3E037700DCC5EB /* SimiliarArtistCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3038D91A3E037700DCC5EB /* SimiliarArtistCollectionViewCell.swift */; };
+		CE3038DC1A3E067500DCC5EB /* LastFmArtistInfoRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3038DB1A3E067500DCC5EB /* LastFmArtistInfoRequest.swift */; };
+		CE3038EE1A3E0C4F00DCC5EB /* LastFmArtist.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3038ED1A3E0C4F00DCC5EB /* LastFmArtist.m */; };
+		CE3038F11A3E0DEF00DCC5EB /* LastFmSimiliarArtist.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3038F01A3E0DEF00DCC5EB /* LastFmSimiliarArtist.m */; };
 		CE3338211A393B6C00281146 /* ArtistAlbumsAlbumHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3338201A393B6C00281146 /* ArtistAlbumsAlbumHeader.swift */; };
 		CE3338231A393BA900281146 /* ArtistAlbumsAlbumHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE3338221A393BA900281146 /* ArtistAlbumsAlbumHeader.xib */; };
 		CE3338271A39D7E400281146 /* ArtistAlbumsSongCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE3338261A39D7E400281146 /* ArtistAlbumsSongCell.xib */; };
@@ -37,12 +43,17 @@
 		CE95D9B71A3BCC610060752A /* MediaLibrarySyncViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE95D9B61A3BCC610060752A /* MediaLibrarySyncViewController.xib */; };
 		CE95D9B91A3BCF480060752A /* syncLibrary.png in Resources */ = {isa = PBXBuildFile; fileRef = CE95D9B81A3BCF480060752A /* syncLibrary.png */; };
 		CE95D9BB1A3D19BE0060752A /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE95D9BA1A3D19BE0060752A /* Song.swift */; };
+		CE95D9BD1A3DFB730060752A /* LastFmArtistInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE95D9BC1A3DFB730060752A /* LastFmArtistInfoCell.swift */; };
+		CE95D9BF1A3DFB860060752A /* LastFmArtistInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE95D9BE1A3DFB860060752A /* LastFmArtistInfoCell.xib */; };
+		CE9745411A3E548F00A65633 /* LastFmSimiliarArtistsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9745401A3E548F00A65633 /* LastFmSimiliarArtistsRequest.swift */; };
+		CE9745431A3E556900A65633 /* LastFmRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9745421A3E556900A65633 /* LastFmRequest.swift */; };
+		CE9745471A3E5D3700A65633 /* info.png in Resources */ = {isa = PBXBuildFile; fileRef = CE9745441A3E5D3700A65633 /* info.png */; };
+		CE9745481A3E5D3700A65633 /* info@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE9745451A3E5D3700A65633 /* info@2x.png */; };
+		CE9745491A3E5D3700A65633 /* info@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE9745461A3E5D3700A65633 /* info@3x.png */; };
 		CE9BBDBB1A36A87B00878C09 /* Muz.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CE9BBDB91A36A87B00878C09 /* Muz.xcdatamodeld */; };
 		CEB200CE1A378B5D00E857D8 /* gg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CEB200CD1A378B5D00E857D8 /* gg.jpg */; };
 		CEB200D21A378B6400E857D8 /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB200D11A378B6400E857D8 /* UIImage+ImageEffects.m */; };
 		CEB200D41A379C7000E857D8 /* ArtistsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEB200D31A379C7000E857D8 /* ArtistsViewController.xib */; };
-		CEB524DE1A3B758B00027C71 /* MPMediaItem+Lyrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB524DD1A3B758B00027C71 /* MPMediaItem+Lyrics.swift */; };
-		CEB524E11A3B75E600027C71 /* Lyrics.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB524E01A3B75E600027C71 /* Lyrics.m */; };
 		CEB524E31A3B766000027C71 /* LyricsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB524E21A3B766000027C71 /* LyricsRequest.swift */; };
 		CEBB56161A3B951D00AE8CAA /* NSString+Lyrics.m in Sources */ = {isa = PBXBuildFile; fileRef = CEBB56151A3B951C00AE8CAA /* NSString+Lyrics.m */; };
 		CEC66D8C1A37EFA700560754 /* ArtistCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE444BD91A36A27200153F77 /* ArtistCell.swift */; };
@@ -109,6 +120,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B5C84601BD2F3431F5F52BE9 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		CC5E238686D44A286C24637D /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE3038D71A3E033100DCC5EB /* SimiliarArtistCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SimiliarArtistCollectionViewCell.xib; sourceTree = "<group>"; };
+		CE3038D91A3E037700DCC5EB /* SimiliarArtistCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimiliarArtistCollectionViewCell.swift; sourceTree = "<group>"; };
+		CE3038DB1A3E067500DCC5EB /* LastFmArtistInfoRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastFmArtistInfoRequest.swift; sourceTree = "<group>"; };
+		CE3038EC1A3E0C4F00DCC5EB /* LastFmArtist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LastFmArtist.h; sourceTree = "<group>"; };
+		CE3038ED1A3E0C4F00DCC5EB /* LastFmArtist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LastFmArtist.m; sourceTree = "<group>"; };
+		CE3038EF1A3E0DEF00DCC5EB /* LastFmSimiliarArtist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LastFmSimiliarArtist.h; sourceTree = "<group>"; };
+		CE3038F01A3E0DEF00DCC5EB /* LastFmSimiliarArtist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LastFmSimiliarArtist.m; sourceTree = "<group>"; };
 		CE3338201A393B6C00281146 /* ArtistAlbumsAlbumHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArtistAlbumsAlbumHeader.swift; sourceTree = "<group>"; };
 		CE3338221A393BA900281146 /* ArtistAlbumsAlbumHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ArtistAlbumsAlbumHeader.xib; sourceTree = "<group>"; };
 		CE3338261A39D7E400281146 /* ArtistAlbumsSongCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ArtistAlbumsSongCell.xib; sourceTree = "<group>"; };
@@ -144,15 +164,19 @@
 		CE95D9B61A3BCC610060752A /* MediaLibrarySyncViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MediaLibrarySyncViewController.xib; sourceTree = "<group>"; };
 		CE95D9B81A3BCF480060752A /* syncLibrary.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = syncLibrary.png; sourceTree = "<group>"; };
 		CE95D9BA1A3D19BE0060752A /* Song.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Song.swift; sourceTree = "<group>"; };
+		CE95D9BC1A3DFB730060752A /* LastFmArtistInfoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastFmArtistInfoCell.swift; sourceTree = "<group>"; };
+		CE95D9BE1A3DFB860060752A /* LastFmArtistInfoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LastFmArtistInfoCell.xib; sourceTree = "<group>"; };
+		CE9745401A3E548F00A65633 /* LastFmSimiliarArtistsRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastFmSimiliarArtistsRequest.swift; sourceTree = "<group>"; };
+		CE9745421A3E556900A65633 /* LastFmRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastFmRequest.swift; sourceTree = "<group>"; };
+		CE9745441A3E5D3700A65633 /* info.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = info.png; sourceTree = "<group>"; };
+		CE9745451A3E5D3700A65633 /* info@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "info@2x.png"; sourceTree = "<group>"; };
+		CE9745461A3E5D3700A65633 /* info@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "info@3x.png"; sourceTree = "<group>"; };
 		CE9BBDBA1A36A87B00878C09 /* Muz.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Muz.xcdatamodel; sourceTree = "<group>"; };
 		CEB200CD1A378B5D00E857D8 /* gg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = gg.jpg; sourceTree = "<group>"; };
 		CEB200CF1A378B6300E857D8 /* Muz-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Muz-Bridging-Header.h"; sourceTree = "<group>"; };
 		CEB200D01A378B6400E857D8 /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
 		CEB200D11A378B6400E857D8 /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
 		CEB200D31A379C7000E857D8 /* ArtistsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ArtistsViewController.xib; sourceTree = "<group>"; };
-		CEB524DD1A3B758B00027C71 /* MPMediaItem+Lyrics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MPMediaItem+Lyrics.swift"; sourceTree = "<group>"; };
-		CEB524DF1A3B75E600027C71 /* Lyrics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Lyrics.h; sourceTree = "<group>"; };
-		CEB524E01A3B75E600027C71 /* Lyrics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Lyrics.m; sourceTree = "<group>"; };
 		CEB524E21A3B766000027C71 /* LyricsRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LyricsRequest.swift; sourceTree = "<group>"; };
 		CEBB56141A3B951C00AE8CAA /* NSString+Lyrics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Lyrics.h"; sourceTree = "<group>"; };
 		CEBB56151A3B951C00AE8CAA /* NSString+Lyrics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Lyrics.m"; sourceTree = "<group>"; };
@@ -208,6 +232,7 @@
 		CEE153531A3B5B4B00BB16EB /* HTMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTMLParser.h; sourceTree = "<group>"; };
 		CEE153541A3B5B4B00BB16EB /* HTMLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTMLParser.m; sourceTree = "<group>"; };
 		CEE1535B1A3B5CF700BB16EB /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
+		DB8E352653F602E2D8336D2A /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -216,6 +241,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CEE1535C1A3B5CF700BB16EB /* libxml2.dylib in Frameworks */,
+				18FE78E2938CE235720BDF0D /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -229,6 +255,37 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		645DC876E38F9CCAA9D7D1A6 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				B5C84601BD2F3431F5F52BE9 /* Pods.debug.xcconfig */,
+				DB8E352653F602E2D8336D2A /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		B66FEEBAE05911F3D2B14F8A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CC5E238686D44A286C24637D /* libPods.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CE3038E21A3E0A9F00DCC5EB /* LastFm */ = {
+			isa = PBXGroup;
+			children = (
+				CE3038DB1A3E067500DCC5EB /* LastFmArtistInfoRequest.swift */,
+				CE9745401A3E548F00A65633 /* LastFmSimiliarArtistsRequest.swift */,
+				CE3038EC1A3E0C4F00DCC5EB /* LastFmArtist.h */,
+				CE3038ED1A3E0C4F00DCC5EB /* LastFmArtist.m */,
+				CE3038EF1A3E0DEF00DCC5EB /* LastFmSimiliarArtist.h */,
+				CE3038F01A3E0DEF00DCC5EB /* LastFmSimiliarArtist.m */,
+				CE9745421A3E556900A65633 /* LastFmRequest.swift */,
+			);
+			name = LastFm;
+			sourceTree = "<group>";
+		};
 		CE444BA71A36A25500153F77 = {
 			isa = PBXGroup;
 			children = (
@@ -236,6 +293,8 @@
 				CE444BB21A36A25500153F77 /* Muz */,
 				CE444BC81A36A25500153F77 /* MuzTests */,
 				CE444BB11A36A25500153F77 /* Products */,
+				645DC876E38F9CCAA9D7D1A6 /* Pods */,
+				B66FEEBAE05911F3D2B14F8A /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -318,16 +377,16 @@
 		CE4931E91A3A1B2100B3A4BE /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				CE444BE01A36A28700153F77 /* Song+Helpers.swift */,
+				CEBB56141A3B951C00AE8CAA /* NSString+Lyrics.h */,
+				CEBB56151A3B951C00AE8CAA /* NSString+Lyrics.m */,
 				CE444BE11A36A28700153F77 /* DataManager.swift */,
 				CE444BE21A36A28700153F77 /* Datastore.swift */,
 				CE444BE31A36A28700153F77 /* MediaSession.swift */,
 				CE9BBDB91A36A87B00878C09 /* Muz.xcdatamodeld */,
 				CE95D9BA1A3D19BE0060752A /* Song.swift */,
-				CEB524DF1A3B75E600027C71 /* Lyrics.h */,
-				CEB524E01A3B75E600027C71 /* Lyrics.m */,
-				CEB524DD1A3B758B00027C71 /* MPMediaItem+Lyrics.swift */,
 				CEB524E21A3B766000027C71 /* LyricsRequest.swift */,
+				CE444BE01A36A28700153F77 /* Song+Helpers.swift */,
+				CE3038E21A3E0A9F00DCC5EB /* LastFm */,
 			);
 			name = Data;
 			sourceTree = "<group>";
@@ -388,8 +447,10 @@
 				CEE1534F1A3B568400BB16EB /* NowPlayingInfoLyricsCell.xib */,
 				CEE153441A3B41CD00BB16EB /* NowPlayingInfoViewController.swift */,
 				CEE153461A3B41D900BB16EB /* NowPlayingInfoViewController.xib */,
-				CEBB56141A3B951C00AE8CAA /* NSString+Lyrics.h */,
-				CEBB56151A3B951C00AE8CAA /* NSString+Lyrics.m */,
+				CE3038D71A3E033100DCC5EB /* SimiliarArtistCollectionViewCell.xib */,
+				CE3038D91A3E037700DCC5EB /* SimiliarArtistCollectionViewCell.swift */,
+				CE95D9BE1A3DFB860060752A /* LastFmArtistInfoCell.xib */,
+				CE95D9BC1A3DFB730060752A /* LastFmArtistInfoCell.swift */,
 			);
 			name = NowPlaying;
 			sourceTree = "<group>";
@@ -397,6 +458,9 @@
 		CEDB61811A37B1D300B90B2D /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				CE9745441A3E5D3700A65633 /* info.png */,
+				CE9745451A3E5D3700A65633 /* info@2x.png */,
+				CE9745461A3E5D3700A65633 /* info@3x.png */,
 				CE95D9B81A3BCF480060752A /* syncLibrary.png */,
 				CE49F35D1A3A3693008DE25E /* artwork.jpg */,
 				CE444BB91A36A25500153F77 /* Main.storyboard */,
@@ -445,9 +509,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CE444BCF1A36A25500153F77 /* Build configuration list for PBXNativeTarget "Muz" */;
 			buildPhases = (
+				03859290388A11A878ED8C07 /* Check Pods Manifest.lock */,
 				CE444BAC1A36A25500153F77 /* Sources */,
 				CE444BAD1A36A25500153F77 /* Frameworks */,
 				CE444BAE1A36A25500153F77 /* Resources */,
+				94664FFDA55135CA7F84611A /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -526,6 +592,8 @@
 				CEDB61D91A37DB9600B90B2D /* airplay@3x.png in Resources */,
 				CE444BDE1A36A27200153F77 /* ArtistCell.xib in Resources */,
 				CEDB61B91A37DA7900B90B2D /* songs.png in Resources */,
+				CE95D9BF1A3DFB860060752A /* LastFmArtistInfoCell.xib in Resources */,
+				CE3038D81A3E033100DCC5EB /* SimiliarArtistCollectionViewCell.xib in Resources */,
 				CE444BBB1A36A25500153F77 /* Main.storyboard in Resources */,
 				CEDB61D31A37DB9600B90B2D /* albums@3x.png in Resources */,
 				CEDB61DE1A37DB9600B90B2D /* gear@2x.png in Resources */,
@@ -540,10 +608,12 @@
 				CE3338611A3A0ADB00281146 /* ArtistsHeader.xib in Resources */,
 				CEDB61D51A37DB9600B90B2D /* search@2x.png in Resources */,
 				CEDB61D21A37DB9600B90B2D /* albums@2x.png in Resources */,
+				CE9745491A3E5D3700A65633 /* info@3x.png in Resources */,
 				CEDB61E01A37DB9600B90B2D /* loved.png in Resources */,
 				CEE153471A3B41D900BB16EB /* NowPlayingInfoViewController.xib in Resources */,
 				CEC66DA11A38DB9300560754 /* SongCell.xib in Resources */,
 				CEDB61D81A37DB9600B90B2D /* airplay@2x.png in Resources */,
+				CE9745481A3E5D3700A65633 /* info@2x.png in Resources */,
 				CEDB61E21A37DB9600B90B2D /* loved@3x.png in Resources */,
 				CEE153501A3B568400BB16EB /* NowPlayingInfoLyricsCell.xib in Resources */,
 				CEB200D41A379C7000E857D8 /* ArtistsViewController.xib in Resources */,
@@ -552,6 +622,7 @@
 				CE6EF5071A392B6F001FE858 /* back@2x.png in Resources */,
 				CEDB61ED1A37DE6100B90B2D /* NowPlayingViewController.xib in Resources */,
 				CEDB61DD1A37DB9600B90B2D /* gear.png in Resources */,
+				CE9745471A3E5D3700A65633 /* info.png in Resources */,
 				CE6EF5061A392B6F001FE858 /* back.png in Resources */,
 				CEDB61D71A37DB9600B90B2D /* airplay.png in Resources */,
 				CEC66D9B1A38D5F400560754 /* headphones@3x.png in Resources */,
@@ -584,6 +655,39 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		03859290388A11A878ED8C07 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		94664FFDA55135CA7F84611A /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		CE444BAC1A36A25500153F77 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -598,16 +702,21 @@
 				CE9BBDBB1A36A87B00878C09 /* Muz.xcdatamodeld in Sources */,
 				CE6EF5001A38F07D001FE858 /* ArtistAlbumsViewController.swift in Sources */,
 				CE3338291A39D7EB00281146 /* ArtistAlbumsSongCell.swift in Sources */,
+				CE3038EE1A3E0C4F00DCC5EB /* LastFmArtist.m in Sources */,
 				CEE153451A3B41CD00BB16EB /* NowPlayingInfoViewController.swift in Sources */,
 				CEDB61E71A37DCE300B90B2D /* MoreViewController.swift in Sources */,
+				CE95D9BD1A3DFB730060752A /* LastFmArtistInfoCell.swift in Sources */,
 				CE95D9B51A3BCC580060752A /* MediaLibrarySyncViewController.swift in Sources */,
 				CEB200D21A378B6400E857D8 /* UIImage+ImageEffects.m in Sources */,
 				CE33385D1A3A0A7D00281146 /* SongsHeader.swift in Sources */,
+				CE9745431A3E556900A65633 /* LastFmRequest.swift in Sources */,
+				CE3038DC1A3E067500DCC5EB /* LastFmArtistInfoRequest.swift in Sources */,
 				CEC66D8C1A37EFA700560754 /* ArtistCell.swift in Sources */,
 				CEDB618E1A37C40000B90B2D /* LovedViewController.swift in Sources */,
 				CEE153551A3B5B4B00BB16EB /* HTMLNode.m in Sources */,
 				CEDB61EB1A37DE5400B90B2D /* NowPlayingViewController.swift in Sources */,
 				CEB524E31A3B766000027C71 /* LyricsRequest.swift in Sources */,
+				CE3038F11A3E0DEF00DCC5EB /* LastFmSimiliarArtist.m in Sources */,
 				CE444BB61A36A25500153F77 /* AppDelegate.swift in Sources */,
 				CEC66D9E1A38DA2400560754 /* SongCell.swift in Sources */,
 				CE444BE71A36A28700153F77 /* Datastore.swift in Sources */,
@@ -616,11 +725,11 @@
 				CE49F3601A3A83C8008DE25E /* NowPlayingPageController.swift in Sources */,
 				CEDB61941A37D21B00B90B2D /* SongsViewController.swift in Sources */,
 				CE444BDB1A36A27200153F77 /* ArtistsViewController.swift in Sources */,
+				CE3038DA1A3E037700DCC5EB /* SimiliarArtistCollectionViewCell.swift in Sources */,
+				CE9745411A3E548F00A65633 /* LastFmSimiliarArtistsRequest.swift in Sources */,
 				CE95D9BB1A3D19BE0060752A /* Song.swift in Sources */,
-				CEB524E11A3B75E600027C71 /* Lyrics.m in Sources */,
 				CEE1534E1A3B567C00BB16EB /* NowPlayingInfoLyricsCell.swift in Sources */,
 				CE33385B1A3A0A7300281146 /* ArtistsHeader.swift in Sources */,
-				CEB524DE1A3B758B00027C71 /* MPMediaItem+Lyrics.swift in Sources */,
 				CE444BE51A36A28700153F77 /* Song+Helpers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -744,6 +853,7 @@
 		};
 		CE444BD01A36A25500153F77 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B5C84601BD2F3431F5F52BE9 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -763,6 +873,7 @@
 		};
 		CE444BD11A36A25500153F77 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DB8E352653F602E2D8336D2A /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
