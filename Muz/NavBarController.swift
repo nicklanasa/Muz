@@ -36,5 +36,6 @@ class NavBarController: UINavigationController {
         navigationBar.shadowImage = transparentImage
         navigationBar.tintColor = UIColor.whiteColor()
         navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: MuzColor, NSFontAttributeName: MuzTitleFont]
+        navigationItem.backBarButtonItem = UIBarButtonItem(image: UIImage(named: "back"), style: .Plain, target: self, action: "")
     }
 }

@@ -8,16 +8,21 @@
 
 import Foundation
 class SimiliarArtistCollectionViewCell: UICollectionViewCell {
+    
     @IBOutlet weak var artistImageView: UIImageView!
+    @IBOutlet weak var artistLabel: UILabel!
     
     override func awakeFromNib() {
         artistImageView.layer.cornerRadius = artistImageView.frame.size.height / 2
         artistImageView.layer.masksToBounds = true
-        artistImageView.layer.borderColor = UIColor.whiteColor().CGColor
-        artistImageView.layer.borderWidth = 1
+    }
+    
+    func updateWithArtist(artist: LastFmArtist) {
+        artistLabel.text = artist.name
+        artistImageView.sd_setImageWithURL(artist.imageURL)
     }
     
     override func prepareForReuse() {
-        
+
     }
 }

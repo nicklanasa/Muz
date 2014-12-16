@@ -17,6 +17,8 @@ NSFetchedResultsControllerDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     
+    let tableData = ["Loved songs"]
+    
     override init() {
         super.init(nibName: "MoreViewController", bundle: nil)
         
@@ -36,20 +38,32 @@ NSFetchedResultsControllerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        tableView.registerClass(NSClassFromString("UITableViewCell"), forCellReuseIdentifier: "Cell")
+        
         self.navigationItem.title = "More"
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 0
+        return 1
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+        return 1
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell",
-            forIndexPath: indexPath) as ArtistCell
+            forIndexPath: indexPath) as UITableViewCell
+        cell.textLabel?.text = tableData[indexPath.row] as NSString
+        cell.textLabel?.textColor = UIColor.whiteColor()
+        cell.accessoryType = .DisclosureIndicator
         return cell
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let lovedViewController = LovedViewController()
+        self.navigationController?.pushViewController(lovedViewController, animated: true)
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
 }

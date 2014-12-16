@@ -134,6 +134,7 @@ class NowPlayingViewController: RootViewController {
         
         playerController.beginGeneratingPlaybackNotifications()
         
+        
         addChildViewController(nowPlayingInfoController)
         nowPlayingInfoController.didMoveToParentViewController(self)
         view.insertSubview(nowPlayingInfoController.view, belowSubview: self.view)

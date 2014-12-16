@@ -28,6 +28,9 @@ let _sharedSession = MediaSession()
     func openSessionWithUpdateBlock(updateBlock: (percentage: Float, error: NSErrorPointer, song: Song?) -> ()) {
         let everything = MPMediaQuery()
         let results = everything.items
+        
+        dataManager.datastore.addPlaylists()
+        
         dataManager.datastore.addSongs(results, updateBlock: { (percentage, error, song) -> () in
             updateBlock(percentage: percentage, error: error, song: song)
         })

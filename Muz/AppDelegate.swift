@@ -12,8 +12,8 @@ let MuzFontName = "HelveticaNeue-Thin"
 let MuzFontNameMedium = "HelveticaNeue-Medium"
 let MuzFont = UIFont(name: MuzFontName, size: 11)!
 let MuzTitleFont = UIFont(name: MuzFontNameMedium, size: 18)!
-//let MuzColor = UIColor(red:55/255, green: 216/255, blue: 200/255, alpha: 1.0)
 let MuzColor = UIColor.whiteColor()
+let MuzBlueColor = UIColor(red:0/255, green: 242/255, blue: 219/255, alpha: 1.0)
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -30,20 +30,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIBarButtonItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.whiteColor()], forState: UIControlState.Normal)
         UITableViewCell.appearance().selectedBackgroundView = colorView
         UITableViewCell.appearance().backgroundColor = UIColor.clearColor()
-        UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffsetMake(-100, 0), forBarMetrics: UIBarMetrics.Default)
-        UIBarButtonItem.appearance().setBackButtonBackgroundImage(UIImage(named: "back"), forState: .Normal, barMetrics: .Default)
-
+        UITextField.appearance().textColor = UIColor.whiteColor()
         
         let mainScreen = UIScreen.mainScreen()
         let window = UIWindow(frame: mainScreen.bounds)
         
         let tabbar = TabBarController()
         let nav = NavBarController(rootViewController: ArtistsViewController())
-        let navLoved = NavBarController(rootViewController: LovedViewController())
+        let navPlaylists = NavBarController(rootViewController: PlaylistsViewController())
         let navSongs = NavBarController(rootViewController: SongsViewController())
         let navMore = NavBarController(rootViewController: MoreViewController())
         let navNowPlaying = NavBarController(rootViewController: NowPlayingViewController())
-        tabbar.setViewControllers([nav, navSongs, navNowPlaying, navLoved, navMore], animated: false)
+        tabbar.setViewControllers([nav, navSongs, navNowPlaying, navPlaylists, navMore], animated: false)
         window.rootViewController = tabbar
         window.makeKeyAndVisible()
         

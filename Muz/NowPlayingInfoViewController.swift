@@ -30,6 +30,7 @@ UICollectionViewDataSource {
     var lastFmArtist: LastFmArtist?
     var similiarArtists: [AnyObject]?
     var isShowingLastFm = false
+    var isForSimiliarArtist = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,10 +42,34 @@ UICollectionViewDataSource {
         view.autoresizingMask = .FlexibleWidth | .FlexibleHeight
         
         segmentedControl.addTarget(self, action: "handleSegmentedControlChange", forControlEvents: .ValueChanged)
+        
+        if isForSimiliarArtist {
+            configureForSimiliarArtist()
+        }
     }
     
     override init() {
         super.init(nibName: "NowPlayingInfoViewController", bundle: nil)
+    }
+    
+    init(artist: LastFmArtist, isForSimiliarArtist: Bool) {
+        super.init(nibName: "NowPlayingInfoViewController", bundle: nil)
+        self.lastFmArtist = artist
+        self.isForSimiliarArtist = isForSimiliarArtist
+    }
+    
+    private func configureForSimiliarArtist() {
+        self.segmentedControl.alpha = 0.0
+        self.segmentedControl.selectedSegmentIndex = 1
+        
+        var frame = self.tableView.frame
+        frame.origin.y -= self.segmentedControl.frame.size.height
+        frame.size.height += self.segmentedControl.frame.size.height
+        self.tableView.frame = frame
+        
+        handleSegmentedControlChange()
+        
+        requestLastFmDataWithArtist(self.lastFmArtist?.name)
     }
     
     func handleSegmentedControlChange() {
@@ -69,11 +94,15 @@ UICollectionViewDataSource {
         request.delegate = self
         request.sendURLRequest()
         
-        var artistLastFmRequest = LastFmArtistInfoRequest(artist: item.artist)
+        requestLastFmDataWithArtist(item.artist)
+    }
+    
+    func requestLastFmDataWithArtist(artistName: NSString?) {
+        var artistLastFmRequest = LastFmArtistInfoRequest(artist: artistName!)
         artistLastFmRequest.delegate = self
         artistLastFmRequest.sendURLRequest()
         
-        var similiarArtistLastFmRequest = LastFmSimiliarArtistsRequest(artist: item.artist)
+        var similiarArtistLastFmRequest = LastFmSimiliarArtistsRequest(artist: artistName!)
         similiarArtistLastFmRequest.delegate = self
         similiarArtistLastFmRequest.sendURLRequest()
     }
@@ -138,9 +167,16 @@ UICollectionViewDataSource {
             forIndexPath: indexPath) as SimiliarArtistCollectionViewCell
         
         if let artist = similiarArtists?[indexPath.row] as? LastFmArtist {
-            cell.artistImageView.sd_setImageWithURL(artist.imageURL)
+            cell.updateWithArtist(artist)
         }
         
         return cell
+    }
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        
+        if let artist = similiarArtists?[indexPath.row] as? LastFmArtist {
+            self.navigationController?.pushViewController(NowPlayingInfoViewController(artist: artist, isForSimiliarArtist: true), animated: true)
+        }
     }
 }

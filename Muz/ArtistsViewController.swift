@@ -36,6 +36,7 @@ UISearchDisplayDelegate {
     var filteredArtistsSections = NSArray()
     var artistsQuery: MPMediaQuery?
     var artistsSections = NSArray()
+    var isFiltering = false
     
     override init() {
         super.init(nibName: "ArtistsViewController", bundle: nil)
@@ -63,9 +64,7 @@ UISearchDisplayDelegate {
         
         tableView.registerNib(UINib(nibName: "ArtistCell", bundle: nil), forCellReuseIdentifier: "Cell")
         tableView.registerNib(UINib(nibName: "ArtistsHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "Header")
-        
-        self.searchDisplayController?.searchResultsTableView.registerNib(UINib(nibName: "ArtistCell", bundle: nil), forCellReuseIdentifier: "Cell")
-
+    
         self.navigationItem.title = "Artists"
         
         fetchArtists()
@@ -96,7 +95,7 @@ UISearchDisplayDelegate {
         
         let section = self.artistsQuery?.collectionSections[indexPath.section] as MPMediaQuerySection
         
-        if tableView == self.searchDisplayController?.searchResultsTableView {
+        if isFiltering {
             if let songs = filteredArtists?[indexPath.row + section.range.location] as? MPMediaItemCollection {
                 if let song = songs.representativeItem {
                     cell.updateWithItem(song)
@@ -137,7 +136,7 @@ UISearchDisplayDelegate {
         var artists: [AnyObject]?
         
         
-        if tableView == self.searchDisplayController?.searchResultsTableView {
+        if isFiltering {
             artists = filteredArtists
         } else {
             artists = self.artists
@@ -151,11 +150,15 @@ UISearchDisplayDelegate {
     }
     
     func sectionIndexTitlesForTableView(tableView: UITableView) -> [AnyObject]! {
-        return tableView == self.searchDisplayController?.searchResultsTableView ? filteredArtistsSections : artistsSections
+        return isFiltering ? filteredArtistsSections : artistsSections
     }
     
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         return true
+    }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return ArtistCellHeight
     }
     
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
@@ -191,5 +194,13 @@ UISearchDisplayDelegate {
         }
         
         tableView.reloadData()
+    }
+    
+    func searchDisplayController(controller: UISearchDisplayController, willShowSearchResultsTableView tableView: UITableView) {
+        self.tableView.alpha = 0.0
+    }
+    
+    func searchDisplayController(controller: UISearchDisplayController, willHideSearchResultsTableView tableView: UITableView) {
+        self.tableView.alpha = 1.0
     }
 }

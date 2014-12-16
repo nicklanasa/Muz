@@ -2,7 +2,7 @@
 //  Song.swift
 //  Muz
 //
-//  Created by Nick Lanasa on 12/13/14.
+//  Created by Nick Lanasa on 12/15/14.
 //  Copyright (c) 2014 Nytek Productions. All rights reserved.
 //
 
