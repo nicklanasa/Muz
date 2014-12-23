@@ -13,6 +13,8 @@ import MediaPlayer
 extension Song: Printable {
     func parseItem(item: MPMediaItem) {
         
+        self.persistentID = NSNumber(unsignedLongLong: item.persistentID)
+        
         self.mediaType = item.mediaType.rawValue
         
         if let title = item.title {

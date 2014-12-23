@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14C78c" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14C81f" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
@@ -7,7 +7,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="LastFmArtistInfoCell" customModule="Muz" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="669"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="644"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
             <subviews>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="H0q-Q6-2iU">
@@ -50,14 +50,14 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bio" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="bwK-OL-1I5">
-                    <rect key="frame" x="10" y="107" width="282" height="20"/>
+                    <rect key="frame" x="10" y="144" width="282" height="20"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="17"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.0" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" id="quI-Pj-VcN">
-                    <rect key="frame" x="8" y="133" width="304" height="364"/>
+                    <rect key="frame" x="8" y="170" width="304" height="294"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -65,12 +65,12 @@
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>
                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" id="I68-1f-wKQ">
-                    <rect key="frame" x="144" y="223" width="37" height="37"/>
+                    <rect key="frame" x="144" y="260" width="37" height="37"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </activityIndicatorView>
                 <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="none" id="5e1-E5-1tV">
-                    <rect key="frame" x="7" y="535" width="304" height="110"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                    <rect key="frame" x="8" y="514" width="304" height="110"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="8Pf-mj-hlf">
                         <size key="itemSize" width="65" height="110"/>
@@ -80,13 +80,39 @@
                     </collectionViewFlowLayout>
                     <cells/>
                 </collectionView>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Similar artists" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Zad-ie-Adq">
-                    <rect key="frame" x="7" y="506" width="128" height="21"/>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.0" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Similar artists" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Zad-ie-Adq">
+                    <rect key="frame" x="8" y="484" width="128" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="17"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <button opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="1gJ-LY-Nif">
+                    <rect key="frame" x="200" y="93" width="81" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
+                    <state key="normal" title="Buy album">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="buyAlbumButtonPressed:" destination="iN0-l3-epB" eventType="touchUpInside" id="YaD-lt-Vgt"/>
+                    </connections>
+                </button>
+                <button opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="D7X-Vj-1Qh">
+                    <rect key="frame" x="117" y="93" width="75" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
+                    <state key="normal" title="Buy song">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="buySongButtonPressed:" destination="iN0-l3-epB" eventType="touchUpInside" id="wfZ-be-Buu"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
             <nil key="simulatedStatusBarMetrics"/>
@@ -97,13 +123,16 @@
                 <outlet property="artistLabel" destination="InM-k7-sRm" id="n7b-Ks-RdF"/>
                 <outlet property="bioLabel" destination="bwK-OL-1I5" id="ndj-fK-3WR"/>
                 <outlet property="bioTextView" destination="quI-Pj-VcN" id="hcq-zy-Hna"/>
+                <outlet property="buyAlbumButton" destination="1gJ-LY-Nif" id="BHn-ab-MVP"/>
+                <outlet property="buySongButton" destination="D7X-Vj-1Qh" id="bYL-Fp-DHC"/>
                 <outlet property="collectionView" destination="5e1-E5-1tV" id="JVA-ec-wuR"/>
                 <outlet property="listenersDescriptionLabel" destination="zwb-zz-I85" id="W0j-XB-Ak5"/>
                 <outlet property="listenersLabel" destination="eNJ-s6-BcJ" id="w9k-EW-Fhc"/>
                 <outlet property="playsDescriptionLabel" destination="07g-aq-dCA" id="w1F-9p-bPC"/>
                 <outlet property="playsLabel" destination="eD9-MS-Sq6" id="UKN-Lm-CCf"/>
+                <outlet property="similiarArtistsLabel" destination="Zad-ie-Adq" id="v5d-Bb-tXU"/>
             </connections>
-            <point key="canvasLocation" x="341" y="345.5"/>
+            <point key="canvasLocation" x="166" y="300"/>
         </view>
     </objects>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

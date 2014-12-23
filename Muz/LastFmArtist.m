@@ -10,6 +10,7 @@
 
 #import "LastFmArtist.h"
 #import "NSString+Lyrics.h"
+#import <NSString-HTML/NSString+HTML.h>
 
 static NSString * const artistKeyName = @"name";
 static NSString * const artistKeyUrl = @"url";
@@ -55,21 +56,35 @@ static NSString * const artistKeySummary = @"summary";
     if( [json[artistKeyImage] isKindOfClass:[NSURL class]])
         self.imageURL = json[artistKeyImage];
     
-    if( [json[artistKeySummary] isKindOfClass:[NSString class]])
+    if( [json[artistKeySummary] isKindOfClass:[NSString class]]) {
         self.summary = [json[artistKeySummary] stringByStrippingHTML];
+    } else {
+        self.summary = @"Summary unavailable";
+    }
     
-    if( [json[artistKeyBio] isKindOfClass:[NSString class]])
-        self.bio = [json[artistKeyBio] stringByStrippingHTML];
+    if( [json[artistKeyBio] isKindOfClass:[NSString class]]) {
+        self.bio = [[json[artistKeyBio] stringByStrippingHTML] kv_decodeHTMLCharacterEntities];
+    } else {
+        self.bio = @"";
+    }
     
-    if( [json[artistKeyListeners] isKindOfClass:[NSNumber class]])
+    if( [json[artistKeyListeners] isKindOfClass:[NSNumber class]]) {
         self.listeners = json[artistKeyListeners];
+    } else {
+        self.listeners = [NSNumber numberWithInt:0];
+    }
     
-    if( [json[artistKeyPlaycount] isKindOfClass:[NSNumber class]])
+    if( [json[artistKeyPlaycount] isKindOfClass:[NSNumber class]]) {
         self.plays = json[artistKeyPlaycount];
+    } else {
+        self.plays = [NSNumber numberWithInt:0];
+    }
     
-    if( [json[artistKeyOntour] isKindOfClass:[NSNumber class]])
+    if( [json[artistKeyOntour] isKindOfClass:[NSNumber class]]) {
         self.onTour = json[artistKeyOntour];
-    
+    } else {
+        self.onTour = [NSNumber numberWithInt:0];
+    }
 }
 
 - (NSString *) description

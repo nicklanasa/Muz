@@ -10,17 +10,26 @@ import Foundation
 import UIKit
 import MediaPlayer
 
-class ArtistAlbumsAlbumHeader: UITableViewHeaderFooterView {
+protocol ArtistAlbumHeaderDelegate {
+    func artistAlbumHeader(header: ArtistAlbumHeader, moreButtonTapped sender: AnyObject)
+}
+
+class ArtistAlbumHeader: UITableViewHeaderFooterView {
     @IBOutlet weak var albumLabel: UILabel!
     @IBOutlet weak var infoLabel: UILabel!
     @IBOutlet weak var yearLabel: UILabel!
     @IBOutlet weak var albumImageView: UIImageView!
+    @IBOutlet weak var moreButton: UIButton!
     override func awakeFromNib() {
 
     }
     
     override func prepareForReuse() {
         
+    }
+    
+    @IBAction func moreButtonTapped(sender: AnyObject) {
+        UIAlertView(title: "woot!", message: "", delegate: self, cancelButtonTitle: "ok").show()
     }
     
     func updateWithItem(item: MPMediaItem) {

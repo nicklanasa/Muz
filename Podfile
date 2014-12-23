@@ -3,3 +3,5 @@ inhibit_all_warnings!
 
 pod 'LastFm'
 pod 'SDWebImage'
+pod 'NSString-HTML'
+pod 'MBProgressHUD'

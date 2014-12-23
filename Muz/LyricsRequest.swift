@@ -10,7 +10,7 @@ import Foundation
 import MediaPlayer
 
 protocol LyricsRequestDelegate {
-    func lyricsRequestDidComplete(request: LyricsRequest, didCompleteWithLyrics lyrics: String)
+    func lyricsRequestDidComplete(request: LyricsRequest, didCompleteWithLyrics lyrics: String?)
 }
 
 class LyricsRequest: NSObject, NSURLConnectionDataDelegate, NSURLConnectionDelegate {
@@ -40,6 +40,8 @@ class LyricsRequest: NSObject, NSURLConnectionDataDelegate, NSURLConnectionDeleg
         if responseData.length > 0 {
             if let html = NSString(data: responseData, encoding: NSUTF8StringEncoding) {
                 self.parseHTML(html)
+            } else {
+                self.delegate?.lyricsRequestDidComplete(self, didCompleteWithLyrics: nil)
             }
         }
     }
@@ -67,9 +69,13 @@ class LyricsRequest: NSObject, NSURLConnectionDataDelegate, NSURLConnectionDeleg
                 }
             }
         }
+        
+        self.delegate?.lyricsRequestDidComplete(self, didCompleteWithLyrics: nil)
     }
     
     private func requestSongLyrics(url: NSString) {
+        
+        var lyrics: NSString? = nil
         if let stringURL = url.stringByAddingPercentEscapesUsingEncoding(NSASCIIStringEncoding) {
             let url = NSURL(string: stringURL)!
             let request = NSURLRequest(URL: url)
@@ -77,7 +83,7 @@ class LyricsRequest: NSObject, NSURLConnectionDataDelegate, NSURLConnectionDeleg
             var response: NSURLResponse?
             var error: NSError?
             
-            if let data = NSURLConnection.sendSynchronousRequest(request, returningResponse: &response, error: &error) {
+            NSURLConnection.sendAsynchronousRequest(request, queue: queue, completionHandler: { (response, data, error) -> Void in
                 if let html = NSString(data: data, encoding: NSUTF8StringEncoding) {
                     var parserError: NSError?
                     let parser = HTMLParser(string: html, error: &parserError)
@@ -86,19 +92,21 @@ class LyricsRequest: NSObject, NSURLConnectionDataDelegate, NSURLConnectionDeleg
                         for dNodes in divNodes.findChildTags("div") {
                             let contents: NSString = dNodes.rawContents()
                             if contents.rangeOfString("<!-- start of lyrics -->", options: .CaseInsensitiveSearch).location != NSNotFound {
-                                var lyrics: NSString = contents.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
-                                lyrics = lyrics.stringByStrippingHTML()
-                                lyrics = lyrics.stringByReplacingOccurrencesOfString("<!-- start of lyrics -->", withString: "")
-                                lyrics = lyrics.stringByReplacingOccurrencesOfString("<!-- end of lyrics -->", withString: "")
+                                lyrics = contents.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+                                lyrics = lyrics!.stringByStrippingHTML()
+                                lyrics = lyrics!.stringByReplacingOccurrencesOfString("<!-- start of lyrics -->", withString: "")
+                                lyrics = lyrics!.stringByReplacingOccurrencesOfString("<!-- end of lyrics -->", withString: "")
                                 
-                                    
                                 self.delegate?.lyricsRequestDidComplete(self, didCompleteWithLyrics: lyrics)
+                                
                                 return
                             }
                         }
                     }
                 }
-            }
+                
+                self.delegate?.lyricsRequestDidComplete(self, didCompleteWithLyrics: lyrics)
+            })
         }
     }
 }

@@ -7,7 +7,10 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NowPlayingViewController" customModule="Muz" customModuleProvider="target">
             <connections>
                 <outlet property="artwork" destination="vqG-Pf-UWi" id="oFm-7B-SEl"/>
-                <outlet property="progressView" destination="ByE-oo-kKL" id="SCB-RD-r2h"/>
+                <outlet property="infoButton" destination="khw-Fj-S3f" id="gcl-WB-1t8"/>
+                <outlet property="progressSlider" destination="0js-gc-HLw" id="Nso-vA-pfs"/>
+                <outlet property="repeatButton" destination="5KF-6M-qoI" id="AL9-hb-nfV"/>
+                <outlet property="shuffleButton" destination="RWA-Gd-PO1" id="kJi-w0-Fu2"/>
                 <outlet property="songLabel" destination="LpC-aF-hm4" id="Yon-QJ-X8n"/>
                 <outlet property="view" destination="aJF-GN-Rhm" id="ixP-AD-kxG"/>
             </connections>
@@ -17,26 +20,73 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
             <subviews>
-                <progressView hidden="YES" opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" id="ByE-oo-kKL">
-                    <rect key="frame" x="69" y="497" width="183" height="2"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                </progressView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="16" adjustsLetterSpacingToFitWidth="YES" id="LpC-aF-hm4">
-                    <rect key="frame" x="23" y="46" width="274" height="134"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                    <rect key="frame" x="23" y="46" width="274" height="115"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="18"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="vqG-Pf-UWi">
-                    <rect key="frame" x="36" y="210" width="249" height="249"/>
+                    <rect key="frame" x="36" y="169" width="249" height="249"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                 </imageView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="5KF-6M-qoI">
+                    <rect key="frame" x="36" y="457" width="56" height="42"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="18"/>
+                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <state key="normal" title="Repeat">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="repeatButtonPressed:" destination="-1" eventType="touchDown" id="wSc-cY-vuk"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="khw-Fj-S3f">
+                    <rect key="frame" x="133" y="457" width="54" height="42"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="18"/>
+                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <state key="normal" title="Info">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="infoButtonPressed:" destination="-1" eventType="touchDown" id="Com-ze-EVL"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="RWA-Gd-PO1">
+                    <rect key="frame" x="233" y="457" width="52" height="42"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="18"/>
+                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <state key="normal" title="Shuffle">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="shuffleButtonPressed:" destination="-1" eventType="touchDown" id="WlT-Vm-Z5H"/>
+                    </connections>
+                </button>
+                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" id="0js-gc-HLw">
+                    <rect key="frame" x="34" y="423" width="253" height="31"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                    <color key="tintColor" red="0.2156862745" green="0.84705882349999995" blue="0.7843137255" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="thumbTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <action selector="progressSliderValueChanged:" destination="-1" eventType="valueChanged" id="2Aj-dU-AhB"/>
+                    </connections>
+                </slider>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <nil key="simulatedTopBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
-            <point key="canvasLocation" x="77" y="84"/>
+            <point key="canvasLocation" x="-637" y="-226"/>
         </view>
     </objects>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

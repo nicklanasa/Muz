@@ -14,7 +14,9 @@ import MediaPlayer
 class SongsViewController: RootViewController,
 UITableViewDelegate,
 UITableViewDataSource,
-NSFetchedResultsControllerDelegate {
+NSFetchedResultsControllerDelegate,
+UISearchBarDelegate,
+UISearchDisplayDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
@@ -23,8 +25,6 @@ NSFetchedResultsControllerDelegate {
     var songs: NSArray?
     var songsQuery: MPMediaQuery?
     var songsSections = NSMutableArray()
-    
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     override init() {
         super.init(nibName: "SongsViewController", bundle: nil)
@@ -49,30 +49,51 @@ NSFetchedResultsControllerDelegate {
         tableView.registerNib(UINib(nibName: "SongCell", bundle: nil), forCellReuseIdentifier: "Cell")
         tableView.registerNib(UINib(nibName: "SongsHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "Header")
         
-        fetchSongs()
+        searchDisplayController?.searchResultsTableView.registerNib(UINib(nibName: "SongCell", bundle: nil), forCellReuseIdentifier: "Cell")
+        searchDisplayController?.searchResultsTableView.registerNib(UINib(nibName: "SongsHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "Header")
+        
+        fetchSongsWithPredicate(nil)
                 
         self.navigationItem.title = "Songs"
+        
+        tableView.backgroundView = UIView()
+        
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "search"),
+            style: .Plain,
+            target: self,
+            action: "showSearch")
     }
     
-    func fetchSongs() {
+    func showSearch() {
+        self.searchDisplayController?.setActive(true, animated: true)
+    }
+    
+    func fetchSongsWithPredicate(predicate: MPMediaPropertyPredicate?) {
         
         songsQuery = MPMediaQuery.songsQuery()
+        
+        if let p = predicate {
+            songsQuery?.addFilterPredicate(p)
+        }
+        
         songs = songsQuery?.items
+        songsSections = NSMutableArray()
         
         if let query = songsQuery {
-            for section in query.itemSections {
-                if let songSection = section as? MPMediaQuerySection {
-                    songsSections.addObject(songSection.title)
+            if let itemSections = query.itemSections {
+                for section in itemSections {
+                    if let songSection = section as? MPMediaQuerySection {
+                        songsSections.addObject(songSection.title)
+                    }
                 }
             }
         }
         
-        self.activityIndicator.stopAnimating()
         self.tableView.reloadData()
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return songsQuery?.itemSections.count ?? 0
+        return songsQuery?.itemSections?.count ?? 0
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -94,23 +115,18 @@ NSFetchedResultsControllerDelegate {
         return 30
     }
     
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 55
+    }
+    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell",
             forIndexPath: indexPath) as SongCell
 
         let section = self.songsQuery?.itemSections[indexPath.section] as MPMediaQuerySection
         
-        if let song = songs?[indexPath.row + section.range.location] as? MPMediaItem {
-            cell.songLabel.text = song.title
-            cell.infoLabel.text = song.artist
-            cell.infoLabel.text = NSString(format: "%@ %@", cell.infoLabel.text!, song.albumTitle)
-            
-            if let artwork = song.artwork {
-                cell.songImageView?.image = song.artwork.imageWithSize(cell.songImageView.frame.size)
-            } else {
-                cell.songImageView?.image = UIImage(named: "noArtwork")
-            }
-            
+        if let item = songs?[indexPath.row + section.range.location] as? MPMediaItem {
+            cell.updateWithItem(item)
         }
     
         return cell
@@ -122,11 +138,16 @@ NSFetchedResultsControllerDelegate {
     
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
         // Get song.
         let section = self.songsQuery?.itemSections[indexPath.section] as MPMediaQuerySection
-        if let song = songs?[indexPath.row + section.range.location] as? MPMediaItem {
-            presentNowPlayViewControllerWithItem(song)
-        }        
+        
+        self.searchDisplayController?.setActive(false, animated: false)
+        
+        if let song = self.songs?[indexPath.row + section.range.location] as? MPMediaItem {
+            presentNowPlayViewControllerWithItem(song, collection: MPMediaItemCollection(items: self.songs))
+        }
+        
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
@@ -139,18 +160,49 @@ NSFetchedResultsControllerDelegate {
     }
     
     func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
-        let deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete", handler: { (action, indexPath) -> Void in
+        let addToPlaylistAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Add to Playlist", handler: { (action, indexPath) -> Void in
+            let section = self.songsQuery?.itemSections[indexPath.section] as MPMediaQuerySection
             
+            if let song = self.songs?[indexPath.row + section.range.location] as? MPMediaItem {
+                let createPlaylistOverlay = CreatePlaylistOverlay(item: song)
+                self.presentModalOverlayController(createPlaylistOverlay, blurredController: self)
+            }
         })
         
-        let addToPlaylistAction = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: "Add to Playlist", handler: { (action, indexPath) -> Void in
-            
-        })
-        
-        return [deleteAction, addToPlaylistAction]
+        return [addToPlaylistAction]
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
-        searchBar.resignFirstResponder()
+        //searchBar.resignFirstResponder()
+    }
+    
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        if countElements(searchText) == 0 {
+            fetchSongsWithPredicate(nil)
+        } else {
+            let songPredicate = MPMediaPropertyPredicate(value: searchText, forProperty: MPMediaItemPropertyTitle, comparisonType: .Contains)
+            songsQuery?.addFilterPredicate(songPredicate)
+            fetchSongsWithPredicate(songPredicate)
+        }
+    }
+    
+    func searchDisplayControllerWillBeginSearch(controller: UISearchDisplayController) {
+        searchBar.hidden = false
+        searchBar.becomeFirstResponder()
+    }
+    
+    func searchDisplayControllerWillEndSearch(controller: UISearchDisplayController) {
+        searchBar.hidden = true
+    }
+    
+    func searchDisplayController(controller: UISearchDisplayController, willShowSearchResultsTableView tableView: UITableView) {
+        self.tabBarController?.tabBar.alpha = 0.0
+        self.tableView.alpha = 0.0
+    }
+    
+    func searchDisplayController(controller: UISearchDisplayController, willHideSearchResultsTableView tableView: UITableView) {
+        self.tabBarController?.tabBar.alpha = 1.0
+        self.tableView.alpha = 1.0
+        self.tableView.reloadData()
     }
 }

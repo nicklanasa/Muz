@@ -16,8 +16,8 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" allowsSelection="NO" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="500" sectionHeaderHeight="22" sectionFooterHeight="22" id="OAI-iT-YNN">
-                    <rect key="frame" x="0.0" y="102" width="320" height="420"/>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" allowsSelection="NO" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="580" sectionHeaderHeight="22" sectionFooterHeight="22" id="OAI-iT-YNN">
+                    <rect key="frame" x="0.0" y="62" width="320" height="460"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <connections>
@@ -25,21 +25,23 @@
                         <outlet property="delegate" destination="-1" id="6Lj-6D-S7h"/>
                     </connections>
                 </tableView>
-                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="lwJ-hU-qXs">
-                    <rect key="frame" x="8" y="66" width="304" height="29"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <segments>
-                        <segment title="Lyrics"/>
-                        <segment title="Info"/>
-                    </segments>
-                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                </segmentedControl>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <nil key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedTopBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
-            <point key="canvasLocation" x="423" y="370"/>
+            <point key="canvasLocation" x="146" y="293"/>
         </view>
+        <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="lwJ-hU-qXs">
+            <rect key="frame" x="0.0" y="0.0" width="177" height="29"/>
+            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+            <segments>
+                <segment title="Lyrics"/>
+                <segment title="Artist"/>
+            </segments>
+            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <point key="canvasLocation" x="485.5" y="207"/>
+        </segmentedControl>
     </objects>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

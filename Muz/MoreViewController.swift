@@ -17,6 +17,7 @@ NSFetchedResultsControllerDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     
+    // Make this DB driven
     let tableData = ["Loved songs"]
     
     override init() {

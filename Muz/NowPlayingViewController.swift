@@ -11,13 +11,13 @@ import UIKit
 import CoreData
 import MediaPlayer
 
-class NowPlayingViewController: RootViewController {
+class NowPlayingViewController: RootViewController,
+NowPlayingCollectionControllerDelegate {
     
     var item: MPMediaItem!
-    var songTimer: NSTimer?
+    private var songTimer: NSTimer?
     var collection: MPMediaItemCollection?
-    var indexOfCurrentlyPlayingSong = 1
-    var pinchGesture: UIPinchGestureRecognizer!
+    private var pinchGesture: UIPinchGestureRecognizer!
     
     lazy var nowPlayingInfoController: NowPlayingInfoViewController = {
         var nowPlayingInfoViewController = NowPlayingInfoViewController()
@@ -26,21 +26,33 @@ class NowPlayingViewController: RootViewController {
     
     @IBOutlet weak var artwork: UIImageView!
     @IBOutlet weak var songLabel: UILabel!
-    @IBOutlet weak var progressView: UIProgressView!
+    @IBOutlet weak var shuffleButton: UIButton!
+    @IBOutlet weak var repeatButton: UIButton!
+    @IBOutlet weak var infoButton: UIButton!
+    @IBOutlet weak var progressSlider: UISlider!
     
     let playerController = MPMusicPlayerController.iPodMusicPlayer()
     
     init(song: Song) {
         super.init(nibName: "NowPlayingViewController", bundle: nil)
-        
         configureWithItem()
     }
     
-    override func viewWillAppear(animated: Bool) {
-        if let item = playerController.nowPlayingItem {
-            updateView(item)
-            nowPlayingInfoController.updateWithItem(item)
+    @IBAction func progressSliderValueChanged(sender: AnyObject) {
+        if let currentlyPlayingItem = item {
+            playerController.currentPlaybackTime = Double(progressSlider.value) * currentlyPlayingItem.playbackDuration
         }
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        if self.item == nil && playerController.nowPlayingItem != nil {
+            self.item = playerController.nowPlayingItem
+            configureWithItem()
+        }
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        //hideInfoController(nil)
     }
     
     private func configureWithItem() {
@@ -64,21 +76,28 @@ class NowPlayingViewController: RootViewController {
                 playerController.setQueueWithItemCollection(collection)
             }
             
-            indexOfCurrentlyPlayingSong = item.albumTrackNumber
             updateNowPlayingWithItem(item)
-            updateView(item)
         }
     }
-    
+
     func updateProgress() {
         if let currentlyPlayingItem = item {
-            progressView.progress = Float(playerController.currentPlaybackTime) / Float(currentlyPlayingItem.playbackDuration)
+            progressSlider.value = Float(playerController.currentPlaybackTime) / Float(currentlyPlayingItem.playbackDuration)
         }
     }
     
     func playItem(item: MPMediaItem) {
         self.item = item
         configureWithItem()
+        playerController.play()
+    }
+    
+    func playItem(item: MPMediaItem, collection: MPMediaItemCollection) {
+        self.item = item
+        self.collection = collection
+        playerController.setQueueWithItemCollection(collection)
+        playerController.play()
+        updateNowPlayingWithItem(self.item)
     }
     
     override init() {
@@ -97,25 +116,17 @@ class NowPlayingViewController: RootViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        var swipeUpGesture = UISwipeGestureRecognizer(target: self, action: "nextSong")
-        swipeUpGesture.direction = .Up
-        view.addGestureRecognizer(swipeUpGesture)
+        var swipeLeftGesture = UISwipeGestureRecognizer(target: self, action: "nextSong")
+        swipeLeftGesture.direction = .Left
+        view.addGestureRecognizer(swipeLeftGesture)
         
-        var swipeDownGesture = UISwipeGestureRecognizer(target: self, action: "previousSong")
-        swipeDownGesture.direction = .Down
-        view.addGestureRecognizer(swipeDownGesture)
+        var swipeRightGesture = UISwipeGestureRecognizer(target: self, action: "previousSong")
+        swipeRightGesture.direction = .Right
+        view.addGestureRecognizer(swipeRightGesture)
         
         var tapGesture = UITapGestureRecognizer(target: self, action: "playPause")
         tapGesture.numberOfTapsRequired = 1
         artwork.addGestureRecognizer(tapGesture)
-        
-        pinchGesture = UIPinchGestureRecognizer(target: self, action: "showInfoController:")
-        view.addGestureRecognizer(pinchGesture)
-        
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "info"),
-            style: .Plain,
-            target: self,
-            action: "showInfoController:");
         
         NSNotificationCenter.defaultCenter().addObserver(self,
             selector: "playPause",
@@ -134,52 +145,97 @@ class NowPlayingViewController: RootViewController {
         
         playerController.beginGeneratingPlaybackNotifications()
         
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "list"),
+            style: .Plain,
+            target: self,
+            action: "showNowPlayingCollectionController")
         
-        addChildViewController(nowPlayingInfoController)
-        nowPlayingInfoController.didMoveToParentViewController(self)
-        view.insertSubview(nowPlayingInfoController.view, belowSubview: self.view)
-        
-        nowPlayingInfoController.view.alpha = 0.0
+        progressSlider.setThumbImage(UIImage(named: "thumbImage"), forState: .Normal)
+        progressSlider.setThumbImage(UIImage(named: "thumbImage"), forState: .Selected)
     }
     
-    func showInfoController(gesture: UIPinchGestureRecognizer) {
-        view.removeGestureRecognizer(gesture)
+    func showNowPlayingCollectionController() {
+        
+        let nowPlayingCollectionController = NowPlayingCollectionController(collection: collection)
+        nowPlayingCollectionController.delegate = self
+        
+        presentModalOverlayController(nowPlayingCollectionController, blurredController: self)
+    }
+    
+    @IBAction func infoButtonPressed(sender: AnyObject) {
+        var controller = NowPlayingInfoViewController(item: self.item)
+        self.navigationController?.pushViewController(controller, animated: true)
+    }
+    
+    @IBAction func shuffleButtonPressed(sender: AnyObject) {
+        if playerController.shuffleMode == .Songs {
+            playerController.shuffleMode = .Off
+            shuffleButton.setTitleColor(MuzColor, forState: .Normal)
+        } else {
+            playerController.shuffleMode = .Songs
+            shuffleButton.setTitleColor(MuzBlueColor, forState: .Normal)
+        }
+    }
+    
+    @IBAction func repeatButtonPressed(sender: AnyObject) {
         UIView.animateWithDuration(0.3, animations: { () -> Void in
-            self.artwork.alpha = 0.0
-            self.songLabel.alpha = 0.0
-            self.progressView.alpha = 0.0
+            if self.playerController.repeatMode == .One {
+                self.playerController.repeatMode = .None
+                self.repeatButton.setTitleColor(MuzColor, forState: .Normal)
+                self.repeatButton.setTitle("Repeat", forState: .Normal)
+            } else if self.playerController.repeatMode == .All {
+                self.playerController.repeatMode = .One
+                self.repeatButton.setTitleColor(MuzBlueColor, forState: .Normal)
+                self.repeatButton.setTitle("Repeat", forState: .Normal)
+            } else {
+                self.playerController.repeatMode = .All
+                self.repeatButton.setTitleColor(MuzBlueColor, forState: .Normal)
+                self.repeatButton.setTitle("Repeat All", forState: .Normal)
+            }
+        })
+    }
+    
+    func showInfoController(gesture: UIPinchGestureRecognizer?) {
+        
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
             
             UIView.animateWithDuration(0.3, animations: { () -> Void in
+                self.hideNowPlayingViews()
                 self.nowPlayingInfoController.view.alpha = 1.0
-                
-                self.pinchGesture = UIPinchGestureRecognizer(target: self, action: "hideInfoController:")
-                self.view.addGestureRecognizer(self.pinchGesture)
-                
-                self.navigationItem.rightBarButtonItem?.action = "hideInfoController:"
-                self.navigationItem.rightBarButtonItem?.image = UIImage(named: "headphones")
             })
             
         })
     }
     
-    func hideInfoController(gesture: UIPinchGestureRecognizer) {
-        view.removeGestureRecognizer(gesture)
+    func hideInfoController(gesture: UIPinchGestureRecognizer?) {
         UIView.animateWithDuration(0.3, animations: { () -> Void in
-            
+            self.showNowPlayingViews()
             self.nowPlayingInfoController.view.alpha = 0.0
+        })
+    }
+    
+    private func hideNowPlayingViews() {
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.artwork.alpha = 0.0
+            self.songLabel.alpha = 0.0
+            self.progressSlider.alpha = 0.0
+            self.shuffleButton.alpha = 0.0
+            self.repeatButton.alpha = 0.0
+            self.infoButton.alpha = 0.0
             
-            UIView.animateWithDuration(0.3, animations: { () -> Void in
-                self.artwork.alpha = 1.0
-                self.songLabel.alpha = 1.0
-                self.progressView.alpha = 1.0
-                
-                var pinchGesture = UIPinchGestureRecognizer(target: self, action: "showInfoController:")
-                self.view.addGestureRecognizer(pinchGesture)
-                
-                self.navigationItem.rightBarButtonItem?.action = "showInfoController:"
-                self.navigationItem.rightBarButtonItem?.image = UIImage(named: "info")
-            })
+            self.nowPlayingInfoController.segmentedControl.alpha = 1.0
+        })
+    }
+    
+    private func showNowPlayingViews() {
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.artwork.alpha = 1.0
+            self.songLabel.alpha = 1.0
+            self.progressSlider.alpha = 1.0
             
+            self.shuffleButton.alpha = 1.0
+            self.repeatButton.alpha = 1.0
+            self.infoButton.alpha = 1.0
         })
     }
     
@@ -188,13 +244,24 @@ class NowPlayingViewController: RootViewController {
     }
     
     func nextSong() {
-        indexOfCurrentlyPlayingSong++
-        updateNowPlayingItem()
+        if playerController.repeatMode == .One {
+            updateNowPlayingWithItem(self.item)
+            
+            playerController.stop()
+            playerController.play()
+        } else {
+            playerController.skipToNextItem()
+        }
     }
     
     func previousSong() {
-        indexOfCurrentlyPlayingSong--
-        updateNowPlayingItem()
+        if playerController.repeatMode == .One {
+            updateNowPlayingWithItem(self.item)
+            playerController.stop()
+            playerController.play()
+        } else {
+            playerController.skipToPreviousItem()
+        }
     }
     
     func playPause() {
@@ -207,31 +274,15 @@ class NowPlayingViewController: RootViewController {
     
     func playerControllerDidNowPlayingItemDidChange() {
         if let item = playerController.nowPlayingItem {
-            updateView(item)
+            self.item = item
+            updateView(self.item)
         }
     }
     
-    func updateNowPlayingItem() {
+    private func updateView(item: MPMediaItem) {
         
-        if indexOfCurrentlyPlayingSong > collection?.items.count {
-            indexOfCurrentlyPlayingSong = 0
-        } else if indexOfCurrentlyPlayingSong <= 0 {
-            if let items = collection?.items as? [MPMediaItem] {
-                indexOfCurrentlyPlayingSong = collection!.items.count - 1
-            } else {
-                indexOfCurrentlyPlayingSong = 0
-            }
-            
-        }
+        showNowPlayingViews()
         
-        if indexOfCurrentlyPlayingSong < collection?.items.count {
-            if let item = collection?.items[indexOfCurrentlyPlayingSong] as? MPMediaItem {
-                updateNowPlayingWithItem(item)
-            }
-        }
-    }
-    
-    func updateView(item: MPMediaItem) {
         let noArtwork = UIImage(named: "noArtwork")
         let delegate = UIApplication.sharedApplication().delegate as AppDelegate
         
@@ -263,21 +314,36 @@ class NowPlayingViewController: RootViewController {
         
         startSongTimer()
         
-        progressView.hidden = false
+        progressSlider.hidden = false
     }
     
-    func updateNowPlayingWithItem(item: MPMediaItem) {
+    private func updateNowPlayingWithItem(item: MPMediaItem) {
         playerController.nowPlayingItem = item
-        playerController.play()
         updateView(item)
-        nowPlayingInfoController.updateWithItem(item)
     }
     
-    func startSongTimer() {
+    private func startSongTimer() {
         songTimer = NSTimer.scheduledTimerWithTimeInterval(0.4,
             target: self,
             selector: Selector("updateProgress"),
             userInfo: nil,
             repeats: true)
+    }
+    
+    func nowPlayingCollectionController(controller: NowPlayingCollectionController,
+        didSelectItem item: MPMediaItem) {
+        playItem(item)
+    }
+    
+    override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
+        if toInterfaceOrientation == .Portrait {
+            UIView.animateWithDuration(0.1, animations: { () -> Void in
+                self.artwork.alpha = 1.0
+            })
+        } else {
+            UIView.animateWithDuration(0.1, animations: { () -> Void in
+                self.artwork.alpha = 0.0
+            })
+        }
     }
 }

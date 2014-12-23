@@ -12,13 +12,23 @@ import MediaPlayer
 
 class NowPlayingInfoLyricsCell: UITableViewCell {
     @IBOutlet weak var textView: UITextView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     override func awakeFromNib() {
         
     }
     
-    func updateWithLyrics(lyrics: NSString) {
-        textView.text = lyrics
+    func updateWithLyrics(lyrics: NSString?) {
+        activityIndicator.stopAnimating()
+        if let lyricsString = lyrics {
+            if lyricsString.length > 0 {
+                textView.text = lyricsString.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+            } else {
+                textView.text = "Unable to find lyrics."
+            }
+        } else {
+            textView.text = "Unable to find lyrics."
+        }
     }
     
     override func prepareForReuse() {

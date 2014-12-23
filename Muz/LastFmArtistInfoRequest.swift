@@ -33,7 +33,7 @@ class LastFmArtistInfoRequest: LastFmRequest {
             let artist = LastFmArtist(JSON: info)
             self.delegate?.lastFmArtistInfoRequestDidComplete(self, didCompleteWithLastFmArtist: artist)
         }) { (error) -> Void in
-            
+
         }
     }
 }

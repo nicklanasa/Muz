@@ -6,6 +6,9 @@
 #import "HTMLParser.h"
 #import "NSString+Lyrics.h"
 #import "LastFm.h"
-
+#import "LastFmEvent.h"
 #import "LastFmArtist.h"
+#import "LastFmBuyLink.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import <LastFm/LastFm.h>
+#import "MBProgressHUD.h"

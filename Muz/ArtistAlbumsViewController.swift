@@ -58,7 +58,7 @@ NSFetchedResultsControllerDelegate {
         super.viewDidLoad()
         
         tableView.registerNib(UINib(nibName: "ArtistAlbumsSongCell", bundle: nil), forCellReuseIdentifier: "Cell")
-        tableView.registerNib(UINib(nibName: "ArtistAlbumsAlbumHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "Header")
+        tableView.registerNib(UINib(nibName: "ArtistAlbumHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "Header")
     
         fetchArtistAlbums()
         self.navigationItem.title = "Albums"
@@ -116,7 +116,7 @@ NSFetchedResultsControllerDelegate {
         }
         
         if let section = albums?[section] as? MPMediaItemCollection {
-            let header = tableView.dequeueReusableHeaderFooterViewWithIdentifier("Header") as ArtistAlbumsAlbumHeader
+            let header = tableView.dequeueReusableHeaderFooterViewWithIdentifier("Header") as ArtistAlbumHeader
             header.updateWithItem(section.representativeItem)
             return header
         } else {
@@ -143,14 +143,10 @@ NSFetchedResultsControllerDelegate {
     }
     
     func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
-        let deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete", handler: { (action, indexPath) -> Void in
-            
-        })
-        
         let addToPlaylistAction = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: "Add to Playlist", handler: { (action, indexPath) -> Void in
             
         })
         
-        return [deleteAction, addToPlaylistAction]
+        return [addToPlaylistAction]
     }
 }

@@ -42,6 +42,8 @@ extension PlaylistSong {
             }
         }
         
+        self.playlists = playlists
+        
         if let p = originalPlaylist {
             var count = 0
             for item in p.items {
@@ -54,5 +56,15 @@ extension PlaylistSong {
         } else {
             self.order = NSNumber(unsignedLongLong: 0)
         }
+    }
+    
+    func parseSong(song: Song, playlist: Playlist, order: Int) {
+        self.song = song
+        
+        let playlists = NSMutableSet(set: self.playlists)
+        playlists.addObject(playlist)
+        self.playlists = playlists
+        
+        self.order = NSNumber(integer: order)
     }
 }

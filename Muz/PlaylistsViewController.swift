@@ -13,7 +13,8 @@ import CoreData
 
 class PlaylistsViewController: RootViewController,
     UITableViewDelegate,
-UITableViewDataSource {
+UITableViewDataSource,
+NSFetchedResultsControllerDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
@@ -38,15 +39,18 @@ UITableViewDataSource {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func viewWillAppear(animated: Bool) {
+        fetchPlaylists()
+        super.viewWillAppear(animated)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView.registerNib(UINib(nibName: "ArtistCell", bundle: nil), forCellReuseIdentifier: "Cell")
-        
-        fetchPlaylists()
-        
+        tableView.registerNib(UINib(nibName: "PlaylistCell", bundle: nil), forCellReuseIdentifier: "Cell")
+        tableView.registerNib(UINib(nibName: "SongsHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "Header")
         self.navigationItem.title = "Playlists"
-        
+    
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "add"),
             style: .Plain,
             target: self,
@@ -58,8 +62,8 @@ UITableViewDataSource {
     }
     
     func fetchPlaylists() {
-        
         playlistsController = MediaSession.sharedSession.dataManager.datastore.playlistsControllerWithSectionName(nil)
+        playlistsController?.delegate = self
         var error: NSError?
         if playlistsController!.performFetch(&error) {
             self.tableView.reloadData()
@@ -81,19 +85,55 @@ UITableViewDataSource {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell",
-            forIndexPath: indexPath) as ArtistCell
-       let playlist = playlistsController?.objectAtIndexPath(indexPath) as Playlist
-        cell.artistLabel.text = playlist.name
+            forIndexPath: indexPath) as PlaylistCell
+        let playlist = playlistsController?.objectAtIndexPath(indexPath) as Playlist
+        cell.updateWithPlaylist(playlist)
         return cell
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-//        let song = sortedResults[indexPath.row] as MPMediaItem
-//        presentNowPlayViewControllerWithItem(song)
-//        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        let playlist = playlistsController?.objectAtIndexPath(indexPath) as Playlist
+        let playlistSongsViewController = PlaylistSongsViewController(playlist: playlist)
+        self.navigationController?.pushViewController(playlistSongsViewController, animated: true)
     }
     
-    func scrollViewDidScroll(scrollView: UIScrollView) {
-        searchBar.resignFirstResponder()
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        let playlist = playlistsController?.objectAtIndexPath(indexPath) as Playlist
+        return countElements(playlist.persistentID) == 0
+    }
+    
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        
+    }
+    
+    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
+        let deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete", handler: { (action, indexPath) -> Void in
+            let playlist = self.playlistsController?.objectAtIndexPath(indexPath) as Playlist
+            MediaSession.sharedSession.dataManager.datastore.deletePlaylistWithPlaylist(playlist, completion: { (error) -> () in
+                if error == nil {
+                    
+                } else {
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        UIAlertView(title: "Error!",
+                            message: "Unable to delete playlist!",
+                            delegate: self,
+                            cancelButtonTitle: "Ok").show()
+                    })
+                }
+            })
+        })
+
+        return [deleteAction]
+    }
+    
+    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+        switch type {
+        case .Delete:
+            if let path = indexPath {
+                self.tableView.deleteRowsAtIndexPaths([path], withRowAnimation: .Fade)
+            }
+        default: break
+        }
     }
 }

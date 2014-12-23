@@ -82,4 +82,45 @@ let _sharedSession = MediaSession()
         return artistsSections
     }
     
+    func playlistSongsForPlaylist(playlist: Playlist) -> MPMediaQuery {
+        println(playlist.persistentID.toInt())
+        let predicate = MPMediaPropertyPredicate(value: playlist.persistentID.toInt(),
+            forProperty: MPMediaPlaylistPropertyPersistentID,
+            comparisonType: .EqualTo)
+        let playlistSongsQuery = MPMediaQuery.playlistsQuery()
+        playlistSongsQuery.addFilterPredicate(predicate)
+        return playlistSongsQuery
+    }
+    
+    func itemForSong(song: Song) -> MPMediaItem? {
+        let query = MPMediaQuery.songsQuery()
+        let predicate = MPMediaPropertyPredicate(value: song.persistentID,
+            forProperty: MPMediaItemPropertyPersistentID,
+            comparisonType: .EqualTo)
+        query.addFilterPredicate(predicate)
+        
+        if query.items.count > 0 {
+            return query.items[0] as? MPMediaItem
+        } else {
+            return nil
+        }
+    }
+    
+    func collectionWithPlaylistSongs(songs: [AnyObject]) -> MPMediaItemCollection {
+        var items = NSMutableArray()
+        
+        for playlistSong in songs as [PlaylistSong] {
+            var query = MPMediaQuery.songsQuery()
+            println(playlistSong.song.persistentID)
+            let predicate = MPMediaPropertyPredicate(value: playlistSong.song.persistentID,
+                forProperty: MPMediaItemPropertyPersistentID,
+                comparisonType: .EqualTo)
+            query.addFilterPredicate(predicate)
+            items.addObjectsFromArray(query.items)
+        }
+        
+        println(items)
+        
+        return MPMediaItemCollection(items: items)
+    }
 }

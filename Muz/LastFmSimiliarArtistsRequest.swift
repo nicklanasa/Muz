@@ -9,7 +9,7 @@
 import Foundation
 
 protocol LastFmSimiliarArtistsRequestDelegate {
-    func LastFmSimiliarArtistsRequestDidComplete(request: LastFmSimiliarArtistsRequest, didCompleteWithLastFmArtists artists: [AnyObject]?)
+    func lastFmSimiliarArtistsRequestDidComplete(request: LastFmSimiliarArtistsRequest, didCompleteWithLastFmArtists artists: [AnyObject]?)
 }
 
 class LastFmSimiliarArtistsRequest: LastFmRequest {
@@ -39,9 +39,9 @@ class LastFmSimiliarArtistsRequest: LastFmRequest {
                 }
             }
             
-            self.delegate?.LastFmSimiliarArtistsRequestDidComplete(self, didCompleteWithLastFmArtists: artists)
+            self.delegate?.lastFmSimiliarArtistsRequestDidComplete(self, didCompleteWithLastFmArtists: artists)
         }) { (error) -> Void in
-            
+            self.delegate!.lastFmSimiliarArtistsRequestDidComplete(self, didCompleteWithLastFmArtists: [])
         }
     }
 }

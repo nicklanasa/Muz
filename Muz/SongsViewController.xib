@@ -6,8 +6,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SongsViewController" customModule="Muz" customModuleProvider="target">
             <connections>
-                <outlet property="activityIndicator" destination="18F-py-1j5" id="y1X-VP-fs0"/>
-                <outlet property="searchBar" destination="1y5-6N-emS" id="Vff-UM-cO6"/>
+                <outlet property="searchBar" destination="cgz-ba-8L1" id="EFM-dn-FNr"/>
+                <outlet property="searchDisplayController" destination="bA0-F8-zKu" id="7CH-Lm-PMe"/>
                 <outlet property="tableView" destination="LTZ-Jz-cQ7" id="2y2-Rn-tDq"/>
                 <outlet property="view" destination="ZPP-Pc-n5o" id="22o-Qh-Hed"/>
             </connections>
@@ -18,7 +18,7 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="55" sectionHeaderHeight="30" sectionFooterHeight="22" id="LTZ-Jz-cQ7">
-                    <rect key="frame" x="0.0" y="62.999996354035851" width="320" height="460"/>
+                    <rect key="frame" x="0.0" y="63.000001290265224" width="320" height="459"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -27,20 +27,20 @@
                     <color key="sectionIndexColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <color key="sectionIndexTrackingBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <searchBar key="tableHeaderView" contentMode="redraw" searchBarStyle="minimal" id="1y5-6N-emS">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                        <textInputTraits key="textInputTraits"/>
-                    </searchBar>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="P33-bK-1fM"/>
                         <outlet property="delegate" destination="-1" id="9mE-dd-ycc"/>
                     </connections>
                 </tableView>
-                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" id="18F-py-1j5">
-                    <rect key="frame" x="150" y="274" width="20" height="20"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                </activityIndicatorView>
+                <searchBar hidden="YES" contentMode="redraw" searchBarStyle="minimal" id="cgz-ba-8L1">
+                    <rect key="frame" x="0.0" y="16" width="320" height="44"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                    <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <textInputTraits key="textInputTraits"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="65w-fR-edd"/>
+                    </connections>
+                </searchBar>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -48,8 +48,17 @@
             <nil key="simulatedTopBarMetrics"/>
             <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
-            <point key="canvasLocation" x="207" y="36"/>
+            <point key="canvasLocation" x="194" y="34"/>
         </view>
+        <searchDisplayController id="bA0-F8-zKu">
+            <connections>
+                <outlet property="delegate" destination="-1" id="PnO-fI-U1p"/>
+                <outlet property="searchBar" destination="cgz-ba-8L1" id="T0F-CO-lX4"/>
+                <outlet property="searchContentsController" destination="-1" id="wvZ-mf-sFV"/>
+                <outlet property="searchResultsDataSource" destination="-1" id="Uw7-Jk-WPl"/>
+                <outlet property="searchResultsDelegate" destination="-1" id="v3a-iZ-vfs"/>
+            </connections>
+        </searchDisplayController>
     </objects>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

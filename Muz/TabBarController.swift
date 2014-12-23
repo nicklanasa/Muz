@@ -9,6 +9,14 @@
 import Foundation
 import UIKit
 
+enum TabBarItem: NSInteger {
+    case Artists
+    case Songs
+    case NowPlaying
+    case Playlists
+    case More
+}
+
 class TabBarController: UITabBarController {
     override func viewDidLoad() {
         let rect = CGRectMake(0, 0, 1, 1)
