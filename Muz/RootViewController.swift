@@ -170,4 +170,7 @@ class RootViewController: UIViewController {
         }
     }
     
+    override func prefersStatusBarHidden() -> Bool {
+        return false
+    }
 }

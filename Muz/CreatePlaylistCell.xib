@@ -7,11 +7,11 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="CreatePlaylistCell" customModule="Muz" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="223"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="214"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <segmentedControl opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="fLP-jh-ceL">
-                    <rect key="frame" x="144.99999956119279" y="176" width="163" height="29"/>
+                    <rect key="frame" x="144.99999956119282" y="176" width="163" height="29"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxY="YES"/>
                     <segments>
                         <segment title="25"/>
@@ -35,7 +35,7 @@
                 <label opaque="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Number of tracks" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ZAK-T5-nOw">
                     <rect key="frame" x="13" y="179" width="141" height="21"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="17"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="18"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -49,9 +49,9 @@
                     </connections>
                 </switch>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Smart" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="LTR-sE-OUa">
-                    <rect key="frame" x="13" y="135" width="99" height="26"/>
+                    <rect key="frame" x="13" y="135" width="183" height="26"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="17"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="18"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -66,7 +66,7 @@
                 <outlet property="smartLabel" destination="LTR-sE-OUa" id="oaS-Ai-sog"/>
                 <outlet property="smartSwitch" destination="pka-g6-g7x" id="KBl-qq-QQ5"/>
             </connections>
-            <point key="canvasLocation" x="176" y="-159.5"/>
+            <point key="canvasLocation" x="5" y="-186"/>
         </view>
     </objects>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

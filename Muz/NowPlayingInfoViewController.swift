@@ -127,13 +127,27 @@ LastFmTrackBuyLinksRequestDelegate {
     }
     
     func configureForItem() {
-        let stringURL = NSString(format: "http://search.azlyrics.com/search.php?q=%@ %@", self.item.artist, self.item.title).stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
-        let lyricsURL = NSURL(string: stringURL!)!
-        var request = LyricsRequest(url: lyricsURL, item: item)
-        request.delegate = self
-        request.sendURLRequest()
         
-        requestLastFmDataWithArtist(self.item.artist)
+        if SettingsManager.defaultManager.valueForMoreSetting(.Lyrics) {
+            let stringURL = NSString(format: "http://search.azlyrics.com/search.php?q=%@ %@", self.item.artist, self.item.title).stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
+            let lyricsURL = NSURL(string: stringURL!)!
+            var request = LyricsRequest(url: lyricsURL, item: item)
+            request.delegate = self
+            request.sendURLRequest()
+        } else {
+            segmentedControl.selectedSegmentIndex = 1
+            segmentedControl.setEnabled(false, forSegmentAtIndex: 0)
+            lyricsCell.activityIndicator.stopAnimating()
+        }
+        
+        if SettingsManager.defaultManager.valueForMoreSetting(.ArtistInfo) {
+            requestLastFmDataWithArtist(self.item.artist)
+        } else {
+            segmentedControl.selectedSegmentIndex = 0
+            segmentedControl.setEnabled(false, forSegmentAtIndex: 1)
+        }
+        
+        handleSegmentedControlChange()
     }
     
     func requestLastFmDataWithArtist(artistName: NSString?) {

@@ -21,7 +21,8 @@ class LastFmArtistEventsRequest: LastFmRequest {
         self.artist = artist
     }
     
-    func sendURLRequest() {
+    override func sendURLRequest() {
+        super.sendURLRequest()
         var lastFm = LastFm.sharedInstance()
         lastFm.apiKey = self.apiKey
         lastFm.apiSecret = self.apiSecret
@@ -38,10 +39,17 @@ class LastFmArtistEventsRequest: LastFmRequest {
                     }
                 }
                 
+                self.connectionDidFinishLoading(NSURLConnection())
                 self.delegate!.lastFmArtistEventsRequestDidComplete(self, didCompleteWithEvents: events)
             }
         }) { (error) -> Void in
+            self.connectionDidFinishLoading(NSURLConnection())
             self.delegate!.lastFmArtistEventsRequestDidComplete(self, didCompleteWithEvents: [])
+            
         }
+    }
+    
+    override func connectionDidFinishLoading(connection: NSURLConnection) {
+        super.connectionDidFinishLoading(connection)
     }
 }

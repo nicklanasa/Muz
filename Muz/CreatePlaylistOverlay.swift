@@ -20,14 +20,17 @@ UITableViewDelegate,
 UITableViewDataSource,
 UIScrollViewDelegate,
 CreatePlaylistCellDelegate,
-LastFmSimiliarArtistsRequestDelegate {
+LastFmSimiliarArtistsRequestDelegate,
+PlaylistsViewControllerDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     
     var createPlaylistCell: CreatePlaylistCell!
     var artist: NSString!
-    var item: MPMediaItem!
+    var items: [MPMediaItem]!
     var hud: MBProgressHUD!
+    
+    var existingPlaylist: Playlist?
     
     override init() {
         super.init(nibName: "CreatePlaylistOverlay", bundle: nil)
@@ -38,9 +41,12 @@ LastFmSimiliarArtistsRequestDelegate {
         super.init(nibName: "CreatePlaylistOverlay", bundle: nil)
     }
     
-    init(item: MPMediaItem!) {
-        self.item = item
-        self.artist = item.artist
+    init(items: [MPMediaItem]!) {
+        self.items = items
+        if items.count > 0 {
+            let firstItem: MPMediaItem = items[0] as MPMediaItem
+            self.artist = firstItem.artist
+        }
         super.init(nibName: "CreatePlaylistOverlay", bundle: nil)
     }
     
@@ -71,6 +77,12 @@ LastFmSimiliarArtistsRequestDelegate {
             bundle: nil)
         createPlaylistCell = nib.instantiateWithOwner(self, options: nil)[0] as CreatePlaylistCell
         createPlaylistCell.delegate = self
+        
+        if let artist = self.artist {
+            createPlaylistCell.smartSwitch.enabled = true
+        } else {
+            createPlaylistCell.smartSwitch.enabled = false
+        }
     }
     
     private func requestSimiliarArtists() {
@@ -97,7 +109,7 @@ LastFmSimiliarArtistsRequestDelegate {
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
+        return 2
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -105,12 +117,40 @@ LastFmSimiliarArtistsRequestDelegate {
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        return createPlaylistCell
+        if indexPath.section == 1 {
+            createPlaylistCell.selectionStyle = .None
+            return createPlaylistCell
+        } else {
+            var cell = UITableViewCell(style: .Default, reuseIdentifier: "Cell")
+            if let playlist = existingPlaylist {
+                cell.textLabel?.text = playlist.name
+            } else {
+                cell.textLabel?.text = "Add to existing playlist"
+            }
+            cell.textLabel?.font = MuzSettingFont
+            cell.textLabel?.textColor = UIColor.whiteColor()
+            cell.accessoryType = .DisclosureIndicator
+            return cell
+        }
+    }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        if indexPath.section == 1 {
+            return CreatePlaylistCellHeight
+        } else {
+            return 45.0
+        }
     }
     
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-    
+        if indexPath.section == 1 {
+            
+        } else {
+            var playlistsViewController = PlaylistsViewController(existingPlaylist: true)
+            playlistsViewController.delegate = self
+            self.navigationController?.pushViewController(playlistsViewController, animated: true)
+        }
     }
 
     func createPlaylistCell(cell: CreatePlaylistCell, didStartEditing textField: UITextField!) {
@@ -129,17 +169,40 @@ LastFmSimiliarArtistsRequestDelegate {
             hud.labelText = "Getting similiar artists"
             requestSimiliarArtists()
         } else {
-            createPlaylistWithArtist()
-        }
-    }
-    
-    func createPlaylistWithArtist() {
-        let name = createPlaylistCell.nameTextField.text
-        let playlistType = PlaylistType.None
-        MediaSession.sharedSession.dataManager.datastore.createPlaylistWithArtist(self.artist,
-            name: name,
-            playlistType: playlistType) { (addedSongs) -> () in
-            self.handleCreatePlaylistFinishWithAddedSongs(addedSongs)
+            if let artist = self.artist {
+                if let playlist = existingPlaylist {
+                    if let items = self.items {
+                        // Create playlist with items.
+                        MediaSession.sharedSession.dataManager.datastore.addItemsToPlaylist(items, playlist: playlist, completion: { (addedSongs) -> () in
+                            self.handleCreatePlaylistFinishWithAddedSongs(addedSongs)
+                        })
+                    } else {
+                        // Create playlist with artist items.
+                        MediaSession.sharedSession.dataManager.datastore.addArtistSongsToPlaylist(playlist, artist: artist, completion: { (addedSongs) -> () in
+                            self.handleCreatePlaylistFinishWithAddedSongs(addedSongs)
+                        })
+                    }
+                } else {
+                    if let items = self.items {
+                        MediaSession.sharedSession.dataManager.datastore.createPlaylistWithItems(createPlaylistCell.nameTextField.text, items: items, completion: { (addedSongs) -> () in
+                            self.handleCreatePlaylistFinishWithAddedSongs(addedSongs)
+                        })
+                    } else {
+                        MediaSession.sharedSession.dataManager.datastore.createPlaylistWithArtist(self.artist,
+                            name: createPlaylistCell.nameTextField.text,
+                            playlistType: .None) { (addedSongs) -> () in
+                                self.handleCreatePlaylistFinishWithAddedSongs(addedSongs)
+                        }
+                    }
+                }
+            } else {
+                MediaSession.sharedSession.dataManager.datastore.createEmptyPlaylistWithName(createPlaylistCell.nameTextField.text,
+                    playlistType: .None) { () -> () in
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        self.dismiss()
+                    })
+                }
+            }
         }
     }
     
@@ -150,11 +213,23 @@ LastFmSimiliarArtistsRequestDelegate {
             } else {
                 let errorMessage = "Unable to find any songs based on \(self.artist)"
                 UIAlertView(title: "Error!", message: errorMessage, delegate: self, cancelButtonTitle: "Ok").show()
+                self.hud.hide(true)
             }
         })
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
         createPlaylistCell.nameTextField.resignFirstResponder()
+    }
+    
+    func playlistsViewController(controller: PlaylistsViewController, didSelectPlaylist playlist: Playlist) {
+        self.existingPlaylist = playlist
+        self.tableView.reloadData()
+        
+        createPlaylistCell.smartSwitch.on = false
+        createPlaylistCell.smartSwitchDidChange(createPlaylistCell.smartSwitch)
+        createPlaylistCell.smartSwitch.enabled = false
+        createPlaylistCell.nameTextField.text = ""
+        createPlaylistCell.nameTextField.enabled = false
     }
 }

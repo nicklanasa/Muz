@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "1FB19466432E383A73CEA303"
+               BlueprintIdentifier = "209985456641DD83372F4E1F"
                BuildableName = "libPods-NSString-HTML.a"
                BlueprintName = "Pods-NSString-HTML"
                ReferencedContainer = "container:Pods.xcodeproj">

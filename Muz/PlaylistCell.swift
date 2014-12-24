@@ -34,7 +34,7 @@ class PlaylistCell: UITableViewCell {
             case .Genius:
                 playlistTypeImageView.image = UIImage(named: "genius")
             case .Smart:
-                playlistTypeImageView.image = UIImage(named: "smart")
+                playlistTypeImageView.image = UIImage(named: "science")
             default:
                 playlistTypeImageView.image = UIImage(named: "playlistsWhite")
             }

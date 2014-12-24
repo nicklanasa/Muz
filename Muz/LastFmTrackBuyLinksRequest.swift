@@ -23,7 +23,7 @@ class LastFmTrackBuyLinksRequest: LastFmRequest {
         self.title = title
     }
     
-    func sendURLRequest() {
+    override func sendURLRequest() {
         var lastFm = LastFm.sharedInstance()
         lastFm.apiKey = self.apiKey
         lastFm.apiSecret = self.apiSecret
@@ -40,10 +40,16 @@ class LastFmTrackBuyLinksRequest: LastFmRequest {
                     }
                 }
                 
+                self.connectionDidFinishLoading(NSURLConnection())
                 self.delegate!.lastFmTrackBuyLinksRequestDidComplete(self, didCompleteWithBuyLinks: links)
             }
         }) { (error) -> Void in
+            self.connectionDidFinishLoading(NSURLConnection())
             self.delegate!.lastFmTrackBuyLinksRequestDidComplete(self, didCompleteWithBuyLinks: [])
         }
+    }
+    
+    override func connectionDidFinishLoading(connection: NSURLConnection) {
+        super.connectionDidFinishLoading(connection)
     }
 }

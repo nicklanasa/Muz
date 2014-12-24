@@ -9,6 +9,8 @@
 import Foundation
 import UIKit
 
+let CreatePlaylistCellHeight: CGFloat = 214.0
+
 protocol CreatePlaylistCellDelegate {
     func createPlaylistCell(cell: CreatePlaylistCell, didStartEditing textField: UITextField!)
     func createPlaylistCell(cell: CreatePlaylistCell, shouldReturn textField: UITextField!)

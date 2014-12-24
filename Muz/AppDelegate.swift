@@ -11,9 +11,10 @@ import UIKit
 let MuzFontName = "HelveticaNeue-Thin"
 let MuzFontNameMedium = "HelveticaNeue-Medium"
 let MuzFont = UIFont(name: MuzFontName, size: 11)!
+let MuzSettingFont = UIFont(name: MuzFontName, size: 21)!
 let MuzTitleFont = UIFont(name: MuzFontNameMedium, size: 18)!
 let MuzColor = UIColor.whiteColor()
-let MuzBlueColor = UIColor(red:0/255, green: 242/255, blue: 219/255, alpha: 1.0)
+let MuzBlueColor = UIColor(red:255/255, green: 184/255, blue: 60/255, alpha: 1.0)
 let MuzGrayColor = UIColor(red:102/255, green: 102/255, blue: 102/255, alpha: 1.0)
 
 @UIApplicationMain
@@ -36,6 +37,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UITableView.appearance().separatorStyle = .None
         UITableView.appearance().separatorColor = UIColor.whiteColor()
         UITextField.appearance().textColor = UIColor.whiteColor()
+        UISwitch.appearance().onTintColor = MuzBlueColor
+        
+        UIApplication.sharedApplication().statusBarHidden = false
         
         let mainScreen = UIScreen.mainScreen()
         let window = UIWindow(frame: mainScreen.bounds)

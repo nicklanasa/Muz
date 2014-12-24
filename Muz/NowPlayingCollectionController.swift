@@ -85,31 +85,4 @@ UITableViewDataSource {
         
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
-    
-    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
-        
-        let addToPlaylistAction = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: "Add to Playlist", handler: { (action, indexPath) -> Void in
-            
-        })
-        
-        return [addToPlaylistAction]
-    }
-    
-    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if currentlyPlayingCollection == nil {
-            return 0
-        }
-        return 75
-    }
-    
-    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if let song = currentlyPlayingCollection?.representativeItem {
-            let header = tableView.dequeueReusableHeaderFooterViewWithIdentifier("Header") as ArtistAlbumHeader
-            header.updateWithItem(song)
-            return header
-        }
-        
-        return nil
-    }
-    
 }

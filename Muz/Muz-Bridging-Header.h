@@ -12,3 +12,4 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <LastFm/LastFm.h>
 #import "MBProgressHUD.h"
+#import "UIImage+Resize.h"

@@ -14,7 +14,8 @@ import MediaPlayer
 class ArtistAlbumsViewController: RootViewController,
     UITableViewDelegate,
     UITableViewDataSource,
-NSFetchedResultsControllerDelegate {
+NSFetchedResultsControllerDelegate,
+ArtistAlbumHeaderDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
@@ -115,9 +116,11 @@ NSFetchedResultsControllerDelegate {
             return nil
         }
         
-        if let section = albums?[section] as? MPMediaItemCollection {
+        if let mediaSection = albums?[section] as? MPMediaItemCollection {
             let header = tableView.dequeueReusableHeaderFooterViewWithIdentifier("Header") as ArtistAlbumHeader
-            header.updateWithItem(section.representativeItem)
+            header.updateWithItem(mediaSection.representativeItem)
+            header.section = section
+            header.delegate = self
             return header
         } else {
             return nil
@@ -143,10 +146,25 @@ NSFetchedResultsControllerDelegate {
     }
     
     func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
-        let addToPlaylistAction = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: "Add to Playlist", handler: { (action, indexPath) -> Void in
-            
+        let addToPlaylistAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Add to Playlist", handler: { (action, indexPath) -> Void in
+            if let songs = self.albums?[indexPath.section] as? MPMediaItemCollection {
+                if let song = songs.items[indexPath.row] as? MPMediaItem {
+                    let createPlaylistOverlay = CreatePlaylistOverlay(items: [song])
+                    self.presentModalOverlayController(createPlaylistOverlay, blurredController: self)
+                }
+            }
         })
         
         return [addToPlaylistAction]
+    }
+    
+    func artistAlbumHeader(header: ArtistAlbumHeader, moreButtonTapped sender: AnyObject) {
+        let header = tableView.headerViewForSection(header.section) as ArtistAlbumHeader
+        if let songs = albums?[header.section] as? MPMediaItemCollection {
+            if songs.items.count > 0 {
+                let createPlaylistOverlay = CreatePlaylistOverlay(artist: songs.representativeItem.artist)
+                presentModalOverlayController(createPlaylistOverlay, blurredController: self)
+            }
+        }
     }
 }

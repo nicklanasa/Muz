@@ -176,7 +176,7 @@ UISearchDisplayDelegate {
     }
     
     func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
-        let addToPlaylistAction = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: "Add to Playlist", handler: { (action, indexPath) -> Void in
+        let addToPlaylistAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Add to Playlist", handler: { (action, indexPath) -> Void in
             
             let section = self.artistsQuery?.collectionSections[indexPath.section] as MPMediaQuerySection
             var artists: [AnyObject]?
@@ -202,8 +202,7 @@ UISearchDisplayDelegate {
     
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
         if countElements(searchText) == 0 {
-            artistsQuery = MediaSession.sharedSession.artistsQueryWithFilters(nil)
-            filteredArtists = MediaSession.sharedSession.artistsCollectionWithQuery(artistsQuery!)
+            fetchArtists()
         } else {
             let artistPredicate = MPMediaPropertyPredicate(value: searchText, forProperty: MPMediaItemPropertyArtist, comparisonType: .Contains)
             
@@ -212,6 +211,11 @@ UISearchDisplayDelegate {
             filteredArtistsSections = MediaSession.sharedSession.artistsSectionIndexTitles(artistsQuery!)
         }
         
+        tableView.reloadData()
+    }
+    
+    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+        fetchArtists()
         tableView.reloadData()
     }
     

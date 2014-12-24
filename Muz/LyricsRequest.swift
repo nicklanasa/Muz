@@ -13,7 +13,7 @@ protocol LyricsRequestDelegate {
     func lyricsRequestDidComplete(request: LyricsRequest, didCompleteWithLyrics lyrics: String?)
 }
 
-class LyricsRequest: NSObject, NSURLConnectionDataDelegate, NSURLConnectionDelegate {
+class LyricsRequest: WebRequest {
     
     let url: NSURL?
     let item: MPMediaItem?
@@ -26,7 +26,8 @@ class LyricsRequest: NSObject, NSURLConnectionDataDelegate, NSURLConnectionDeleg
         self.item = item
     }
     
-    func sendURLRequest() {
+    override func sendURLRequest() {
+        super.sendURLRequest()
         let request = NSURLRequest(URL: self.url!)
         let connection = NSURLConnection(request: request, delegate: self)
         connection?.start()
@@ -36,7 +37,9 @@ class LyricsRequest: NSObject, NSURLConnectionDataDelegate, NSURLConnectionDeleg
         responseData.appendData(data)
     }
     
-    func connectionDidFinishLoading(connection: NSURLConnection) {
+    override func connectionDidFinishLoading(connection: NSURLConnection) {
+        super.connectionDidFinishLoading(connection)
+        
         if responseData.length > 0 {
             if let html = NSString(data: responseData, encoding: NSUTF8StringEncoding) {
                 self.parseHTML(html)

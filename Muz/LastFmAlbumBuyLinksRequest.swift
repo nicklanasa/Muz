@@ -23,7 +23,8 @@ class LastFmAlbumBuyLinksRequest: LastFmRequest {
         self.album = album
     }
     
-    func sendURLRequest() {
+    override func sendURLRequest() {
+        super.sendURLRequest()
         var lastFm = LastFm.sharedInstance()
         lastFm.apiKey = self.apiKey
         lastFm.apiSecret = self.apiSecret
@@ -40,12 +41,18 @@ class LastFmAlbumBuyLinksRequest: LastFmRequest {
                     }
                 }
                 
+                self.connectionDidFinishLoading(NSURLConnection())
                 self.delegate!.lastFmAlbumBuyLinksRequestDidComplete(self, didCompleteWithBuyLinks: links)
             }
 
         }) { (error) -> Void in
+            self.connectionDidFinishLoading(NSURLConnection())
             self.delegate!.lastFmAlbumBuyLinksRequestDidComplete(self, didCompleteWithBuyLinks: [])
         }
         
+    }
+    
+    override func connectionDidFinishLoading(connection: NSURLConnection) {
+        super.connectionDidFinishLoading(connection)
     }
 }

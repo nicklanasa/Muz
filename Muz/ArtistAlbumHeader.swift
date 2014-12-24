@@ -20,8 +20,13 @@ class ArtistAlbumHeader: UITableViewHeaderFooterView {
     @IBOutlet weak var yearLabel: UILabel!
     @IBOutlet weak var albumImageView: UIImageView!
     @IBOutlet weak var moreButton: UIButton!
+    
+    var delegate: ArtistAlbumHeaderDelegate?
+    
+    var section: Int!
+    
     override func awakeFromNib() {
-
+        
     }
     
     override func prepareForReuse() {
@@ -29,7 +34,7 @@ class ArtistAlbumHeader: UITableViewHeaderFooterView {
     }
     
     @IBAction func moreButtonTapped(sender: AnyObject) {
-        UIAlertView(title: "woot!", message: "", delegate: self, cancelButtonTitle: "ok").show()
+        self.delegate?.artistAlbumHeader(self, moreButtonTapped: sender)
     }
     
     func updateWithItem(item: MPMediaItem) {

@@ -164,7 +164,7 @@ UISearchDisplayDelegate {
             let section = self.songsQuery?.itemSections[indexPath.section] as MPMediaQuerySection
             
             if let song = self.songs?[indexPath.row + section.range.location] as? MPMediaItem {
-                let createPlaylistOverlay = CreatePlaylistOverlay(item: song)
+                let createPlaylistOverlay = CreatePlaylistOverlay(items: [song])
                 self.presentModalOverlayController(createPlaylistOverlay, blurredController: self)
             }
         })
@@ -184,6 +184,10 @@ UISearchDisplayDelegate {
             songsQuery?.addFilterPredicate(songPredicate)
             fetchSongsWithPredicate(songPredicate)
         }
+    }
+    
+    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+        fetchSongsWithPredicate(nil)
     }
     
     func searchDisplayControllerWillBeginSearch(controller: UISearchDisplayController) {

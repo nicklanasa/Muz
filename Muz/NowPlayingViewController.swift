@@ -18,11 +18,7 @@ NowPlayingCollectionControllerDelegate {
     private var songTimer: NSTimer?
     var collection: MPMediaItemCollection?
     private var pinchGesture: UIPinchGestureRecognizer!
-    
-    lazy var nowPlayingInfoController: NowPlayingInfoViewController = {
-        var nowPlayingInfoViewController = NowPlayingInfoViewController()
-        return nowPlayingInfoViewController
-    }()
+    var isLandscaped = false
     
     @IBOutlet weak var artwork: UIImageView!
     @IBOutlet weak var songLabel: UILabel!
@@ -49,10 +45,18 @@ NowPlayingCollectionControllerDelegate {
             self.item = playerController.nowPlayingItem
             configureWithItem()
         }
-    }
-    
-    override func viewWillDisappear(animated: Bool) {
-        //hideInfoController(nil)
+        
+        println(UIDevice.currentDevice().orientation.rawValue)
+        if UIDevice.currentDevice().orientation == .Unknown ||
+        UIDevice.currentDevice().orientation == .Portrait ||
+            UIDevice.currentDevice().orientation == .FaceUp ||
+            UIDevice.currentDevice().orientation == .FaceDown {
+            artwork.hidden = false
+            isLandscaped = false
+        } else {
+            artwork.hidden = true
+            isLandscaped = true
+        }
     }
     
     private func configureWithItem() {
@@ -163,8 +167,17 @@ NowPlayingCollectionControllerDelegate {
     }
     
     @IBAction func infoButtonPressed(sender: AnyObject) {
-        var controller = NowPlayingInfoViewController(item: self.item)
-        self.navigationController?.pushViewController(controller, animated: true)
+        if let item = self.item {
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                var controller = NowPlayingInfoViewController(item: self.item)
+                self.navigationController?.pushViewController(controller, animated: true)
+            })
+        } else {
+            UIAlertView(title: "Error!",
+                message: "You must be listening to a track to see info.",
+                delegate: self,
+                cancelButtonTitle: "Ok").show()
+        }
     }
     
     @IBAction func shuffleButtonPressed(sender: AnyObject) {
@@ -196,21 +209,16 @@ NowPlayingCollectionControllerDelegate {
     }
     
     func showInfoController(gesture: UIPinchGestureRecognizer?) {
-        
         UIView.animateWithDuration(0.3, animations: { () -> Void in
-            
             UIView.animateWithDuration(0.3, animations: { () -> Void in
                 self.hideNowPlayingViews()
-                self.nowPlayingInfoController.view.alpha = 1.0
             })
-            
         })
     }
     
     func hideInfoController(gesture: UIPinchGestureRecognizer?) {
         UIView.animateWithDuration(0.3, animations: { () -> Void in
             self.showNowPlayingViews()
-            self.nowPlayingInfoController.view.alpha = 0.0
         })
     }
     
@@ -222,8 +230,6 @@ NowPlayingCollectionControllerDelegate {
             self.shuffleButton.alpha = 0.0
             self.repeatButton.alpha = 0.0
             self.infoButton.alpha = 0.0
-            
-            self.nowPlayingInfoController.segmentedControl.alpha = 1.0
         })
     }
     
@@ -250,7 +256,7 @@ NowPlayingCollectionControllerDelegate {
             playerController.stop()
             playerController.play()
         } else {
-            playerController.skipToNextItem()
+            self.playerController.skipToNextItem()
         }
     }
     
@@ -339,10 +345,14 @@ NowPlayingCollectionControllerDelegate {
         if toInterfaceOrientation == .Portrait {
             UIView.animateWithDuration(0.1, animations: { () -> Void in
                 self.artwork.alpha = 1.0
+                self.artwork.hidden = false
+                self.isLandscaped = false
             })
         } else {
             UIView.animateWithDuration(0.1, animations: { () -> Void in
                 self.artwork.alpha = 0.0
+                self.artwork.hidden = true
+                self.isLandscaped = true
             })
         }
     }

@@ -13,7 +13,8 @@ import MediaPlayer
 
 class LastFmEventInfoController: RootViewController,
 UITableViewDelegate,
-UITableViewDataSource {
+UITableViewDataSource,
+LastFmEventInfoDetailsCellDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     
@@ -49,6 +50,11 @@ UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCellWithIdentifier("LastFmEventInfoDetailsCell") as LastFmEventInfoDetailsCell
         cell.updateWithEvent(event)
+        cell.delegate = self
         return cell
+    }
+    
+    func lastFmEventInfoDetailsCell(cell: LastFmEventInfoDetailsCell, didTapViewMapButton sender: AnyObject) {
+        self.navigationController?.pushViewController(LastFmEventMapController(event: event), animated: true)
     }
 }

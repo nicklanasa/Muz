@@ -11,6 +11,10 @@ import UIKit
 import MediaPlayer
 import CoreData
 
+protocol PlaylistsViewControllerDelegate {
+    func playlistsViewController(controller: PlaylistsViewController, didSelectPlaylist playlist: Playlist)
+}
+
 class PlaylistsViewController: RootViewController,
     UITableViewDelegate,
 UITableViewDataSource,
@@ -18,9 +22,12 @@ NSFetchedResultsControllerDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
+    let isForExistingPlaylist = false
     
     // The NSFetchedResultsController used to pull tasks for the selected date.
     var playlistsController: NSFetchedResultsController?
+    
+    var delegate: PlaylistsViewControllerDelegate?
     
     override init() {
         super.init(nibName: "PlaylistsViewController", bundle: nil)
@@ -29,6 +36,11 @@ NSFetchedResultsControllerDelegate {
             image: UIImage(named: "playlists"),
             selectedImage: UIImage(named: "playlists"))
         self.tabBarItem.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0)
+    }
+    
+    init(existingPlaylist: Bool) {
+        super.init(nibName: "PlaylistsViewController", bundle: nil)
+        self.isForExistingPlaylist = existingPlaylist
     }
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
@@ -51,18 +63,26 @@ NSFetchedResultsControllerDelegate {
         tableView.registerNib(UINib(nibName: "SongsHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "Header")
         self.navigationItem.title = "Playlists"
     
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "add"),
-            style: .Plain,
-            target: self,
-            action: "addPlaylist");
+        if !isForExistingPlaylist {
+            self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "add"),
+                style: .Plain,
+                target: self,
+                action: "addPlaylist");
+        }
     }
     
     func addPlaylist() {
-        
+        presentModalOverlayController(CreatePlaylistOverlay(), blurredController: self)
     }
     
     func fetchPlaylists() {
-        playlistsController = MediaSession.sharedSession.dataManager.datastore.playlistsControllerWithSectionName(nil)
+        if !isForExistingPlaylist {
+            playlistsController = MediaSession.sharedSession.dataManager.datastore.playlistsControllerWithSectionName(nil, predicate: nil)
+        } else {
+            let predicate = NSPredicate(format: "persistentID == ''")
+            playlistsController = MediaSession.sharedSession.dataManager.datastore.playlistsControllerWithSectionName(nil, predicate: predicate)
+        }
+        
         playlistsController?.delegate = self
         var error: NSError?
         if playlistsController!.performFetch(&error) {
@@ -92,10 +112,21 @@ NSFetchedResultsControllerDelegate {
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        let playlist = playlistsController?.objectAtIndexPath(indexPath) as Playlist
-        let playlistSongsViewController = PlaylistSongsViewController(playlist: playlist)
-        self.navigationController?.pushViewController(playlistSongsViewController, animated: true)
+        if !isForExistingPlaylist {
+            tableView.deselectRowAtIndexPath(indexPath, animated: true)
+            let playlist = playlistsController?.objectAtIndexPath(indexPath) as Playlist
+            let playlistSongsViewController = PlaylistSongsViewController(playlist: playlist)
+            self.navigationController?.pushViewController(playlistSongsViewController, animated: true)
+        } else {
+            let playlist = playlistsController?.objectAtIndexPath(indexPath) as Playlist
+            
+            self.navigationController?.popViewControllerAnimated(true)
+            self.dismissWithPlaylist(playlist)
+        }
+    }
+    
+    private func dismissWithPlaylist(playlist: Playlist) {
+        self.delegate?.playlistsViewController(self, didSelectPlaylist: playlist)
     }
     
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {

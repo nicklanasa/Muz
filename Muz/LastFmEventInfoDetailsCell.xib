@@ -22,31 +22,27 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="25S-8t-qXG">
-                    <rect key="frame" x="8" y="408" width="282" height="20"/>
+                    <rect key="frame" x="8" y="200" width="282" height="20"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="17"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Headliner" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="xYh-fK-k9j">
-                    <rect key="frame" x="8" y="359" width="282" height="21"/>
+                    <rect key="frame" x="8" y="151" width="282" height="21"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="17"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" id="Xa4-WB-hhv">
-                    <rect key="frame" x="8" y="436" width="304" height="155"/>
+                    <rect key="frame" x="8" y="228" width="304" height="155"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="17"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>
-                <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" id="22o-Tv-wES">
-                    <rect key="frame" x="8" y="156" width="304" height="194"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
-                </mapView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10/15/15" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="g1U-VM-UiT">
                     <rect key="frame" x="117" y="43" width="81" height="23"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -55,7 +51,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Attendence" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="hnj-d6-HYc">
-                    <rect key="frame" x="8" y="383" width="282" height="21"/>
+                    <rect key="frame" x="8" y="175" width="282" height="21"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="17"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -81,6 +77,19 @@
                         <action selector="linkButtonTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="hab-sj-VLE"/>
                     </connections>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="xQu-Pp-cGy">
+                    <rect key="frame" x="237" y="70" width="75" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
+                    <state key="normal" title="View map">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="viewMapButtonTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="wzK-WK-Dvo"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
             <nil key="simulatedStatusBarMetrics"/>
@@ -94,8 +103,8 @@
                 <outlet property="headLinerLabel" destination="xYh-fK-k9j" id="hmh-QV-eo4"/>
                 <outlet property="linkButton" destination="lN4-f4-n3Y" id="gOf-eZ-xjz"/>
                 <outlet property="locationLabel" destination="wZq-M4-3Bo" id="9cN-0C-DWs"/>
-                <outlet property="mapView" destination="22o-Tv-wES" id="LCg-iU-o7f"/>
                 <outlet property="titleLabel" destination="ocg-cs-9y8" id="XKl-BY-EJ7"/>
+                <outlet property="viewMapButton" destination="xQu-Pp-cGy" id="Z20-3V-5k1"/>
             </connections>
             <point key="canvasLocation" x="-66" y="80"/>
         </view>

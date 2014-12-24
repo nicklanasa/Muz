@@ -23,7 +23,8 @@ class LastFmArtistInfoRequest: LastFmRequest {
         self.artist = artist
     }
     
-    func sendURLRequest() {
+    override func sendURLRequest() {
+        super.sendURLRequest()
         var lastFm = LastFm.sharedInstance()
         lastFm.apiKey = "d55a72556285ca314e7af8b0fb093e29"
         lastFm.apiSecret = "affa81f90053b2114888298f3aeb27b9"
@@ -31,9 +32,14 @@ class LastFmArtistInfoRequest: LastFmRequest {
         
         lastFm.getInfoForArtist(self.artist, successHandler: { (info) -> Void in
             let artist = LastFmArtist(JSON: info)
+            self.connectionDidFinishLoading(NSURLConnection())
             self.delegate?.lastFmArtistInfoRequestDidComplete(self, didCompleteWithLastFmArtist: artist)
         }) { (error) -> Void in
-
+            self.connectionDidFinishLoading(NSURLConnection())
         }
+    }
+    
+    override func connectionDidFinishLoading(connection: NSURLConnection) {
+        super.connectionDidFinishLoading(connection)
     }
 }
