@@ -45,14 +45,16 @@ NSFetchedResultsControllerDelegate {
     override func viewWillAppear(animated: Bool) {
         fetchPlaylistSongs()
         super.viewWillAppear(animated)
+        
+        self.screenName = "Playlist songs"
+        
+        self.navigationItem.title = self.playlist.name
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tableView.registerNib(UINib(nibName: "SongCell", bundle: nil), forCellReuseIdentifier: "Cell")
-        
-        self.navigationItem.title = self.playlist.name
         
         var songs = NSSet(set: self.playlist.playlistSongs)
         let sort = NSSortDescriptor(key: "order", ascending: true)

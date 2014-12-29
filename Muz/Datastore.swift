@@ -108,6 +108,10 @@ class Datastore {
                     let endTime = NSDate()
                     let executionTime = endTime.timeIntervalSinceDate(startTime)
                     NSLog("addSongs() - executionTime = %f\n addedSongs count: %d\n existedSongs count: %d", (executionTime * 1000), addedSongs.count, existedSongs.count);
+                    
+                    if error != nil {
+                        LocalyticsSession.shared().tagEvent("Unabled to save added songs. addSongs()")
+                    }
                 })
             }
         }
@@ -116,6 +120,20 @@ class Datastore {
     }
     
     func addPlaylists() {
+        
+        var error: NSError?
+        
+        var deleteRequest = NSFetchRequest(entityName: "Playlist")
+        let deletePredicate = NSPredicate(format: "persistentID != ''")
+        deleteRequest.predicate = deletePredicate
+        let deleteResults = self.workerContext.executeFetchRequest(deleteRequest, error: &error)
+        
+        if deleteResults?.count > 0 {
+            for playlist in deleteResults as [Playlist] {
+                println("Deleted playlist with name = \(playlist.name)")
+                self.workerContext.deleteObject(playlist)
+            }
+        }
         
         let playlistQuery = MPMediaQuery.playlistsQuery()
         let playlists = playlistQuery.collections
@@ -179,6 +197,8 @@ class Datastore {
             
             playlist.playlistSongs = playlistSongs
         }
+            
+        LocalyticsSession.shared().tagEvent("createPlaylistWithSimiliarArtists()")
         
         self.saveDatastoreWithCompletion { (error) -> () in
             if results?.count > 0 {
@@ -229,6 +249,8 @@ class Datastore {
             
             playlist.playlistSongs = playlistSongs
         }
+            
+        LocalyticsSession.shared().tagEvent("createPlaylistWithArtist()")
         
         self.saveDatastoreWithCompletion { (error) -> () in
             if results?.count > 0 {
@@ -273,6 +295,8 @@ class Datastore {
                 playlist.playlistSongs = combinedSongs
             }
             
+            LocalyticsSession.shared().tagEvent("addArtistSongsToPlaylist()")
+            
             self.saveDatastoreWithCompletion { (error) -> () in
                 if results?.count > 0 {
                     completion(addedSongs: results)
@@ -284,7 +308,7 @@ class Datastore {
     
     func createPlaylistWithItems(name: NSString, items: [AnyObject]!, completion: (addedSongs: [AnyObject]?) -> ()) {
         let playlist = NSEntityDescription.insertNewObjectForEntityForName("Playlist",
-            inManagedObjectContext: self.workerContext) as Playlist
+            inManagedObjectContext: self.mainQueueContext) as Playlist
         playlist.name = name
         playlist.playlistType = NSNumber(unsignedLong: PlaylistType.None.rawValue)
         playlist.persistentID = ""
@@ -295,7 +319,7 @@ class Datastore {
         for item in items as [MPMediaItem] {
             if let song = self.songForSongName(item.title, artist: item.artist) {
                 let playlistSong = NSEntityDescription.insertNewObjectForEntityForName("PlaylistSong",
-                    inManagedObjectContext: self.workerContext) as PlaylistSong
+                    inManagedObjectContext: self.mainQueueContext) as PlaylistSong
                 
                 playlistSong.parseSong(song, playlist: playlist, order: order)
                 playlistSongs.addObject(playlistSong)
@@ -305,6 +329,8 @@ class Datastore {
         }
         
         playlist.playlistSongs = playlistSongs
+        
+        LocalyticsSession.shared().tagEvent("createPlaylistWithItems()")
         
         self.saveDatastoreWithCompletion { (error) -> () in
             completion(addedSongs: playlistSongs.allObjects)
@@ -341,6 +367,8 @@ class Datastore {
         playlist.playlistType = NSNumber(unsignedLong: playlistType.rawValue)
         playlist.persistentID = ""
         
+        LocalyticsSession.shared().tagEvent("createEmptyPlaylistWithName()")
+        
         self.saveDatastoreWithCompletion { (error) -> () in
             completion()
         } 
@@ -348,6 +376,7 @@ class Datastore {
     
     private func createPlaylistWithPlaylist(playlist: MPMediaPlaylist, context: NSManagedObjectContext) -> Playlist {
         var error: NSError?
+        
         var request = NSFetchRequest(entityName: "Playlist")
         let predicate = NSPredicate(format: "persistentID = %@", String(playlist.persistentID))
         request.predicate = predicate
@@ -661,6 +690,8 @@ class Datastore {
         let sort = NSSortDescriptor(key: "persistentID", ascending: true)
         request.sortDescriptors = [sort]
         
+        LocalyticsSession.shared().tagEvent("updatePlaylistSongOrder()")
+        
         return NSFetchedResultsController(fetchRequest: request,
             managedObjectContext: self.mainQueueContext,
             sectionNameKeyPath: sectionNameKeyPath,
@@ -676,6 +707,8 @@ class Datastore {
             if error == nil {
                 self.workerContext.deleteObject(object!)
             }
+            
+            LocalyticsSession.shared().tagEvent("deletePlaylistWithPlaylist()")
             
             self.saveDatastoreWithCompletion { (error) -> () in
                 if error != nil {

@@ -50,5 +50,13 @@ class ArtistAlbumHeader: UITableViewHeaderFooterView {
         } else {
             albumLabel.text = "Unknown Album"
         }
+        
+        if let date = item.releaseDate {
+            let components = NSCalendar.currentCalendar().components(.CalendarUnitYear, fromDate: item.releaseDate)
+            yearLabel.text = "\(components.year)"
+        } else {
+            yearLabel.text = ""
+        }
+        
     }
 }

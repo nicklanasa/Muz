@@ -56,6 +56,7 @@ UISearchDisplayDelegate {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        self.tableView.setEditing(false, animated: true)
     }
 
     override func viewDidLoad() {
@@ -66,13 +67,13 @@ UISearchDisplayDelegate {
         
         searchDisplayController?.searchResultsTableView.registerNib(UINib(nibName: "ArtistCell", bundle: nil), forCellReuseIdentifier: "Cell")
         searchDisplayController?.searchResultsTableView.registerNib(UINib(nibName: "ArtistsHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "Header")
-    
-        self.navigationItem.title = "Artists"
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "search"),
             style: .Plain,
             target: self,
             action: "showSearch")
+        
+        self.screenName = "Artists"
         
         fetchArtists()
     }
@@ -107,10 +108,12 @@ UISearchDisplayDelegate {
         let section = self.artistsQuery?.collectionSections[indexPath.section] as MPMediaQuerySection
         
         if tableView == self.searchDisplayController?.searchResultsTableView {
-            if let songs = filteredArtists?[indexPath.row + section.range.location] as? MPMediaItemCollection {
-                if let song = songs.representativeItem {
-                    cell.updateWithItem(song)
-                    cell.infoLabel.text = NSString(format: "%d %@", songs.count, songs.count == 1 ? "song" : "songs")
+            if indexPath.row + section.range.location < filteredArtists?.count {
+                if let songs = filteredArtists?[indexPath.row + section.range.location] as? MPMediaItemCollection {
+                    if let song = songs.representativeItem {
+                        cell.updateWithItem(song)
+                        cell.infoLabel.text = NSString(format: "%d %@", songs.count, songs.count == 1 ? "song" : "songs")
+                    }
                 }
             }
         } else {

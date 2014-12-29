@@ -30,7 +30,7 @@
             <nil key="simulatedStatusBarMetrics"/>
             <nil key="simulatedTopBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
-            <point key="canvasLocation" x="146" y="293"/>
+            <point key="canvasLocation" x="-132" y="289"/>
         </view>
         <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="lwJ-hU-qXs">
             <rect key="frame" x="0.0" y="0.0" width="177" height="29"/>

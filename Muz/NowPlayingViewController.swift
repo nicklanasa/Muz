@@ -26,6 +26,7 @@ NowPlayingCollectionControllerDelegate {
     @IBOutlet weak var repeatButton: UIButton!
     @IBOutlet weak var infoButton: UIButton!
     @IBOutlet weak var progressSlider: UISlider!
+    @IBOutlet weak var tutorialView: UIView!
     
     let playerController = MPMusicPlayerController.iPodMusicPlayer()
     
@@ -43,20 +44,18 @@ NowPlayingCollectionControllerDelegate {
     override func viewWillAppear(animated: Bool) {
         if self.item == nil && playerController.nowPlayingItem != nil {
             self.item = playerController.nowPlayingItem
-            configureWithItem()
+            
+            if playerController.playbackState != .Playing {
+                configureWithItem()
+            } else {
+                updateNowPlayingWithItem(self.item)
+            }
         }
         
-        println(UIDevice.currentDevice().orientation.rawValue)
-        if UIDevice.currentDevice().orientation == .Unknown ||
-        UIDevice.currentDevice().orientation == .Portrait ||
-            UIDevice.currentDevice().orientation == .FaceUp ||
-            UIDevice.currentDevice().orientation == .FaceDown {
-            artwork.hidden = false
-            isLandscaped = false
-        } else {
-            artwork.hidden = true
-            isLandscaped = true
-        }
+        self.screenName = "Now Playing"
+        self.navigationItem.title = ""
+        
+        super.viewWillAppear(animated)
     }
     
     private func configureWithItem() {
@@ -290,28 +289,27 @@ NowPlayingCollectionControllerDelegate {
         showNowPlayingViews()
         
         let noArtwork = UIImage(named: "noArtwork")
-        let delegate = UIApplication.sharedApplication().delegate as AppDelegate
-        
         if let artwork = item.artwork {
             if let image = artwork.imageWithSize(CGSize(width:500, height:500)) {
                 self.artwork.image = image
-                delegate.currentAppBackgroundImage = image
+                CurrentAppBackgroundImage = image
             } else {
                 self.artwork.image = noArtwork
-                delegate.currentAppBackgroundImage = noArtwork!
+                CurrentAppBackgroundImage = noArtwork!
             }
         } else {
             self.artwork.image = noArtwork
-            delegate.currentAppBackgroundImage = noArtwork!
+            CurrentAppBackgroundImage = noArtwork!
         }
         
-        self.backgroundImageView.image = delegate.currentAppBackgroundImage.applyDarkEffect()
+        self.backgroundImageView.image = CurrentAppBackgroundImage.applyDarkEffect()
         
         let songInfo = NSString(format: "%@\n%@\n%@", item.title, item.artist, item.albumTitle)
         let attributedSongInfo = NSMutableAttributedString(string: songInfo)
         let songFont = UIFont(name: MuzFontName, size: 40)!
-        let artistFont = UIFont(name: MuzFontName, size: 17)!
+        let artistFont = UIFont(name: MuzFontNameRegular, size: 18)!
         attributedSongInfo.addAttribute(NSFontAttributeName, value: songFont, range: NSMakeRange(0, countElements(item.title)))
+        attributedSongInfo.addAttribute(NSFontAttributeName, value: artistFont, range: NSMakeRange(countElements(item.title), countElements(item.artist) + 1))
         self.songLabel.attributedText = attributedSongInfo
         
         if let timer = songTimer {
@@ -326,6 +324,24 @@ NowPlayingCollectionControllerDelegate {
     private func updateNowPlayingWithItem(item: MPMediaItem) {
         playerController.nowPlayingItem = item
         updateView(item)
+        
+        if NSUserDefaults.standardUserDefaults().objectForKey("Tutorial") == nil {
+            tutorialView.alpha = 0.85
+            
+            let tapGesture = UITapGestureRecognizer(target: self, action: "dismissTutorial")
+            tapGesture.numberOfTapsRequired = 1
+            tutorialView.addGestureRecognizer(tapGesture)
+            NSUserDefaults.standardUserDefaults().setObject(NSNumber(bool: false), forKey: "Tutorial")
+        } else {
+            tutorialView.alpha = 0.0
+        }
+    }
+    
+    func dismissTutorial() {
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.tutorialView.alpha = 0.0
+            self.tutorialView.removeFromSuperview()
+        })
     }
     
     private func startSongTimer() {
@@ -342,18 +358,17 @@ NowPlayingCollectionControllerDelegate {
     }
     
     override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
-        if toInterfaceOrientation == .Portrait {
-            UIView.animateWithDuration(0.1, animations: { () -> Void in
-                self.artwork.alpha = 1.0
-                self.artwork.hidden = false
-                self.isLandscaped = false
-            })
-        } else {
-            UIView.animateWithDuration(0.1, animations: { () -> Void in
-                self.artwork.alpha = 0.0
-                self.artwork.hidden = true
-                self.isLandscaped = true
-            })
+        super.willRotateToInterfaceOrientation(toInterfaceOrientation, duration: duration)
+        if toInterfaceOrientation == .LandscapeLeft || toInterfaceOrientation == .LandscapeRight {
+            var landscapeNowPlaying = NowPlayingViewControllerLandscape()
+            
+            self.navigationController?.pushViewController(landscapeNowPlaying, animated: false)
+            
+            landscapeNowPlaying.updateNowPlayingWithItem(self.item)
         }
+    }
+    
+    override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
+        super.didRotateFromInterfaceOrientation(fromInterfaceOrientation)
     }
 }

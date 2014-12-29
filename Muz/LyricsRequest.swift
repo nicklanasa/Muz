@@ -45,6 +45,8 @@ class LyricsRequest: WebRequest {
                 self.parseHTML(html)
             } else {
                 self.delegate?.lyricsRequestDidComplete(self, didCompleteWithLyrics: nil)
+                
+                LocalyticsSession.shared().tagEvent("Lyrics not found.")
             }
         }
     }
@@ -74,6 +76,8 @@ class LyricsRequest: WebRequest {
         }
         
         self.delegate?.lyricsRequestDidComplete(self, didCompleteWithLyrics: nil)
+        
+        LocalyticsSession.shared().tagEvent("Lyrics not found.")
     }
     
     private func requestSongLyrics(url: NSString) {
@@ -102,11 +106,15 @@ class LyricsRequest: WebRequest {
                                 
                                 self.delegate?.lyricsRequestDidComplete(self, didCompleteWithLyrics: lyrics)
                                 
+                                LocalyticsSession.shared().tagEvent("Lyrics found.")
+                                
                                 return
                             }
                         }
                     }
                 }
+                
+                LocalyticsSession.shared().tagEvent("Lyrics not found.")
                 
                 self.delegate?.lyricsRequestDidComplete(self, didCompleteWithLyrics: lyrics)
             })

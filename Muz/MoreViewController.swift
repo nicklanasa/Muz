@@ -17,7 +17,6 @@ enum MoreSectionType: NSInteger {
 
 enum MoreSetting: NSInteger {
     case Lyrics
-    case Cloud
     case ArtistInfo
 }
 
@@ -29,12 +28,11 @@ NSFetchedResultsControllerDelegate {
     @IBOutlet weak var tableView: UITableView!
     
     // Make this DB driven
-    let tableDataSectionSettings = ["Lyrics", "Cloud items", "Artist info"]
-    let tableDataSectionInfo = ["Rate app", "Facebook", "Twitter", "Website", "Tutorial", "Feedback"]
+    let tableDataSectionSettings = ["Lyrics", "Artist info"]
+    let tableDataSectionInfo = ["Rate app", "Facebook", "Twitter", "Website", "Feedback"]
     
     let lyricsSwitch = UISwitch(frame: CGRectMake(0, 0, 50, 50))
     let backgroundArtworkSwitch = UISwitch(frame: CGRectMake(0, 0, 50, 50))
-    let cloudItemsSwitch = UISwitch(frame: CGRectMake(0, 0, 50, 50))
     let artistInfoSwitch = UISwitch(frame: CGRectMake(0, 0, 50, 50))
     
     override init() {
@@ -54,6 +52,11 @@ NSFetchedResultsControllerDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func viewWillAppear(animated: Bool) {
+        self.screenName = "More"
+        super.viewWillAppear(animated)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -61,10 +64,7 @@ NSFetchedResultsControllerDelegate {
         tableView.registerNib(UINib(nibName: "SongsHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "Header")
         
         lyricsSwitch.addTarget(self, action: "updatedSetting:", forControlEvents: .ValueChanged)
-        cloudItemsSwitch.addTarget(self, action: "updatedSetting:", forControlEvents: .ValueChanged)
         artistInfoSwitch.addTarget(self, action: "updatedSetting:", forControlEvents: .ValueChanged)
-        
-        self.navigationItem.title = "More"
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -86,9 +86,6 @@ NSFetchedResultsControllerDelegate {
         case MoreSectionType.Settings.rawValue:
             cell.textLabel?.text = tableDataSectionSettings[indexPath.row] as NSString
             switch indexPath.row {
-            case MoreSetting.Cloud.rawValue:
-                cloudItemsSwitch.on = SettingsManager.defaultManager.valueForMoreSetting(.Cloud)
-                cell.accessoryView = cloudItemsSwitch
             case MoreSetting.ArtistInfo.rawValue:
                 artistInfoSwitch.on = SettingsManager.defaultManager.valueForMoreSetting(.ArtistInfo)
                 cell.accessoryView = artistInfoSwitch
@@ -108,8 +105,21 @@ NSFetchedResultsControllerDelegate {
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-
-
+        switch indexPath.section {
+        case MoreSectionType.Settings.rawValue:
+            break;
+        default:
+            switch indexPath.row {
+            case 0: UIApplication.sharedApplication().openURL(NSURL(string: "itms-apps://itunes.apple.com/app/951709415")!)
+            case 1: UIApplication.sharedApplication().openURL(NSURL(string: "https://www.facebook.com/muzapp?ref=bookmarks")!)
+            case 2: UIApplication.sharedApplication().openURL(NSURL(string: "https://twitter.com/muz_app")!)
+            case 3: UIApplication.sharedApplication().openURL(NSURL(string: "http://nytekproductions.com/muz/")!)
+            default:
+                UserVoice.presentUserVoiceInterfaceForParentViewController(self)
+            }
+        }
+        
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
     func updatedSetting(sender: AnyObject) {
@@ -117,10 +127,8 @@ NSFetchedResultsControllerDelegate {
             let value = NSNumber(bool: settingSwitch.on)
             if settingSwitch == lyricsSwitch {
                 SettingsManager.defaultManager.updateValueForMoreSetting(.Lyrics, value: value)
-            } else if settingSwitch == artistInfoSwitch {
-                SettingsManager.defaultManager.updateValueForMoreSetting(.ArtistInfo, value: value)
             } else {
-                SettingsManager.defaultManager.updateValueForMoreSetting(.Cloud, value: value)
+                SettingsManager.defaultManager.updateValueForMoreSetting(.ArtistInfo, value: value)
             }
         }
     }

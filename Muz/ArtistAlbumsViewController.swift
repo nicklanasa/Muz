@@ -62,7 +62,12 @@ ArtistAlbumHeaderDelegate {
         tableView.registerNib(UINib(nibName: "ArtistAlbumHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "Header")
     
         fetchArtistAlbums()
-        self.navigationItem.title = "Albums"
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        self.screenName = "Albums"
+        super.viewWillAppear(animated)
+        self.tableView.setEditing(false, animated: true)
     }
     
     func fetchArtistAlbums() {
@@ -161,10 +166,9 @@ ArtistAlbumHeaderDelegate {
     func artistAlbumHeader(header: ArtistAlbumHeader, moreButtonTapped sender: AnyObject) {
         let header = tableView.headerViewForSection(header.section) as ArtistAlbumHeader
         if let songs = albums?[header.section] as? MPMediaItemCollection {
-            if songs.items.count > 0 {
-                let createPlaylistOverlay = CreatePlaylistOverlay(artist: songs.representativeItem.artist)
-                presentModalOverlayController(createPlaylistOverlay, blurredController: self)
-            }
+            let items = songs.items as [MPMediaItem]
+            let createPlaylistOverlay = CreatePlaylistOverlay(items: items)
+            presentModalOverlayController(createPlaylistOverlay, blurredController: self)
         }
     }
 }

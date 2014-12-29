@@ -11,7 +11,7 @@ import Foundation
 class MuzButton: UIButton {
     override func drawRect(rect: CGRect) {
         
-        self.layer.cornerRadius = self.frame.size.height / 2
+        self.layer.cornerRadius = 3
         self.layer.masksToBounds = true
         self.layer.borderColor = UIColor.whiteColor().CGColor
         self.layer.borderWidth = 1

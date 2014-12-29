@@ -41,6 +41,7 @@ LastFmTrackBuyLinksRequestDelegate {
     var isForSimiliarArtist = false
     
     var lyricsCell: NowPlayingInfoLyricsCell!
+    var artistInfoCell: LastFmArtistInfoCell!
     var lastFmEventCell: LastFmEventCell!
     
     var albumBuyLinks: [AnyObject]?
@@ -65,6 +66,9 @@ LastFmTrackBuyLinksRequestDelegate {
         let lastFmEventCellNib = UINib(nibName: "LastFmEventCell", bundle: nil)
         lastFmEventCell = lastFmEventCellNib.instantiateWithOwner(self, options: nil)[0] as? LastFmEventCell
         
+        let artistInfoCellNib = UINib(nibName: "LastFmArtistInfoCell", bundle: nil)
+        artistInfoCell = artistInfoCellNib.instantiateWithOwner(self, options: nil)[0] as? LastFmArtistInfoCell
+        
         if isForSimiliarArtist {
             configureForSimiliarArtist()
         } else {
@@ -73,18 +77,24 @@ LastFmTrackBuyLinksRequestDelegate {
             
             configureForItem()
         }
+        
+        if isForSimiliarArtist {
+            self.screenName = "Similar Artist"
+            segmentedControl?.alpha = 0.0
+        } else {
+            self.screenName = "Now Playing Info"
+            segmentedControl?.alpha = 1.0
+        }
+        
+        self.navigationItem.title = ""
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
     }
     
     override func viewWillDisappear(animated: Bool) {
         segmentedControl?.alpha = 0.0
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        if isForSimiliarArtist {
-            segmentedControl?.alpha = 0.0
-        } else {
-            segmentedControl?.alpha = 1.0
-        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -116,6 +126,7 @@ LastFmTrackBuyLinksRequestDelegate {
     }
     
     func handleSegmentedControlChange() {
+        // Tag switch to track in analytics
         switch segmentedControl.selectedSegmentIndex {
         case 0:
             isShowingLastFm = false
@@ -178,35 +189,40 @@ LastFmTrackBuyLinksRequestDelegate {
     
     func lastFmArtistInfoRequestDidComplete(request: LastFmArtistInfoRequest, didCompleteWithLastFmArtist artist: LastFmArtist?) {
         self.lastFmArtist = artist
-        tableView?.reloadData()
+        reloadTable()
     }
     
     func lastFmSimiliarArtistsRequestDidComplete(request: LastFmSimiliarArtistsRequest, didCompleteWithLastFmArtists artists: [AnyObject]?) {
         self.similiarArtists = artists
-        tableView?.reloadData()
+        artistInfoCell.similiarActivityIndicator.stopAnimating()
+        reloadTable()
     }
     
     func lastFmArtistEventsRequestDidComplete(request: LastFmArtistEventsRequest, didCompleteWithEvents events: [AnyObject]?)
     {
         self.events = events
-        tableView?.reloadData()
+        reloadTable()
     }
     
     func lastFmAlbumBuyLinksRequestDidComplete(request: LastFmAlbumBuyLinksRequest, didCompleteWithBuyLinks buyLinks: [AnyObject]?) {
         self.albumBuyLinks = buyLinks
-        self.tableView?.reloadData()
+        reloadTable()
     }
     
     func lastFmTrackBuyLinksRequestDidComplete(request: LastFmTrackBuyLinksRequest, didCompleteWithBuyLinks buyLinks: [AnyObject]?) {
         self.songBuyLinks = buyLinks
-        self.tableView?.reloadData()
+        reloadTable()
     }
 
     func lyricsRequestDidComplete(request: LyricsRequest, didCompleteWithLyrics lyrics: String?) {
+        self.lyrics = lyrics
+        reloadTable()
+    }
+    
+    private func reloadTable() {
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             self.lyricsCell.activityIndicator.stopAnimating()
-            self.lyrics = lyrics
-            self.tableView?.reloadData()
+            self.tableView.reloadData()
         })
     }
 
@@ -241,7 +257,6 @@ LastFmTrackBuyLinksRequestDelegate {
         if isShowingLastFm {
             switch indexPath.row {
             case LastFmCellType.ArtistInfo.rawValue:
-                var artistInfoCell = tableView.dequeueReusableCellWithIdentifier("LastFmArtistCell") as LastFmArtistInfoCell
                 artistInfoCell.updateWithArtist(lastFmArtist)
                 
                 if isForSimiliarArtist {

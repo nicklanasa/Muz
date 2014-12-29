@@ -18,12 +18,6 @@ class SettingsManager {
     
     func valueForMoreSetting(setting: MoreSetting) -> Bool {
         switch setting {
-        case .Cloud:
-            if let cloud = NSUserDefaults.standardUserDefaults().objectForKey("cloud") as? NSNumber {
-                return cloud.boolValue
-            }
-            
-            return false
         case .Lyrics:
             if let lyrics = NSUserDefaults.standardUserDefaults().objectForKey("lyrics") as? NSNumber {
                 return lyrics.boolValue
@@ -43,12 +37,12 @@ class SettingsManager {
     
     func updateValueForMoreSetting(setting: MoreSetting, value: NSNumber) {
         switch setting {
-        case .Cloud:
-            NSUserDefaults.standardUserDefaults().setObject(value, forKey: "cloud")
         case .Lyrics:
             NSUserDefaults.standardUserDefaults().setObject(value, forKey: "lyrics")
+            LocalyticsSession.shared().tagEvent("Lyrics switch value updated.")
         case .ArtistInfo:
             NSUserDefaults.standardUserDefaults().setObject(value, forKey: "artistInfo")
+            LocalyticsSession.shared().tagEvent("Artist info switch value updated.")
         default: break
             
         }

@@ -54,6 +54,8 @@ NSFetchedResultsControllerDelegate {
     override func viewWillAppear(animated: Bool) {
         fetchPlaylists()
         super.viewWillAppear(animated)
+        
+        self.screenName = "Playlists"
     }
     
     override func viewDidLoad() {
@@ -61,7 +63,6 @@ NSFetchedResultsControllerDelegate {
         
         tableView.registerNib(UINib(nibName: "PlaylistCell", bundle: nil), forCellReuseIdentifier: "Cell")
         tableView.registerNib(UINib(nibName: "SongsHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "Header")
-        self.navigationItem.title = "Playlists"
     
         if !isForExistingPlaylist {
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "add"),
@@ -159,12 +160,6 @@ NSFetchedResultsControllerDelegate {
     }
     
     func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
-        switch type {
-        case .Delete:
-            if let path = indexPath {
-                self.tableView.deleteRowsAtIndexPaths([path], withRowAnimation: .Fade)
-            }
-        default: break
-        }
+
     }
 }

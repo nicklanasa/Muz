@@ -10,36 +10,46 @@ import UIKit
 
 let MuzFontName = "HelveticaNeue-Thin"
 let MuzFontNameMedium = "HelveticaNeue-Medium"
+let MuzFontNameRegular = "HelveticaNeue"
+let MuzFontTutorial = "ShadowsIntoLight"
 let MuzFont = UIFont(name: MuzFontName, size: 11)!
 let MuzSettingFont = UIFont(name: MuzFontName, size: 21)!
 let MuzTitleFont = UIFont(name: MuzFontNameMedium, size: 18)!
 let MuzColor = UIColor.whiteColor()
 let MuzBlueColor = UIColor(red:255/255, green: 184/255, blue: 60/255, alpha: 1.0)
 let MuzGrayColor = UIColor(red:102/255, green: 102/255, blue: 102/255, alpha: 1.0)
+var CurrentAppBackgroundImage = UIImage(named: "random.jpg")!
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    var currentAppBackgroundImage: UIImage = UIImage(named: "random.jpg")!
+    let noMusicOverlay = NoMusicOverlayController()
+    
+    let forumID = 279388
 
     private func muzWindow() -> UIWindow {
         
         let colorView = UIView()
         colorView.backgroundColor = UIColor.lightGrayColor().colorWithAlphaComponent(0.5)
         
+        UINavigationBar.appearance().barTintColor = UIColor.blackColor()
         UITabBarItem.appearance().setTitleTextAttributes([NSFontAttributeName: MuzFont], forState: UIControlState.Normal)
         UIBarButtonItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.whiteColor()], forState: UIControlState.Normal)
+        UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffset(horizontal: -9999, vertical: 0), forBarMetrics: .Default)
         UITableViewCell.appearance().selectedBackgroundView = colorView
         UITableViewCell.appearance().backgroundColor = UIColor.clearColor()
-        UITableView.appearance().sectionIndexColor = UIColor.whiteColor()
+        UITableView.appearance().sectionIndexColor = UIColor.lightGrayColor()
         UITableView.appearance().sectionIndexBackgroundColor = UIColor.clearColor()
         UITableView.appearance().separatorStyle = .None
         UITableView.appearance().separatorColor = UIColor.whiteColor()
-        UITextField.appearance().textColor = UIColor.whiteColor()
+        UITextField.appearance().textColor = MuzBlueColor
         UISwitch.appearance().onTintColor = MuzBlueColor
         
-        UIApplication.sharedApplication().statusBarHidden = false
+        UVStyleSheet.instance().navigationBarBackgroundColor = UIColor.clearColor()
+        UVStyleSheet.instance().navigationBarTintColor = UIColor.whiteColor()
+        UVStyleSheet.instance().navigationBarTextColor = UIColor.whiteColor()
+        UVStyleSheet.instance().tintColor = UIColor.blackColor()
         
         let mainScreen = UIScreen.mainScreen()
         let window = UIWindow(frame: mainScreen.bounds)
@@ -51,26 +61,40 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let navMore = NavBarController(rootViewController: MoreViewController())
         let navNowPlaying = NavBarController(rootViewController: NowPlayingViewController())
         
-        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
-            
-            tabbar.setViewControllers([nav, navSongs, navPlaylists, navMore], animated: false)
-            
-            var splitView = UISplitViewController()
-            splitView.viewControllers = [tabbar, navNowPlaying]
-            window.rootViewController = splitView
-        } else {
-            tabbar.setViewControllers([nav, navSongs, navNowPlaying, navPlaylists, navMore], animated: false)
-            window.rootViewController = tabbar
-        }
-
+        tabbar.setViewControllers([nav, navSongs, navNowPlaying, navPlaylists, navMore], animated: false)
+        window.rootViewController = tabbar
+        
         window.makeKeyAndVisible()
         
         return window
     }
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        LocalyticsSession.shared().integrateLocalytics("b25e652e274c5d45d413bc3-89bdf3a6-8e1f-11e4-a94d-009c5fda0a25",
+            launchOptions: launchOptions)
+        
+        if NSUserDefaults.standardUserDefaults().objectForKey("FirstTimer") == nil {
+            SettingsManager.defaultManager.updateValueForMoreSetting(.ArtistInfo, value: NSNumber(bool: true))
+            SettingsManager.defaultManager.updateValueForMoreSetting(.Lyrics, value: NSNumber(bool: true))
+            NSUserDefaults.standardUserDefaults().setObject(NSNumber(bool: false), forKey: "FirstTimer")
+        }
+        
         self.window = muzWindow()
+        
+        var config = UVConfig(site: "nytekproductions.uservoice.com")
+        config.forumId = forumID
+        
+        UserVoice.initialize(config)
+        
+        Appirater.setAppId("951709415")
+        Appirater.setDaysUntilPrompt(1)
+        Appirater.setUsesUntilPrompt(3)
+        Appirater.appLaunched(true)
+        
+        if MediaSession.sharedSession.isMediaLibraryEmpty {
+            addNoMusicOverlay()
+        }
         
         return true
     }
@@ -87,6 +111,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillEnterForeground(application: UIApplication) {
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+        Appirater.appEnteredForeground(true)
+        
+        if !MediaSession.sharedSession.isMediaLibraryEmpty {
+            noMusicOverlay.view.removeFromSuperview()
+        } else {
+            if noMusicOverlay.view.superview == nil {
+                addNoMusicOverlay()
+            }
+        }
     }
 
     func applicationDidBecomeActive(application: UIApplication) {
@@ -101,6 +134,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
-
+    private func addNoMusicOverlay() {
+        self.window!.rootViewController?.addChildViewController(noMusicOverlay)
+        noMusicOverlay.didMoveToParentViewController(self.window!.rootViewController)
+        self.window!.rootViewController?.view.addSubview(noMusicOverlay.view)
+    }
 }
 

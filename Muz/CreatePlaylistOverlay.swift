@@ -52,14 +52,14 @@ PlaylistsViewControllerDelegate {
     
     override func viewWillAppear(animated: Bool) {
         createPlaylistCell.nameTextField.becomeFirstResponder()
+        
+        self.overlayScreenName = "New Playlist"
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tableView.registerNib(UINib(nibName: "CreatePlaylistCell", bundle: nil), forCellReuseIdentifier: "Cell")
-        
-        self.navigationItem.title = "New Playlist"
         
         tableView.reloadData()
         
@@ -147,10 +147,19 @@ PlaylistsViewControllerDelegate {
         if indexPath.section == 1 {
             
         } else {
-            var playlistsViewController = PlaylistsViewController(existingPlaylist: true)
-            playlistsViewController.delegate = self
-            self.navigationController?.pushViewController(playlistsViewController, animated: true)
+            if self.artist == nil {
+                UIAlertView(title: "Error!",
+                    message: "You haven't selected to add to an existing playlist.",
+                    delegate: self,
+                    cancelButtonTitle: "Ok").show()
+            } else {
+                var playlistsViewController = PlaylistsViewController(existingPlaylist: true)
+                playlistsViewController.delegate = self
+                self.navigationController?.pushViewController(playlistsViewController, animated: true)
+            }
         }
+        
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
 
     func createPlaylistCell(cell: CreatePlaylistCell, didStartEditing textField: UITextField!) {
@@ -183,34 +192,49 @@ PlaylistsViewControllerDelegate {
                         })
                     }
                 } else {
-                    if let items = self.items {
-                        MediaSession.sharedSession.dataManager.datastore.createPlaylistWithItems(createPlaylistCell.nameTextField.text, items: items, completion: { (addedSongs) -> () in
-                            self.handleCreatePlaylistFinishWithAddedSongs(addedSongs)
-                        })
-                    } else {
-                        MediaSession.sharedSession.dataManager.datastore.createPlaylistWithArtist(self.artist,
-                            name: createPlaylistCell.nameTextField.text,
-                            playlistType: .None) { (addedSongs) -> () in
+                    if countElements(createPlaylistCell.nameTextField.text) > 0 {
+                        if let items = self.items {
+                            MediaSession.sharedSession.dataManager.datastore.createPlaylistWithItems(createPlaylistCell.nameTextField.text, items: items, completion: { (addedSongs) -> () in
                                 self.handleCreatePlaylistFinishWithAddedSongs(addedSongs)
+                            })
+                        } else {
+                            MediaSession.sharedSession.dataManager.datastore.createPlaylistWithArtist(self.artist,
+                                name: createPlaylistCell.nameTextField.text,
+                                playlistType: .None) { (addedSongs) -> () in
+                                    self.handleCreatePlaylistFinishWithAddedSongs(addedSongs)
+                            }
                         }
+                    } else {
+                        showEmptyPlaylistNameAlert()
                     }
                 }
             } else {
-                MediaSession.sharedSession.dataManager.datastore.createEmptyPlaylistWithName(createPlaylistCell.nameTextField.text,
-                    playlistType: .None) { () -> () in
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        self.dismiss()
-                    })
+                if countElements(createPlaylistCell.nameTextField.text) > 0 {
+                    MediaSession.sharedSession.dataManager.datastore.createEmptyPlaylistWithName(createPlaylistCell.nameTextField.text,
+                        playlistType: .None) { () -> () in
+                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                self.dismiss()
+                            })
+                    }
+                } else {
+                    showEmptyPlaylistNameAlert()
                 }
+                
             }
         }
+    }
+    
+    func showEmptyPlaylistNameAlert() {
+        UIAlertView(title: "Error!", message: "You must set a playlist name!", delegate: self, cancelButtonTitle: "Ok").show()
     }
     
     private func handleCreatePlaylistFinishWithAddedSongs(addedSongs: [AnyObject]?) {
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             if let songsAdded = addedSongs {
+                LocalyticsSession.shared().tagEvent("Successful smart playlist created.")
                 self.dismiss()
             } else {
+                LocalyticsSession.shared().tagEvent("Create smart playlist failed.")
                 let errorMessage = "Unable to find any songs based on \(self.artist)"
                 UIAlertView(title: "Error!", message: errorMessage, delegate: self, cancelButtonTitle: "Ok").show()
                 self.hud.hide(true)

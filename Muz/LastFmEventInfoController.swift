@@ -30,6 +30,10 @@ LastFmEventInfoDetailsCellDelegate {
         super.init(nibName: "LastFmEventInfoController", bundle: nil)
     }
     
+    override func viewWillAppear(animated: Bool) {
+        self.screenName = "Event info"
+    }
+    
     init(event: LastFmEvent) {
         super.init(nibName: "LastFmEventInfoController", bundle: nil)
         self.event = event

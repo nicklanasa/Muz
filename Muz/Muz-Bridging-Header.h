@@ -13,3 +13,8 @@
 #import <LastFm/LastFm.h>
 #import "MBProgressHUD.h"
 #import "UIImage+Resize.h"
+#import <Localytics-AMP/LocalyticsSession.h>
+#import <uservoice-iphone-sdk/UVConfig.h>
+#import <uservoice-iphone-sdk/UserVoice.h>
+#import <uservoice-iphone-sdk/UVStyleSheet.h>
+#import <Appirater/Appirater.h>

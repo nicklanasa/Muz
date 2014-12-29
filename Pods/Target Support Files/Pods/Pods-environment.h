@@ -6,6 +6,12 @@
 // project.
 
 
+// Appirater
+#define COCOAPODS_POD_AVAILABLE_Appirater
+#define COCOAPODS_VERSION_MAJOR_Appirater 2
+#define COCOAPODS_VERSION_MINOR_Appirater 0
+#define COCOAPODS_VERSION_PATCH_Appirater 4
+
 // KissXML
 #define COCOAPODS_POD_AVAILABLE_KissXML
 #define COCOAPODS_VERSION_MAJOR_KissXML 5
@@ -17,6 +23,12 @@
 #define COCOAPODS_VERSION_MAJOR_LastFm 1
 #define COCOAPODS_VERSION_MINOR_LastFm 15
 #define COCOAPODS_VERSION_PATCH_LastFm 0
+
+// Localytics-AMP
+#define COCOAPODS_POD_AVAILABLE_Localytics_AMP
+#define COCOAPODS_VERSION_MAJOR_Localytics_AMP 2
+#define COCOAPODS_VERSION_MINOR_Localytics_AMP 71
+#define COCOAPODS_VERSION_PATCH_Localytics_AMP 0
 
 // MBProgressHUD
 #define COCOAPODS_POD_AVAILABLE_MBProgressHUD
@@ -47,4 +59,10 @@
 #define COCOAPODS_VERSION_MAJOR_UIImage_Resize 1
 #define COCOAPODS_VERSION_MINOR_UIImage_Resize 0
 #define COCOAPODS_VERSION_PATCH_UIImage_Resize 1
+
+// uservoice-iphone-sdk
+#define COCOAPODS_POD_AVAILABLE_uservoice_iphone_sdk
+#define COCOAPODS_VERSION_MAJOR_uservoice_iphone_sdk 3
+#define COCOAPODS_VERSION_MINOR_uservoice_iphone_sdk 2
+#define COCOAPODS_VERSION_PATCH_uservoice_iphone_sdk 1
 

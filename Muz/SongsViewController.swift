@@ -42,6 +42,12 @@ UISearchDisplayDelegate {
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    override func viewDidAppear(animated: Bool) {
+        self.screenName = "Songs"
+        super.viewWillAppear(animated)
+        self.tableView.setEditing(false, animated: true)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,8 +59,6 @@ UISearchDisplayDelegate {
         searchDisplayController?.searchResultsTableView.registerNib(UINib(nibName: "SongsHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "Header")
         
         fetchSongsWithPredicate(nil)
-                
-        self.navigationItem.title = "Songs"
         
         tableView.backgroundView = UIView()
         

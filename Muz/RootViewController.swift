@@ -14,6 +14,12 @@ class RootViewController: UIViewController {
     
     var backgroundImageView: UIImageView!
     
+    var screenName: NSString! {
+        didSet {
+            self.navigationItem.title = screenName
+        }
+    }
+    
     override init() {
         super.init()
     }
@@ -30,12 +36,16 @@ class RootViewController: UIViewController {
         configureBackgroundImage()
     }
     
+    override func viewDidAppear(animated: Bool) {
+        LocalyticsSession.shared().tagScreen(screenName)
+    }
+    
     override func viewDidLoad() {
         
         backgroundImageView = UIImageView(frame: UIScreen.mainScreen().bounds)
         backgroundImageView.contentMode = UIViewContentMode.ScaleToFill
         backgroundImageView.autoresizingMask = .FlexibleWidth
-    
+        
         configureBackgroundImage()
         
         if backgroundImageView.superview == nil {
@@ -54,9 +64,7 @@ class RootViewController: UIViewController {
     }
     
     func configureBackgroundImage() {
-        let delegate = UIApplication.sharedApplication().delegate as AppDelegate
-        let image = delegate.currentAppBackgroundImage
-        backgroundImageView.image = image.applyDarkEffect()
+        backgroundImageView.image = CurrentAppBackgroundImage.applyDarkEffect()
     }
     
     func mediaLibraryDidChange() {
@@ -64,62 +72,59 @@ class RootViewController: UIViewController {
     }
     
     func presentNowPlayViewControllerWithItem(item: MPMediaItem) {
-        if let delegate = UIApplication.sharedApplication().delegate as? AppDelegate {
-            if let tabBarController = delegate.window?.rootViewController as? UITabBarController {
-                if let fromView = tabBarController.selectedViewController {
-                    if let vcs = tabBarController.viewControllers {
-                        if let navController = vcs[2] as? NavBarController {
-                            if let nowPlayingViewController = navController.viewControllers.first as? NowPlayingViewController {
-                                let toView = nowPlayingViewController.view
-                                UIView.transitionFromView(fromView.view,
-                                    toView: toView,
-                                    duration: 0.2,
-                                    options: .TransitionCrossDissolve,
-                                    completion: { (success) -> Void in
-                                        tabBarController.selectedIndex = 2
-                                        nowPlayingViewController.playItem(item)
-                                })
-                            }
-                            
+        let window = UIApplication.sharedApplication().keyWindow
+        if let tabBarController = window!.rootViewController as? UITabBarController {
+            if let fromView = tabBarController.selectedViewController {
+                if let vcs = tabBarController.viewControllers {
+                    if let navController = vcs[2] as? NavBarController {
+                        if let nowPlayingViewController = navController.viewControllers.first as? NowPlayingViewController {
+                            let toView = nowPlayingViewController.view
+                            UIView.transitionFromView(fromView.view,
+                                toView: toView,
+                                duration: 0.2,
+                                options: .TransitionCrossDissolve,
+                                completion: { (success) -> Void in
+                                    tabBarController.selectedIndex = 2
+                                    nowPlayingViewController.playItem(item)
+                            })
                         }
-                    }
-                }
-            } else if let splitViewController = delegate.window?.rootViewController as? UISplitViewController {
-                if let navController = splitViewController.viewControllers[1] as? NavBarController {
-                    if let nowPlayingViewController = navController.viewControllers.first as? NowPlayingViewController {
-                        nowPlayingViewController.playItem(item)
+                        
                     }
                 }
             }
-        }
-    }
+        } else if let splitViewController = window!.rootViewController as? UISplitViewController {
+            if let navController = splitViewController.viewControllers[1] as? NavBarController {
+                if let nowPlayingViewController = navController.viewControllers.first as? NowPlayingViewController {
+                    nowPlayingViewController.playItem(item)
+                }
+            }
+        }    }
     
     func presentNowPlayViewControllerWithItem(item: MPMediaItem, collection: MPMediaItemCollection) {
-        if let delegate = UIApplication.sharedApplication().delegate as? AppDelegate {
-            if let tabBarController = delegate.window?.rootViewController as? UITabBarController {
-                if let fromView = tabBarController.selectedViewController {
-                    if let vcs = tabBarController.viewControllers {
-                        if let navController = vcs[2] as? NavBarController {
-                            if let nowPlayingViewController = navController.viewControllers.first as? NowPlayingViewController {
-                                let toView = nowPlayingViewController.view
-                                UIView.transitionFromView(fromView.view,
-                                    toView: toView,
-                                    duration: 0.2,
-                                    options: .TransitionCrossDissolve,
-                                    completion: { (success) -> Void in
-                                        tabBarController.selectedIndex = 2
-                                        nowPlayingViewController.playItem(item, collection: collection)
-                                })
-                            }
-                            
+        let window = UIApplication.sharedApplication().keyWindow
+        if let tabBarController = window!.rootViewController as? UITabBarController {
+            if let fromView = tabBarController.selectedViewController {
+                if let vcs = tabBarController.viewControllers {
+                    if let navController = vcs[2] as? NavBarController {
+                        if let nowPlayingViewController = navController.viewControllers.first as? NowPlayingViewController {
+                            let toView = nowPlayingViewController.view
+                            UIView.transitionFromView(fromView.view,
+                                toView: toView,
+                                duration: 0.2,
+                                options: .TransitionCrossDissolve,
+                                completion: { (success) -> Void in
+                                    tabBarController.selectedIndex = 2
+                                    nowPlayingViewController.playItem(item, collection: collection)
+                            })
                         }
+                        
                     }
                 }
-            } else if let splitViewController = delegate.window?.rootViewController as? UISplitViewController {
-                if let navController = splitViewController.viewControllers[1] as? NavBarController {
-                    if let nowPlayingViewController = navController.viewControllers.first as? NowPlayingViewController {
-                        nowPlayingViewController.playItem(item)
-                    }
+            }
+        } else if let splitViewController = window!.rootViewController as? UISplitViewController {
+            if let navController = splitViewController.viewControllers[1] as? NavBarController {
+                if let nowPlayingViewController = navController.viewControllers.first as? NowPlayingViewController {
+                    nowPlayingViewController.playItem(item)
                 }
             }
         }
@@ -162,11 +167,16 @@ class RootViewController: UIViewController {
         })
     }
     
-    override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
-        if toInterfaceOrientation == .Portrait {
-            backgroundImageView.contentMode = UIViewContentMode.ScaleToFill
+    override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
+        //self.backgroundImageView.frame = UIScreen.mainScreen().bounds
+        if fromInterfaceOrientation == .LandscapeLeft || fromInterfaceOrientation == .LandscapeRight {
+            println(UIScreen.mainScreen().bounds.size)
+            self.backgroundImageView.contentMode = UIViewContentMode.ScaleToFill
+            self.backgroundImageView.image = backgroundImageView.image
         } else {
-            backgroundImageView.contentMode = UIViewContentMode.ScaleAspectFill
+            println(UIScreen.mainScreen().bounds.size)
+            self.backgroundImageView.contentMode = UIViewContentMode.ScaleAspectFill
+            self.backgroundImageView.image = backgroundImageView.image
         }
     }
     

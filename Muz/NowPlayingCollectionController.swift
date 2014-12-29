@@ -41,14 +41,17 @@ UITableViewDataSource {
         tableView.registerNib(UINib(nibName: "SongCell", bundle: nil), forCellReuseIdentifier: "Cell")
         tableView.registerNib(UINib(nibName: "ArtistAlbumHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "Header")
         
-        self.navigationItem.title = "Songs"
-        
         tableView.reloadData()
         
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "back"),
             style: .Plain,
             target: self,
             action: "dismiss")
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        self.overlayScreenName = "Songs"
     }
     
     func dismiss() {

@@ -14,7 +14,18 @@ class OverlayController: UIViewController {
     
     var screenShot: UIImage!
     
+    var overlayScreenName: NSString! {
+        didSet {
+            self.navigationItem.title = overlayScreenName
+        }
+    }
+    
     override func viewDidLoad() {
         backgroundImageView.image = self.screenShot.applyDarkEffect()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        LocalyticsSession.shared().tagScreen(overlayScreenName)
     }
 }

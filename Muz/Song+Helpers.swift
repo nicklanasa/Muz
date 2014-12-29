@@ -42,25 +42,31 @@ extension Song: Printable {
         }
         
         self.playbackDuration = item.playbackDuration
-        self.albumTrackCount = item.albumTrackCount
         self.albumTrackNumber = item.albumTrackNumber
         self.discNumber = item.discNumber
-        self.discCount = item.discCount
         
-        if let lyrics = item.lyrics {
-            self.lyrics = lyrics
+        if item.respondsToSelector("lyrics") {
+            if let lyrics = item.lyrics {
+                self.lyrics = lyrics
+            }
         }
-    
-        self.compilation = item.compilation
+        
+        if item.respondsToSelector("compilation") {
+            self.compilation = item.compilation
+        }
         
         if let releaseDate = item.releaseDate {
             self.releaseDate = releaseDate
         }
         
-        self.beatsPerMinute = item.beatsPerMinute
+        if item.respondsToSelector("beatsPerMinute") {
+            self.beatsPerMinute = item.beatsPerMinute
+        }
         
-        if let comments = item.comments {
-            self.comments = comments
+        if item.respondsToSelector("comments") {
+            if let comments = item.comments {
+                self.comments = comments
+            }
         }
         
         if let assetURL = item.assetURL {

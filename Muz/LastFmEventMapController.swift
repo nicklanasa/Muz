@@ -39,6 +39,10 @@ class LastFmEventMapController: RootViewController {
         self.title = event.venue
     }
     
+    override func viewWillAppear(animated: Bool) {
+        self.screenName = "Event map"
+    }
+    
     func openInMaps() {
         for item in matchedItems {
             if let mapItem = item as? MKMapItem {
