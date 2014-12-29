@@ -65,8 +65,6 @@ class LastFmArtistInfoCell: LastFmCell {
                     self.listenersDescriptionLabel.alpha = 1.0
                     self.playsDescriptionLabel.alpha = 1.0
                     self.similiarArtistsLabel.alpha = 1.0
-                    self.buyAlbumButton.alpha = 1.0
-                    self.buySongButton.alpha = 1.0
                     
                     self.artistImageView.sd_setImageWithURL(artist.imageURL)
                     }) { (success) -> Void in

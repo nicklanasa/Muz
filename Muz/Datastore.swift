@@ -147,7 +147,7 @@ class Datastore {
         })
     }
     
-    func createPlaylistWithSimiliarArtists(artists: [AnyObject]!,
+    func createPlaylistWithSimiliarArtists(artist: NSString!, artists: [AnyObject]!,
         fetchLimit: NSInteger,
         name: NSString!,
         playlistType: PlaylistType,
@@ -158,8 +158,11 @@ class Datastore {
         var error: NSError?
         var request = NSFetchRequest(entityName: "Song")
     
-        var predicates = NSMutableArray(capacity: artists.count)
+        var predicates = NSMutableArray()
         
+        let artistPredicate = NSPredicate(format: "(artist contains[cd] %@)", artist)!
+        predicates.addObject(artistPredicate)
+            
         for artist in artists as [LastFmArtist] {
             println(artist.name)
             let predicate = NSPredicate(format: "(artist contains[cd] %@)", artist.name)!

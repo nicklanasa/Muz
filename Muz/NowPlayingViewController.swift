@@ -255,7 +255,37 @@ NowPlayingCollectionControllerDelegate {
             playerController.stop()
             playerController.play()
         } else {
-            self.playerController.skipToNextItem()
+            
+            let artworkCenter = self.artwork.center
+            let songLabelCenter = self.songLabel.center
+            
+            UIView.animateWithDuration(0.15, animations: { () -> Void in
+                self.songLabel.frame = CGRectMake(0 - self.songLabel.frame.size.width,
+                    self.songLabel.frame.origin.y, self.songLabel.frame.size.width, self.songLabel.frame.size.height)
+                self.artwork.frame = CGRectMake(0 - self.artwork.frame.size.width,
+                    self.artwork.frame.origin.y, self.artwork.frame.size.width, self.artwork.frame.size.height)
+                
+                self.songLabel.alpha = 0.0
+                self.artwork.alpha = 0.0
+                
+                self.playerController.skipToNextItem()
+                
+            }, completion: { (success) -> Void in
+                
+                self.songLabel.frame = CGRectMake(UIScreen.mainScreen().bounds.width + self.songLabel.frame.size.width,
+                    self.songLabel.frame.origin.y, self.songLabel.frame.size.width, self.songLabel.frame.size.height)
+                self.artwork.frame = CGRectMake(UIScreen.mainScreen().bounds.width + self.artwork.frame.size.width,
+                    self.artwork.frame.origin.y, self.artwork.frame.size.width, self.artwork.frame.size.height)
+                
+                UIView.animateWithDuration(0.15, animations: { () -> Void in
+                    
+                    self.songLabel.alpha = 1.0
+                    self.artwork.alpha = 1.0
+                    
+                    self.songLabel.center = songLabelCenter
+                    self.artwork.center = artworkCenter
+                })
+            })
         }
     }
     
@@ -265,7 +295,36 @@ NowPlayingCollectionControllerDelegate {
             playerController.stop()
             playerController.play()
         } else {
-            playerController.skipToPreviousItem()
+            let artworkCenter = self.artwork.center
+            let songLabelCenter = self.songLabel.center
+            
+            UIView.animateWithDuration(0.15, animations: { () -> Void in
+                self.songLabel.frame = CGRectMake(UIScreen.mainScreen().bounds.width +  self.songLabel.frame.size.width,
+                    self.songLabel.frame.origin.y, self.songLabel.frame.size.width, self.songLabel.frame.size.height)
+                self.artwork.frame = CGRectMake(UIScreen.mainScreen().bounds.width +  self.artwork.frame.size.width,
+                    self.artwork.frame.origin.y, self.artwork.frame.size.width, self.artwork.frame.size.height)
+                
+                self.songLabel.alpha = 0.0
+                self.artwork.alpha = 0.0
+                
+                self.playerController.skipToPreviousItem()
+                
+                }, completion: { (success) -> Void in
+                    
+                    self.songLabel.frame = CGRectMake(0 - self.songLabel.frame.size.width,
+                        self.songLabel.frame.origin.y, self.songLabel.frame.size.width, self.songLabel.frame.size.height)
+                    self.artwork.frame = CGRectMake(0 - self.artwork.frame.size.width,
+                        self.artwork.frame.origin.y, self.artwork.frame.size.width, self.artwork.frame.size.height)
+                    
+                    UIView.animateWithDuration(0.15, animations: { () -> Void in
+                        
+                        self.songLabel.alpha = 1.0
+                        self.artwork.alpha = 1.0
+                        
+                        self.songLabel.center = songLabelCenter
+                        self.artwork.center = artworkCenter
+                    })
+            })
         }
     }
     

@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "5E4A6470B1A539C20A9D913C"
+               BlueprintIdentifier = "6870E1A411A3AC5B34602575"
                BuildableName = "UserVoice.bundle"
                BlueprintName = "UserVoice"
                ReferencedContainer = "container:Pods.xcodeproj">

@@ -96,7 +96,8 @@ PlaylistsViewControllerDelegate {
         let amount = createPlaylistCell.amountSegmentedControl.titleForSegmentAtIndex(index)!.toInt()!
         let name = createPlaylistCell.nameTextField.text
         let playlistType = PlaylistType.Smart
-        MediaSession.sharedSession.dataManager.datastore.createPlaylistWithSimiliarArtists(artists,
+        MediaSession.sharedSession.dataManager.datastore.createPlaylistWithSimiliarArtists(self.artist,
+            artists: artists,
             fetchLimit: amount,
             name: name,
             playlistType: playlistType) { (addedSongs) -> () in

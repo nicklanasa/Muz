@@ -55,8 +55,10 @@ extension Song: Printable {
             self.compilation = item.compilation
         }
         
-        if let releaseDate = item.releaseDate {
-            self.releaseDate = releaseDate
+        if item.respondsToSelector("releaseDate") {
+            if let releaseDate = item.releaseDate {
+                self.releaseDate = releaseDate
+            }
         }
         
         if item.respondsToSelector("beatsPerMinute") {
@@ -69,29 +71,50 @@ extension Song: Printable {
             }
         }
         
-        if let assetURL = item.assetURL {
-            if let url = assetURL.absoluteString {
-                self.assetURL = url
+        if item.respondsToSelector("assetURL") {
+            if let assetURL = item.assetURL {
+                if let url = assetURL.absoluteString {
+                    self.assetURL = url
+                }
             }
         }
         
-        self.cloudItem = item.cloudItem
-        self.playCount = item.playCount
-        self.skipCount = item.skipCount
-        self.rating = item.rating
-        
-        if let podcastTitle = item.podcastTitle {
-            self.podcastTitle = podcastTitle
+        if item.respondsToSelector("cloudItem") {
+            self.cloudItem = item.cloudItem
         }
         
-        if let lastPlayedDate = item.lastPlayedDate {
-            self.lastPlayedDate = lastPlayedDate
+        if item.respondsToSelector("playCount") {
+            self.playCount = item.playCount
         }
         
-        if let userGrouping = item.userGrouping {
-            self.userGrouping = userGrouping
+        if item.respondsToSelector("skipCount") {
+            self.skipCount = item.skipCount
         }
         
-        self.bookmarkTime = item.bookmarkTime
+        if item.respondsToSelector("rating") {
+            self.rating = item.rating
+        }
+        
+        if item.respondsToSelector("podcastTitle") {
+            if let podcastTitle = item.podcastTitle {
+                self.podcastTitle = podcastTitle
+            }
+        }
+        
+        if item.respondsToSelector("lastPlayedDate") {
+            if let lastPlayedDate = item.lastPlayedDate {
+                self.lastPlayedDate = lastPlayedDate
+            }
+        }
+        
+        if item.respondsToSelector("userGrouping") {
+            if let userGrouping = item.userGrouping {
+                self.userGrouping = userGrouping
+            }
+        }
+
+        if item.respondsToSelector("bookmarkTime") {
+            self.bookmarkTime = item.bookmarkTime
+        }
     }
 }

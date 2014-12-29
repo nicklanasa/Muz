@@ -197,7 +197,6 @@
 		CEE153501A3B568400BB16EB /* NowPlayingInfoLyricsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEE1534F1A3B568400BB16EB /* NowPlayingInfoLyricsCell.xib */; };
 		CEE153551A3B5B4B00BB16EB /* HTMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE153521A3B5B4B00BB16EB /* HTMLNode.m */; };
 		CEE153561A3B5B4B00BB16EB /* HTMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE153541A3B5B4B00BB16EB /* HTMLParser.m */; };
-		CEE1535C1A3B5CF700BB16EB /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CEE1535B1A3B5CF700BB16EB /* libxml2.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -280,6 +279,13 @@
 		CE75D6E31A424502007BC624 /* repeat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = repeat.png; sourceTree = "<group>"; };
 		CE75D6E41A424502007BC624 /* repeat@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "repeat@2x.png"; sourceTree = "<group>"; };
 		CE75D6E51A424502007BC624 /* repeat@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "repeat@3x.png"; sourceTree = "<group>"; };
+		CE7D81211A51C6D4001C1035 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		CE7D81231A51C6E2001C1035 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		CE7D81251A51C6EA001C1035 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		CE7D81271A51C6FF001C1035 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		CE7D81291A51C70B001C1035 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		CE7D812B1A51C712001C1035 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		CE7D812D1A51C71A001C1035 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		CE95D9B41A3BCC580060752A /* MediaLibrarySyncViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaLibrarySyncViewController.swift; sourceTree = "<group>"; };
 		CE95D9B61A3BCC610060752A /* MediaLibrarySyncViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MediaLibrarySyncViewController.xib; sourceTree = "<group>"; };
 		CE95D9B81A3BCF480060752A /* syncLibrary.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = syncLibrary.png; sourceTree = "<group>"; };
@@ -415,7 +421,6 @@
 		CEE153521A3B5B4B00BB16EB /* HTMLNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTMLNode.m; sourceTree = "<group>"; };
 		CEE153531A3B5B4B00BB16EB /* HTMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTMLParser.h; sourceTree = "<group>"; };
 		CEE153541A3B5B4B00BB16EB /* HTMLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTMLParser.m; sourceTree = "<group>"; };
-		CEE1535B1A3B5CF700BB16EB /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		DB8E352653F602E2D8336D2A /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -424,7 +429,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CEE1535C1A3B5CF700BB16EB /* libxml2.dylib in Frameworks */,
 				18FE78E2938CE235720BDF0D /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -451,6 +455,13 @@
 		B66FEEBAE05911F3D2B14F8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CE7D812D1A51C71A001C1035 /* libsqlite3.dylib */,
+				CE7D812B1A51C712001C1035 /* libz.dylib */,
+				CE7D81291A51C70B001C1035 /* StoreKit.framework */,
+				CE7D81271A51C6FF001C1035 /* Security.framework */,
+				CE7D81251A51C6EA001C1035 /* MobileCoreServices.framework */,
+				CE7D81231A51C6E2001C1035 /* CoreLocation.framework */,
+				CE7D81211A51C6D4001C1035 /* AudioToolbox.framework */,
 				CC5E238686D44A286C24637D /* libPods.a */,
 			);
 			name = Frameworks;
@@ -489,7 +500,6 @@
 		CE444BA71A36A25500153F77 = {
 			isa = PBXGroup;
 			children = (
-				CEE1535B1A3B5CF700BB16EB /* libxml2.dylib */,
 				CE444BB21A36A25500153F77 /* Muz */,
 				CE444BC81A36A25500153F77 /* MuzTests */,
 				CE444BB11A36A25500153F77 /* Products */,
@@ -511,13 +521,13 @@
 			isa = PBXGroup;
 			children = (
 				CE444BB51A36A25500153F77 /* AppDelegate.swift */,
+				CEB200CF1A378B6300E857D8 /* Muz-Bridging-Header.h */,
 				CE4931EB1A3A1B4400B3A4BE /* Presentation */,
 				CEDB61811A37B1D300B90B2D /* Resources */,
 				CE4931E91A3A1B2100B3A4BE /* Data */,
 				CE4931EA1A3A1B3700B3A4BE /* Library */,
 				CE444BBE1A36A25500153F77 /* LaunchScreen.xib */,
 				CE444BB31A36A25500153F77 /* Supporting Files */,
-				CEB200CF1A378B6300E857D8 /* Muz-Bridging-Header.h */,
 			);
 			path = Muz;
 			sourceTree = "<group>";
@@ -855,6 +865,11 @@
 					CE444BAF1A36A25500153F77 = {
 						CreatedOnToolsVersion = 6.1.1;
 						DevelopmentTeam = 6Q4UNB2LAJ;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 					CE444BC41A36A25500153F77 = {
 						CreatedOnToolsVersion = 6.1.1;
@@ -1269,6 +1284,10 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Muz/parse",
+				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -1277,8 +1296,38 @@
 				INFOPLIST_FILE = Muz/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = (
+					"-l\"LocalyticsAMP_x64\"",
+					"-l\"Pods-Appirater\"",
+					"-l\"Pods-KissXML\"",
+					"-l\"Pods-LastFm\"",
+					"-l\"Pods-Localytics-AMP\"",
+					"-l\"Pods-MBProgressHUD\"",
+					"-l\"Pods-NSString-HTML\"",
+					"-l\"Pods-SDWebImage\"",
+					"-l\"Pods-UIImage-Resize\"",
+					"-l\"Pods-uservoice-iphone-sdk\"",
+					"-l\"sqlite3\"",
+					"-l\"xml2\"",
+					"-l\"z\"",
+					"-framework",
+					"\"CFNetwork\"",
+					"-framework",
+					"\"CoreGraphics\"",
+					"-framework",
+					"\"ImageIO\"",
+					"-framework",
+					"\"QuartzCore\"",
+					"-framework",
+					"\"SystemConfiguration\"",
+					"-weak_framework",
+					"\"AdSupport\"",
+					"-weak_framework",
+					"\"StoreKit\"",
+					"-ObjC",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "76793d95-d9a3-4cba-9ff6-9cd8f0dd3792";
 				SWIFT_OBJC_BRIDGING_HEADER = "Muz/Muz-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1294,6 +1343,10 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Nicholas Lanasa III (6Q4UNB2LAJ)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Nicholas Lanasa III (6Q4UNB2LAJ)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Muz/parse",
+				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -1302,6 +1355,36 @@
 				INFOPLIST_FILE = Muz/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = (
+					"-l\"LocalyticsAMP_x64\"",
+					"-l\"Pods-Appirater\"",
+					"-l\"Pods-KissXML\"",
+					"-l\"Pods-LastFm\"",
+					"-l\"Pods-Localytics-AMP\"",
+					"-l\"Pods-MBProgressHUD\"",
+					"-l\"Pods-NSString-HTML\"",
+					"-l\"Pods-SDWebImage\"",
+					"-l\"Pods-UIImage-Resize\"",
+					"-l\"Pods-uservoice-iphone-sdk\"",
+					"-l\"sqlite3\"",
+					"-l\"xml2\"",
+					"-l\"z\"",
+					"-framework",
+					"\"CFNetwork\"",
+					"-framework",
+					"\"CoreGraphics\"",
+					"-framework",
+					"\"ImageIO\"",
+					"-framework",
+					"\"QuartzCore\"",
+					"-framework",
+					"\"SystemConfiguration\"",
+					"-weak_framework",
+					"\"AdSupport\"",
+					"-weak_framework",
+					"\"StoreKit\"",
+					"-ObjC",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "495664e5-4161-442c-b133-b8d6efa8e32a";
 				SWIFT_OBJC_BRIDGING_HEADER = "Muz/Muz-Bridging-Header.h";

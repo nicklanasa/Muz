@@ -56,7 +56,13 @@ UISearchDisplayDelegate {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        self.tableView.setEditing(false, animated: true)
+        fetchArtists()
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        searchBar.resignFirstResponder()
+        self.tableView.setEditing(false, animated: false)
+        self.searchDisplayController?.setActive(false, animated: false)
     }
 
     override func viewDidLoad() {
@@ -74,8 +80,6 @@ UISearchDisplayDelegate {
             action: "showSearch")
         
         self.screenName = "Artists"
-        
-        fetchArtists()
     }
     
     func showSearch() {
@@ -150,6 +154,7 @@ UISearchDisplayDelegate {
         var artists: [AnyObject]?
         
         if tableView == self.searchDisplayController?.searchResultsTableView {
+            self.searchDisplayController?.setActive(false, animated: false)
             artists = filteredArtists
         } else {
             artists = self.artists
@@ -200,7 +205,9 @@ UISearchDisplayDelegate {
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
-        //searchBar.resignFirstResponder()
+        if scrollView.contentOffset.y < 0 {
+            searchBar.becomeFirstResponder()
+        }
     }
     
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {

@@ -43,7 +43,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UITableView.appearance().sectionIndexBackgroundColor = UIColor.clearColor()
         UITableView.appearance().separatorStyle = .None
         UITableView.appearance().separatorColor = UIColor.whiteColor()
-        UITextField.appearance().textColor = MuzBlueColor
+        UITextField.appearance().textColor = UIColor.whiteColor()
         UISwitch.appearance().onTintColor = MuzBlueColor
         
         UVStyleSheet.instance().navigationBarBackgroundColor = UIColor.clearColor()
@@ -73,6 +73,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         LocalyticsSession.shared().integrateLocalytics("b25e652e274c5d45d413bc3-89bdf3a6-8e1f-11e4-a94d-009c5fda0a25",
             launchOptions: launchOptions)
+        
+        let types: UIUserNotificationType = (.Alert | .Badge | .Sound)
+        let settings = UIUserNotificationSettings(forTypes: types, categories: nil)
+        application.registerUserNotificationSettings(settings)
+        application.registerForRemoteNotifications()
         
         if NSUserDefaults.standardUserDefaults().objectForKey("FirstTimer") == nil {
             SettingsManager.defaultManager.updateValueForMoreSetting(.ArtistInfo, value: NSNumber(bool: true))
@@ -133,7 +138,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-
+    
     private func addNoMusicOverlay() {
         self.window!.rootViewController?.addChildViewController(noMusicOverlay)
         noMusicOverlay.didMoveToParentViewController(self.window!.rootViewController)

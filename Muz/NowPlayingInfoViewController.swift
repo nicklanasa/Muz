@@ -77,7 +77,9 @@ LastFmTrackBuyLinksRequestDelegate {
             
             configureForItem()
         }
-        
+    }
+    
+    override func viewWillAppear(animated: Bool) {
         if isForSimiliarArtist {
             self.screenName = "Similar Artist"
             segmentedControl?.alpha = 0.0
@@ -87,9 +89,7 @@ LastFmTrackBuyLinksRequestDelegate {
         }
         
         self.navigationItem.title = ""
-    }
-    
-    override func viewWillAppear(animated: Bool) {
+        
         super.viewWillAppear(animated)
     }
     
@@ -259,11 +259,6 @@ LastFmTrackBuyLinksRequestDelegate {
             case LastFmCellType.ArtistInfo.rawValue:
                 artistInfoCell.updateWithArtist(lastFmArtist)
                 
-                if isForSimiliarArtist {
-                    artistInfoCell.buySongButton.alpha = 0.0
-                    artistInfoCell.buyAlbumButton.alpha = 0.0
-                }
-                
                 artistInfoCell.collectionView.delegate = self
                 artistInfoCell.collectionView.dataSource = self
                 
@@ -272,6 +267,20 @@ LastFmTrackBuyLinksRequestDelegate {
                 
                 artistInfoCell.songBuyLinks = songBuyLinks
                 artistInfoCell.albumBuyLinks = albumBuyLinks
+                
+                if isForSimiliarArtist {
+                    artistInfoCell.buySongButton.alpha = 0.0
+                    artistInfoCell.buyAlbumButton.alpha = 0.0
+                } else {
+                    
+                    if songBuyLinks?.count > 0 {
+                        artistInfoCell.buySongButton.alpha = 1.0
+                    }
+                    
+                    if albumBuyLinks?.count > 0 {
+                        artistInfoCell.buyAlbumButton.alpha = 1.0
+                    }
+                }
                 
                 return artistInfoCell
             default:
@@ -287,7 +296,11 @@ LastFmTrackBuyLinksRequestDelegate {
             }
         } else {
             if !lyricsCell.activityIndicator.isAnimating() {
-                lyricsCell.updateWithLyrics(self.lyrics)
+                if let lyrics = self.lyrics {
+                    lyricsCell.updateWithLyrics(lyrics)
+                } else {
+                    lyricsCell.updateWithLyrics(self.item.lyrics)
+                }
             }
             return lyricsCell
         }

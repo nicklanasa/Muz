@@ -46,7 +46,13 @@ UISearchDisplayDelegate {
     override func viewDidAppear(animated: Bool) {
         self.screenName = "Songs"
         super.viewWillAppear(animated)
-        self.tableView.setEditing(false, animated: true)
+        fetchSongsWithPredicate(nil)
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        searchBar.resignFirstResponder()
+        self.tableView.setEditing(false, animated: false)
+        self.searchDisplayController?.setActive(false, animated: false)
     }
 
     override func viewDidLoad() {
@@ -57,8 +63,6 @@ UISearchDisplayDelegate {
         
         searchDisplayController?.searchResultsTableView.registerNib(UINib(nibName: "SongCell", bundle: nil), forCellReuseIdentifier: "Cell")
         searchDisplayController?.searchResultsTableView.registerNib(UINib(nibName: "SongsHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "Header")
-        
-        fetchSongsWithPredicate(nil)
         
         tableView.backgroundView = UIView()
         
@@ -177,7 +181,9 @@ UISearchDisplayDelegate {
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
-        //searchBar.resignFirstResponder()
+        if scrollView.contentOffset.y < 0 {
+            searchBar.becomeFirstResponder()
+        }
     }
     
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
