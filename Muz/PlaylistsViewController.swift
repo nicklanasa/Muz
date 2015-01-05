@@ -85,11 +85,11 @@ NSFetchedResultsControllerDelegate {
         }
         
         playlistsController?.delegate = self
+        
         var error: NSError?
         if playlistsController!.performFetch(&error) {
             self.tableView.reloadData()
         }
-        
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -160,10 +160,12 @@ NSFetchedResultsControllerDelegate {
     }
     
     func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
-        switch type {
-        case .Delete:
-            self.tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
-        default: break
+        if let path = indexPath {
+            switch type {
+            case .Delete:
+                self.tableView.deleteRowsAtIndexPaths([path], withRowAnimation: .Fade)
+            default: break
+            }
         }
     }
 }

@@ -60,11 +60,11 @@ NSFetchedResultsControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tableView.registerNib(UINib(nibName: "MoreLastFmSettingCell", bundle: nil), forCellReuseIdentifier: "LastFmCell")
         tableView.registerClass(NSClassFromString("UITableViewCell"), forCellReuseIdentifier: "Cell")
         tableView.registerNib(UINib(nibName: "SongsHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "Header")
         
         lyricsSwitch.addTarget(self, action: "updatedSetting:", forControlEvents: .ValueChanged)
-        artistInfoSwitch.addTarget(self, action: "updatedSetting:", forControlEvents: .ValueChanged)
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -79,19 +79,23 @@ NSFetchedResultsControllerDelegate {
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell",
+        
+        var cell = tableView.dequeueReusableCellWithIdentifier("Cell",
             forIndexPath: indexPath) as UITableViewCell
         
         switch indexPath.section {
         case MoreSectionType.Settings.rawValue:
-            cell.textLabel?.text = tableDataSectionSettings[indexPath.row] as NSString
             switch indexPath.row {
             case MoreSetting.ArtistInfo.rawValue:
-                artistInfoSwitch.on = SettingsManager.defaultManager.valueForMoreSetting(.ArtistInfo)
-                cell.accessoryView = artistInfoSwitch
+                var lastFmCell = tableView.dequeueReusableCellWithIdentifier("LastFmCell") as MoreLastFmSettingCell
+                lastFmCell.artistInfoSwitch.on = SettingsManager.defaultManager.valueForMoreSetting(.ArtistInfo)
+                lastFmCell.artistInfoSwitch.addTarget(self, action: "updatedSetting:", forControlEvents: .ValueChanged)
+                return lastFmCell
             default:
                 lyricsSwitch.on = SettingsManager.defaultManager.valueForMoreSetting(.Lyrics)
                 cell.accessoryView = lyricsSwitch
+                
+                cell.textLabel?.text = tableDataSectionSettings[indexPath.row] as NSString
             }
         default:
             cell.textLabel?.text = tableDataSectionInfo[indexPath.row] as NSString

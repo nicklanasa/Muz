@@ -78,11 +78,7 @@ UISearchDisplayDelegate {
     
     func fetchSongsWithPredicate(predicate: MPMediaPropertyPredicate?) {
         
-        songsQuery = MPMediaQuery.songsQuery()
-        
-        if let p = predicate {
-            songsQuery?.addFilterPredicate(p)
-        }
+        songsQuery = MediaSession.sharedSession.songsQueryWithPredicate(predicate)
         
         songs = songsQuery?.items
         songsSections = NSMutableArray()

@@ -166,7 +166,7 @@ NSFetchedResultsControllerDelegate {
             if isReadOnly {
                 let readOnlyPlaylist = readOnlyPlaylistSongsQuery?.collections?[indexPath.section] as MPMediaPlaylist
                 if let song = readOnlyPlaylist.items[indexPath.row] as? MPMediaItem {
-                    presentNowPlayViewControllerWithItem(song)
+                    presentNowPlayViewControllerWithItem(song, collection: MPMediaItemCollection(items: readOnlyPlaylist.items))
                 }
             } else {
                 // Create collection of playlist songs.

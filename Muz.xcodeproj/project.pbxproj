@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		18FE78E2938CE235720BDF0D /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CC5E238686D44A286C24637D /* libPods.a */; };
+		CE2BD11F1A59F2670077D3FD /* MoreLastFmSettingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2BD11E1A59F2670077D3FD /* MoreLastFmSettingCell.swift */; };
+		CE2BD1211A59F2710077D3FD /* MoreLastFmSettingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE2BD1201A59F2710077D3FD /* MoreLastFmSettingCell.xib */; };
+		CE2BD1231A59F2C00077D3FD /* Last.fm_Logo_White.png in Resources */ = {isa = PBXBuildFile; fileRef = CE2BD1221A59F2C00077D3FD /* Last.fm_Logo_White.png */; };
 		CE3010291A477BDA0038B3CC /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3010281A477BDA0038B3CC /* Song.swift */; };
 		CE3038D81A3E033100DCC5EB /* SimiliarArtistCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE3038D71A3E033100DCC5EB /* SimiliarArtistCollectionViewCell.xib */; };
 		CE3038DA1A3E037700DCC5EB /* SimiliarArtistCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3038D91A3E037700DCC5EB /* SimiliarArtistCollectionViewCell.swift */; };
@@ -212,6 +215,9 @@
 /* Begin PBXFileReference section */
 		B5C84601BD2F3431F5F52BE9 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		CC5E238686D44A286C24637D /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE2BD11E1A59F2670077D3FD /* MoreLastFmSettingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreLastFmSettingCell.swift; sourceTree = "<group>"; };
+		CE2BD1201A59F2710077D3FD /* MoreLastFmSettingCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MoreLastFmSettingCell.xib; sourceTree = "<group>"; };
+		CE2BD1221A59F2C00077D3FD /* Last.fm_Logo_White.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Last.fm_Logo_White.png; sourceTree = "<group>"; };
 		CE3010281A477BDA0038B3CC /* Song.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Song.swift; sourceTree = "<group>"; };
 		CE3038D71A3E033100DCC5EB /* SimiliarArtistCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SimiliarArtistCollectionViewCell.xib; sourceTree = "<group>"; };
 		CE3038D91A3E037700DCC5EB /* SimiliarArtistCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimiliarArtistCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -636,6 +642,8 @@
 				CE95D9B61A3BCC610060752A /* MediaLibrarySyncViewController.xib */,
 				CE31261C1A50E77A0071AD27 /* TutorialController.xib */,
 				CE31261E1A50E7870071AD27 /* TutorialController.swift */,
+				CE2BD11E1A59F2670077D3FD /* MoreLastFmSettingCell.swift */,
+				CE2BD1201A59F2710077D3FD /* MoreLastFmSettingCell.xib */,
 				CEDB61E61A37DCE300B90B2D /* MoreViewController.swift */,
 				CEDB61E81A37DCEE00B90B2D /* MoreViewController.xib */,
 				CE9BCFD41A44E98100522F18 /* Playlists */,
@@ -721,6 +729,7 @@
 		CEDB61811A37B1D300B90B2D /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				CE2BD1221A59F2C00077D3FD /* Last.fm_Logo_White.png */,
 				CE3126261A50E9280071AD27 /* ShadowsIntoLight.ttf */,
 				CE3126201A50E8560071AD27 /* arrow-down.png */,
 				CE3126211A50E8560071AD27 /* arrow-left.png */,
@@ -941,6 +950,7 @@
 				CE4184CE1A4922900011C0DA /* LaunchScreen.xib in Resources */,
 				CEDB61EF1A37ECFC00B90B2D /* blue.jpg in Resources */,
 				CEDB61951A37D21B00B90B2D /* SongsViewController.xib in Resources */,
+				CE2BD1211A59F2710077D3FD /* MoreLastFmSettingCell.xib in Resources */,
 				CECCC0FA1A40AC5300799854 /* science.png in Resources */,
 				CEC66D991A38D5F400560754 /* headphones.png in Resources */,
 				CECCC0E91A40934900799854 /* magic@3x.png in Resources */,
@@ -982,6 +992,7 @@
 				CECCC0E51A40934900799854 /* genius@2x.png in Resources */,
 				CECCC10B1A40CC2700799854 /* PlaylistSongsViewController.xib in Resources */,
 				CE9745471A3E5D3700A65633 /* info.png in Resources */,
+				CE2BD1231A59F2C00077D3FD /* Last.fm_Logo_White.png in Resources */,
 				CE6EF5061A392B6F001FE858 /* back.png in Resources */,
 				CEDB61D71A37DB9600B90B2D /* airplay.png in Resources */,
 				CE3126271A50E9280071AD27 /* ShadowsIntoLight.ttf in Resources */,
@@ -1136,6 +1147,7 @@
 				CE9745411A3E548F00A65633 /* LastFmSimiliarArtistsRequest.swift in Sources */,
 				CECCC0CF1A3FAA5600799854 /* PlaylistSong.swift in Sources */,
 				CE4184D41A4922900011C0DA /* Muz.xcdatamodeld in Sources */,
+				CE2BD11F1A59F2670077D3FD /* MoreLastFmSettingCell.swift in Sources */,
 				CEE1534E1A3B567C00BB16EB /* NowPlayingInfoLyricsCell.swift in Sources */,
 				CE33385B1A3A0A7300281146 /* ArtistsHeader.swift in Sources */,
 				CE444BE51A36A28700153F77 /* Song+Helpers.swift in Sources */,

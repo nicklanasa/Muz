@@ -122,19 +122,7 @@ class Datastore {
     func addPlaylists() {
         
         var error: NSError?
-        
-        var deleteRequest = NSFetchRequest(entityName: "Playlist")
-        let deletePredicate = NSPredicate(format: "persistentID != ''")
-        deleteRequest.predicate = deletePredicate
-        let deleteResults = self.workerContext.executeFetchRequest(deleteRequest, error: &error)
-        
-        if deleteResults?.count > 0 {
-            for playlist in deleteResults as [Playlist] {
-                println("Deleted playlist with name = \(playlist.name)")
-                self.workerContext.deleteObject(playlist)
-            }
-        }
-        
+    
         let playlistQuery = MPMediaQuery.playlistsQuery()
         let playlists = playlistQuery.collections
         

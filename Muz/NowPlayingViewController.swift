@@ -365,7 +365,7 @@ NowPlayingCollectionControllerDelegate {
         
         let songInfo = NSString(format: "%@\n%@\n%@", item.title, item.artist, item.albumTitle)
         let attributedSongInfo = NSMutableAttributedString(string: songInfo)
-        let songFont = UIFont(name: MuzFontName, size: 40)!
+        let songFont = UIFont(name: MuzFontName, size: 35)!
         let artistFont = UIFont(name: MuzFontNameRegular, size: 18)!
         attributedSongInfo.addAttribute(NSFontAttributeName, value: songFont, range: NSMakeRange(0, countElements(item.title)))
         attributedSongInfo.addAttribute(NSFontAttributeName, value: artistFont, range: NSMakeRange(countElements(item.title), countElements(item.artist) + 1))
@@ -413,7 +413,9 @@ NowPlayingCollectionControllerDelegate {
     
     func nowPlayingCollectionController(controller: NowPlayingCollectionController,
         didSelectItem item: MPMediaItem) {
-        playItem(item)
+        playerController.stop()
+        playerController.nowPlayingItem = item
+        playerController.play()
     }
     
     override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {

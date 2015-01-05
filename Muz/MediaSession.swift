@@ -12,10 +12,6 @@ import MediaPlayer
 
 let _sharedSession = MediaSession()
 
-//protocol MediaSessionDelegate {
-//    func mediaSessionDidUpdate
-//}
-
 @objc class MediaSession {
     
     let dataManager = DataManager.manager
@@ -93,6 +89,19 @@ let _sharedSession = MediaSession()
         return artistsQuery
     }
     
+    func songsQueryWithPredicate(predicate: MPMediaPropertyPredicate?) -> MPMediaQuery {
+        var songsQuery = MPMediaQuery.songsQuery()
+        songsQuery.addFilterPredicate(MPMediaPropertyPredicate(value: false,
+            forProperty: MPMediaItemPropertyIsCloudItem,
+            comparisonType: .EqualTo))
+        
+        if let p = predicate {
+            songsQuery?.addFilterPredicate(p)
+        }
+        
+        return songsQuery
+    }
+    
     func artistsSectionIndexTitles(artistsQuery: MPMediaQuery) -> [AnyObject] {
         var artistsSections = NSMutableArray()
         if let sections = artistsQuery.collectionSections {
@@ -110,6 +119,9 @@ let _sharedSession = MediaSession()
         println(playlist.persistentID.toInt())
         let predicate = MPMediaPropertyPredicate(value: playlist.persistentID.toInt(),
             forProperty: MPMediaPlaylistPropertyPersistentID,
+            comparisonType: .EqualTo)
+        let typePredicate = MPMediaPropertyPredicate(value: MPMediaType.AnyAudio.rawValue,
+            forProperty: MPMediaItemPropertyMediaType,
             comparisonType: .EqualTo)
         let playlistSongsQuery = MPMediaQuery.playlistsQuery()
         playlistSongsQuery.addFilterPredicate(predicate)
