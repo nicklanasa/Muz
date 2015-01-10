@@ -18,10 +18,9 @@ UITableViewDataSource {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
     
-    // The NSFetchedResultsController used to pull tasks for the selected date.
-    var loved: [AnyObject]?
-    var lovedQuery: MPMediaQuery!
-    var sortedResults = NSMutableArray()
+    private var loved: [AnyObject]?
+    private var lovedQuery: MPMediaQuery!
+    private var sortedResults = NSMutableArray()
     
     override init() {
         super.init(nibName: "LovedViewController", bundle: nil)
@@ -49,7 +48,10 @@ UITableViewDataSource {
         self.navigationItem.title = "Loved"
     }
     
-    func fetchLoved() {
+    /**
+    Fetch songs with rating > 3 and use those items as loved songs.
+    */
+    private func fetchLoved() {
         
         self.lovedQuery = MPMediaQuery.songsQuery()
         

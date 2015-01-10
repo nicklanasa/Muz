@@ -73,6 +73,12 @@ class RootViewController: UIViewController {
        
     }
     
+    /**
+    TODO: Change this to use Song.
+    Presents the NowPlaying ViewController with the selected item.
+    
+    :param: item The MPMediaItem you want to play.
+    */
     func presentNowPlayViewControllerWithItem(item: MPMediaItem) {
         let window = UIApplication.sharedApplication().keyWindow
         if let tabBarController = window!.rootViewController as? UITabBarController {
@@ -103,6 +109,13 @@ class RootViewController: UIViewController {
         }
     }
     
+    /**
+    TODO: Change this to use Song.
+    Presents the NowPlaying ViewController with the selected item.
+    
+    :param: item The MPMediaItem you want to play.
+    :param: collection The collection you wish to queue up.
+    */
     func presentNowPlayViewControllerWithItem(item: MPMediaItem, collection: MPMediaItemCollection) {
         let window = UIApplication.sharedApplication().keyWindow
         if let tabBarController = window!.rootViewController as? UITabBarController {
@@ -134,6 +147,12 @@ class RootViewController: UIViewController {
         
     }
     
+    /**
+    Presents a model overlay ViewController with the given controller and blurredController to blur in the background.
+    
+    :param: controller        The controller you wish you present.
+    :param: blurredController The controller you wish to blur in the background.
+    */
     func presentModalOverlayController(controller: OverlayController, blurredController: UIViewController) {
 
         UIGraphicsBeginImageContext(blurredController.view.bounds.size)
@@ -147,6 +166,11 @@ class RootViewController: UIViewController {
         presentViewController(nav, animated: true, completion: nil)
     }
     
+    /**
+    Present the CreatePlaylist Controller with the given controller.
+    
+    :param: controller The controller you wish to blur in the background.
+    */
     func presentCreatePlaylistFromController(controller: OverlayController) {
         
         UIGraphicsBeginImageContext(self.view.bounds.size)
