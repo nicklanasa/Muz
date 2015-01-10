@@ -71,8 +71,6 @@
 		CE75D6E61A424502007BC624 /* repeat.png in Resources */ = {isa = PBXBuildFile; fileRef = CE75D6E31A424502007BC624 /* repeat.png */; };
 		CE75D6E71A424502007BC624 /* repeat@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE75D6E41A424502007BC624 /* repeat@2x.png */; };
 		CE75D6E81A424502007BC624 /* repeat@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE75D6E51A424502007BC624 /* repeat@3x.png */; };
-		CE95D9B51A3BCC580060752A /* MediaLibrarySyncViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE95D9B41A3BCC580060752A /* MediaLibrarySyncViewController.swift */; };
-		CE95D9B71A3BCC610060752A /* MediaLibrarySyncViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE95D9B61A3BCC610060752A /* MediaLibrarySyncViewController.xib */; };
 		CE95D9B91A3BCF480060752A /* syncLibrary.png in Resources */ = {isa = PBXBuildFile; fileRef = CE95D9B81A3BCF480060752A /* syncLibrary.png */; };
 		CE95D9BD1A3DFB730060752A /* LastFmArtistInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE95D9BC1A3DFB730060752A /* LastFmArtistInfoCell.swift */; };
 		CE95D9BF1A3DFB860060752A /* LastFmArtistInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE95D9BE1A3DFB860060752A /* LastFmArtistInfoCell.xib */; };
@@ -149,7 +147,7 @@
 		CECCC1121A41134900799854 /* LastFmTrackBuyLinksRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECCC1111A41134900799854 /* LastFmTrackBuyLinksRequest.swift */; };
 		CECCC1141A41135B00799854 /* LastFmAlbumBuyLinksRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECCC1131A41135B00799854 /* LastFmAlbumBuyLinksRequest.swift */; };
 		CECCC1171A41168E00799854 /* LastFmBuyLink.m in Sources */ = {isa = PBXBuildFile; fileRef = CECCC1161A41168E00799854 /* LastFmBuyLink.m */; };
-		CECCC1191A4127D400799854 /* LastFmBuyLinksActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECCC1181A4127D400799854 /* LastFmBuyLinksActionSheet.swift */; };
+		CECCC1191A4127D400799854 /* LastFmBuyLinksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECCC1181A4127D400799854 /* LastFmBuyLinksViewController.swift */; };
 		CECCC1201A41287700799854 /* list.png in Resources */ = {isa = PBXBuildFile; fileRef = CECCC11A1A41287700799854 /* list.png */; };
 		CECCC1211A41287700799854 /* list@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CECCC11B1A41287700799854 /* list@2x.png */; };
 		CECCC1221A41287700799854 /* list@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CECCC11C1A41287700799854 /* list@3x.png */; };
@@ -292,8 +290,6 @@
 		CE7D81291A51C70B001C1035 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		CE7D812B1A51C712001C1035 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		CE7D812D1A51C71A001C1035 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
-		CE95D9B41A3BCC580060752A /* MediaLibrarySyncViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaLibrarySyncViewController.swift; sourceTree = "<group>"; };
-		CE95D9B61A3BCC610060752A /* MediaLibrarySyncViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MediaLibrarySyncViewController.xib; sourceTree = "<group>"; };
 		CE95D9B81A3BCF480060752A /* syncLibrary.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = syncLibrary.png; sourceTree = "<group>"; };
 		CE95D9BC1A3DFB730060752A /* LastFmArtistInfoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastFmArtistInfoCell.swift; sourceTree = "<group>"; };
 		CE95D9BE1A3DFB860060752A /* LastFmArtistInfoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LastFmArtistInfoCell.xib; sourceTree = "<group>"; };
@@ -374,7 +370,7 @@
 		CECCC1131A41135B00799854 /* LastFmAlbumBuyLinksRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastFmAlbumBuyLinksRequest.swift; sourceTree = "<group>"; };
 		CECCC1151A41168E00799854 /* LastFmBuyLink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LastFmBuyLink.h; sourceTree = "<group>"; };
 		CECCC1161A41168E00799854 /* LastFmBuyLink.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LastFmBuyLink.m; sourceTree = "<group>"; };
-		CECCC1181A4127D400799854 /* LastFmBuyLinksActionSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastFmBuyLinksActionSheet.swift; sourceTree = "<group>"; };
+		CECCC1181A4127D400799854 /* LastFmBuyLinksViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastFmBuyLinksViewController.swift; sourceTree = "<group>"; };
 		CECCC11A1A41287700799854 /* list.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = list.png; sourceTree = "<group>"; };
 		CECCC11B1A41287700799854 /* list@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "list@2x.png"; sourceTree = "<group>"; };
 		CECCC11C1A41287700799854 /* list@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "list@3x.png"; sourceTree = "<group>"; };
@@ -528,7 +524,7 @@
 			children = (
 				CE444BB51A36A25500153F77 /* AppDelegate.swift */,
 				CEB200CF1A378B6300E857D8 /* Muz-Bridging-Header.h */,
-				CE4931EB1A3A1B4400B3A4BE /* Presentation */,
+				CE4931EB1A3A1B4400B3A4BE /* Application */,
 				CEDB61811A37B1D300B90B2D /* Resources */,
 				CE4931E91A3A1B2100B3A4BE /* Data */,
 				CE4931EA1A3A1B3700B3A4BE /* Library */,
@@ -626,10 +622,10 @@
 			name = Library;
 			sourceTree = "<group>";
 		};
-		CE4931EB1A3A1B4400B3A4BE /* Presentation */ = {
+		CE4931EB1A3A1B4400B3A4BE /* Application */ = {
 			isa = PBXGroup;
 			children = (
-				CECCC1181A4127D400799854 /* LastFmBuyLinksActionSheet.swift */,
+				CECCC1181A4127D400799854 /* LastFmBuyLinksViewController.swift */,
 				CE3126161A50DA480071AD27 /* NoMusicOverlayController.swift */,
 				CE3126181A50DA500071AD27 /* NoMusicOverlayController.xib */,
 				CEDB618C1A37C40000B90B2D /* LovedViewController.swift */,
@@ -638,12 +634,8 @@
 				CEDB61821A37B85D00B90B2D /* TabBarController.swift */,
 				CEDB617D1A37AF9700B90B2D /* RootViewController.swift */,
 				CE9BCFD21A44E68300522F18 /* OverlayController.swift */,
-				CE95D9B41A3BCC580060752A /* MediaLibrarySyncViewController.swift */,
-				CE95D9B61A3BCC610060752A /* MediaLibrarySyncViewController.xib */,
 				CE31261C1A50E77A0071AD27 /* TutorialController.xib */,
 				CE31261E1A50E7870071AD27 /* TutorialController.swift */,
-				CE2BD11E1A59F2670077D3FD /* MoreLastFmSettingCell.swift */,
-				CE2BD1201A59F2710077D3FD /* MoreLastFmSettingCell.xib */,
 				CEDB61E61A37DCE300B90B2D /* MoreViewController.swift */,
 				CEDB61E81A37DCEE00B90B2D /* MoreViewController.xib */,
 				CE9BCFD41A44E98100522F18 /* Playlists */,
@@ -652,7 +644,7 @@
 				CE4931E81A3A1B1A00B3A4BE /* Songs */,
 				CE4931E71A3A1B0300B3A4BE /* Artists */,
 			);
-			name = Presentation;
+			name = Application;
 			sourceTree = "<group>";
 		};
 		CE4931EC1A3A1B7A00B3A4BE /* ArtistAlbums */ = {
@@ -709,6 +701,8 @@
 		CE9BCFE91A45E22400522F18 /* LastFm */ = {
 			isa = PBXGroup;
 			children = (
+				CE2BD11E1A59F2670077D3FD /* MoreLastFmSettingCell.swift */,
+				CE2BD1201A59F2710077D3FD /* MoreLastFmSettingCell.xib */,
 				CE9BCFEA1A45E2CB00522F18 /* LastFmEventInfoDetailsCell.swift */,
 				CE9BCFEC1A45E2D700522F18 /* LastFmEventInfoDetailsCell.xib */,
 				CE9BCFE51A45E21900522F18 /* LastFmEventInfoController.xib */,
@@ -1017,7 +1011,6 @@
 				CE9BCFED1A45E2D700522F18 /* LastFmEventInfoDetailsCell.xib in Resources */,
 				CEDB618F1A37C40000B90B2D /* LovedViewController.xib in Resources */,
 				CE3126231A50E8560071AD27 /* arrow-down.png in Resources */,
-				CE95D9B71A3BCC610060752A /* MediaLibrarySyncViewController.xib in Resources */,
 				CE4184D31A4922900011C0DA /* moreWhite@3x.png in Resources */,
 				CECCC0C51A3F912300799854 /* add.png in Resources */,
 				CE9BCFDE1A45D18F00522F18 /* LastFmEventCell.xib in Resources */,
@@ -1107,7 +1100,6 @@
 				CEE153451A3B41CD00BB16EB /* NowPlayingInfoViewController.swift in Sources */,
 				CEDB61E71A37DCE300B90B2D /* MoreViewController.swift in Sources */,
 				CE95D9BD1A3DFB730060752A /* LastFmArtistInfoCell.swift in Sources */,
-				CE95D9B51A3BCC580060752A /* MediaLibrarySyncViewController.swift in Sources */,
 				CE9BCFE41A45D56500522F18 /* LastFmCell.swift in Sources */,
 				CECCC10D1A40ED1200799854 /* LastFmArtistEventsRequest.swift in Sources */,
 				CE9BCFE11A45D2CD00522F18 /* LastFmEventInfoCell.swift in Sources */,
@@ -1118,7 +1110,7 @@
 				CECCC1011A40B17200799854 /* Playlist.swift in Sources */,
 				CE3038DC1A3E067500DCC5EB /* LastFmArtistInfoRequest.swift in Sources */,
 				CEC66D8C1A37EFA700560754 /* ArtistCell.swift in Sources */,
-				CECCC1191A4127D400799854 /* LastFmBuyLinksActionSheet.swift in Sources */,
+				CECCC1191A4127D400799854 /* LastFmBuyLinksViewController.swift in Sources */,
 				CEDB618E1A37C40000B90B2D /* LovedViewController.swift in Sources */,
 				CEE153551A3B5B4B00BB16EB /* HTMLNode.m in Sources */,
 				CEDB61EB1A37DE5400B90B2D /* NowPlayingViewController.swift in Sources */,

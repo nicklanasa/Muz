@@ -22,6 +22,8 @@ class RootViewController: UIViewController {
     
     override init() {
         super.init()
+        
+        self.tabBarItem.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0)
     }
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
@@ -42,14 +44,14 @@ class RootViewController: UIViewController {
     
     override func viewDidLoad() {
         
-        backgroundImageView = UIImageView(frame: UIScreen.mainScreen().bounds)
-        backgroundImageView.contentMode = UIViewContentMode.ScaleToFill
-        backgroundImageView.autoresizingMask = .FlexibleWidth
+        self.backgroundImageView = UIImageView(frame: UIScreen.mainScreen().bounds)
+        self.backgroundImageView.contentMode = UIViewContentMode.ScaleToFill
+        self.backgroundImageView.autoresizingMask = .FlexibleWidth
         
-        configureBackgroundImage()
+        self.configureBackgroundImage()
         
-        if backgroundImageView.superview == nil {
-            view.insertSubview(backgroundImageView, atIndex: 0)
+        if self.backgroundImageView.superview == nil {
+            self.view.insertSubview(self.backgroundImageView, atIndex: 0)
         }
         
         NSNotificationCenter.defaultCenter().addObserver(self,
@@ -57,14 +59,14 @@ class RootViewController: UIViewController {
             name: MPMediaLibraryDidChangeNotification,
             object: nil)
         
-        searchDisplayController?.searchResultsTableView.backgroundColor = UIColor.clearColor()
-        searchDisplayController?.searchResultsTableView.separatorStyle = .None
+        self.searchDisplayController?.searchResultsTableView.backgroundColor = UIColor.clearColor()
+        self.searchDisplayController?.searchResultsTableView.separatorStyle = .None
         
-        searchDisplayController?.searchResultsTableView.autoresizingMask = .FlexibleWidth | .FlexibleHeight
+        self.searchDisplayController?.searchResultsTableView.autoresizingMask = .FlexibleWidth | .FlexibleHeight
     }
     
     func configureBackgroundImage() {
-        backgroundImageView.image = CurrentAppBackgroundImage.applyDarkEffect()
+        self.backgroundImageView.image = CurrentAppBackgroundImage.applyDarkEffect()
     }
     
     func mediaLibraryDidChange() {
@@ -98,7 +100,8 @@ class RootViewController: UIViewController {
                     nowPlayingViewController.playItem(item)
                 }
             }
-        }    }
+        }
+    }
     
     func presentNowPlayViewControllerWithItem(item: MPMediaItem, collection: MPMediaItemCollection) {
         let window = UIApplication.sharedApplication().keyWindow
@@ -156,7 +159,7 @@ class RootViewController: UIViewController {
         
         controller.screenShot = image
         
-        view.addSubview(controller.view)
+        self.view.addSubview(controller.view)
         
         controller.view.alpha = 0.0
         controller.view.frame = CGRectOffset(controller.view.frame, 0, UIScreen.mainScreen().bounds.size.height)
@@ -168,7 +171,6 @@ class RootViewController: UIViewController {
     }
     
     override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
-        //self.backgroundImageView.frame = UIScreen.mainScreen().bounds
         if fromInterfaceOrientation == .LandscapeLeft || fromInterfaceOrientation == .LandscapeRight {
             println(UIScreen.mainScreen().bounds.size)
             self.backgroundImageView.contentMode = UIViewContentMode.ScaleToFill

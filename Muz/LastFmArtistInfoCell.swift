@@ -31,7 +31,7 @@ class LastFmArtistInfoCell: LastFmCell {
     var albumBuyLinks: [AnyObject]?
     var songBuyLinks: [AnyObject]?
     
-    var actionSheet: LastFmBuyLinksActionSheet!
+    var actionSheet: LastFmBuyLinksViewController!
     
     var lastFmArtist: LastFmArtist?
     
@@ -91,7 +91,7 @@ class LastFmArtistInfoCell: LastFmCell {
     @IBAction func buySongButtonPressed(sender: AnyObject) {
         if let buyLinks = songBuyLinks {
             if buyLinks.count > 0 {
-                actionSheet = LastFmBuyLinksActionSheet(buyLinks: buyLinks)
+                actionSheet = LastFmBuyLinksViewController(buyLinks: buyLinks)
                 actionSheet.showInView(self)
             } else {
                 showBuySongError()
@@ -104,7 +104,7 @@ class LastFmArtistInfoCell: LastFmCell {
     @IBAction func buyAlbumButtonPressed(sender: AnyObject) {
         if let buyLinks = albumBuyLinks {
             if buyLinks.count > 0 {
-                actionSheet = LastFmBuyLinksActionSheet(buyLinks: buyLinks)
+                actionSheet = LastFmBuyLinksViewController(buyLinks: buyLinks)
                 actionSheet.showInView(self)
             } else {
                 showBuyAlbumError()

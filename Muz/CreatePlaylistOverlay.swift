@@ -25,10 +25,10 @@ PlaylistsViewControllerDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     
-    var createPlaylistCell: CreatePlaylistCell!
+    private var createPlaylistCell: CreatePlaylistCell!
     var artist: NSString!
     var items: [MPMediaItem]!
-    var hud: MBProgressHUD!
+    private var hud: MBProgressHUD!
     
     var existingPlaylist: Playlist?
     
@@ -51,7 +51,7 @@ PlaylistsViewControllerDelegate {
     }
     
     override func viewWillAppear(animated: Bool) {
-        createPlaylistCell.nameTextField.becomeFirstResponder()
+        self.createPlaylistCell.nameTextField.becomeFirstResponder()
         
         self.overlayScreenName = "New Playlist"
     }
@@ -59,9 +59,9 @@ PlaylistsViewControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView.registerNib(UINib(nibName: "CreatePlaylistCell", bundle: nil), forCellReuseIdentifier: "Cell")
+        self.tableView.registerNib(UINib(nibName: "CreatePlaylistCell", bundle: nil), forCellReuseIdentifier: "Cell")
         
-        tableView.reloadData()
+        self.tableView.reloadData()
         
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel",
             style: .Plain,
@@ -75,13 +75,13 @@ PlaylistsViewControllerDelegate {
         
         var nib = UINib(nibName: "CreatePlaylistCell",
             bundle: nil)
-        createPlaylistCell = nib.instantiateWithOwner(self, options: nil)[0] as CreatePlaylistCell
-        createPlaylistCell.delegate = self
+        self.createPlaylistCell = nib.instantiateWithOwner(self, options: nil)[0] as CreatePlaylistCell
+        self.createPlaylistCell.delegate = self
         
         if let artist = self.artist {
-            createPlaylistCell.smartSwitch.enabled = true
+            self.createPlaylistCell.smartSwitch.enabled = true
         } else {
-            createPlaylistCell.smartSwitch.enabled = false
+            self.createPlaylistCell.smartSwitch.enabled = false
         }
     }
     
@@ -91,10 +91,11 @@ PlaylistsViewControllerDelegate {
         similiarArtistLastFmRequest.sendURLRequest()
     }
     
-    func lastFmSimiliarArtistsRequestDidComplete(request: LastFmSimiliarArtistsRequest, didCompleteWithLastFmArtists artists: [AnyObject]?) {
-        let index = createPlaylistCell.amountSegmentedControl.selectedSegmentIndex
-        let amount = createPlaylistCell.amountSegmentedControl.titleForSegmentAtIndex(index)!.toInt()!
-        let name = createPlaylistCell.nameTextField.text
+    func lastFmSimiliarArtistsRequestDidComplete(request: LastFmSimiliarArtistsRequest,
+        didCompleteWithLastFmArtists artists: [AnyObject]?) {
+        let index = self.createPlaylistCell.amountSegmentedControl.selectedSegmentIndex
+        let amount = self.createPlaylistCell.amountSegmentedControl.titleForSegmentAtIndex(index)!.toInt()!
+        let name = self.createPlaylistCell.nameTextField.text
         let playlistType = PlaylistType.Smart
         MediaSession.sharedSession.dataManager.datastore.createPlaylistWithSimiliarArtists(self.artist,
             artists: artists,
@@ -105,7 +106,7 @@ PlaylistsViewControllerDelegate {
         }
     }
     
-    func dismiss() {
+    private func dismiss() {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
@@ -119,11 +120,11 @@ PlaylistsViewControllerDelegate {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.section == 1 {
-            createPlaylistCell.selectionStyle = .None
-            return createPlaylistCell
+            self.createPlaylistCell.selectionStyle = .None
+            return self.createPlaylistCell
         } else {
             var cell = UITableViewCell(style: .Default, reuseIdentifier: "Cell")
-            if let playlist = existingPlaylist {
+            if let playlist = self.existingPlaylist {
                 cell.textLabel?.text = playlist.name
             } else {
                 cell.textLabel?.text = "Add to existing playlist"
@@ -163,44 +164,50 @@ PlaylistsViewControllerDelegate {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
 
+    // MARK: CreatePlaylistCellDelegate
     func createPlaylistCell(cell: CreatePlaylistCell, didStartEditing textField: UITextField!) {
         
     }
     
     func createPlaylistCell(cell: CreatePlaylistCell, shouldReturn textField: UITextField!) {
-        createPlaylist()
+        self.createPlaylist()
     }
 
-    
-    func createPlaylist() {
-        if createPlaylistCell.smartSwitch.on {
-            hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-            hud.mode = MBProgressHUDModeIndeterminate
-            hud.labelText = "Getting similiar artists"
+    private func createPlaylist() {
+        if self.createPlaylistCell.smartSwitch.on {
+            self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+            self.hud.mode = MBProgressHUDModeIndeterminate
+            self.hud.labelText = "Getting similiar artists"
             requestSimiliarArtists()
         } else {
             if let artist = self.artist {
-                if let playlist = existingPlaylist {
+                if let playlist = self.existingPlaylist {
                     if let items = self.items {
                         // Create playlist with items.
-                        MediaSession.sharedSession.dataManager.datastore.addItemsToPlaylist(items, playlist: playlist, completion: { (addedSongs) -> () in
+                        MediaSession.sharedSession.dataManager.datastore.addItemsToPlaylist(items,
+                            playlist: playlist,
+                            completion: { (addedSongs) -> () in
                             self.handleCreatePlaylistFinishWithAddedSongs(addedSongs)
                         })
                     } else {
                         // Create playlist with artist items.
-                        MediaSession.sharedSession.dataManager.datastore.addArtistSongsToPlaylist(playlist, artist: artist, completion: { (addedSongs) -> () in
+                        MediaSession.sharedSession.dataManager.datastore.addArtistSongsToPlaylist(playlist,
+                            artist: artist,
+                            completion: { (addedSongs) -> () in
                             self.handleCreatePlaylistFinishWithAddedSongs(addedSongs)
                         })
                     }
                 } else {
-                    if countElements(createPlaylistCell.nameTextField.text) > 0 {
+                    if countElements(self.createPlaylistCell.nameTextField.text) > 0 {
                         if let items = self.items {
-                            MediaSession.sharedSession.dataManager.datastore.createPlaylistWithItems(createPlaylistCell.nameTextField.text, items: items, completion: { (addedSongs) -> () in
+                            MediaSession.sharedSession.dataManager.datastore.createPlaylistWithItems(self.createPlaylistCell.nameTextField.text,
+                                items: items,
+                                completion: { (addedSongs) -> () in
                                 self.handleCreatePlaylistFinishWithAddedSongs(addedSongs)
                             })
                         } else {
                             MediaSession.sharedSession.dataManager.datastore.createPlaylistWithArtist(self.artist,
-                                name: createPlaylistCell.nameTextField.text,
+                                name: self.createPlaylistCell.nameTextField.text,
                                 playlistType: .None) { (addedSongs) -> () in
                                     self.handleCreatePlaylistFinishWithAddedSongs(addedSongs)
                             }
@@ -210,8 +217,8 @@ PlaylistsViewControllerDelegate {
                     }
                 }
             } else {
-                if countElements(createPlaylistCell.nameTextField.text) > 0 {
-                    MediaSession.sharedSession.dataManager.datastore.createEmptyPlaylistWithName(createPlaylistCell.nameTextField.text,
+                if countElements(self.createPlaylistCell.nameTextField.text) > 0 {
+                    MediaSession.sharedSession.dataManager.datastore.createEmptyPlaylistWithName(self.createPlaylistCell.nameTextField.text,
                         playlistType: .None) { () -> () in
                             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                                 self.dismiss()
@@ -225,8 +232,11 @@ PlaylistsViewControllerDelegate {
         }
     }
     
-    func showEmptyPlaylistNameAlert() {
-        UIAlertView(title: "Error!", message: "You must set a playlist name!", delegate: self, cancelButtonTitle: "Ok").show()
+    private func showEmptyPlaylistNameAlert() {
+        UIAlertView(title: "Error!",
+            message: "You must set a playlist name!",
+            delegate: self,
+            cancelButtonTitle: "Ok").show()
     }
     
     private func handleCreatePlaylistFinishWithAddedSongs(addedSongs: [AnyObject]?) {
@@ -237,24 +247,27 @@ PlaylistsViewControllerDelegate {
             } else {
                 LocalyticsSession.shared().tagEvent("Create smart playlist failed.")
                 let errorMessage = "Unable to find any songs based on \(self.artist)"
-                UIAlertView(title: "Error!", message: errorMessage, delegate: self, cancelButtonTitle: "Ok").show()
+                UIAlertView(title: "Error!",
+                    message: errorMessage,
+                    delegate: self,
+                    cancelButtonTitle: "Ok").show()
                 self.hud.hide(true)
             }
         })
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
-        createPlaylistCell.nameTextField.resignFirstResponder()
+        self.createPlaylistCell.nameTextField.resignFirstResponder()
     }
     
     func playlistsViewController(controller: PlaylistsViewController, didSelectPlaylist playlist: Playlist) {
         self.existingPlaylist = playlist
         self.tableView.reloadData()
         
-        createPlaylistCell.smartSwitch.on = false
-        createPlaylistCell.smartSwitchDidChange(createPlaylistCell.smartSwitch)
-        createPlaylistCell.smartSwitch.enabled = false
-        createPlaylistCell.nameTextField.text = ""
-        createPlaylistCell.nameTextField.enabled = false
+        self.createPlaylistCell.smartSwitch.on = false
+        self.createPlaylistCell.smartSwitchDidChange(self.createPlaylistCell.smartSwitch)
+        self.createPlaylistCell.smartSwitch.enabled = false
+        self.createPlaylistCell.nameTextField.text = ""
+        self.createPlaylistCell.nameTextField.enabled = false
     }
 }

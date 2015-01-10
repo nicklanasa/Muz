@@ -16,16 +16,16 @@ class OverlayController: UIViewController {
     
     var overlayScreenName: NSString! {
         didSet {
-            self.navigationItem.title = overlayScreenName
+            self.navigationItem.title = self.overlayScreenName
         }
     }
     
     override func viewDidLoad() {
-        backgroundImageView.image = self.screenShot.applyDarkEffect()
+        self.backgroundImageView.image = self.screenShot.applyDarkEffect()
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        LocalyticsSession.shared().tagScreen(overlayScreenName)
+        LocalyticsSession.shared().tagScreen(self.overlayScreenName)
     }
 }

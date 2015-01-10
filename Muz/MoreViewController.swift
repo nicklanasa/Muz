@@ -28,12 +28,12 @@ NSFetchedResultsControllerDelegate {
     @IBOutlet weak var tableView: UITableView!
     
     // Make this DB driven
-    let tableDataSectionSettings = ["Lyrics", "Artist info"]
-    let tableDataSectionInfo = ["Rate app", "Facebook", "Twitter", "Website", "Feedback"]
+    private let tableDataSectionSettings = ["Lyrics", "Artist info"]
+    private let tableDataSectionInfo = ["Rate app", "Facebook", "Twitter", "Website", "Feedback"]
     
-    let lyricsSwitch = UISwitch(frame: CGRectMake(0, 0, 50, 50))
-    let backgroundArtworkSwitch = UISwitch(frame: CGRectMake(0, 0, 50, 50))
-    let artistInfoSwitch = UISwitch(frame: CGRectMake(0, 0, 50, 50))
+    private let lyricsSwitch = UISwitch(frame: CGRectMake(0, 0, 50, 50))
+    private let backgroundArtworkSwitch = UISwitch(frame: CGRectMake(0, 0, 50, 50))
+    private let artistInfoSwitch = UISwitch(frame: CGRectMake(0, 0, 50, 50))
     
     override init() {
         super.init(nibName: "MoreViewController", bundle: nil)
@@ -60,11 +60,11 @@ NSFetchedResultsControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView.registerNib(UINib(nibName: "MoreLastFmSettingCell", bundle: nil), forCellReuseIdentifier: "LastFmCell")
-        tableView.registerClass(NSClassFromString("UITableViewCell"), forCellReuseIdentifier: "Cell")
-        tableView.registerNib(UINib(nibName: "SongsHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "Header")
+        self.tableView.registerNib(UINib(nibName: "MoreLastFmSettingCell", bundle: nil), forCellReuseIdentifier: "LastFmCell")
+        self.tableView.registerClass(NSClassFromString("UITableViewCell"), forCellReuseIdentifier: "Cell")
+        self.tableView.registerNib(UINib(nibName: "SongsHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "Header")
         
-        lyricsSwitch.addTarget(self, action: "updatedSetting:", forControlEvents: .ValueChanged)
+        self.lyricsSwitch.addTarget(self, action: "updatedSetting:", forControlEvents: .ValueChanged)
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -73,8 +73,8 @@ NSFetchedResultsControllerDelegate {
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
-        case MoreSectionType.Settings.rawValue: return tableDataSectionSettings.count
-        default: return tableDataSectionInfo.count
+        case MoreSectionType.Settings.rawValue: return self.tableDataSectionSettings.count
+        default: return self.tableDataSectionInfo.count
         }
     }
     
@@ -92,13 +92,13 @@ NSFetchedResultsControllerDelegate {
                 lastFmCell.artistInfoSwitch.addTarget(self, action: "updatedSetting:", forControlEvents: .ValueChanged)
                 return lastFmCell
             default:
-                lyricsSwitch.on = SettingsManager.defaultManager.valueForMoreSetting(.Lyrics)
-                cell.accessoryView = lyricsSwitch
+                self.lyricsSwitch.on = SettingsManager.defaultManager.valueForMoreSetting(.Lyrics)
+                cell.accessoryView = self.lyricsSwitch
                 
-                cell.textLabel?.text = tableDataSectionSettings[indexPath.row] as NSString
+                cell.textLabel?.text = self.tableDataSectionSettings[indexPath.row] as NSString
             }
         default:
-            cell.textLabel?.text = tableDataSectionInfo[indexPath.row] as NSString
+            cell.textLabel?.text = self.tableDataSectionInfo[indexPath.row] as NSString
             cell.accessoryType = .DisclosureIndicator
         }
         
@@ -126,10 +126,10 @@ NSFetchedResultsControllerDelegate {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
-    func updatedSetting(sender: AnyObject) {
+    private func updatedSetting(sender: AnyObject) {
         if let settingSwitch = sender as? UISwitch {
             let value = NSNumber(bool: settingSwitch.on)
-            if settingSwitch == lyricsSwitch {
+            if settingSwitch == self.lyricsSwitch {
                 SettingsManager.defaultManager.updateValueForMoreSetting(.Lyrics, value: value)
             } else {
                 SettingsManager.defaultManager.updateValueForMoreSetting(.ArtistInfo, value: value)

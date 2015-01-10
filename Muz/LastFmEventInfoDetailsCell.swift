@@ -31,8 +31,8 @@ class LastFmEventInfoDetailsCell: UITableViewCell {
     var event: LastFmEvent!
     
     override func awakeFromNib() {
-        artistImageView.layer.cornerRadius = artistImageView.frame.size.height / 2
-        artistImageView.layer.masksToBounds = true
+        self.artistImageView.layer.cornerRadius = self.artistImageView.frame.size.height / 2
+        self.artistImageView.layer.masksToBounds = true
         
         self.linkButton.layer.borderColor = UIColor.whiteColor().CGColor
         self.linkButton.layer.borderWidth = 1
@@ -44,7 +44,7 @@ class LastFmEventInfoDetailsCell: UITableViewCell {
     }
     
     @IBAction func viewMapButtonTapped(sender: AnyObject) {
-        delegate?.lastFmEventInfoDetailsCell(self, didTapViewMapButton: sender)
+        self.delegate?.lastFmEventInfoDetailsCell(self, didTapViewMapButton: sender)
     }
     
     @IBAction func linkButtonTapped(sender: AnyObject) {
@@ -62,10 +62,10 @@ class LastFmEventInfoDetailsCell: UITableViewCell {
         formatter.dateStyle = .ShortStyle
         let date = formatter.stringFromDate(event.startDate)
         
-        titleLabel.text = event.title
-        dateLabel.text = date
+        self.titleLabel.text = event.title
+        self.dateLabel.text = date
         
-        locationLabel.text = NSString(format: "%@, %@", event.city, event.country)
+        self.locationLabel.text = NSString(format: "%@, %@", event.city, event.country)
         
     }
 }

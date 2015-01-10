@@ -22,8 +22,8 @@ NSFetchedResultsControllerDelegate {
     var playlist: Playlist!
     var isReadOnly = false
     
-    var sortedPlaylistSongs: [AnyObject]!
-    var readOnlyPlaylistSongsQuery: MPMediaQuery?
+    private var sortedPlaylistSongs: [AnyObject]!
+    private var readOnlyPlaylistSongsQuery: MPMediaQuery?
     
     init(playlist: Playlist) {
         self.playlist = playlist
@@ -43,7 +43,7 @@ NSFetchedResultsControllerDelegate {
     }
     
     override func viewWillAppear(animated: Bool) {
-        fetchPlaylistSongs()
+        self.fetchPlaylistSongs()
         super.viewWillAppear(animated)
         
         self.screenName = "Playlist songs"
@@ -54,11 +54,11 @@ NSFetchedResultsControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView.registerNib(UINib(nibName: "SongCell", bundle: nil), forCellReuseIdentifier: "Cell")
+        self.tableView.registerNib(UINib(nibName: "SongCell", bundle: nil), forCellReuseIdentifier: "Cell")
         
         var songs = NSSet(set: self.playlist.playlistSongs)
         let sort = NSSortDescriptor(key: "order", ascending: true)
-        sortedPlaylistSongs = songs.sortedArrayUsingDescriptors([sort])
+        self.sortedPlaylistSongs = songs.sortedArrayUsingDescriptors([sort])
         
         if self.playlist.persistentID.isEmpty {
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit",
@@ -67,11 +67,11 @@ NSFetchedResultsControllerDelegate {
                 action: "editPlaylist")
         }
         
-        tableView.allowsMultipleSelectionDuringEditing = true
+        self.tableView.allowsMultipleSelectionDuringEditing = true
 
     }
 
-    func editPlaylist() {
+    private func editPlaylist() {
         self.tableView.setEditing(true, animated: true)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done",
             style: .Plain,
@@ -79,17 +79,17 @@ NSFetchedResultsControllerDelegate {
             action: "finishEditing")
     }
     
-    func finishEditing() {
+    private func finishEditing() {
         
-        let selectedRows = tableView.indexPathsForSelectedRows()
+        let selectedRows = self.tableView.indexPathsForSelectedRows()
         if selectedRows?.count > 0 {
             // Delete songs
             var playlistSongs = NSMutableSet(set: self.playlist.playlistSongs)
             
             for indexPath in selectedRows as [NSIndexPath] {
-                let playlistSong = sortedPlaylistSongs[indexPath.row] as PlaylistSong
+                let playlistSong = self.sortedPlaylistSongs[indexPath.row] as PlaylistSong
                 playlistSongs.removeObject(playlistSong)
-                sortedPlaylistSongs.removeAtIndex(indexPath.row)
+                self.sortedPlaylistSongs.removeAtIndex(indexPath.row)
             }
             
             self.playlist.playlistSongs = playlistSongs
@@ -112,15 +112,15 @@ NSFetchedResultsControllerDelegate {
             action: "editPlaylist")
     }
     
-    func addPlaylist() {
+    private func addPlaylist() {
         
     }
     
     private func fetchPlaylistSongs() {
         if !self.playlist.persistentID.isEmpty {
-            isReadOnly = true
+            self.isReadOnly = true
             
-            readOnlyPlaylistSongsQuery = MediaSession.sharedSession.playlistSongsForPlaylist(self.playlist)
+            self.readOnlyPlaylistSongsQuery = MediaSession.sharedSession.playlistSongsForPlaylist(self.playlist)
             
             self.tableView.reloadData()
         }
@@ -132,24 +132,24 @@ NSFetchedResultsControllerDelegate {
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        if isReadOnly {
-            return readOnlyPlaylistSongsQuery?.items.count ?? 0
+        if self.isReadOnly {
+            return self.readOnlyPlaylistSongsQuery?.items.count ?? 0
         }
         
-        return sortedPlaylistSongs.count
+        return self.sortedPlaylistSongs.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell",
             forIndexPath: indexPath) as SongCell
                 
-        if isReadOnly {
-            let readOnlyPlaylist = readOnlyPlaylistSongsQuery?.collections?[indexPath.section] as MPMediaPlaylist
+        if self.isReadOnly {
+            let readOnlyPlaylist = self.readOnlyPlaylistSongsQuery?.collections?[indexPath.section] as MPMediaPlaylist
             if let item = readOnlyPlaylist.items[indexPath.row] as? MPMediaItem {
                 cell.updateWithItem(item)
             }
         } else {
-            let playlistSong = sortedPlaylistSongs[indexPath.row] as PlaylistSong
+            let playlistSong = self.sortedPlaylistSongs[indexPath.row] as PlaylistSong
             let song = playlistSong.song
             cell.updateWithSong(song)
         }
@@ -163,18 +163,18 @@ NSFetchedResultsControllerDelegate {
         } else {
             tableView.deselectRowAtIndexPath(indexPath, animated: true)
             
-            if isReadOnly {
-                let readOnlyPlaylist = readOnlyPlaylistSongsQuery?.collections?[indexPath.section] as MPMediaPlaylist
+            if self.isReadOnly {
+                let readOnlyPlaylist = self.readOnlyPlaylistSongsQuery?.collections?[indexPath.section] as MPMediaPlaylist
                 if let song = readOnlyPlaylist.items[indexPath.row] as? MPMediaItem {
-                    presentNowPlayViewControllerWithItem(song, collection: MPMediaItemCollection(items: readOnlyPlaylist.items))
+                    self.presentNowPlayViewControllerWithItem(song, collection: MPMediaItemCollection(items: readOnlyPlaylist.items))
                 }
             } else {
                 // Create collection of playlist songs.
-                let playlistSong = sortedPlaylistSongs[indexPath.row] as PlaylistSong
+                let playlistSong = self.sortedPlaylistSongs[indexPath.row] as PlaylistSong
                 let song = playlistSong.song
                 let collection = MediaSession.sharedSession.collectionWithPlaylistSongs(sortedPlaylistSongs)
                 if let item = MediaSession.sharedSession.itemForSong(song) {
-                    presentNowPlayViewControllerWithItem(item, collection: collection)
+                    self.presentNowPlayViewControllerWithItem(item, collection: collection)
                 }
             }
         }
@@ -193,8 +193,8 @@ NSFetchedResultsControllerDelegate {
     }
     
     func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
-        var playlistSongSource = sortedPlaylistSongs[sourceIndexPath.row] as PlaylistSong
-        var playlistSongTo = sortedPlaylistSongs[destinationIndexPath.row] as PlaylistSong
+        var playlistSongSource = self.sortedPlaylistSongs[sourceIndexPath.row] as PlaylistSong
+        var playlistSongTo = self.sortedPlaylistSongs[destinationIndexPath.row] as PlaylistSong
         playlistSongSource.order = destinationIndexPath.row + 1
         playlistSongTo.order = sourceIndexPath.row + 1
         
@@ -202,7 +202,9 @@ NSFetchedResultsControllerDelegate {
     }
     
     func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
-        let deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete", handler: { (action, indexPath) -> Void in
+        let deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default,
+            title: "Delete",
+            handler: { (action, indexPath) -> Void in
             
         })
 

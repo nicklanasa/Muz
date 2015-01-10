@@ -37,7 +37,7 @@ class CreatePlaylistCell: UITableViewCell, UITextFieldDelegate {
             textField.text = ""
         }
         
-        delegate?.createPlaylistCell(self, didStartEditing: textField)
+        self.delegate?.createPlaylistCell(self, didStartEditing: textField)
     }
     
     @IBAction func smartSwitchDidChange(sender: AnyObject) {

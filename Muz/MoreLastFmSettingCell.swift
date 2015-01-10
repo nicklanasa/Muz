@@ -17,7 +17,7 @@ class MoreLastFmSettingCell: UITableViewCell {
     @IBOutlet weak var artistInfoSwitch: UISwitch!
     
     override func awakeFromNib() {
-        artistInfoLabel.font = MuzSettingFont
+        self.artistInfoLabel.font = MuzSettingFont
     }
     
     override func prepareForReuse() {

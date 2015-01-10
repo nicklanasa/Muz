@@ -11,19 +11,7 @@ import UIKit
 
 class NavBarController: UINavigationController {
     override func viewDidLoad() {
-        /*
-        CGRect rect = CGRectMake(0, 0, 1, 1);
-        UIGraphicsBeginImageContextWithOptions(rect.size, NO, 1.0);
-        CGContextRef context = UIGraphicsGetCurrentContext();
-        CGContextSetFillColorWithColor(context, [UIColor clearColor].CGColor);
-        CGContextFillRect(context, rect);
-        UIImage *transparentImage = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-        [self.tabBar setBackgroundImage:transparentImage];
-        [self.tabBar setShadowImage:transparentImage];
-        //    self.tabBar.alpha = 0.0;
-        */
-        
+        // Add transparency.
         let rect = CGRectMake(0, 0, 1, 1)
         UIGraphicsBeginImageContextWithOptions(rect.size, false, 1.0);
         let context = UIGraphicsGetCurrentContext()
@@ -32,10 +20,10 @@ class NavBarController: UINavigationController {
         let transparentImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        navigationBar.setBackgroundImage(transparentImage, forBarMetrics: .Default)
-        navigationBar.shadowImage = transparentImage
-        navigationBar.tintColor = UIColor.whiteColor()
-        navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: MuzColor, NSFontAttributeName: MuzTitleFont]
-        navigationItem.backBarButtonItem = UIBarButtonItem(image: UIImage(named: "back"), style: .Plain, target: self, action: "")
+        self.navigationBar.setBackgroundImage(transparentImage, forBarMetrics: .Default)
+        self.navigationBar.shadowImage = transparentImage
+        self.navigationBar.tintColor = UIColor.whiteColor()
+        self.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: MuzColor, NSFontAttributeName: MuzTitleFont]
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(image: UIImage(named: "back"), style: .Plain, target: self, action: "")
     }
 }

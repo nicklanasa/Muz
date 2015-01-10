@@ -109,7 +109,6 @@ NowPlayingCollectionControllerDelegate {
         self.tabBarItem = UITabBarItem(title: "",
             image: UIImage(named: "headphones"),
             selectedImage: UIImage(named: "headphones"))
-        self.tabBarItem.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0)
     }
 
     required init(coder aDecoder: NSCoder) {

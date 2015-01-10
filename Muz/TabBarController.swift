@@ -19,6 +19,8 @@ enum TabBarItem: NSInteger {
 
 class TabBarController: UITabBarController {
     override func viewDidLoad() {
+        
+        // Add transparency.
         let rect = CGRectMake(0, 0, 1, 1)
         UIGraphicsBeginImageContextWithOptions(rect.size, false, 1.0);
         let context = UIGraphicsGetCurrentContext()
@@ -27,8 +29,8 @@ class TabBarController: UITabBarController {
         let transparentImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        tabBar.backgroundImage = transparentImage
-        tabBar.shadowImage = transparentImage
-        tabBar.tintColor = MuzBlueColor
+        self.tabBar.backgroundImage = transparentImage
+        self.tabBar.shadowImage = transparentImage
+        self.tabBar.tintColor = MuzBlueColor
     }
 }
