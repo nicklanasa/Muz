@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreData
+import MediaPlayer
 
 let _manager = DataManager()
 
@@ -21,5 +22,17 @@ class DataManager {
     
     init() {
         datastore = Datastore(storeName: "Muz")
+        
+        NSNotificationCenter.defaultCenter().addObserver(self,
+            selector: "mediaLibraryDidChange",
+            name: MPMediaLibraryDidChangeNotification,
+            object: nil)
+    }
+    
+    /**
+    Handles updated the Datastore when iTunes library is updated
+    */
+    func mediaLibraryDidChange() {
+        
     }
 }

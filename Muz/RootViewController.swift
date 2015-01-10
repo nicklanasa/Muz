@@ -54,11 +54,6 @@ class RootViewController: UIViewController {
             self.view.insertSubview(self.backgroundImageView, atIndex: 0)
         }
         
-        NSNotificationCenter.defaultCenter().addObserver(self,
-            selector: "mediaLibraryDidChange",
-            name: MPMediaLibraryDidChangeNotification,
-            object: nil)
-        
         self.searchDisplayController?.searchResultsTableView.backgroundColor = UIColor.clearColor()
         self.searchDisplayController?.searchResultsTableView.separatorStyle = .None
         
@@ -67,10 +62,6 @@ class RootViewController: UIViewController {
     
     func configureBackgroundImage() {
         self.backgroundImageView.image = CurrentAppBackgroundImage.applyDarkEffect()
-    }
-    
-    func mediaLibraryDidChange() {
-       
     }
     
     /**
