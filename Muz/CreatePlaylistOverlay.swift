@@ -106,7 +106,7 @@ PlaylistsViewControllerDelegate {
         }
     }
     
-    private func dismiss() {
+    func dismiss() {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     

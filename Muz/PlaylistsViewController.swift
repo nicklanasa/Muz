@@ -71,10 +71,16 @@ NSFetchedResultsControllerDelegate {
         }
     }
     
+    /**
+    Show the create new playlist dialog.
+    */
     private func addPlaylist() {
         self.presentModalOverlayController(CreatePlaylistOverlay(), blurredController: self)
     }
     
+    /**
+    Fetch playlists
+    */
     private func fetchPlaylists() {
         if !self.isForExistingPlaylist {
             self.playlistsController = MediaSession.sharedSession.dataManager.datastore.playlistsControllerWithSectionName(nil,

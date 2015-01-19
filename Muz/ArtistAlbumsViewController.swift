@@ -70,7 +70,10 @@ ArtistAlbumHeaderDelegate {
         self.tableView.setEditing(false, animated: true)
     }
     
-    func fetchArtistAlbums() {
+    /**
+    Fetch albums for artist.
+    */
+    private func fetchArtistAlbums() {
         
         let artistPredicate = MPMediaPropertyPredicate(value: artist, forProperty: MPMediaItemPropertyArtist, comparisonType: .EqualTo)
         albumsQuery = MPMediaQuery.albumsQuery()
@@ -162,6 +165,8 @@ ArtistAlbumHeaderDelegate {
         
         return [addToPlaylistAction]
     }
+    
+    // MARK: ArtistAlbumHeaderDelegate
     
     func artistAlbumHeader(header: ArtistAlbumHeader, moreButtonTapped sender: AnyObject) {
         let header = tableView.headerViewForSection(header.section) as ArtistAlbumHeader

@@ -116,6 +116,9 @@ LastFmTrackBuyLinksRequestDelegate {
         self.isForSimiliarArtist = isForSimiliarArtist
     }
     
+    /**
+    Configure the ViewController for Similiar Artists
+    */
     private func configureForSimiliarArtist() {
         self.segmentedControl.alpha = 0.0
         self.segmentedControl.selectedSegmentIndex = 1
@@ -125,7 +128,10 @@ LastFmTrackBuyLinksRequestDelegate {
         requestLastFmDataWithArtist(self.lastFmArtist?.name)
     }
     
-    func handleSegmentedControlChange() {
+    /**
+    Handle the change of the segmentation control.
+    */
+    private func handleSegmentedControlChange() {
         // Tag switch to track in analytics
         switch segmentedControl.selectedSegmentIndex {
         case 0:
@@ -137,7 +143,10 @@ LastFmTrackBuyLinksRequestDelegate {
         tableView?.reloadData()
     }
     
-    func configureForItem() {
+    /**
+    Configure the ViewController with passed in item.
+    */
+    private func configureForItem() {
         
         if SettingsManager.defaultManager.valueForMoreSetting(.Lyrics) {
             let stringURL = NSString(format: "http://search.azlyrics.com/search.php?q=%@ %@", self.item.artist, self.item.title).stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
