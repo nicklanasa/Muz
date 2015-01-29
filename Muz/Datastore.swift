@@ -353,7 +353,7 @@ class Datastore {
     
     func createEmptyPlaylistWithName(name: NSString, playlistType: PlaylistType, completion: () -> ()) {
         let playlist = NSEntityDescription.insertNewObjectForEntityForName("Playlist",
-            inManagedObjectContext: self.workerContext) as Playlist
+            inManagedObjectContext: self.mainQueueContext) as Playlist
         playlist.name = name
         playlist.playlistType = NSNumber(unsignedLong: playlistType.rawValue)
         playlist.persistentID = ""

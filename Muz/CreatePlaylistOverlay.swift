@@ -173,7 +173,7 @@ PlaylistsViewControllerDelegate {
         self.createPlaylist()
     }
 
-    private func createPlaylist() {
+    func createPlaylist() {
         if self.createPlaylistCell.smartSwitch.on {
             self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
             self.hud.mode = MBProgressHUDModeIndeterminate

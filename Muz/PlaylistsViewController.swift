@@ -74,7 +74,7 @@ NSFetchedResultsControllerDelegate {
     /**
     Show the create new playlist dialog.
     */
-    private func addPlaylist() {
+    func addPlaylist() {
         self.presentModalOverlayController(CreatePlaylistOverlay(), blurredController: self)
     }
     

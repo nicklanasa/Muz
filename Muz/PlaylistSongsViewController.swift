@@ -71,7 +71,7 @@ NSFetchedResultsControllerDelegate {
 
     }
 
-    private func editPlaylist() {
+    func editPlaylist() {
         self.tableView.setEditing(true, animated: true)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done",
             style: .Plain,
@@ -79,7 +79,7 @@ NSFetchedResultsControllerDelegate {
             action: "finishEditing")
     }
     
-    private func finishEditing() {
+    func finishEditing() {
         
         let selectedRows = self.tableView.indexPathsForSelectedRows()
         if selectedRows?.count > 0 {
