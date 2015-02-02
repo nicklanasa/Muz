@@ -2,8 +2,8 @@
 //  Song.swift
 //  Muz
 //
-//  Created by Nick Lanasa on 12/21/14.
-//  Copyright (c) 2014 Nytek Productions. All rights reserved.
+//  Created by Nick Lanasa on 2/2/15.
+//  Copyright (c) 2015 Nytek Productions. All rights reserved.
 //
 
 import Foundation
@@ -30,6 +30,7 @@ class Song: NSManagedObject {
     @NSManaged var lastPlayedDate: NSDate
     @NSManaged var lyrics: String
     @NSManaged var mediaType: NSNumber
+    @NSManaged var persistentID: NSNumber
     @NSManaged var playbackDuration: NSNumber
     @NSManaged var playCount: NSNumber
     @NSManaged var podcastTitle: String
@@ -38,6 +39,8 @@ class Song: NSManagedObject {
     @NSManaged var skipCount: NSNumber
     @NSManaged var title: String
     @NSManaged var userGrouping: String
-    @NSManaged var persistentID: NSNumber
+    @NSManaged var albums: NSSet
+    @NSManaged var artists: NSSet
+    @NSManaged var playlists: NSSet
 
 }
