@@ -35,6 +35,8 @@ NSFetchedResultsControllerDelegate {
         self.tabBarItem = UITabBarItem(title: nil,
             image: UIImage(named: "playlists"),
             selectedImage: UIImage(named: "playlists"))
+        
+        self.tabBarItem.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0)
     }
     
     init(existingPlaylist: Bool) {

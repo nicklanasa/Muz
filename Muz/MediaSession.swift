@@ -19,9 +19,6 @@ let _sharedSession = MediaSession()
     var isMediaLibraryEmpty: Bool {
         get {
             var query = MPMediaQuery.songsQuery()
-            query.addFilterPredicate(MPMediaPropertyPredicate(value: false,
-                forProperty: MPMediaItemPropertyIsCloudItem,
-                comparisonType: .EqualTo))
             return query.items.count == 0
         }
     }
@@ -41,11 +38,6 @@ let _sharedSession = MediaSession()
     func openSessionWithUpdateBlock(updateBlock: (percentage: Float, error: NSErrorPointer, song: Song?) -> ()) {
         let everything = MPMediaQuery()
         
-        let cloudPredicate = MPMediaPropertyPredicate(value: 0,
-            forProperty: MPMediaItemPropertyIsCloudItem,
-            comparisonType: .EqualTo)
-        everything.addFilterPredicate(cloudPredicate)
-        
         let results = everything.items
         
         dataManager.datastore.addPlaylists()
@@ -59,9 +51,6 @@ let _sharedSession = MediaSession()
         
         var artistsArr = NSMutableArray()
         let query = MPMediaQuery.albumsQuery()
-        query.addFilterPredicate(MPMediaPropertyPredicate(value: false,
-            forProperty: MPMediaItemPropertyIsCloudItem,
-            comparisonType: .EqualTo))
         let results = query.collections as NSArray
         return results
     }
@@ -69,9 +58,6 @@ let _sharedSession = MediaSession()
     func artworkForSongs() -> NSArray {
         var artistsArr = NSMutableArray()
         let query = MPMediaQuery.songsQuery()
-        query.addFilterPredicate(MPMediaPropertyPredicate(value: false,
-            forProperty: MPMediaItemPropertyIsCloudItem,
-            comparisonType: .EqualTo))
         let results = query.items as NSArray
         return results
     }
@@ -84,10 +70,7 @@ let _sharedSession = MediaSession()
     
     func artistsQueryWithFilters(filters: [MPMediaPredicate]?) -> MPMediaQuery {
         let artistsQuery = MPMediaQuery.artistsQuery()
-        artistsQuery.addFilterPredicate(MPMediaPropertyPredicate(value: false,
-            forProperty: MPMediaItemPropertyIsCloudItem,
-            comparisonType: .EqualTo))
-        
+
         if let predicates = filters {
             for predicate in predicates {
                 artistsQuery.addFilterPredicate(predicate)
@@ -99,9 +82,6 @@ let _sharedSession = MediaSession()
     
     func songsQueryWithPredicate(predicate: MPMediaPropertyPredicate?) -> MPMediaQuery {
         var songsQuery = MPMediaQuery.songsQuery()
-        songsQuery.addFilterPredicate(MPMediaPropertyPredicate(value: false,
-            forProperty: MPMediaItemPropertyIsCloudItem,
-            comparisonType: .EqualTo))
         
         if let p = predicate {
             songsQuery?.addFilterPredicate(p)
@@ -160,9 +140,6 @@ let _sharedSession = MediaSession()
             let predicate = MPMediaPropertyPredicate(value: playlistSong.song.persistentID,
                 forProperty: MPMediaItemPropertyPersistentID,
                 comparisonType: .EqualTo)
-            query.addFilterPredicate(MPMediaPropertyPredicate(value: false,
-                forProperty: MPMediaItemPropertyIsCloudItem,
-                comparisonType: .EqualTo))
             query.addFilterPredicate(predicate)
             items.addObjectsFromArray(query.items)
         }

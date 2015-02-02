@@ -32,6 +32,8 @@ UISearchDisplayDelegate {
         self.tabBarItem = UITabBarItem(title: nil,
             image: UIImage(named: "songs"),
             selectedImage: UIImage(named: "songs"))
+        
+        self.tabBarItem.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0)
     }
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {

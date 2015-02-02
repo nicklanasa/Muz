@@ -115,7 +115,7 @@ NSFetchedResultsControllerDelegate {
             break;
         default:
             switch indexPath.row {
-            case 0: UIApplication.sharedApplication().openURL(NSURL(string: "itms-apps://itunes.apple.com/app/951709415")!)
+            case 0: UIApplication.sharedApplication().openURL(NSURL(string: "https://itunes.apple.com/us/app/muz/id951709415?ls=1&mt=8")!)
             case 1: UIApplication.sharedApplication().openURL(NSURL(string: "https://www.facebook.com/muzapp?ref=bookmarks")!)
             case 2: UIApplication.sharedApplication().openURL(NSURL(string: "https://twitter.com/muz_app")!)
             case 3: UIApplication.sharedApplication().openURL(NSURL(string: "http://nytekproductions.com/muz/")!)

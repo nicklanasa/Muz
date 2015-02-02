@@ -41,9 +41,6 @@ class RootViewController: UIViewController {
     }
     
     override func viewDidLoad() {
-        
-        self.tabBarItem.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0)
-        
         self.backgroundImageView = UIImageView(frame: UIScreen.mainScreen().bounds)
         self.backgroundImageView.contentMode = UIViewContentMode.ScaleToFill
         self.backgroundImageView.autoresizingMask = .FlexibleWidth

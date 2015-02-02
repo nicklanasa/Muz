@@ -33,6 +33,7 @@ NowPlayingCollectionControllerDelegate {
     init(song: Song) {
         super.init(nibName: "NowPlayingViewController", bundle: nil)
         configureWithItem()
+        self.tabBarItem.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0)
     }
     
     @IBAction func progressSliderValueChanged(sender: AnyObject) {
@@ -109,6 +110,7 @@ NowPlayingCollectionControllerDelegate {
         self.tabBarItem = UITabBarItem(title: "",
             image: UIImage(named: "headphones"),
             selectedImage: UIImage(named: "headphones"))
+        self.tabBarItem.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0)
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -244,7 +246,7 @@ NowPlayingCollectionControllerDelegate {
     }
     
     func applicationDidEnterBackground() {
-        playerController.endGeneratingPlaybackNotifications()
+        //xplayerController.endGeneratingPlaybackNotifications()
     }
     
     func nextSong() {
