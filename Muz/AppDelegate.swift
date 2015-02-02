@@ -129,10 +129,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        
-        MediaSession.sharedSession.openSessionWithUpdateBlock { (percentage, error, song) -> () in
-            println("iPod Library Sync percentage \(percentage * 100)%")
-        }
     }
 
     func applicationWillTerminate(application: UIApplication) {

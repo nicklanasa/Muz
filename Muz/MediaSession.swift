@@ -35,16 +35,9 @@ let _sharedSession = MediaSession()
         return _sharedSession
     }
     
-    func openSessionWithUpdateBlock(updateBlock: (percentage: Float, error: NSErrorPointer, song: Song?) -> ()) {
-        let everything = MPMediaQuery()
-        
-        let results = everything.items
-        
-        dataManager.datastore.addPlaylists()
-        
-        dataManager.datastore.addSongs(results, updateBlock: { (percentage, error, song) -> () in
-            updateBlock(percentage: percentage, error: error, song: song)
-        })
+    func fetchArtists(completion: (results: [AnyObject]) -> ()) {
+        let artistsQuery = MPMediaQuery.artistsQuery()
+        completion(results: artistsQuery.items)
     }
     
     func infoForArtists() -> NSArray {

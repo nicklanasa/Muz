@@ -66,57 +66,55 @@ class Datastore {
     
     // MARK: Add songs
     
-    func addSongs(songs: NSArray, updateBlock: (percentage: Float, error: NSErrorPointer, song: Song?) -> ()) {
-        let addSongsBlock = { () -> Void in
-            let context = self.workerContext
-            context.performBlock { () -> Void in
-                let startTime = NSDate()
-                
-                var request = NSFetchRequest(entityName: "Song")
-                
-                var addedSongs = NSMutableArray(capacity: songs.count)
-                var existedSongs = NSMutableArray(capacity: songs.count)
-                
-                var count = 0
-                
-                for item in songs {
-                    count++
-                    if let song = item as? MPMediaItem {
+    func addSongs(songs: NSArray, completion: (addedItems: [AnyObject], error: NSErrorPointer) -> ()) {
+        let context = self.workerContext
+        context.performBlock { () -> Void in
+            let startTime = NSDate()
+            
+            var request = NSFetchRequest(entityName: "Song")
+            
+            var addedSongs = NSMutableArray(capacity: songs.count)
+            var existedSongs = NSMutableArray(capacity: songs.count)
+            
+            var count = 0
+            
+            for item in songs {
+                count++
+                if let song = item as? MPMediaItem {
+                    
+                    var error: NSError?
+                    
+                    if let artist = song.artist {
+                        let predicate = NSPredicate(format: "title = %@ AND artist = %@", song.title, song.artist)
+                        request.fetchLimit = 1
+                        request.predicate = predicate
+                        let results = context.executeFetchRequest(request, error: &error)
                         
-                        var error: NSError?
-                        
-                        if let artist = song.artist {
-                            let predicate = NSPredicate(format: "title = %@ AND artist = %@", song.title, song.artist)
-                            request.fetchLimit = 1
-                            request.predicate = predicate
-                            let results = context.executeFetchRequest(request, error: &error)
-                            
-                            if results?.count > 0 {
-                                let song = results?[0] as Song
-                                existedSongs.addObject(song)
-                            } else {
-                                let newSong = NSEntityDescription.insertNewObjectForEntityForName("Song",
-                                    inManagedObjectContext: self.workerContext) as Song
-                                newSong.parseItem(song)
-                                addedSongs.addObject(newSong)
-                            }
+                        if results?.count > 0 {
+                            let song = results?[0] as Song
+                            existedSongs.addObject(song)
+                        } else {
+                            let newSong = NSEntityDescription.insertNewObjectForEntityForName("Song",
+                                inManagedObjectContext: self.workerContext) as Song
+                            newSong.parseItem(song)
+                            addedSongs.addObject(newSong)
                         }
                     }
                 }
-                
-                self.saveDatastoreWithCompletion({ (error) -> () in
-                    let endTime = NSDate()
-                    let executionTime = endTime.timeIntervalSinceDate(startTime)
-                    NSLog("addSongs() - executionTime = %f\n addedSongs count: %d\n existedSongs count: %d", (executionTime * 1000), addedSongs.count, existedSongs.count);
-                    
-                    if error != nil {
-                        LocalyticsSession.shared().tagEvent("Unabled to save added songs. addSongs()")
-                    }
-                })
             }
+            
+            self.saveDatastoreWithCompletion({ (error) -> () in
+                let endTime = NSDate()
+                let executionTime = endTime.timeIntervalSinceDate(startTime)
+                NSLog("addSongs() - executionTime = %f\n addedSongs count: %d\n existedSongs count: %d", (executionTime * 1000), addedSongs.count, existedSongs.count);
+                
+                if error != nil {
+                    LocalyticsSession.shared().tagEvent("Unabled to save added songs. addSongs()")
+                }
+                
+                completion(addedItems: addedSongs, error: error)
+            })
         }
-        
-        addSongsBlock()
     }
     
     func addPlaylists() {
