@@ -185,28 +185,53 @@ class Datastore {
     :returns: The created/existing album or nil.
     */
     func addAlbumForItem(#item: MPMediaItem) -> Album? {
-        if let title = item.albumTitle {
-            var error: NSError?
-            var request = NSFetchRequest(entityName: "Album")
-            let predicate = NSPredicate(format: "title = %@", title)
-            request.fetchLimit = 1
-            request.predicate = predicate
-            let results = self.workerContext.executeFetchRequest(request, error: &error)
-            
-            var managedAlbum: Album!
-            if results?.count > 0 {
-                managedAlbum = results?[0] as Album
-            } else {
-                managedAlbum = NSEntityDescription.insertNewObjectForEntityForName("Album",
-                    inManagedObjectContext: self.workerContext) as Album
-            }
-            
-            managedAlbum.parseItem(item)
-            
-            return managedAlbum
+        var error: NSError?
+        var request = NSFetchRequest(entityName: "Album")
+        let predicate = NSPredicate(format: "title = %@", item.albumTitle)
+        request.fetchLimit = 1
+        request.predicate = predicate
+        let results = self.workerContext.executeFetchRequest(request, error: &error)
+        
+        var managedAlbum: Album!
+        if results?.count > 0 {
+            managedAlbum = results?[0] as Album
+        } else {
+            managedAlbum = NSEntityDescription.insertNewObjectForEntityForName("Album",
+                inManagedObjectContext: self.workerContext) as Album
         }
         
-        return nil
+        managedAlbum.parseItem(item)
+        //managedAlbum.addSong(self.addSongForItem(item: item))
+        
+        return managedAlbum
+    }
+    
+    /**
+    Adds a song to an album.
+    
+    :param: item The song you want to add.
+    
+    :returns: The added song.
+    */
+    func addSongForItem(#item: MPMediaItem) -> Song? {
+        var error: NSError?
+        var request = NSFetchRequest(entityName: "Song")
+        let predicate = NSPredicate(format: "title = %@", item.title)
+        request.fetchLimit = 1
+        request.predicate = predicate
+        let results = self.workerContext.executeFetchRequest(request, error: &error)
+        
+        var managedSong: Song!
+        if results?.count > 0 {
+            managedSong = results?[0] as Song
+        } else {
+            managedSong = NSEntityDescription.insertNewObjectForEntityForName("Song",
+                inManagedObjectContext: self.workerContext) as Song
+        }
+        
+        managedSong.parseItem(item)
+        
+        return managedSong
     }
     
     func addPlaylists() {
@@ -552,11 +577,15 @@ class Datastore {
         return self.mainQueueContext.executeFetchRequest(request, error: error)
     }
     
-    func artistsControllerWithSortKey(sortKey: NSString, ascending: Bool, sectionNameKeyPath: NSString?) -> NSFetchedResultsController {
+    func artistsController(predicate: NSPredicate?, sortKey: NSString, ascending: Bool, sectionNameKeyPath: NSString?) -> NSFetchedResultsController {
         
         var request = NSFetchRequest()
         request.entity = NSEntityDescription.entityForName("Artist",
             inManagedObjectContext: self.mainQueueContext)
+        
+        if let artistPredicate = predicate {
+            request.predicate = artistPredicate
+        }
 
         var sort = NSSortDescriptor(key: sortKey, ascending: ascending)
         request.sortDescriptors = [sort]
@@ -596,10 +625,10 @@ class Datastore {
             cacheName: ArtistsCacheName)
     }
     
-    func artistsAlbumsControllerWithSortKey(artist: NSString, sortKey: NSString, ascending: Bool, sectionNameKeyPath: NSString?) -> NSFetchedResultsController {
+    func artistsAlbumsControllerWithSortKey(artist: Artist, sortKey: NSString, ascending: Bool, sectionNameKeyPath: NSString?) -> NSFetchedResultsController {
         
         var request = NSFetchRequest()
-        request.entity = NSEntityDescription.entityForName("Song",
+        request.entity = NSEntityDescription.entityForName("Album",
             inManagedObjectContext: self.mainQueueContext)
         
         let predicate = NSPredicate(format: "artist like %@", artist)

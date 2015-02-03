@@ -11,16 +11,6 @@ import UIKit
 import CoreData
 import MediaPlayer
 
-extension NSString {
-    func stringByGroupingByFirstLetter() -> NSString {
-        if self.length == 0 || self.length == 1 {
-            return self
-        } else {
-            return self.substringToIndex(1)
-        }
-    }
-}
-
 class ArtistsViewController: RootViewController,
 UITableViewDelegate,
 UITableViewDataSource,
@@ -32,7 +22,7 @@ UISearchDisplayDelegate {
     @IBOutlet weak var searchBar: UISearchBar!
     
     lazy var artistsController: NSFetchedResultsController = {
-        let controller = DataManager.manager.datastore.artistsControllerWithSortKey("name",
+        let controller = DataManager.manager.datastore.artistsController(nil, sortKey: "name",
             ascending: true,
             sectionNameKeyPath: "name.stringByGroupingByFirstLetter")
         controller.delegate = self
@@ -201,23 +191,10 @@ UISearchDisplayDelegate {
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
-    
-        // Get song.
-//        let section = artistsQuery?.collectionSections[indexPath.section] as MPMediaQuerySection
-//        var artists: [AnyObject]?
-//        
-//        if tableView == self.searchDisplayController?.searchResultsTableView {
-//            self.searchDisplayController?.setActive(false, animated: false)
-//            artists = filteredArtists
-//        } else {
-//            artists = self.artists
-//        }
-//        
-//        if let albums = artists?[indexPath.row + section.range.location] as? MPMediaItemCollection {
-//            let artistAlbumsViewController = ArtistAlbumsViewController(artist: albums.representativeItem.artist)
-//            navigationController?.pushViewController(artistAlbumsViewController, animated: true)
-//        }
-//        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        let artist = self.artistsController.objectAtIndexPath(indexPath) as Artist
+        let artistAlbumsViewController = ArtistAlbumsViewController(artist: artist)
+        navigationController?.pushViewController(artistAlbumsViewController, animated: true)
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
     func sectionIndexTitlesForTableView(tableView: UITableView) -> [AnyObject]! {
@@ -238,20 +215,9 @@ UISearchDisplayDelegate {
     
     func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
         let addToPlaylistAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Add to Playlist", handler: { (action, indexPath) -> Void in
-            
-//            let section = self.artistsQuery?.collectionSections[indexPath.section] as MPMediaQuerySection
-//            var artists: [AnyObject]?
-//            
-//            if tableView == self.searchDisplayController?.searchResultsTableView {
-//                artists = self.filteredArtists
-//            } else {
-//                artists = self.artists
-//            }
-//            
-//            if let albums = artists?[indexPath.row + section.range.location] as? MPMediaItemCollection {
-//                let createPlaylistOverlay = CreatePlaylistOverlay(artist: albums.representativeItem.artist)
-//                self.presentModalOverlayController(createPlaylistOverlay, blurredController: self)
-//            }
+            let artist = self.artistsController.objectAtIndexPath(indexPath) as Artist
+            let createPlaylistOverlay = CreatePlaylistOverlay(artist: artist)
+            self.presentModalOverlayController(createPlaylistOverlay, blurredController: self)
         })
         
         return [addToPlaylistAction]
@@ -267,11 +233,7 @@ UISearchDisplayDelegate {
         if countElements(searchText) == 0 {
             fetchArtists()
         } else {
-//            let artistPredicate = MPMediaPropertyPredicate(value: searchText, forProperty: MPMediaItemPropertyArtist, comparisonType: .Contains)
-//            
-//            artistsQuery = MediaSession.sharedSession.artistsQueryWithFilters([artistPredicate])
-//            filteredArtists = MediaSession.sharedSession.artistsCollectionWithQuery(artistsQuery!)
-//            filteredArtistsSections = MediaSession.sharedSession.artistsSectionIndexTitles(artistsQuery!)
+            // Change predicate and re-fetch.
         }
         
         tableView.reloadData()

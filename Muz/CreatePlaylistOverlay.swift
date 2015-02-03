@@ -41,6 +41,11 @@ PlaylistsViewControllerDelegate {
         super.init(nibName: "CreatePlaylistOverlay", bundle: nil)
     }
     
+    init(artist: Artist!) {
+        self.artist = artist.name
+        super.init(nibName: "CreatePlaylistOverlay", bundle: nil)
+    }
+    
     init(items: [MPMediaItem]!) {
         self.items = items
         if items.count > 0 {

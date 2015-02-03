@@ -19,4 +19,21 @@ extension Album {
             self.title = title
         }
     }
+    
+    func addSong(song: Song?) {
+        if let managedSong = song {
+            var found = false
+            for albumSong in self.songs.allObjects as [Song] {
+                if managedSong.title == albumSong.title {
+                    found = true
+                }
+            }
+            
+            if !found {
+                var albumSongs = NSMutableSet(set: self.songs)
+                albumSongs.addObject(managedSong)
+                self.songs = albumSongs
+            }
+        }
+    }
 }

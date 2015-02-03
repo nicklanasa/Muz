@@ -4,6 +4,7 @@
         <attribute name="persistentID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="artists" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Artist" syncable="YES"/>
+        <relationship name="songs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Song" inverseName="albums" inverseEntity="Song" syncable="YES"/>
     </entity>
     <entity name="Artist" representedClassName="Artist" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
@@ -49,15 +50,15 @@
         <attribute name="skipCount" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="userGrouping" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="albums" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Album" syncable="YES"/>
+        <relationship name="albums" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Album" inverseName="songs" inverseEntity="Album" syncable="YES"/>
         <relationship name="artists" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Artist" syncable="YES"/>
         <relationship name="playlists" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Playlist" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Album" positionX="-45" positionY="144" width="128" height="88"/>
+        <element name="Album" positionX="-45" positionY="144" width="128" height="105"/>
         <element name="Artist" positionX="-54" positionY="135" width="128" height="88"/>
         <element name="Playlist" positionX="-63" positionY="135" width="128" height="105"/>
         <element name="PlaylistSong" positionX="-45" positionY="144" width="128" height="88"/>
-        <element name="Song" positionX="-63" positionY="-18" width="128" height="493"/>
+        <element name="Song" positionX="-63" positionY="-18" width="128" height="495"/>
     </elements>
 </model>
