@@ -21,12 +21,12 @@ class DataManager {
     }
     
     init() {
-        datastore = Datastore(storeName: "Muz")
+        datastore = Datastore(storeName: "Muz 2")
     }
     
     func syncArtists(completion: (addedItems: [AnyObject], error: NSErrorPointer) -> ()) {
         MediaSession.sharedSession.fetchArtists { (results) -> () in
-            self.datastore.addSongs(results, completion: { (addedItems, error) -> () in
+            self.datastore.addArtists(results, completion: { (addedItems, error) -> () in
                 completion(addedItems: addedItems, error: error)
             })
         }

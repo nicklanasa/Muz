@@ -57,10 +57,10 @@
         <relationship name="artists" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Artist" syncable="YES"/>
     </entity>
     <elements>
+        <element name="Album" positionX="-45" positionY="144" width="128" height="148"/>
+        <element name="Artist" positionX="-54" positionY="135" width="128" height="88"/>
         <element name="Playlist" positionX="-63" positionY="135" width="128" height="105"/>
         <element name="PlaylistSong" positionX="-45" positionY="144" width="128" height="88"/>
-        <element name="Song" positionX="-63" positionY="-18" width="128" height="478"/>
-        <element name="Artist" positionX="-54" positionY="135" width="128" height="88"/>
-        <element name="Album" positionX="-45" positionY="144" width="128" height="148"/>
+        <element name="Song" positionX="-63" positionY="-18" width="128" height="480"/>
     </elements>
 </model>

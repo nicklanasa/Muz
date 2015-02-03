@@ -31,11 +31,11 @@ UISearchDisplayDelegate {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
     
-    var artists: NSArray?
-    var filteredArtists: NSArray?
-    var filteredArtistsSections = NSArray()
-    var artistsQuery: MPMediaQuery?
-    var artistsSections = NSArray()
+    lazy var artistsController: NSFetchedResultsController = {
+        let controller = DataManager.manager.datastore.artistsControllerWithSortKey("name", ascending: true, sectionNameKeyPath: nil)
+        controller.delegate = self
+        return controller
+    }()
     
     override init() {
         super.init(nibName: "ArtistsViewController", bundle: nil)
@@ -62,7 +62,9 @@ UISearchDisplayDelegate {
     
     override func viewWillDisappear(animated: Bool) {
         searchBar.resignFirstResponder()
+        
         self.tableView.setEditing(false, animated: false)
+        
         self.searchDisplayController?.setActive(false, animated: false)
     }
 
@@ -88,21 +90,86 @@ UISearchDisplayDelegate {
     }
     
     func fetchArtists() {
-        artistsQuery = MediaSession.sharedSession.artistsQueryWithFilters(nil)
-        artists = MediaSession.sharedSession.artistsCollectionWithQuery(artistsQuery!)
-        artistsSections = MediaSession.sharedSession.artistsSectionIndexTitles(artistsQuery!)
-     }
-    
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        if let sections = artistsQuery?.collectionSections {
-            return artistsQuery?.collectionSections.count ?? 0
+        var error: NSError?
+        if self.artistsController.performFetch(&error) {
+            DataManager.manager.syncArtists({ (addedItems, error) -> () in
+                
+            })
         }
-        return 0
+    }
+    
+    // MARK: Sectors NSFetchedResultsControllerDelegate
+    
+    func controllerWillChangeContent(controller: NSFetchedResultsController)
+    {
+        self.tableView.beginUpdates()
+    }
+    
+    func controller(controller: NSFetchedResultsController,
+        didChangeObject anObject: AnyObject,
+        atIndexPath indexPath: NSIndexPath?,
+        forChangeType type: NSFetchedResultsChangeType,
+        newIndexPath: NSIndexPath?)
+    {
+        var tableView = self.tableView
+        var indexPaths:[NSIndexPath] = [NSIndexPath]()
+        switch type {
+            
+        case .Insert:
+            indexPaths.append(newIndexPath!)
+            tableView.insertRowsAtIndexPaths(indexPaths, withRowAnimation: .Fade)
+            
+        case .Delete:
+            indexPaths.append(indexPath!)
+            tableView.deleteRowsAtIndexPaths(indexPaths, withRowAnimation: .Fade)
+            
+        case .Update:
+            indexPaths.append(indexPath!)
+            tableView.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: .Fade)
+            
+        case .Move:
+            indexPaths.append(indexPath!)
+            tableView.deleteRowsAtIndexPaths(indexPaths, withRowAnimation: .Fade)
+            indexPaths.removeAtIndex(0)
+            indexPaths.append(newIndexPath!)
+            tableView.insertRowsAtIndexPaths(indexPaths, withRowAnimation: .Fade)
+        }
+    }
+    
+    func controller(controller: NSFetchedResultsController,
+        didChangeSection sectionInfo: NSFetchedResultsSectionInfo,
+        atIndex sectionIndex: Int,
+        forChangeType type: NSFetchedResultsChangeType)
+    {
+        switch type {
+            
+        case .Insert:
+            self.tableView.insertSections(NSIndexSet(index: sectionIndex),
+                withRowAnimation: .Fade)
+            
+        case .Delete:
+            self.tableView.deleteSections(NSIndexSet(index: sectionIndex),
+                withRowAnimation: .Fade)
+            
+        case .Update, .Move: println("Move or delete called in didChangeSection")
+        }
+    }
+    
+    func controllerDidChangeContent(controller: NSFetchedResultsController)
+    {
+        self.tableView.endUpdates()
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let section = artistsQuery?.collectionSections[section] as? MPMediaQuerySection
-        return section?.range.length ?? 0
+        if let numberOfRowsInSection = self.artistsController.sections?[section].numberOfObjects {
+            return numberOfRowsInSection
+        } else {
+            return 0
+        }
+    }
+    
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return self.artistsController.sections?.count ?? 0
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -110,25 +177,9 @@ UISearchDisplayDelegate {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell",
             forIndexPath: indexPath) as ArtistCell
         
-        let section = self.artistsQuery?.collectionSections[indexPath.section] as MPMediaQuerySection
-        
-        if tableView == self.searchDisplayController?.searchResultsTableView {
-            if indexPath.row + section.range.location < filteredArtists?.count {
-                if let songs = filteredArtists?[indexPath.row + section.range.location] as? MPMediaItemCollection {
-                    if let song = songs.representativeItem {
-                        cell.updateWithItem(song)
-                        cell.infoLabel.text = NSString(format: "%d %@", songs.count, songs.count == 1 ? "song" : "songs")
-                    }
-                }
-            }
-        } else {
-            if let songs = artists?[indexPath.row + section.range.location] as? MPMediaItemCollection {
-                if let song = songs.representativeItem {
-                    cell.updateWithItem(song)
-                    cell.infoLabel.text = NSString(format: "%d %@", songs.count, songs.count == 1 ? "song" : "songs")
-                }
-            }
-        }
+        let artist = self.artistsController.objectAtIndexPath(indexPath) as Artist
+        cell.updateWithArtist(artist)
+        //cell.infoLabel.text = NSString(format: "%d %@", songs.count, songs.count == 1 ? "song" : "songs")
     
         return cell
     }
@@ -138,9 +189,9 @@ UISearchDisplayDelegate {
     }
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if let section = artistsQuery?.collectionSections[section] as? MPMediaQuerySection {
+        if let sectionInfo = self.artistsController.sections?[section] as? NSFetchedResultsSectionInfo {
             let header = tableView.dequeueReusableHeaderFooterViewWithIdentifier("Header") as ArtistsHeader
-            header.infoLabel.text = section.title
+            header.infoLabel.text = sectionInfo.name
             return header
         } else {
             return nil
@@ -151,25 +202,25 @@ UISearchDisplayDelegate {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     
         // Get song.
-        let section = artistsQuery?.collectionSections[indexPath.section] as MPMediaQuerySection
-        var artists: [AnyObject]?
-        
-        if tableView == self.searchDisplayController?.searchResultsTableView {
-            self.searchDisplayController?.setActive(false, animated: false)
-            artists = filteredArtists
-        } else {
-            artists = self.artists
-        }
-        
-        if let albums = artists?[indexPath.row + section.range.location] as? MPMediaItemCollection {
-            let artistAlbumsViewController = ArtistAlbumsViewController(artist: albums.representativeItem.artist)
-            navigationController?.pushViewController(artistAlbumsViewController, animated: true)
-        }
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+//        let section = artistsQuery?.collectionSections[indexPath.section] as MPMediaQuerySection
+//        var artists: [AnyObject]?
+//        
+//        if tableView == self.searchDisplayController?.searchResultsTableView {
+//            self.searchDisplayController?.setActive(false, animated: false)
+//            artists = filteredArtists
+//        } else {
+//            artists = self.artists
+//        }
+//        
+//        if let albums = artists?[indexPath.row + section.range.location] as? MPMediaItemCollection {
+//            let artistAlbumsViewController = ArtistAlbumsViewController(artist: albums.representativeItem.artist)
+//            navigationController?.pushViewController(artistAlbumsViewController, animated: true)
+//        }
+//        tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
     func sectionIndexTitlesForTableView(tableView: UITableView) -> [AnyObject]! {
-        return tableView == self.searchDisplayController?.searchResultsTableView ? filteredArtistsSections : artistsSections
+        return self.artistsController.sectionIndexTitles
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -187,19 +238,19 @@ UISearchDisplayDelegate {
     func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
         let addToPlaylistAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Add to Playlist", handler: { (action, indexPath) -> Void in
             
-            let section = self.artistsQuery?.collectionSections[indexPath.section] as MPMediaQuerySection
-            var artists: [AnyObject]?
-            
-            if tableView == self.searchDisplayController?.searchResultsTableView {
-                artists = self.filteredArtists
-            } else {
-                artists = self.artists
-            }
-            
-            if let albums = artists?[indexPath.row + section.range.location] as? MPMediaItemCollection {
-                let createPlaylistOverlay = CreatePlaylistOverlay(artist: albums.representativeItem.artist)
-                self.presentModalOverlayController(createPlaylistOverlay, blurredController: self)
-            }
+//            let section = self.artistsQuery?.collectionSections[indexPath.section] as MPMediaQuerySection
+//            var artists: [AnyObject]?
+//            
+//            if tableView == self.searchDisplayController?.searchResultsTableView {
+//                artists = self.filteredArtists
+//            } else {
+//                artists = self.artists
+//            }
+//            
+//            if let albums = artists?[indexPath.row + section.range.location] as? MPMediaItemCollection {
+//                let createPlaylistOverlay = CreatePlaylistOverlay(artist: albums.representativeItem.artist)
+//                self.presentModalOverlayController(createPlaylistOverlay, blurredController: self)
+//            }
         })
         
         return [addToPlaylistAction]
@@ -215,11 +266,11 @@ UISearchDisplayDelegate {
         if countElements(searchText) == 0 {
             fetchArtists()
         } else {
-            let artistPredicate = MPMediaPropertyPredicate(value: searchText, forProperty: MPMediaItemPropertyArtist, comparisonType: .Contains)
-            
-            artistsQuery = MediaSession.sharedSession.artistsQueryWithFilters([artistPredicate])
-            filteredArtists = MediaSession.sharedSession.artistsCollectionWithQuery(artistsQuery!)
-            filteredArtistsSections = MediaSession.sharedSession.artistsSectionIndexTitles(artistsQuery!)
+//            let artistPredicate = MPMediaPropertyPredicate(value: searchText, forProperty: MPMediaItemPropertyArtist, comparisonType: .Contains)
+//            
+//            artistsQuery = MediaSession.sharedSession.artistsQueryWithFilters([artistPredicate])
+//            filteredArtists = MediaSession.sharedSession.artistsCollectionWithQuery(artistsQuery!)
+//            filteredArtistsSections = MediaSession.sharedSession.artistsSectionIndexTitles(artistsQuery!)
         }
         
         tableView.reloadData()
