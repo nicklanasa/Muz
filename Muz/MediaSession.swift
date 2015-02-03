@@ -15,6 +15,8 @@ let _sharedSession = MediaSession()
 @objc class MediaSession {
     
     let dataManager = DataManager.manager
+    let artistsQuery = MPMediaQuery.artistsQuery()
+    let songsQuery = MPMediaQuery.songsQuery()
     
     var isMediaLibraryEmpty: Bool {
         get {
@@ -31,13 +33,51 @@ let _sharedSession = MediaSession()
     }
     
     class var sharedSession : MediaSession {
-        
         return _sharedSession
     }
     
+    // Artists
+    
     func fetchArtists(completion: (results: [AnyObject]) -> ()) {
-        let artistsQuery = MPMediaQuery.artistsQuery()
         completion(results: artistsQuery.items)
+    }
+    
+    func fetchImageForArtist(#artist: Artist, completion: (image: UIImage?) -> ()) {
+        let artists = MPMediaQuery.artistsQuery()
+        artists.addFilterPredicate(MPMediaPropertyPredicate(value: artist.name,
+            forProperty: MPMediaItemPropertyArtist,
+            comparisonType: .Contains))
+        
+        var image: UIImage?
+        if artists.items.count > 0 {
+            for item in artists.items as [MPMediaItem] {
+                if let artwork = item.artwork {
+                    if let artistImage = artwork.imageWithSize(CGSizeMake(50, 50)) {
+                        print("Found image\n")
+                        image = artistImage
+                        break
+                    }
+                }
+            }
+        }
+        
+        completion(image: image)
+    }
+    
+    func artistsCollectionWithQuery(artistsQuery: MPMediaQuery) -> [AnyObject]? {
+        return artistsQuery.collections
+    }
+    
+    func artistsQueryWithFilters(filters: [MPMediaPredicate]?) -> MPMediaQuery {
+        let artistsQuery = MPMediaQuery.artistsQuery()
+        
+        if let predicates = filters {
+            for predicate in predicates {
+                artistsQuery.addFilterPredicate(predicate)
+            }
+        }
+        
+        return artistsQuery
     }
     
     func infoForArtists() -> NSArray {
@@ -53,24 +93,6 @@ let _sharedSession = MediaSession()
         let query = MPMediaQuery.songsQuery()
         let results = query.items as NSArray
         return results
-    }
-    
-    // Artists
-    
-    func artistsCollectionWithQuery(artistsQuery: MPMediaQuery) -> [AnyObject]? {
-        return artistsQuery.collections
-    }
-    
-    func artistsQueryWithFilters(filters: [MPMediaPredicate]?) -> MPMediaQuery {
-        let artistsQuery = MPMediaQuery.artistsQuery()
-
-        if let predicates = filters {
-            for predicate in predicates {
-                artistsQuery.addFilterPredicate(predicate)
-            }
-        }
-        
-        return artistsQuery
     }
     
     func songsQueryWithPredicate(predicate: MPMediaPropertyPredicate?) -> MPMediaQuery {

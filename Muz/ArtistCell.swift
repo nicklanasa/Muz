@@ -38,12 +38,10 @@ class ArtistCell: UITableViewCell {
     
     func updateWithArtist(artist: Artist) {
         artistLabel.text = artist.name
-        //infoLabel.text = song.artist
+        infoLabel.text = NSString(format: "%d %@", artist.albums.allObjects.count, artist.albums.allObjects.count == 1 ? "album" : "albums")
         
-//        if let artwork = song.artwork {
-//            artistImageView?.image = song.artwork.imageWithSize(artistImageView.frame.size)
-//        } else {
-//            artistImageView?.image = UIImage(named: "noArtwork")
-//        }
+        artistImageView.setImageForArtist(artist: artist)
+        
+        artistImageView.applyRoundedStyle()
     }
 }

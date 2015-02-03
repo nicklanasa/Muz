@@ -105,6 +105,7 @@
 		CEBC1EF01A813BB4000AF2F1 /* Artist+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBC1EEF1A813BB4000AF2F1 /* Artist+Helpers.swift */; };
 		CEBC1EF21A813C19000AF2F1 /* Album+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBC1EF11A813C19000AF2F1 /* Album+Helpers.swift */; };
 		CEBC1EF41A814676000AF2F1 /* Artist.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBC1EF31A814676000AF2F1 /* Artist.swift */; };
+		CEBC1EF61A816D7B000AF2F1 /* UIImageView+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBC1EF51A816D7B000AF2F1 /* UIImageView+Helpers.swift */; };
 		CEC66D8C1A37EFA700560754 /* ArtistCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE444BD91A36A27200153F77 /* ArtistCell.swift */; };
 		CEC66D8F1A38A6A500560754 /* noArtwork.png in Resources */ = {isa = PBXBuildFile; fileRef = CEC66D8E1A38A6A500560754 /* noArtwork.png */; };
 		CEC66D991A38D5F400560754 /* headphones.png in Resources */ = {isa = PBXBuildFile; fileRef = CEC66D961A38D5F400560754 /* headphones.png */; };
@@ -332,6 +333,7 @@
 		CEBC1EEF1A813BB4000AF2F1 /* Artist+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Artist+Helpers.swift"; sourceTree = "<group>"; };
 		CEBC1EF11A813C19000AF2F1 /* Album+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Album+Helpers.swift"; sourceTree = "<group>"; };
 		CEBC1EF31A814676000AF2F1 /* Artist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Artist.swift; sourceTree = "<group>"; };
+		CEBC1EF51A816D7B000AF2F1 /* UIImageView+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+Helpers.swift"; sourceTree = "<group>"; };
 		CEC66D8E1A38A6A500560754 /* noArtwork.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = noArtwork.png; sourceTree = "<group>"; };
 		CEC66D961A38D5F400560754 /* headphones.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = headphones.png; sourceTree = "<group>"; };
 		CEC66D971A38D5F400560754 /* headphones@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "headphones@2x.png"; sourceTree = "<group>"; };
@@ -607,6 +609,7 @@
 				CEBC1EF31A814676000AF2F1 /* Artist.swift */,
 				CE3F8AD91A801B750025A75E /* Album.swift */,
 				CEBC1EEF1A813BB4000AF2F1 /* Artist+Helpers.swift */,
+				CEBC1EF51A816D7B000AF2F1 /* UIImageView+Helpers.swift */,
 				CEBC1EF11A813C19000AF2F1 /* Album+Helpers.swift */,
 				CE3F8AD51A801B740025A75E /* Song.swift */,
 				CECCC1001A40B17200799854 /* Playlist.swift */,
@@ -1096,6 +1099,7 @@
 				CEBC1EF21A813C19000AF2F1 /* Album+Helpers.swift in Sources */,
 				CECCC10A1A40CC2700799854 /* PlaylistSongsViewController.swift in Sources */,
 				CE9BCFDD1A45D18F00522F18 /* LastFmEventCell.swift in Sources */,
+				CEBC1EF61A816D7B000AF2F1 /* UIImageView+Helpers.swift in Sources */,
 				CEDB61871A37BA2B00B90B2D /* NavBarController.swift in Sources */,
 				CE3D29931A508087000CCC90 /* NowPlayingViewControllerLandscape.swift in Sources */,
 				CECCC1271A412AB400799854 /* MuzButton.swift in Sources */,

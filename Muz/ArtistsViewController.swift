@@ -32,7 +32,9 @@ UISearchDisplayDelegate {
     @IBOutlet weak var searchBar: UISearchBar!
     
     lazy var artistsController: NSFetchedResultsController = {
-        let controller = DataManager.manager.datastore.artistsControllerWithSortKey("name", ascending: true, sectionNameKeyPath: nil)
+        let controller = DataManager.manager.datastore.artistsControllerWithSortKey("name",
+            ascending: true,
+            sectionNameKeyPath: "name.stringByGroupingByFirstLetter")
         controller.delegate = self
         return controller
     }()
@@ -179,7 +181,6 @@ UISearchDisplayDelegate {
         
         let artist = self.artistsController.objectAtIndexPath(indexPath) as Artist
         cell.updateWithArtist(artist)
-        //cell.infoLabel.text = NSString(format: "%d %@", songs.count, songs.count == 1 ? "song" : "songs")
     
         return cell
     }

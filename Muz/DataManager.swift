@@ -24,6 +24,12 @@ class DataManager {
         datastore = Datastore(storeName: "Muz 2")
     }
     
+    func fetchImageForArtist(#artist: Artist, completion: (image: UIImage?, error: NSError?) -> ()) {
+        MediaSession.sharedSession.fetchImageForArtist(artist: artist) { (image) -> () in
+            completion(image: image, error: nil)
+        }
+    }
+    
     func syncArtists(completion: (addedItems: [AnyObject], error: NSErrorPointer) -> ()) {
         MediaSession.sharedSession.fetchArtists { (results) -> () in
             self.datastore.addArtists(results, completion: { (addedItems, error) -> () in
