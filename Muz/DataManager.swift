@@ -37,5 +37,13 @@ class DataManager {
             })
         }
     }
+    
+    func syncAlbumsForArtist(#artist: Artist, completion: (addedItems: [AnyObject], error: NSErrorPointer) -> ()) {
+        MediaSession.sharedSession.fetchAlbumsForArtist(artist: artist) { (results) -> () in
+            self.datastore.addAlbumsForArtist(artist: artist, albums: results, completion: { (addedItems, error) -> () in
+                completion(addedItems: addedItems, error: error)
+            })
+        }
+    }
 
 }

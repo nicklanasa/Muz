@@ -42,6 +42,12 @@ let _sharedSession = MediaSession()
         completion(results: artistsQuery.items)
     }
     
+    func fetchAlbumsForArtist(#artist: Artist, completion: (results: [AnyObject]) -> ()) {
+        let albumsQuery = MPMediaQuery.albumsQuery()
+        albumsQuery.addFilterPredicate(MPMediaPropertyPredicate(value: artist.persistentID, forProperty: MPMediaItemPropertyArtistPersistentID, comparisonType: .EqualTo))
+        completion(results: albumsQuery.items)
+    }
+    
     func fetchImageForArtist(#artist: Artist, completion: (image: UIImage?) -> ()) {
         let artists = MPMediaQuery.artistsQuery()
         artists.addFilterPredicate(MPMediaPropertyPredicate(value: artist.name,

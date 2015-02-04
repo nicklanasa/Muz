@@ -76,7 +76,7 @@ ArtistAlbumHeaderDelegate {
     private func fetchArtistAlbums() {
         var error: NSError?
         if self.artistsController.performFetch(&error) {
-            DataManager.manager.syncArtists({ (addedItems, error) -> () in
+            DataManager.manager.syncAlbumsForArtist(artist: self.artist, completion: { (addedItems, error) -> () in
                 
             })
         }
@@ -95,28 +95,9 @@ ArtistAlbumHeaderDelegate {
         forChangeType type: NSFetchedResultsChangeType,
         newIndexPath: NSIndexPath?)
     {
-        var tableView = self.tableView
-        var indexPaths:[NSIndexPath] = [NSIndexPath]()
-        switch type {
-            
-        case .Insert:
-            indexPaths.append(newIndexPath!)
-            tableView.insertRowsAtIndexPaths(indexPaths, withRowAnimation: .Fade)
-            
-        case .Delete:
-            indexPaths.append(indexPath!)
-            tableView.deleteRowsAtIndexPaths(indexPaths, withRowAnimation: .Fade)
-            
-        case .Update:
-            indexPaths.append(indexPath!)
-            tableView.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: .Fade)
-            
-        case .Move:
-            indexPaths.append(indexPath!)
-            tableView.deleteRowsAtIndexPaths(indexPaths, withRowAnimation: .Fade)
-            indexPaths.removeAtIndex(0)
-            indexPaths.append(newIndexPath!)
-            tableView.insertRowsAtIndexPaths(indexPaths, withRowAnimation: .Fade)
+        
+        if let albumArtist = self.artistsController.objectAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? Artist {
+            self.tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0, artist.albums.count - 1)), withRowAnimation: .Fade)
         }
     }
     
@@ -145,7 +126,7 @@ ArtistAlbumHeaderDelegate {
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let albumArtist = self.artistsController.objectAtIndexPath(NSIndexPath(forRow: 0, inSection: section)) as? Artist {
+        if let albumArtist = self.artistsController.objectAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? Artist {
             if let album = albumArtist.albums.allObjects[section] as? Album {
                 return album.songs.count
             }
@@ -166,13 +147,16 @@ ArtistAlbumHeaderDelegate {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell",
             forIndexPath: indexPath) as ArtistAlbumsSongCell
         
-        let album = self.artistsController.objectAtIndexPath(indexPath) as Album
-        cell.songLabel.text = album.title
-        
-        if let song = album.songs.allObjects[indexPath.row] as? Song {
-            let min = floor(song.playbackDuration.floatValue / 60)
-            let sec = floor(song.playbackDuration.floatValue - (min * 60))
-            cell.infoLabel.text = NSString(format: "%.0f:%@%.0f", min, sec < 10 ? "0" : "", sec)
+        if let albumArtist = self.artistsController.objectAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? Artist {
+            if let album = albumArtist.albums.allObjects[indexPath.section] as? Album {
+                cell.songLabel.text = album.title
+                
+                if let song = album.songs.allObjects[indexPath.row] as? Song {
+                    let min = floor(song.playbackDuration.floatValue / 60)
+                    let sec = floor(song.playbackDuration.floatValue - (min * 60))
+                    cell.infoLabel.text = NSString(format: "%.0f:%@%.0f", min, sec < 10 ? "0" : "", sec)
+                }
+            }
         }
         
         return cell
@@ -187,7 +171,7 @@ ArtistAlbumHeaderDelegate {
             return nil
         }
         
-        if let albumArtist = self.artistsController.objectAtIndexPath(NSIndexPath(forRow: 0, inSection: section)) as? Artist {
+        if let albumArtist = self.artistsController.objectAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? Artist {
             if let album = albumArtist.albums.allObjects[section] as? Album {
                 let header = tableView.dequeueReusableHeaderFooterViewWithIdentifier("Header") as ArtistAlbumHeader
                 header.updateWithAlbum(album: album)

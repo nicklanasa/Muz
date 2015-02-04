@@ -177,6 +177,62 @@ class Datastore {
         }
     }
     
+    func addAlbumsForArtist(#artist: Artist, albums: [AnyObject], completion: (addedItems: [AnyObject], error: NSErrorPointer) -> ()) {
+        self.workerContext.performBlock { () -> Void in
+            
+            let startTime = NSDate()
+            var request = NSFetchRequest(entityName: "Album")
+            var addedAlbums = NSMutableArray(capacity: albums.count)
+            
+            print(albums)
+            for album in albums {
+                if let item = album as? MPMediaItem {
+                    
+                    var error: NSError?
+                    
+                    if let title = item.albumTitle {
+                        
+                        let predicate = NSPredicate(format: "title = %@", title)
+                        request.fetchLimit = 1
+                        request.predicate = predicate
+                        let results = self.workerContext.executeFetchRequest(request, error: &error)
+                        
+                        var managedAlbum: Album!
+                        if results?.count > 0 {
+                            managedAlbum = results?[0] as Album
+                        } else {
+                            managedAlbum = NSEntityDescription.insertNewObjectForEntityForName("Album",
+                                inManagedObjectContext: self.workerContext) as Album
+                            addedAlbums.addObject(managedAlbum)
+                        }
+                        
+                        managedAlbum.parseItem(item)
+                        managedAlbum.addSong(self.addSongForItem(item: item))
+                        
+                        artist.addAlbum(managedAlbum)
+                        
+                        artist.modifiedDate = NSDate()
+                    }
+                }
+            }
+            
+            self.saveDatastoreWithCompletion({ (error) -> () in
+                let endTime = NSDate()
+                let executionTime = endTime.timeIntervalSinceDate(startTime)
+                NSLog("addAlbums() - executionTime = %f\n addAlbums count: %d\n existedSongs count: %d", (executionTime * 1000), addedAlbums.count);
+                
+                if error != nil {
+                    LocalyticsSession.shared().tagEvent("Unabled to save added ablums.")
+                } else {
+                    LocalyticsSession.shared().tagEvent("Saved ablums.")
+                }
+                
+                completion(addedItems: addedAlbums, error: error)
+            })
+        }
+
+    }
+    
     /**
     Add album for item.
     
