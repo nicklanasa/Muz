@@ -15,6 +15,8 @@
             <connections>
                 <outlet property="artwork" destination="vqG-Pf-UWi" id="oFm-7B-SEl"/>
                 <outlet property="infoButton" destination="khw-Fj-S3f" id="gcl-WB-1t8"/>
+                <outlet property="progressOverlayView" destination="Iq4-Nh-oaW" id="dGt-Ah-aQc"/>
+                <outlet property="progressOverlayViewLabel" destination="SQR-mV-nUt" id="a1G-rP-YKL"/>
                 <outlet property="progressSlider" destination="0js-gc-HLw" id="Nso-vA-pfs"/>
                 <outlet property="repeatButton" destination="5KF-6M-qoI" id="AL9-hb-nfV"/>
                 <outlet property="shuffleButton" destination="RWA-Gd-PO1" id="kJi-w0-Fu2"/>
@@ -87,6 +89,7 @@
                     <color key="tintColor" red="1" green="0.72156862749999995" blue="0.23529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <color key="thumbTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <connections>
+                        <action selector="progressSliderTouchUpInside:" destination="-1" eventType="touchUpInside" id="2pG-1J-NJ3"/>
                         <action selector="progressSliderValueChanged:" destination="-1" eventType="valueChanged" id="2Aj-dU-AhB"/>
                     </connections>
                 </slider>
@@ -123,11 +126,31 @@
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                 </view>
+                <view alpha="0.0" contentMode="scaleToFill" id="Iq4-Nh-oaW">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="SQR-mV-nUt">
+                            <rect key="frame" x="10" y="240" width="300" height="60"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="29"/>
+                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <nil key="simulatedTopBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
             <point key="canvasLocation" x="-750" y="-197"/>
+        </view>
+        <view contentMode="scaleToFill" id="vAE-uI-Xrx">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+            <point key="canvasLocation" x="-378" y="-187"/>
         </view>
     </objects>
     <resources>

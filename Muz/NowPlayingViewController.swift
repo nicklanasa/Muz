@@ -27,6 +27,8 @@ NowPlayingCollectionControllerDelegate {
     @IBOutlet weak var infoButton: UIButton!
     @IBOutlet weak var progressSlider: UISlider!
     @IBOutlet weak var tutorialView: UIView!
+    @IBOutlet weak var progressOverlayView: UIView!
+    @IBOutlet weak var progressOverlayViewLabel: UILabel!
     
     let playerController = MPMusicPlayerController.iPodMusicPlayer()
     
@@ -36,9 +38,27 @@ NowPlayingCollectionControllerDelegate {
         self.tabBarItem.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0)
     }
     
+    @IBAction func progressSliderTouchUpInside(sender: AnyObject) {
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.progressOverlayView.alpha = 0.0
+        })
+    }
+    
     @IBAction func progressSliderValueChanged(sender: AnyObject) {
         if let currentlyPlayingItem = item {
-            playerController.currentPlaybackTime = Double(progressSlider.value) * currentlyPlayingItem.playbackDuration
+            UIView.animateWithDuration(0.3, animations: { () -> Void in
+                self.progressOverlayView.alpha = 0.8
+                
+                
+                var currentPlaybackTime = Double(self.progressSlider.value) * currentlyPlayingItem.playbackDuration
+                self.playerController.currentPlaybackTime = currentPlaybackTime
+                
+                let min = floor(self.playerController.currentPlaybackTime/60)
+                let sec = round(self.playerController.currentPlaybackTime - min * 60)
+                self.progressOverlayViewLabel.text = NSString(format: "%2.f:%02.f", min, sec)
+            }, completion: { (success) -> Void in
+                
+            })
         }
     }
     
