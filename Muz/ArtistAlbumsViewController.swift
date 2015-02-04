@@ -97,7 +97,7 @@ ArtistAlbumHeaderDelegate {
     {
         
         if let albumArtist = self.artistsController.objectAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? Artist {
-            self.tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0, artist.albums.count - 1)), withRowAnimation: .Fade)
+            self.tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0, albumArtist.albums.count - 1)), withRowAnimation: .Fade)
         }
     }
     

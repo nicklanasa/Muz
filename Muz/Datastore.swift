@@ -210,11 +210,11 @@ class Datastore {
                         managedAlbum.addSong(self.addSongForItem(item: item))
                         
                         artist.addAlbum(managedAlbum)
-                        
-                        artist.modifiedDate = NSDate()
                     }
                 }
             }
+            
+            artist.modifiedDate = NSDate()
             
             self.saveDatastoreWithCompletion({ (error) -> () in
                 let endTime = NSDate()
@@ -649,7 +649,7 @@ class Datastore {
         return NSFetchedResultsController(fetchRequest: request,
         managedObjectContext: self.mainQueueContext,
         sectionNameKeyPath: sectionNameKeyPath,
-        cacheName: ArtistsCacheName)
+        cacheName: nil)
     }
     
     func plsylistSsongsControllerWithSortKey(sortKey: NSString, ascending: Bool, sectionNameKeyPath: NSString?) -> NSFetchedResultsController {
