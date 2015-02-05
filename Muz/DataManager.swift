@@ -36,9 +36,23 @@ class DataManager {
         }
     }
     
+    func fetchImageForSong(#song: Song, completion: (image: UIImage?, error: NSError?) -> ()) {
+        MediaSession.sharedSession.fetchImageForSong(song: song) { (image) -> () in
+            completion(image: image, error: nil)
+        }
+    }
+    
     func syncArtists(completion: (addedItems: [AnyObject], error: NSErrorPointer) -> ()) {
         MediaSession.sharedSession.fetchArtists { (results) -> () in
             self.datastore.addArtists(results, completion: { (addedItems, error) -> () in
+                completion(addedItems: addedItems, error: error)
+            })
+        }
+    }
+    
+    func syncSongs(completion: (addedItems: [AnyObject], error: NSErrorPointer) -> ()) {
+        MediaSession.sharedSession.fetchSongs { (results) -> () in
+            self.datastore.addSongs(results, completion: { (addedItems, error) -> () in
                 completion(addedItems: addedItems, error: error)
             })
         }

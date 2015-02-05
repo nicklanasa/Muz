@@ -749,36 +749,13 @@ class Datastore {
         request.entity = NSEntityDescription.entityForName("Song",
             inManagedObjectContext: self.mainQueueContext)
         
-        var properties = NSMutableArray()
-        
-        if let titleProperty: AnyObject = request.entity?.propertiesByName["title"] {
-            properties.addObject(titleProperty)
-        }
-        
-        if let artistProperty: AnyObject = request.entity?.propertiesByName["artist"] {
-            properties.addObject(artistProperty)
-        }
-        
-        if let albumProperty: AnyObject = request.entity?.propertiesByName["albumTitle"] {
-            properties.addObject(albumProperty)
-        }
-        
-        if let artworkProperty: AnyObject = request.entity?.propertiesByName["artwork"] {
-            properties.addObject(artworkProperty)
-        }
-        
-        request.propertiesToGroupBy = properties
-        request.propertiesToFetch = properties
-        request.returnsDistinctResults = true
-        request.resultType = NSFetchRequestResultType.DictionaryResultType
-        
         var sort = NSSortDescriptor(key: sortKey, ascending: ascending)
         request.sortDescriptors = [sort]
         
         return NSFetchedResultsController(fetchRequest: request,
             managedObjectContext: self.mainQueueContext,
             sectionNameKeyPath: sectionNameKeyPath,
-            cacheName: ArtistsCacheName)
+            cacheName: nil)
     }
     
     func lovedControllerWithSortKey(sortKey: NSString, ascending: Bool, sectionNameKeyPath: NSString?) -> NSFetchedResultsController {

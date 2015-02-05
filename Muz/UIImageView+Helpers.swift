@@ -38,4 +38,16 @@ extension UIImageView {
             })
         }
     }
+    
+    func setImageForSong(#song: Song) {
+        DataManager.manager.fetchImageForSong(song: song) { (image, error) -> () in
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                if let albumImage = image {
+                    self.image = albumImage
+                } else {
+                    self.image = UIImage(named: "nowPlayingDefault")
+                }
+            })
+        }
+    }
 }
