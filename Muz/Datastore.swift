@@ -257,7 +257,7 @@ class Datastore {
         }
         
         managedAlbum.parseItem(item)
-        //managedAlbum.addSong(self.addSongForItem(item: item))
+        managedAlbum.addSong(self.addSongForItem(item: item))
         
         return managedAlbum
     }

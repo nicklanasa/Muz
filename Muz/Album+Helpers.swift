@@ -17,6 +17,12 @@ extension Album {
         
         if let title = item.albumTitle {
             self.title = title
+        } else {
+            self.title = "Unknown album"
+        }
+        
+        if let releaseDate = item.releaseDate {
+            self.releaseDate = releaseDate
         }
     }
     
@@ -32,7 +38,7 @@ extension Album {
             if !found {
                 var albumSongs = NSMutableSet(set: self.songs)
                 albumSongs.addObject(managedSong)
-                self.songs = albumSongs
+                self.songs = NSSet(set: albumSongs)
             }
         }
     }

@@ -48,6 +48,28 @@ let _sharedSession = MediaSession()
         completion(results: albumsQuery.items)
     }
     
+    func fetchImageForAlbum(#album: Album, completion: (image: UIImage?) -> ()) {
+        let albums = MPMediaQuery.albumsQuery()
+        albums.addFilterPredicate(MPMediaPropertyPredicate(value: album.title,
+            forProperty: MPMediaItemPropertyAlbumTitle,
+            comparisonType: .Contains))
+        
+        var image: UIImage?
+        if albums.items.count > 0 {
+            for item in albums.items as [MPMediaItem] {
+                if let artwork = item.artwork {
+                    if let albumImage = artwork.imageWithSize(CGSizeMake(50, 50)) {
+                        print("Found image\n")
+                        image = albumImage
+                        break
+                    }
+                }
+            }
+        }
+        
+        completion(image: image)
+    }
+    
     func fetchImageForArtist(#artist: Artist, completion: (image: UIImage?) -> ()) {
         let artists = MPMediaQuery.artistsQuery()
         artists.addFilterPredicate(MPMediaPropertyPredicate(value: artist.name,

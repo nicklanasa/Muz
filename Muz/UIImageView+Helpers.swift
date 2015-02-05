@@ -21,7 +21,19 @@ extension UIImageView {
                 if let artistImage = image {
                     self.image = artistImage
                 } else {
-                    self.image = UIImage(named: "noArtwork")
+                    self.image = UIImage(named: "nowPlayingDefault")
+                }
+            })
+        }
+    }
+    
+    func setImageForAlbum(#album: Album) {
+        DataManager.manager.fetchImageForAlbum(album: album) { (image, error) -> () in
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                if let albumImage = image {
+                    self.image = albumImage
+                } else {
+                    self.image = UIImage(named: "nowPlayingDefault")
                 }
             })
         }

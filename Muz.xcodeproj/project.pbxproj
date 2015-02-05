@@ -106,7 +106,6 @@
 		CEBC1EF61A816D7B000AF2F1 /* UIImageView+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBC1EF51A816D7B000AF2F1 /* UIImageView+Helpers.swift */; };
 		CEBC1EF81A81781E000AF2F1 /* NSString+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBC1EF71A81781E000AF2F1 /* NSString+Helpers.swift */; };
 		CEBC1EFA1A8179A6000AF2F1 /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBC1EF91A8179A6000AF2F1 /* Song.swift */; };
-		CEBC1EFC1A8179A7000AF2F1 /* Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBC1EFB1A8179A7000AF2F1 /* Album.swift */; };
 		CEC66D8C1A37EFA700560754 /* ArtistCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE444BD91A36A27200153F77 /* ArtistCell.swift */; };
 		CEC66D8F1A38A6A500560754 /* noArtwork.png in Resources */ = {isa = PBXBuildFile; fileRef = CEC66D8E1A38A6A500560754 /* noArtwork.png */; };
 		CEC66D991A38D5F400560754 /* headphones.png in Resources */ = {isa = PBXBuildFile; fileRef = CEC66D961A38D5F400560754 /* headphones.png */; };
@@ -204,6 +203,7 @@
 		CEE153501A3B568400BB16EB /* NowPlayingInfoLyricsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEE1534F1A3B568400BB16EB /* NowPlayingInfoLyricsCell.xib */; };
 		CEE153551A3B5B4B00BB16EB /* HTMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE153521A3B5B4B00BB16EB /* HTMLNode.m */; };
 		CEE153561A3B5B4B00BB16EB /* HTMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE153541A3B5B4B00BB16EB /* HTMLParser.m */; };
+		CEFEB1C21A83F5460070A28D /* Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEFEB1C11A83F5460070A28D /* Album.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -335,7 +335,6 @@
 		CEBC1EF51A816D7B000AF2F1 /* UIImageView+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+Helpers.swift"; sourceTree = "<group>"; };
 		CEBC1EF71A81781E000AF2F1 /* NSString+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSString+Helpers.swift"; sourceTree = "<group>"; };
 		CEBC1EF91A8179A6000AF2F1 /* Song.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Song.swift; sourceTree = "<group>"; };
-		CEBC1EFB1A8179A7000AF2F1 /* Album.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Album.swift; sourceTree = "<group>"; };
 		CEC66D8E1A38A6A500560754 /* noArtwork.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = noArtwork.png; sourceTree = "<group>"; };
 		CEC66D961A38D5F400560754 /* headphones.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = headphones.png; sourceTree = "<group>"; };
 		CEC66D971A38D5F400560754 /* headphones@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "headphones@2x.png"; sourceTree = "<group>"; };
@@ -436,6 +435,7 @@
 		CEE153521A3B5B4B00BB16EB /* HTMLNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTMLNode.m; sourceTree = "<group>"; };
 		CEE153531A3B5B4B00BB16EB /* HTMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTMLParser.h; sourceTree = "<group>"; };
 		CEE153541A3B5B4B00BB16EB /* HTMLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTMLParser.m; sourceTree = "<group>"; };
+		CEFEB1C11A83F5460070A28D /* Album.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Album.swift; path = ../Album.swift; sourceTree = "<group>"; };
 		DB8E352653F602E2D8336D2A /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -606,11 +606,11 @@
 				CEBB56151A3B951C00AE8CAA /* NSString+Lyrics.m */,
 				CEBC1EF71A81781E000AF2F1 /* NSString+Helpers.swift */,
 				CE444BE11A36A28700153F77 /* DataManager.swift */,
+				CEFEB1C11A83F5460070A28D /* Album.swift */,
 				CE444BE21A36A28700153F77 /* Datastore.swift */,
 				CE444BE31A36A28700153F77 /* MediaSession.swift */,
 				CE9BBDB91A36A87B00878C09 /* Muz.xcdatamodeld */,
 				01B280A01A819D39005295A1 /* Artist.swift */,
-				CEBC1EFB1A8179A7000AF2F1 /* Album.swift */,
 				CEBC1EF91A8179A6000AF2F1 /* Song.swift */,
 				CEBC1EEF1A813BB4000AF2F1 /* Artist+Helpers.swift */,
 				CEBC1EF51A816D7B000AF2F1 /* UIImageView+Helpers.swift */,
@@ -1119,7 +1119,7 @@
 				CE3038EE1A3E0C4F00DCC5EB /* LastFmArtist.m in Sources */,
 				CEE153451A3B41CD00BB16EB /* NowPlayingInfoViewController.swift in Sources */,
 				CEDB61E71A37DCE300B90B2D /* MoreViewController.swift in Sources */,
-				CEBC1EFC1A8179A7000AF2F1 /* Album.swift in Sources */,
+				CEFEB1C21A83F5460070A28D /* Album.swift in Sources */,
 				CE95D9BD1A3DFB730060752A /* LastFmArtistInfoCell.swift in Sources */,
 				CE9BCFE41A45D56500522F18 /* LastFmCell.swift in Sources */,
 				CECCC10D1A40ED1200799854 /* LastFmArtistEventsRequest.swift in Sources */,

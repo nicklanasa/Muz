@@ -95,9 +95,16 @@ ArtistAlbumHeaderDelegate {
         forChangeType type: NSFetchedResultsChangeType,
         newIndexPath: NSIndexPath?)
     {
-        
         if let albumArtist = self.artistsController.objectAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? Artist {
-            self.tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0, albumArtist.albums.count - 1)), withRowAnimation: .Fade)
+            var indexPaths = NSMutableArray()
+            var section = 0
+            for album in albumArtist.albums.allObjects as [Album] {
+                indexPaths.addObject(NSIndexPath(forRow: 0, inSection: section))
+                section++
+            }
+            
+            self.tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0, section)),
+                withRowAnimation: .Fade)
         }
     }
     
@@ -131,7 +138,6 @@ ArtistAlbumHeaderDelegate {
                 return album.songs.count
             }
         }
-        
         return 0
     }
     
@@ -146,19 +152,13 @@ ArtistAlbumHeaderDelegate {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell",
             forIndexPath: indexPath) as ArtistAlbumsSongCell
-        
         if let albumArtist = self.artistsController.objectAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? Artist {
             if let album = albumArtist.albums.allObjects[indexPath.section] as? Album {
-                cell.songLabel.text = album.title
-                
                 if let song = album.songs.allObjects[indexPath.row] as? Song {
-                    let min = floor(song.playbackDuration.floatValue / 60)
-                    let sec = floor(song.playbackDuration.floatValue - (min * 60))
-                    cell.infoLabel.text = NSString(format: "%.0f:%@%.0f", min, sec < 10 ? "0" : "", sec)
+                    cell.configure(song: song)
                 }
             }
         }
-        
         return cell
     }
     
@@ -185,12 +185,14 @@ ArtistAlbumHeaderDelegate {
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        // Get song.        
-//        if let songs = albums?[indexPath.section] as? MPMediaItemCollection {
-//            if let song = songs.items[indexPath.row] as? MPMediaItem {
-//                presentNowPlayViewControllerWithItem(song)
-//            }
-//        }
+        // Get song.    
+        if let albumArtist = self.artistsController.objectAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? Artist {
+            if let album = albumArtist.albums.allObjects[indexPath.section] as? Album {
+                if let song = album.songs.allObjects[indexPath.row] as? Song {
+                    //presentNowPlayViewControllerWithItem(song)
+                }
+            }
+        }
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
@@ -204,12 +206,14 @@ ArtistAlbumHeaderDelegate {
     
     func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
         let addToPlaylistAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Add to Playlist", handler: { (action, indexPath) -> Void in
-//            if let songs = self.albums?[indexPath.section] as? MPMediaItemCollection {
-//                if let song = songs.items[indexPath.row] as? MPMediaItem {
+            if let albumArtist = self.artistsController.objectAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? Artist {
+                if let album = albumArtist.albums.allObjects[indexPath.section] as? Album {
+                    if let song = album.songs.allObjects[indexPath.row] as? Song {
 //                    let createPlaylistOverlay = CreatePlaylistOverlay(items: [song])
 //                    self.presentModalOverlayController(createPlaylistOverlay, blurredController: self)
-//                }
-//            }
+                    }
+                }
+            }
         })
         
         return [addToPlaylistAction]
@@ -218,11 +222,13 @@ ArtistAlbumHeaderDelegate {
     // MARK: ArtistAlbumHeaderDelegate
     
     func artistAlbumHeader(header: ArtistAlbumHeader, moreButtonTapped sender: AnyObject) {
-//        let header = tableView.headerViewForSection(header.section) as ArtistAlbumHeader
-//        if let songs = albums?[header.section] as? MPMediaItemCollection {
-//            let items = songs.items as [MPMediaItem]
-//            let createPlaylistOverlay = CreatePlaylistOverlay(items: items)
-//            presentModalOverlayController(createPlaylistOverlay, blurredController: self)
-//        }
+        let header = tableView.headerViewForSection(header.section) as ArtistAlbumHeader
+        if let albumArtist = self.artistsController.objectAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? Artist {
+            if let album = albumArtist.albums.allObjects[header.section] as? Album {
+//                    let items = songs.items as [MPMediaItem]
+//                    let createPlaylistOverlay = CreatePlaylistOverlay(items: items)
+//                    presentModalOverlayController(createPlaylistOverlay, blurredController: self)
+            }
+        }
     }
 }

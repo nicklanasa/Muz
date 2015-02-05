@@ -61,19 +61,11 @@ class ArtistAlbumHeader: UITableViewHeaderFooterView {
     }
     
     func updateWithAlbum(#album: Album) {
-//        if let artwork = item.artwork {
-//            self.albumImageView?.image = artwork.imageWithSize(self.albumImageView.frame.size)
-//        } else {
-//            self.albumImageView?.image = UIImage(named: "noArtwork")
-//        }
+        self.albumImageView.setImageForAlbum(album: album)
+        self.albumImageView.applyRoundedStyle()
         
         albumLabel.text = album.title
-        
-//        if let date = item.releaseDate {
-//            let components = NSCalendar.currentCalendar().components(.CalendarUnitYear, fromDate: item.releaseDate)
-//            yearLabel.text = "\(components.year)"
-//        } else {
-//            yearLabel.text = ""
-//        }
+        let components = NSCalendar.currentCalendar().components(.CalendarUnitYear | .CalendarUnitMonth | .CalendarUnitDay, fromDate: album.releaseDate)
+        yearLabel.text = "\(components.year)"
     }
 }

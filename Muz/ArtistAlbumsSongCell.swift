@@ -17,4 +17,9 @@ class ArtistAlbumsSongCell: UITableViewCell {
     
     override func prepareForReuse() {
     }
+    
+    func configure(#song: Song) {
+        self.songLabel.text = song.title
+        self.infoLabel.text = song.artist
+    }
 }
