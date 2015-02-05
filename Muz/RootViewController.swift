@@ -88,10 +88,28 @@ class RootViewController: UIViewController {
                     }
                 }
             }
-        } else if let splitViewController = window!.rootViewController as? UISplitViewController {
-            if let navController = splitViewController.viewControllers[1] as? NavBarController {
-                if let nowPlayingViewController = navController.viewControllers.first as? NowPlayingViewController {
-                    nowPlayingViewController.playItem(item)
+        }
+    }
+    
+    func presentNowPlayViewController(song: Song, collection: MPMediaItemCollection) {
+        let window = UIApplication.sharedApplication().keyWindow
+        if let tabBarController = window!.rootViewController as? UITabBarController {
+            if let fromView = tabBarController.selectedViewController {
+                if let vcs = tabBarController.viewControllers {
+                    if let navController = vcs[2] as? NavBarController {
+                        if let nowPlayingViewController = navController.viewControllers.first as? NowPlayingViewController {
+                            let toView = nowPlayingViewController.view
+                            UIView.transitionFromView(fromView.view,
+                                toView: toView,
+                                duration: 0.2,
+                                options: .TransitionCrossDissolve,
+                                completion: { (success) -> Void in
+                                    tabBarController.selectedIndex = 2
+                                    nowPlayingViewController.playSong(song, collection: collection)
+                            })
+                        }
+                        
+                    }
                 }
             }
         }
@@ -125,14 +143,7 @@ class RootViewController: UIViewController {
                     }
                 }
             }
-        } else if let splitViewController = window!.rootViewController as? UISplitViewController {
-            if let navController = splitViewController.viewControllers[1] as? NavBarController {
-                if let nowPlayingViewController = navController.viewControllers.first as? NowPlayingViewController {
-                    nowPlayingViewController.playItem(item)
-                }
-            }
         }
-        
     }
     
     /**

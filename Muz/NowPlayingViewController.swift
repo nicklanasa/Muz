@@ -14,11 +14,15 @@ import MediaPlayer
 class NowPlayingViewController: RootViewController,
 NowPlayingCollectionControllerDelegate {
     
+    let playerController = MPMusicPlayerController.iPodMusicPlayer()
+    
+    var song: Song!
     var item: MPMediaItem!
-    private var songTimer: NSTimer?
     var collection: MPMediaItemCollection?
-    private var pinchGesture: UIPinchGestureRecognizer!
     var isLandscaped = false
+    
+    private var pinchGesture: UIPinchGestureRecognizer!
+    private var songTimer: NSTimer?
     
     @IBOutlet weak var artwork: UIImageView!
     @IBOutlet weak var songLabel: UILabel!
@@ -28,18 +32,23 @@ NowPlayingCollectionControllerDelegate {
     @IBOutlet weak var progressSlider: UISlider!
     @IBOutlet weak var tutorialView: UIView!
     
-    let playerController = MPMusicPlayerController.iPodMusicPlayer()
-    
-    init(song: Song) {
+    override init() {
         super.init(nibName: "NowPlayingViewController", bundle: nil)
-        configureWithItem()
+        
+        self.tabBarItem = UITabBarItem(title: "",
+            image: UIImage(named: "headphones"),
+            selectedImage: UIImage(named: "headphones"))
         self.tabBarItem.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0)
     }
     
-    @IBAction func progressSliderValueChanged(sender: AnyObject) {
-        if let currentlyPlayingItem = item {
-            playerController.currentPlaybackTime = Double(progressSlider.value) * currentlyPlayingItem.playbackDuration
-        }
+    init(song: Song) {
+        super.init(nibName: "NowPlayingViewController", bundle: nil)
+        
+        self.song = song
+        
+        configureWithSong()
+        
+        self.tabBarItem.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -47,9 +56,9 @@ NowPlayingCollectionControllerDelegate {
             self.item = playerController.nowPlayingItem
             
             if playerController.playbackState != .Playing {
-                configureWithItem()
+                configureWithSong()
             } else {
-                updateNowPlayingWithItem(self.item)
+                updateNowPlaying()
             }
         }
         
@@ -59,58 +68,50 @@ NowPlayingCollectionControllerDelegate {
         super.viewWillAppear(animated)
     }
     
-    private func configureWithItem() {
-        // Get MPMediaItem
-        var query = MPMediaQuery.songsQuery()
-        let titlePredicate = MPMediaPropertyPredicate(value: item.title, forProperty: MPMediaItemPropertyTitle, comparisonType: .Contains)
-        let artistPredicate = MPMediaPropertyPredicate(value: item.artist, forProperty: MPMediaItemPropertyArtist, comparisonType: .Contains)
-        let albumPredicate = MPMediaPropertyPredicate(value: item.albumTitle, forProperty: MPMediaItemPropertyAlbumTitle, comparisonType: .EqualTo)
-        
-        query.addFilterPredicate(titlePredicate)
-        query.addFilterPredicate(artistPredicate)
-        query.addFilterPredicate(albumPredicate)
-        
-        if let item = query.items.first as? MPMediaItem {
-            
-            query = MPMediaQuery()
-            query.addFilterPredicate(albumPredicate)
-            
-            if let items = query.items as? [MPMediaItem] {
-                collection = MPMediaItemCollection(items: items)
-                playerController.setQueueWithItemCollection(collection)
+    private func configureWithSong() {
+        if let song = self.song {
+            if let item = DataManager.manager.fetchItemForSong(song: song) {
+                self.item = item
+                self.updateNowPlaying()
             }
-            
-            updateNowPlayingWithItem(item)
         }
     }
 
-    func updateProgress() {
-        if let currentlyPlayingItem = item {
-            progressSlider.value = Float(playerController.currentPlaybackTime) / Float(currentlyPlayingItem.playbackDuration)
-        }
+    func playSong(song: Song, collection: MPMediaItemCollection) {
+        self.song = song
+        self.item = DataManager.manager.fetchItemForSong(song: song)
+        self.collection = collection
+        self.playerController.setQueueWithItemCollection(collection)
+        self.playerController.play()
+        updateNowPlaying()
     }
     
     func playItem(item: MPMediaItem) {
         self.item = item
-        configureWithItem()
+        configureWithSong()
         playerController.play()
     }
     
     func playItem(item: MPMediaItem, collection: MPMediaItemCollection) {
         self.item = item
         self.collection = collection
-        playerController.setQueueWithItemCollection(collection)
-        playerController.play()
-        updateNowPlayingWithItem(self.item)
+        self.playerController.setQueueWithItemCollection(collection)
+        self.playerController.play()
+        self.updateNowPlaying()
     }
     
-    override init() {
-        super.init(nibName: "NowPlayingViewController", bundle: nil)
-        
-        self.tabBarItem = UITabBarItem(title: "",
-            image: UIImage(named: "headphones"),
-            selectedImage: UIImage(named: "headphones"))
-        self.tabBarItem.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0)
+    private func startSongTimer() {
+        songTimer = NSTimer.scheduledTimerWithTimeInterval(0.4,
+            target: self,
+            selector: Selector("updateProgress"),
+            userInfo: nil,
+            repeats: true)
+    }
+    
+    func updateProgress() {
+        if let currentlyPlayingSong = self.song {
+            progressSlider.value = Float(playerController.currentPlaybackTime) / currentlyPlayingSong.playbackDuration.floatValue
+        }
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -166,6 +167,222 @@ NowPlayingCollectionControllerDelegate {
         presentModalOverlayController(nowPlayingCollectionController, blurredController: self)
     }
     
+    func applicationDidEnterBackground() {
+        //xplayerController.endGeneratingPlaybackNotifications()
+    }
+    
+    // MARK: MPMusicPlayerController
+    
+    func playPause() {
+        if self.playerController.playbackState == .Playing {
+            self.playerController.pause()
+        } else {
+            self.playerController.play()
+        }
+    }
+    
+    func playerControllerDidNowPlayingItemDidChange() {
+        if let item = self.playerController.nowPlayingItem {
+            self.item = item
+            self.updateView()
+        }
+    }
+    
+    func nextSong() {
+        if self.playerController.repeatMode == .One {
+            self.updateNowPlaying()
+            self.playerController.stop()
+            self.playerController.play()
+        } else {
+            
+            let artworkCenter = self.artwork.center
+            let songLabelCenter = self.songLabel.center
+            
+            UIView.animateWithDuration(0.15, animations: { () -> Void in
+                self.songLabel.frame = CGRectMake(0 - self.songLabel.frame.size.width,
+                    self.songLabel.frame.origin.y, self.songLabel.frame.size.width, self.songLabel.frame.size.height)
+                self.artwork.frame = CGRectMake(0 - self.artwork.frame.size.width,
+                    self.artwork.frame.origin.y, self.artwork.frame.size.width, self.artwork.frame.size.height)
+                
+                self.songLabel.alpha = 0.0
+                self.artwork.alpha = 0.0
+                
+                self.playerController.skipToNextItem()
+                
+                }, completion: { (success) -> Void in
+                    
+                    self.songLabel.frame = CGRectMake(UIScreen.mainScreen().bounds.width + self.songLabel.frame.size.width,
+                        self.songLabel.frame.origin.y, self.songLabel.frame.size.width, self.songLabel.frame.size.height)
+                    self.artwork.frame = CGRectMake(UIScreen.mainScreen().bounds.width + self.artwork.frame.size.width,
+                        self.artwork.frame.origin.y, self.artwork.frame.size.width, self.artwork.frame.size.height)
+                    
+                    UIView.animateWithDuration(0.15, animations: { () -> Void in
+                        
+                        self.songLabel.alpha = 1.0
+                        self.artwork.alpha = 1.0
+                        
+                        self.songLabel.center = songLabelCenter
+                        self.artwork.center = artworkCenter
+                    })
+            })
+        }
+    }
+    
+    func previousSong() {
+        if playerController.repeatMode == .One {
+            
+            self.updateNowPlaying()
+            
+            self.playerController.stop()
+            self.playerController.play()
+        } else {
+            let artworkCenter = self.artwork.center
+            let songLabelCenter = self.songLabel.center
+            
+            UIView.animateWithDuration(0.15, animations: { () -> Void in
+                self.songLabel.frame = CGRectMake(UIScreen.mainScreen().bounds.width +  self.songLabel.frame.size.width,
+                    self.songLabel.frame.origin.y, self.songLabel.frame.size.width, self.songLabel.frame.size.height)
+                self.artwork.frame = CGRectMake(UIScreen.mainScreen().bounds.width +  self.artwork.frame.size.width,
+                    self.artwork.frame.origin.y, self.artwork.frame.size.width, self.artwork.frame.size.height)
+                
+                self.songLabel.alpha = 0.0
+                self.artwork.alpha = 0.0
+                
+                self.playerController.skipToPreviousItem()
+                
+                }, completion: { (success) -> Void in
+                    
+                    self.songLabel.frame = CGRectMake(0 - self.songLabel.frame.size.width,
+                        self.songLabel.frame.origin.y, self.songLabel.frame.size.width, self.songLabel.frame.size.height)
+                    self.artwork.frame = CGRectMake(0 - self.artwork.frame.size.width,
+                        self.artwork.frame.origin.y, self.artwork.frame.size.width, self.artwork.frame.size.height)
+                    
+                    UIView.animateWithDuration(0.15, animations: { () -> Void in
+                        
+                        self.songLabel.alpha = 1.0
+                        self.artwork.alpha = 1.0
+                        
+                        self.songLabel.center = songLabelCenter
+                        self.artwork.center = artworkCenter
+                    })
+            })
+        }
+    }
+
+    // MARK: Updating
+    
+    func showInfoController(gesture: UIPinchGestureRecognizer?) {
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            UIView.animateWithDuration(0.3, animations: { () -> Void in
+                self.hideNowPlayingViews()
+            })
+        })
+    }
+    
+    func hideInfoController(gesture: UIPinchGestureRecognizer?) {
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.showNowPlayingViews()
+        })
+    }
+    
+    private func hideNowPlayingViews() {
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.artwork.alpha = 0.0
+            self.songLabel.alpha = 0.0
+            self.progressSlider.alpha = 0.0
+            self.shuffleButton.alpha = 0.0
+            self.repeatButton.alpha = 0.0
+            self.infoButton.alpha = 0.0
+        })
+    }
+    
+    private func showNowPlayingViews() {
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.artwork.alpha = 1.0
+            self.songLabel.alpha = 1.0
+            self.progressSlider.alpha = 1.0
+            
+            self.shuffleButton.alpha = 1.0
+            self.repeatButton.alpha = 1.0
+            self.infoButton.alpha = 1.0
+        })
+    }
+    
+    private func updateView() {
+        
+        showNowPlayingViews()
+        
+        let noArtwork = UIImage(named: "noArtwork")
+        if let artwork = self.item.artwork {
+            if let image = artwork.imageWithSize(CGSize(width:500, height:500)) {
+                self.artwork.image = image
+                CurrentAppBackgroundImage = image
+            } else {
+                self.artwork.image = noArtwork
+                CurrentAppBackgroundImage = noArtwork!
+            }
+        } else {
+            self.artwork.image = noArtwork
+            CurrentAppBackgroundImage = noArtwork!
+        }
+        
+        self.backgroundImageView.image = CurrentAppBackgroundImage.applyDarkEffect()
+        
+        let songInfo = NSString(format: "%@\n%@\n%@", self.item.title, self.item.artist, self.item.albumTitle)
+        let attributedSongInfo = NSMutableAttributedString(string: songInfo)
+        let songFont = UIFont(name: MuzFontName, size: 35)!
+        let artistFont = UIFont(name: MuzFontNameRegular, size: 18)!
+        attributedSongInfo.addAttribute(NSFontAttributeName,
+            value: songFont,
+            range: NSMakeRange(0, countElements(self.item.title)))
+        attributedSongInfo.addAttribute(NSFontAttributeName,
+            value: artistFont,
+            range: NSMakeRange(countElements(self.item.title),
+                countElements(self.item.artist) + 1))
+        self.songLabel.attributedText = attributedSongInfo
+        
+        if let timer = songTimer {
+            timer.invalidate()
+        }
+        
+        startSongTimer()
+        
+        progressSlider.hidden = false
+    }
+    
+    private func updateNowPlaying() {
+        
+        playerController.nowPlayingItem = self.item
+        
+        self.updateView()
+        
+        if NSUserDefaults.standardUserDefaults().objectForKey("Tutorial") == nil {
+            tutorialView.alpha = 0.85
+            
+            let tapGesture = UITapGestureRecognizer(target: self, action: "dismissTutorial")
+            tapGesture.numberOfTapsRequired = 1
+            tutorialView.addGestureRecognizer(tapGesture)
+            NSUserDefaults.standardUserDefaults().setObject(NSNumber(bool: false), forKey: "Tutorial")
+        } else {
+            tutorialView.alpha = 0.0
+        }
+    }
+    
+    func dismissTutorial() {
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.tutorialView.alpha = 0.0
+            self.tutorialView.removeFromSuperview()
+        })
+    }
+    
+    // MARK: IBAction
+    
+    @IBAction func progressSliderValueChanged(sender: AnyObject) {
+        if let currentPlayingSong = self.song {
+            playerController.currentPlaybackTime = Double(progressSlider.value) * currentPlayingSong.playbackDuration.doubleValue
+        }
+    }
+    
     @IBAction func infoButtonPressed(sender: AnyObject) {
         if let item = self.item {
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -208,209 +425,6 @@ NowPlayingCollectionControllerDelegate {
         })
     }
     
-    func showInfoController(gesture: UIPinchGestureRecognizer?) {
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
-            UIView.animateWithDuration(0.3, animations: { () -> Void in
-                self.hideNowPlayingViews()
-            })
-        })
-    }
-    
-    func hideInfoController(gesture: UIPinchGestureRecognizer?) {
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
-            self.showNowPlayingViews()
-        })
-    }
-    
-    private func hideNowPlayingViews() {
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
-            self.artwork.alpha = 0.0
-            self.songLabel.alpha = 0.0
-            self.progressSlider.alpha = 0.0
-            self.shuffleButton.alpha = 0.0
-            self.repeatButton.alpha = 0.0
-            self.infoButton.alpha = 0.0
-        })
-    }
-    
-    private func showNowPlayingViews() {
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
-            self.artwork.alpha = 1.0
-            self.songLabel.alpha = 1.0
-            self.progressSlider.alpha = 1.0
-            
-            self.shuffleButton.alpha = 1.0
-            self.repeatButton.alpha = 1.0
-            self.infoButton.alpha = 1.0
-        })
-    }
-    
-    func applicationDidEnterBackground() {
-        //xplayerController.endGeneratingPlaybackNotifications()
-    }
-    
-    func nextSong() {
-        if playerController.repeatMode == .One {
-            updateNowPlayingWithItem(self.item)
-            
-            playerController.stop()
-            playerController.play()
-        } else {
-            
-            let artworkCenter = self.artwork.center
-            let songLabelCenter = self.songLabel.center
-            
-            UIView.animateWithDuration(0.15, animations: { () -> Void in
-                self.songLabel.frame = CGRectMake(0 - self.songLabel.frame.size.width,
-                    self.songLabel.frame.origin.y, self.songLabel.frame.size.width, self.songLabel.frame.size.height)
-                self.artwork.frame = CGRectMake(0 - self.artwork.frame.size.width,
-                    self.artwork.frame.origin.y, self.artwork.frame.size.width, self.artwork.frame.size.height)
-                
-                self.songLabel.alpha = 0.0
-                self.artwork.alpha = 0.0
-                
-                self.playerController.skipToNextItem()
-                
-            }, completion: { (success) -> Void in
-                
-                self.songLabel.frame = CGRectMake(UIScreen.mainScreen().bounds.width + self.songLabel.frame.size.width,
-                    self.songLabel.frame.origin.y, self.songLabel.frame.size.width, self.songLabel.frame.size.height)
-                self.artwork.frame = CGRectMake(UIScreen.mainScreen().bounds.width + self.artwork.frame.size.width,
-                    self.artwork.frame.origin.y, self.artwork.frame.size.width, self.artwork.frame.size.height)
-                
-                UIView.animateWithDuration(0.15, animations: { () -> Void in
-                    
-                    self.songLabel.alpha = 1.0
-                    self.artwork.alpha = 1.0
-                    
-                    self.songLabel.center = songLabelCenter
-                    self.artwork.center = artworkCenter
-                })
-            })
-        }
-    }
-    
-    func previousSong() {
-        if playerController.repeatMode == .One {
-            updateNowPlayingWithItem(self.item)
-            playerController.stop()
-            playerController.play()
-        } else {
-            let artworkCenter = self.artwork.center
-            let songLabelCenter = self.songLabel.center
-            
-            UIView.animateWithDuration(0.15, animations: { () -> Void in
-                self.songLabel.frame = CGRectMake(UIScreen.mainScreen().bounds.width +  self.songLabel.frame.size.width,
-                    self.songLabel.frame.origin.y, self.songLabel.frame.size.width, self.songLabel.frame.size.height)
-                self.artwork.frame = CGRectMake(UIScreen.mainScreen().bounds.width +  self.artwork.frame.size.width,
-                    self.artwork.frame.origin.y, self.artwork.frame.size.width, self.artwork.frame.size.height)
-                
-                self.songLabel.alpha = 0.0
-                self.artwork.alpha = 0.0
-                
-                self.playerController.skipToPreviousItem()
-                
-                }, completion: { (success) -> Void in
-                    
-                    self.songLabel.frame = CGRectMake(0 - self.songLabel.frame.size.width,
-                        self.songLabel.frame.origin.y, self.songLabel.frame.size.width, self.songLabel.frame.size.height)
-                    self.artwork.frame = CGRectMake(0 - self.artwork.frame.size.width,
-                        self.artwork.frame.origin.y, self.artwork.frame.size.width, self.artwork.frame.size.height)
-                    
-                    UIView.animateWithDuration(0.15, animations: { () -> Void in
-                        
-                        self.songLabel.alpha = 1.0
-                        self.artwork.alpha = 1.0
-                        
-                        self.songLabel.center = songLabelCenter
-                        self.artwork.center = artworkCenter
-                    })
-            })
-        }
-    }
-    
-    func playPause() {
-        if playerController.playbackState == .Playing {
-            playerController.pause()
-        } else {
-            playerController.play()
-        }
-    }
-    
-    func playerControllerDidNowPlayingItemDidChange() {
-        if let item = playerController.nowPlayingItem {
-            self.item = item
-            updateView(self.item)
-        }
-    }
-    
-    private func updateView(item: MPMediaItem) {
-        
-        showNowPlayingViews()
-        
-        let noArtwork = UIImage(named: "noArtwork")
-        if let artwork = item.artwork {
-            if let image = artwork.imageWithSize(CGSize(width:500, height:500)) {
-                self.artwork.image = image
-                CurrentAppBackgroundImage = image
-            } else {
-                self.artwork.image = noArtwork
-                CurrentAppBackgroundImage = noArtwork!
-            }
-        } else {
-            self.artwork.image = noArtwork
-            CurrentAppBackgroundImage = noArtwork!
-        }
-        
-        self.backgroundImageView.image = CurrentAppBackgroundImage.applyDarkEffect()
-        
-        let songInfo = NSString(format: "%@\n%@\n%@", item.title, item.artist, item.albumTitle)
-        let attributedSongInfo = NSMutableAttributedString(string: songInfo)
-        let songFont = UIFont(name: MuzFontName, size: 35)!
-        let artistFont = UIFont(name: MuzFontNameRegular, size: 18)!
-        attributedSongInfo.addAttribute(NSFontAttributeName, value: songFont, range: NSMakeRange(0, countElements(item.title)))
-        attributedSongInfo.addAttribute(NSFontAttributeName, value: artistFont, range: NSMakeRange(countElements(item.title), countElements(item.artist) + 1))
-        self.songLabel.attributedText = attributedSongInfo
-        
-        if let timer = songTimer {
-            timer.invalidate()
-        }
-        
-        startSongTimer()
-        
-        progressSlider.hidden = false
-    }
-    
-    private func updateNowPlayingWithItem(item: MPMediaItem) {
-        playerController.nowPlayingItem = item
-        updateView(item)
-        
-        if NSUserDefaults.standardUserDefaults().objectForKey("Tutorial") == nil {
-            tutorialView.alpha = 0.85
-            
-            let tapGesture = UITapGestureRecognizer(target: self, action: "dismissTutorial")
-            tapGesture.numberOfTapsRequired = 1
-            tutorialView.addGestureRecognizer(tapGesture)
-            NSUserDefaults.standardUserDefaults().setObject(NSNumber(bool: false), forKey: "Tutorial")
-        } else {
-            tutorialView.alpha = 0.0
-        }
-    }
-    
-    func dismissTutorial() {
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
-            self.tutorialView.alpha = 0.0
-            self.tutorialView.removeFromSuperview()
-        })
-    }
-    
-    private func startSongTimer() {
-        songTimer = NSTimer.scheduledTimerWithTimeInterval(0.4,
-            target: self,
-            selector: Selector("updateProgress"),
-            userInfo: nil,
-            repeats: true)
-    }
     
     func nowPlayingCollectionController(controller: NowPlayingCollectionController,
         didSelectItem item: MPMediaItem) {
@@ -423,9 +437,7 @@ NowPlayingCollectionControllerDelegate {
         super.willRotateToInterfaceOrientation(toInterfaceOrientation, duration: duration)
         if toInterfaceOrientation == .LandscapeLeft || toInterfaceOrientation == .LandscapeRight {
             var landscapeNowPlaying = NowPlayingViewControllerLandscape()
-            
             self.navigationController?.pushViewController(landscapeNowPlaying, animated: false)
-            
             landscapeNowPlaying.updateNowPlayingWithItem(self.item)
         }
     }

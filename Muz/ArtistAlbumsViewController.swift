@@ -189,7 +189,9 @@ ArtistAlbumHeaderDelegate {
         if let albumArtist = self.artistsController.objectAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? Artist {
             if let album = albumArtist.albums.allObjects[indexPath.section] as? Album {
                 if let song = album.songs.allObjects[indexPath.row] as? Song {
-                    //presentNowPlayViewControllerWithItem(song)
+                    DataManager.manager.fetchCollectionForAlbum(album: album, completion: { (collection, error) -> () in
+                        self.presentNowPlayViewController(song, collection: collection)
+                    })
                 }
             }
         }
