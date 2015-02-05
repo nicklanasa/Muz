@@ -28,7 +28,7 @@ NSFetchedResultsControllerDelegate {
     @IBOutlet weak var tableView: UITableView!
     
     // Make this DB driven
-    private let tableDataSectionSettings = ["Artist info"]
+    private let tableDataSectionSettings = ["Lyrics", "Artist info"]
     private let tableDataSectionInfo = ["Rate app", "Facebook", "Twitter", "Website", "Feedback"]
     
     private let lyricsSwitch = UISwitch(frame: CGRectMake(0, 0, 50, 50))
@@ -85,19 +85,18 @@ NSFetchedResultsControllerDelegate {
         
         switch indexPath.section {
         case MoreSectionType.Settings.rawValue:
-//            switch indexPath.row {
-//            case MoreSetting.ArtistInfo.rawValue:
-//                
-//            default:
-//                self.lyricsSwitch.on = SettingsManager.defaultManager.valueForMoreSetting(.Lyrics)
-//                cell.accessoryView = self.lyricsSwitch
-//                
-//                cell.textLabel?.text = self.tableDataSectionSettings[indexPath.row] as NSString
-//            }
-            var lastFmCell = tableView.dequeueReusableCellWithIdentifier("LastFmCell") as MoreLastFmSettingCell
-            lastFmCell.artistInfoSwitch.on = SettingsManager.defaultManager.valueForMoreSetting(.ArtistInfo)
-            lastFmCell.artistInfoSwitch.addTarget(self, action: "updatedSetting:", forControlEvents: .ValueChanged)
-            return lastFmCell
+            switch indexPath.row {
+            case MoreSetting.ArtistInfo.rawValue:
+                var lastFmCell = tableView.dequeueReusableCellWithIdentifier("LastFmCell") as MoreLastFmSettingCell
+                lastFmCell.artistInfoSwitch.on = SettingsManager.defaultManager.valueForMoreSetting(.ArtistInfo)
+                lastFmCell.artistInfoSwitch.addTarget(self, action: "updatedSetting:", forControlEvents: .ValueChanged)
+                return lastFmCell
+            default:
+                self.lyricsSwitch.on = SettingsManager.defaultManager.valueForMoreSetting(.Lyrics)
+                cell.accessoryView = self.lyricsSwitch
+                
+                cell.textLabel?.text = self.tableDataSectionSettings[indexPath.row] as NSString
+            }
         default:
             cell.textLabel?.text = self.tableDataSectionInfo[indexPath.row] as NSString
             cell.accessoryType = .DisclosureIndicator
@@ -127,16 +126,14 @@ NSFetchedResultsControllerDelegate {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
-    private func updatedSetting(sender: AnyObject) {
+    func updatedSetting(sender: AnyObject) {
         if let settingSwitch = sender as? UISwitch {
             let value = NSNumber(bool: settingSwitch.on)
-//            if settingSwitch == self.lyricsSwitch {
-//                SettingsManager.defaultManager.updateValueForMoreSetting(.Lyrics, value: value)
-//            } else {
-//                SettingsManager.defaultManager.updateValueForMoreSetting(.ArtistInfo, value: value)
-//            }
-            
-            SettingsManager.defaultManager.updateValueForMoreSetting(.ArtistInfo, value: value)
+            if settingSwitch == self.lyricsSwitch {
+                SettingsManager.defaultManager.updateValueForMoreSetting(.Lyrics, value: value)
+            } else {
+                SettingsManager.defaultManager.updateValueForMoreSetting(.ArtistInfo, value: value)
+            }
         }
     }
 }

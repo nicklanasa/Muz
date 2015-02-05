@@ -186,6 +186,8 @@ NowPlayingCollectionControllerDelegate {
             self.item = item
             self.updateView()
         }
+        
+        LocalyticsSession.shared().tagEvent("Played Song")
     }
     
     func nextSong() {

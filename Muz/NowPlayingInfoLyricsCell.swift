@@ -10,9 +10,12 @@ import Foundation
 import UIKit
 import MediaPlayer
 
-class NowPlayingInfoLyricsCell: UITableViewCell {
+class NowPlayingInfoLyricsCell: UITableViewCell,
+UIWebViewDelegate {
+    
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var webView: UIWebView!
     
     override func awakeFromNib() {
         
@@ -29,6 +32,18 @@ class NowPlayingInfoLyricsCell: UITableViewCell {
         } else {
             textView.text = "Unable to find lyrics."
         }
+    }
+    
+    func webViewDidStartLoad(webView: UIWebView) {
+        activityIndicator.startAnimating()
+    }
+    
+    func webViewDidFinishLoad(webView: UIWebView) {
+        activityIndicator.stopAnimating()
+    }
+    
+    func updateWithRequest(request: NSURLRequest) {
+        webView.loadRequest(request)
     }
     
     override func prepareForReuse() {

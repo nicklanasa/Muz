@@ -15,9 +15,9 @@ let _sharedSession = MediaSession()
 @objc class MediaSession {
     
     let dataManager = DataManager.manager
-    let artistsQuery = MPMediaQuery.artistsQuery()
-    let albumsQuery = MPMediaQuery.albumsQuery()
-    let songsQuery = MPMediaQuery.songsQuery()
+    var artistsQuery = MPMediaQuery.artistsQuery()
+    var albumsQuery = MPMediaQuery.albumsQuery()
+    var songsQuery = MPMediaQuery.songsQuery()
     
     var isMediaLibraryEmpty: Bool {
         get {
@@ -35,6 +35,13 @@ let _sharedSession = MediaSession()
     
     class var sharedSession : MediaSession {
         return _sharedSession
+    }
+    
+    // Playlists
+    
+    func fetchPlaylists(completion: (playlists: [AnyObject]) -> ()) {
+        let playlistQuery = MPMediaQuery.playlistsQuery()
+        completion(playlists: playlistQuery.collections)
     }
     
     // Artists
@@ -109,8 +116,12 @@ let _sharedSession = MediaSession()
     
     // MARK: Songs
     
+    func fetchSongsCollection(completion: (collection: MPMediaItemCollection) -> ()) {
+        self.removeAllPredicatesFromQuert(self.songsQuery)
+        completion(collection: MPMediaItemCollection(items: self.songsQuery.items))
+    }
+    
     func fetchItemForSong(song: Song) -> MPMediaItem? {
-        
         self.removeAllPredicatesFromQuert(songsQuery)
         
         let predicate = MPMediaPropertyPredicate(value: song.persistentID,
@@ -157,11 +168,15 @@ let _sharedSession = MediaSession()
     // Helpers
     
     func removeAllPredicatesFromQuert(query: MPMediaQuery) {
-        for predicate in query.filterPredicates.allObjects as [MPMediaPropertyPredicate] {
-            query.removeFilterPredicate(predicate)
+        if query.filterPredicates != nil {
+            for predicate in query.filterPredicates.allObjects as [MPMediaPropertyPredicate] {
+                query.removeFilterPredicate(predicate)
+            }
         }
     }
     
+    
+    // MARK: OLD
     
     func artistsCollectionWithQuery(artistsQuery: MPMediaQuery) -> [AnyObject]? {
         return artistsQuery.collections

@@ -32,6 +32,7 @@ LastFmTrackBuyLinksRequestDelegate {
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     
     var lyricsRequest: LyricsRequest?
+    var azLyricsRequest: NSURLRequest!
     
     var item: MPMediaItem!
     var lyrics: NSString?
@@ -131,7 +132,7 @@ LastFmTrackBuyLinksRequestDelegate {
     /**
     Handle the change of the segmentation control.
     */
-    private func handleSegmentedControlChange() {
+    func handleSegmentedControlChange() {
         // Tag switch to track in analytics
         switch segmentedControl.selectedSegmentIndex {
         case 0:
@@ -150,10 +151,14 @@ LastFmTrackBuyLinksRequestDelegate {
         
         if SettingsManager.defaultManager.valueForMoreSetting(.Lyrics) {
             let stringURL = NSString(format: "http://search.azlyrics.com/search.php?q=%@ %@", self.item.artist, self.item.title).stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
+            print(stringURL)
             let lyricsURL = NSURL(string: stringURL!)!
+            /*
             var request = LyricsRequest(url: lyricsURL, item: item)
             request.delegate = self
             request.sendURLRequest()
+            */
+            azLyricsRequest = NSURLRequest(URL: lyricsURL)
         } else {
             segmentedControl.selectedSegmentIndex = 1
             segmentedControl.setEnabled(false, forSegmentAtIndex: 0)
@@ -304,6 +309,7 @@ LastFmTrackBuyLinksRequestDelegate {
                 return lastFmEventCell
             }
         } else {
+            /*
             if !lyricsCell.activityIndicator.isAnimating() {
                 if let lyrics = self.lyrics {
                     lyricsCell.updateWithLyrics(lyrics)
@@ -311,6 +317,8 @@ LastFmTrackBuyLinksRequestDelegate {
                     lyricsCell.updateWithLyrics(self.item.lyrics)
                 }
             }
+            */
+            lyricsCell.updateWithRequest(azLyricsRequest)
             return lyricsCell
         }
     }

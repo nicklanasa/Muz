@@ -688,8 +688,6 @@
 				CE3D29901A507FD2000CCC90 /* NowPlayingViewControllerLandscape.xib */,
 				CEDB61EC1A37DE6100B90B2D /* NowPlayingViewController.xib */,
 				CEDB61EA1A37DE5400B90B2D /* NowPlayingViewController.swift */,
-				CEE1534D1A3B567C00BB16EB /* NowPlayingInfoLyricsCell.swift */,
-				CEE1534F1A3B568400BB16EB /* NowPlayingInfoLyricsCell.xib */,
 				CEE153441A3B41CD00BB16EB /* NowPlayingInfoViewController.swift */,
 				CEE153461A3B41D900BB16EB /* NowPlayingInfoViewController.xib */,
 				CE3038D71A3E033100DCC5EB /* SimiliarArtistCollectionViewCell.xib */,
@@ -735,6 +733,8 @@
 				CE9BCFDC1A45D18F00522F18 /* LastFmEventCell.xib */,
 				CE4184D91A4A3CC30011C0DA /* LastFmEventMapController.swift */,
 				CE4184DB1A4A3CCB0011C0DA /* LastFmEventMapController.xib */,
+				CEE1534D1A3B567C00BB16EB /* NowPlayingInfoLyricsCell.swift */,
+				CEE1534F1A3B568400BB16EB /* NowPlayingInfoLyricsCell.xib */,
 			);
 			name = LastFm;
 			sourceTree = "<group>";

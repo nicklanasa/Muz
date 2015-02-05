@@ -81,7 +81,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         if NSUserDefaults.standardUserDefaults().objectForKey("FirstTimer") == nil {
             SettingsManager.defaultManager.updateValueForMoreSetting(.ArtistInfo, value: NSNumber(bool: true))
-            SettingsManager.defaultManager.updateValueForMoreSetting(.Lyrics, value: NSNumber(bool: false))
+            SettingsManager.defaultManager.updateValueForMoreSetting(.Lyrics, value: NSNumber(bool: true))
             NSUserDefaults.standardUserDefaults().setObject(NSNumber(bool: false), forKey: "FirstTimer")
         }
         
@@ -125,6 +125,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 addNoMusicOverlay()
             }
         }
+        
+        
     }
 
     func applicationDidBecomeActive(application: UIApplication) {

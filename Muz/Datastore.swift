@@ -290,13 +290,10 @@ class Datastore {
         return managedSong
     }
     
-    func addPlaylists() {
+    func addPlaylists(playlists: [AnyObject], completion: (addedPlaylists: [AnyObject]?) -> ()) {
         
         var error: NSError?
-    
-        let playlistQuery = MPMediaQuery.playlistsQuery()
-        let playlists = playlistQuery.collections
-        
+
         for playlist in playlists as [MPMediaPlaylist] {
             let addedPlaylist = createPlaylistWithPlaylist(playlist, context: self.workerContext)
         }
@@ -468,7 +465,7 @@ class Datastore {
             }
     }
     
-    func createPlaylistWithItems(name: NSString, items: [AnyObject]!, completion: (addedSongs: [AnyObject]?) -> ()) {
+    func createPlaylistWithSongs(name: NSString, songs: [AnyObject]!, completion: (addedSongs: [AnyObject]?) -> ()) {
         let playlist = NSEntityDescription.insertNewObjectForEntityForName("Playlist",
             inManagedObjectContext: self.mainQueueContext) as Playlist
         playlist.name = name
@@ -478,16 +475,14 @@ class Datastore {
         var playlistSongs = NSMutableSet()
         var order = 0
         
-        for item in items as [MPMediaItem] {
-            if let song = self.songForSongName(item.title, artist: item.artist) {
-                let playlistSong = NSEntityDescription.insertNewObjectForEntityForName("PlaylistSong",
-                    inManagedObjectContext: self.mainQueueContext) as PlaylistSong
-                
-                playlistSong.parseSong(song, playlist: playlist, order: order)
-                playlistSongs.addObject(playlistSong)
-                println("Created new playlist song with title: \(song.title)")
-                order++
-            }
+        for song in songs as [Song] {
+            let playlistSong = NSEntityDescription.insertNewObjectForEntityForName("PlaylistSong",
+                inManagedObjectContext: self.mainQueueContext) as PlaylistSong
+            
+            playlistSong.parseSong(song, playlist: playlist, order: order)
+            playlistSongs.addObject(playlistSong)
+            println("Created new playlist song with title: \(song.title)")
+            order++
         }
         
         playlist.playlistSongs = playlistSongs
@@ -499,20 +494,18 @@ class Datastore {
         }
     }
     
-    func addItemsToPlaylist(items: [AnyObject]!, playlist: Playlist, completion: (addedSongs: [AnyObject]?) -> ()) {
+    func addSongsToPlaylist(songs: [AnyObject]!, playlist: Playlist, completion: (addedSongs: [AnyObject]?) -> ()) {
         var playlistSongs = NSMutableSet(set: playlist.playlistSongs)
         var order = playlistSongs.count
         
-        for item in items as [MPMediaItem] {
-            if let song = self.songForSongName(item.title, artist: item.artist) {
-                let playlistSong = NSEntityDescription.insertNewObjectForEntityForName("PlaylistSong",
-                    inManagedObjectContext: self.mainQueueContext) as PlaylistSong
-                
-                playlistSong.parseSong(song, playlist: playlist, order: order)
-                playlistSongs.addObject(playlistSong)
-                println("Created new playlist song with title: \(song.title)")
-                order++
-            }
+        for song in songs as [Song] {
+            let playlistSong = NSEntityDescription.insertNewObjectForEntityForName("PlaylistSong",
+                inManagedObjectContext: self.mainQueueContext) as PlaylistSong
+            
+            playlistSong.parseSong(song, playlist: playlist, order: order)
+            playlistSongs.addObject(playlistSong)
+            println("Created new playlist song with title: \(song.title)")
+            order++
         }
         
         playlist.playlistSongs = playlistSongs

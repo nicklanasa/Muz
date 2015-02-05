@@ -84,6 +84,7 @@ UISearchDisplayDelegate {
     func fetchArtists() {
         var error: NSError?
         if self.artistsController.performFetch(&error) {
+            self.tableView.reloadData()
             DataManager.manager.syncArtists({ (addedItems, error) -> () in
                 
             })
@@ -190,11 +191,12 @@ UISearchDisplayDelegate {
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        self.artistsController.fetchRequest.predicate = nil
+        self.searchDisplayController?.setActive(false, animated: false)
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         let artist = self.artistsController.objectAtIndexPath(indexPath) as Artist
         let artistAlbumsViewController = ArtistAlbumsViewController(artist: artist)
         navigationController?.pushViewController(artistAlbumsViewController, animated: true)
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
     func sectionIndexTitlesForTableView(tableView: UITableView) -> [AnyObject]! {
@@ -231,17 +233,17 @@ UISearchDisplayDelegate {
     
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
         if countElements(searchText) == 0 {
-            fetchArtists()
+            self.artistsController.fetchRequest.predicate = nil
         } else {
             // Change predicate and re-fetch.
+            self.artistsController.fetchRequest.predicate = NSPredicate(format: "name contains[cd] %@", searchText)
         }
         
-        tableView.reloadData()
+        fetchArtists()
     }
     
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
         fetchArtists()
-        tableView.reloadData()
     }
     
     func searchDisplayControllerWillBeginSearch(controller: UISearchDisplayController) {

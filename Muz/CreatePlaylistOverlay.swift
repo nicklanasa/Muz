@@ -28,6 +28,10 @@ PlaylistsViewControllerDelegate {
     private var createPlaylistCell: CreatePlaylistCell!
     var artist: NSString!
     var items: [MPMediaItem]!
+    
+    var song: Song!
+    var songs: [AnyObject]!
+    
     private var hud: MBProgressHUD!
     
     var existingPlaylist: Playlist?
@@ -36,8 +40,25 @@ PlaylistsViewControllerDelegate {
         super.init(nibName: "CreatePlaylistOverlay", bundle: nil)
     }
     
+    init(song: Song) {
+        self.song = song
+        self.artist = song.artist
+        super.init(nibName: "CreatePlaylistOverlay", bundle: nil)
+    }
+    
+    init(songs: [AnyObject]) {
+        self.songs = songs
+        if songs.count > 0 {
+            let song: Song = songs[0] as Song
+            self.song = song
+            self.artist = song.artist
+        }
+        super.init(nibName: "CreatePlaylistOverlay", bundle: nil)
+    }
+    
     init(artist: NSString!) {
         self.artist = artist
+        
         super.init(nibName: "CreatePlaylistOverlay", bundle: nil)
     }
     
@@ -187,9 +208,9 @@ PlaylistsViewControllerDelegate {
         } else {
             if let artist = self.artist {
                 if let playlist = self.existingPlaylist {
-                    if let items = self.items {
+                    if let songs = self.songs {
                         // Create playlist with items.
-                        MediaSession.sharedSession.dataManager.datastore.addItemsToPlaylist(items,
+                        MediaSession.sharedSession.dataManager.datastore.addSongsToPlaylist(songs,
                             playlist: playlist,
                             completion: { (addedSongs) -> () in
                             self.handleCreatePlaylistFinishWithAddedSongs(addedSongs)
@@ -204,9 +225,9 @@ PlaylistsViewControllerDelegate {
                     }
                 } else {
                     if countElements(self.createPlaylistCell.nameTextField.text) > 0 {
-                        if let items = self.items {
-                            MediaSession.sharedSession.dataManager.datastore.createPlaylistWithItems(self.createPlaylistCell.nameTextField.text,
-                                items: items,
+                        if let songs = self.songs {
+                            MediaSession.sharedSession.dataManager.datastore.createPlaylistWithSongs(self.createPlaylistCell.nameTextField.text,
+                                songs: songs,
                                 completion: { (addedSongs) -> () in
                                 self.handleCreatePlaylistFinishWithAddedSongs(addedSongs)
                             })

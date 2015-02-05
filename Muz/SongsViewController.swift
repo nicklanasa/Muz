@@ -201,15 +201,16 @@ UISearchDisplayDelegate {
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
+        self.songsController.fetchRequest.predicate = nil
+        self.searchDisplayController?.setActive(false, animated: false)
+        
         // Get song.
-//        let section = self.songsQuery?.itemSections[indexPath.section] as MPMediaQuerySection
-//        
-//        self.searchDisplayController?.setActive(false, animated: false)
-//        
-//        if let song = self.songs?[indexPath.row + section.range.location] as? MPMediaItem {
-//            presentNowPlayViewControllerWithItem(song, collection: MPMediaItemCollection(items: self.songs))
-//        }
-//        
+        let song = self.songsController.objectAtIndexPath(indexPath) as Song
+        
+        DataManager.manager.fetchSongsCollection { (collection, error) -> () in
+            self.presentNowPlayViewController(song, collection: collection)
+        }
+
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
@@ -223,12 +224,9 @@ UISearchDisplayDelegate {
     
     func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
         let addToPlaylistAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Add to Playlist", handler: { (action, indexPath) -> Void in
-//            let section = self.songsQuery?.itemSections[indexPath.section] as MPMediaQuerySection
-//            
-//            if let song = self.songs?[indexPath.row + section.range.location] as? MPMediaItem {
-//                let createPlaylistOverlay = CreatePlaylistOverlay(items: [song])
-//                self.presentModalOverlayController(createPlaylistOverlay, blurredController: self)
-//            }
+                let song = self.songsController.objectAtIndexPath(indexPath) as Song
+                let createPlaylistOverlay = CreatePlaylistOverlay(song: song)
+                self.presentModalOverlayController(createPlaylistOverlay, blurredController: self)
         })
         
         return [addToPlaylistAction]
@@ -241,17 +239,18 @@ UISearchDisplayDelegate {
     }
     
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
-//        if countElements(searchText) == 0 {
-//            fetchSongsWithPredicate(nil)
-//        } else {
-//            let songPredicate = MPMediaPropertyPredicate(value: searchText, forProperty: MPMediaItemPropertyTitle, comparisonType: .Contains)
-//            songsQuery?.addFilterPredicate(songPredicate)
-//            fetchSongsWithPredicate(songPredicate)
-//        }
+        if countElements(searchText) == 0 {
+            self.songsController.fetchRequest.predicate = nil
+        } else {
+            // Change predicate and re-fetch.
+            self.songsController.fetchRequest.predicate = NSPredicate(format: "title contains[cd] %@ OR artist contains[cd] %@ OR albumTitle contains[cd] %@ ", searchText, searchText, searchText)
+        }
+        
+        fetchSongs()
     }
     
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
-        //fetchSongsWithPredicate(nil)
+        fetchSongs()
     }
     
     func searchDisplayControllerWillBeginSearch(controller: UISearchDisplayController) {
