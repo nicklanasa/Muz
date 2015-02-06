@@ -157,7 +157,7 @@ class Datastore {
                         managedArtist.parseItem(item)
                         
                         // Add albums
-                        managedArtist.addAlbum(self.addAlbumForItem(item: item))
+                        self.addAlbumForItem(item: item, artist: managedArtist)
                         
                         addedArtists.addObject(managedArtist)
                     }
@@ -245,7 +245,7 @@ class Datastore {
     
     :returns: The created/existing album or nil.
     */
-    func addAlbumForItem(#item: MPMediaItem) -> Album? {
+    func addAlbumForItem(#item: MPMediaItem, artist: Artist) {
         var error: NSError?
         var request = NSFetchRequest(entityName: "Album")
         let predicate = NSPredicate(format: "title = %@", item.albumTitle)
@@ -262,9 +262,10 @@ class Datastore {
         }
         
         managedAlbum.parseItem(item)
-        managedAlbum.addSong(self.addSongForItem(item: item))
         
-        return managedAlbum
+        self.addSongForItem(item: item, album: managedAlbum)
+        
+        managedAlbum.artist = artist
     }
     
     /**
@@ -274,7 +275,7 @@ class Datastore {
     
     :returns: The added song.
     */
-    func addSongForItem(#item: MPMediaItem) -> Song? {
+    func addSongForItem(#item: MPMediaItem, album: Album) {
         var error: NSError?
         var request = NSFetchRequest(entityName: "Song")
         let predicate = NSPredicate(format: "title = %@", item.title)
@@ -291,8 +292,7 @@ class Datastore {
         }
         
         managedSong.parseItem(item)
-        
-        return managedSong
+        managedSong.album = album
     }
     
     func addPlaylists(playlists: [AnyObject], completion: (addedPlaylists: [AnyObject]?) -> ()) {

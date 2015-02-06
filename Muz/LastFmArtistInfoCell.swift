@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import MediaPlayer
 
-let LastFmArtistInfoCellHeight: CGFloat = 640.0
+let LastFmArtistInfoCellHeight: CGFloat = 605.0
 
 class LastFmArtistInfoCell: LastFmCell {
     

@@ -47,6 +47,7 @@ let _sharedSession = MediaSession()
     // Artists
     
     func fetchArtists(completion: (results: [AnyObject]) -> ()) {
+        self.removeAllPredicatesFromQuery(artistsQuery)
         completion(results: artistsQuery.items)
     }
 

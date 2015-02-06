@@ -120,6 +120,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         if !MediaSession.sharedSession.isMediaLibraryEmpty {
             noMusicOverlay.view.removeFromSuperview()
+            
         } else {
             if noMusicOverlay.view.superview == nil {
                 addNoMusicOverlay()

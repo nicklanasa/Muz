@@ -83,8 +83,11 @@ static NSString * const LastFmEventKeyurl = @"url";
         self.venue = json[ LastFmEventKeyvenue];
     
     //  LastFmEventKeydescription
-    if( [json[ LastFmEventKeydescription] isKindOfClass:[NSString class]])
+    if( [json[ LastFmEventKeydescription] isKindOfClass:[NSString class]]) {
         self.eventDescription = [[json[ LastFmEventKeydescription] kv_decodeHTMLCharacterEntities] stringByStrippingHTML];
+    } else {
+        self.eventDescription = @"No description available";
+    }
     
     //  LastFmEventKeyurl
     if( [json[ LastFmEventKeyurl] isKindOfClass:[NSURL class]])

@@ -170,12 +170,10 @@ NSFetchedResultsControllerDelegate {
                 }
             } else {
                 // Create collection of playlist songs.
-//                let playlistSong = self.sortedPlaylistSongs[indexPath.row] as PlaylistSong
-//                let song = playlistSong.song
-//                let collection = MediaSession.sharedSession.collectionWithPlaylistSongs(sortedPlaylistSongs)
-//                if let item = MediaSession.sharedSession.itemForSong(song) {
-//                    self.presentNowPlayViewControllerWithItem(item, collection: collection)
-//                }
+                let playlistSong = self.sortedPlaylistSongs[indexPath.row] as PlaylistSong
+                let song = playlistSong.song
+                let collection = MediaSession.sharedSession.collectionWithPlaylistSongs(sortedPlaylistSongs)
+                self.presentNowPlayViewController(song, collection: collection)
             }
         }
     }

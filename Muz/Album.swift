@@ -2,7 +2,7 @@
 //  Album.swift
 //  Muz
 //
-//  Created by Nick Lanasa on 2/5/15.
+//  Created by Nick Lanasa on 2/6/15.
 //  Copyright (c) 2015 Nytek Productions. All rights reserved.
 //
 
@@ -13,9 +13,9 @@ import CoreData
 class Album: NSManagedObject {
 
     @NSManaged var persistentID: String
-    @NSManaged var title: String
     @NSManaged var releaseDate: NSDate
-    @NSManaged var artists: NSSet
+    @NSManaged var title: String
+    @NSManaged var artist: Artist
     @NSManaged var songs: NSSet
 
 }

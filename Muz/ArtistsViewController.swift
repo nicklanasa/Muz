@@ -85,9 +85,9 @@ UISearchDisplayDelegate {
         var error: NSError?
         if self.artistsController.performFetch(&error) {
             self.tableView.reloadData()
-            DataManager.manager.syncArtists({ (addedItems, error) -> () in
-                
-            })
+//            DataManager.manager.syncArtists({ (addedItems, error) -> () in
+//                
+//            })
         }
     }
     
