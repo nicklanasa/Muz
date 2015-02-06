@@ -32,6 +32,7 @@ extension Album {
             for albumSong in self.songs.allObjects as [Song] {
                 if managedSong.title == albumSong.title {
                     found = true
+                    break
                 }
             }
             

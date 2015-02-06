@@ -26,6 +26,7 @@ extension Artist {
             for artistAlbum in self.albums.allObjects as [Album] {
                 if managedAlbum.title == artistAlbum.title {
                     found = true
+                    break
                 }
             }
             

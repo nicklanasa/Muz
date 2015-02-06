@@ -51,7 +51,6 @@ UISearchDisplayDelegate {
     override func viewDidAppear(animated: Bool) {
         self.screenName = "Songs"
         super.viewDidAppear(animated)
-        fetchSongs()
     }
     
     func fetchSongs() {
@@ -85,6 +84,8 @@ UISearchDisplayDelegate {
             style: .Plain,
             target: self,
             action: "showSearch")
+        
+        fetchSongs()
     }
     
     func showSearch() {

@@ -127,14 +127,14 @@ class Datastore {
     :param: artists    The artists you want to add.
     :param: completion The completion block called at the end of the execution.
     */
-    func addArtists(artists: [AnyObject], completion: (addedItems: [AnyObject], error: NSErrorPointer) -> ()) {
+    func addArtists(artists: NSArray, completion: (addedItems: [AnyObject], error: NSErrorPointer) -> ()) {
         self.workerContext.performBlock { () -> Void in
            
             let startTime = NSDate()
             var request = NSFetchRequest(entityName: "Artist")
             var addedArtists = NSMutableArray(capacity: artists.count)
             
-            for artist in artists {
+            artists.enumerateObjectsUsingBlock({ (artist, idx, stop) -> Void in
                 if let item = artist as? MPMediaItem {
                     
                     var error: NSError?
@@ -162,8 +162,8 @@ class Datastore {
                         addedArtists.addObject(managedArtist)
                     }
                 }
-            }
-            
+            })
+
             self.saveDatastoreWithCompletion({ (error) -> () in
                 let endTime = NSDate()
                 let executionTime = endTime.timeIntervalSinceDate(startTime)
@@ -180,7 +180,7 @@ class Datastore {
         }
     }
     
-    func addAlbumsForArtist(#artist: Artist, albums: [AnyObject], completion: (addedItems: [AnyObject], error: NSErrorPointer) -> ()) {
+    func addAlbumsForArtist(#artist: Artist, albums: NSArray, completion: (addedItems: [AnyObject], error: NSErrorPointer) -> ()) {
         self.workerContext.performBlock { () -> Void in
             
             let startTime = NSDate()
@@ -188,7 +188,8 @@ class Datastore {
             var addedAlbums = NSMutableArray(capacity: albums.count)
             
             print(albums)
-            for album in albums {
+            
+            albums.enumerateObjectsUsingBlock({ (album, idx, stop) -> Void in
                 if let item = album as? MPMediaItem {
                     
                     var error: NSError?
@@ -210,12 +211,13 @@ class Datastore {
                         }
                         
                         managedAlbum.parseItem(item)
-                        managedAlbum.addSong(self.addSongForItem(item: item))
+                        //managedAlbum.addSong(self.addSongForItem(item: item))
                         
                         artist.addAlbum(managedAlbum)
                     }
                 }
-            }
+
+            })
             
             artist.modifiedDate = NSDate()
             
