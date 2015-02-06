@@ -34,6 +34,10 @@ class RootViewController: UIViewController {
     
     override func viewWillAppear(animated: Bool) {
         configureBackgroundImage()
+        
+        if NSUserDefaults.standardUserDefaults().objectForKey("SyncLibrary") == nil {
+            self.presentModalOverlayController(SyncOverlayController(), blurredController: self)
+        }
     }
     
     override func viewDidAppear(animated: Bool) {

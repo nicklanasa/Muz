@@ -204,6 +204,9 @@
 		CEE153551A3B5B4B00BB16EB /* HTMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE153521A3B5B4B00BB16EB /* HTMLNode.m */; };
 		CEE153561A3B5B4B00BB16EB /* HTMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE153541A3B5B4B00BB16EB /* HTMLParser.m */; };
 		CEFEB1C21A83F5460070A28D /* Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEFEB1C11A83F5460070A28D /* Album.swift */; };
+		CEFEB1C41A843A270070A28D /* SyncOverlayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEFEB1C31A843A270070A28D /* SyncOverlayController.swift */; };
+		CEFEB1C61A843A5B0070A28D /* SyncOverlayController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEFEB1C51A843A5B0070A28D /* SyncOverlayController.xib */; };
+		CEFEB1C81A843DA00070A28D /* UIButton+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEFEB1C71A843DA00070A28D /* UIButton+Helpers.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -436,6 +439,9 @@
 		CEE153531A3B5B4B00BB16EB /* HTMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTMLParser.h; sourceTree = "<group>"; };
 		CEE153541A3B5B4B00BB16EB /* HTMLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTMLParser.m; sourceTree = "<group>"; };
 		CEFEB1C11A83F5460070A28D /* Album.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Album.swift; path = ../Album.swift; sourceTree = "<group>"; };
+		CEFEB1C31A843A270070A28D /* SyncOverlayController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncOverlayController.swift; sourceTree = "<group>"; };
+		CEFEB1C51A843A5B0070A28D /* SyncOverlayController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SyncOverlayController.xib; sourceTree = "<group>"; };
+		CEFEB1C71A843DA00070A28D /* UIButton+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton+Helpers.swift"; sourceTree = "<group>"; };
 		DB8E352653F602E2D8336D2A /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -613,7 +619,6 @@
 				01B280A01A819D39005295A1 /* Artist.swift */,
 				CEBC1EF91A8179A6000AF2F1 /* Song.swift */,
 				CEBC1EEF1A813BB4000AF2F1 /* Artist+Helpers.swift */,
-				CEBC1EF51A816D7B000AF2F1 /* UIImageView+Helpers.swift */,
 				CEBC1EF11A813C19000AF2F1 /* Album+Helpers.swift */,
 				CECCC1001A40B17200799854 /* Playlist.swift */,
 				CECCC0CE1A3FAA5600799854 /* PlaylistSong.swift */,
@@ -657,6 +662,10 @@
 				CE31261E1A50E7870071AD27 /* TutorialController.swift */,
 				CEDB61E61A37DCE300B90B2D /* MoreViewController.swift */,
 				CEDB61E81A37DCEE00B90B2D /* MoreViewController.xib */,
+				CEBC1EF51A816D7B000AF2F1 /* UIImageView+Helpers.swift */,
+				CEFEB1C71A843DA00070A28D /* UIButton+Helpers.swift */,
+				CEFEB1C31A843A270070A28D /* SyncOverlayController.swift */,
+				CEFEB1C51A843A5B0070A28D /* SyncOverlayController.xib */,
 				CE9BCFD41A44E98100522F18 /* Playlists */,
 				CE4931ED1A3A1B8700B3A4BE /* NowPlaying */,
 				CE4931EC1A3A1B7A00B3A4BE /* ArtistAlbums */,
@@ -683,10 +692,10 @@
 			isa = PBXGroup;
 			children = (
 				CE9BCFE91A45E22400522F18 /* LastFm */,
-				CE49F35F1A3A83C8008DE25E /* NowPlayingPageController.swift */,
 				CE3D29921A508087000CCC90 /* NowPlayingViewControllerLandscape.swift */,
 				CE3D29901A507FD2000CCC90 /* NowPlayingViewControllerLandscape.xib */,
 				CEDB61EC1A37DE6100B90B2D /* NowPlayingViewController.xib */,
+				CE49F35F1A3A83C8008DE25E /* NowPlayingPageController.swift */,
 				CEDB61EA1A37DE5400B90B2D /* NowPlayingViewController.swift */,
 				CEE153441A3B41CD00BB16EB /* NowPlayingInfoViewController.swift */,
 				CEE153461A3B41D900BB16EB /* NowPlayingInfoViewController.xib */,
@@ -963,6 +972,7 @@
 				CE4184CE1A4922900011C0DA /* LaunchScreen.xib in Resources */,
 				CEDB61EF1A37ECFC00B90B2D /* blue.jpg in Resources */,
 				CEDB61951A37D21B00B90B2D /* SongsViewController.xib in Resources */,
+				CEFEB1C61A843A5B0070A28D /* SyncOverlayController.xib in Resources */,
 				CE2BD1211A59F2710077D3FD /* MoreLastFmSettingCell.xib in Resources */,
 				CECCC0FA1A40AC5300799854 /* science.png in Resources */,
 				CEC66D991A38D5F400560754 /* headphones.png in Resources */,
@@ -1115,6 +1125,8 @@
 				CE6EF5001A38F07D001FE858 /* ArtistAlbumsViewController.swift in Sources */,
 				CE3338291A39D7EB00281146 /* ArtistAlbumsSongCell.swift in Sources */,
 				CE4184D81A49E8330011C0DA /* SettingsManager.swift in Sources */,
+				CEFEB1C81A843DA00070A28D /* UIButton+Helpers.swift in Sources */,
+				CEFEB1C41A843A270070A28D /* SyncOverlayController.swift in Sources */,
 				CECCC1101A40F46300799854 /* LastFmEvent.m in Sources */,
 				CE3038EE1A3E0C4F00DCC5EB /* LastFmArtist.m in Sources */,
 				CEE153451A3B41CD00BB16EB /* NowPlayingInfoViewController.swift in Sources */,

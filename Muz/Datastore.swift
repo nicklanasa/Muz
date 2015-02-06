@@ -67,7 +67,7 @@ class Datastore {
     // MARK: Add songs
     
     func addSongs(songs: NSArray, completion: (addedItems: [AnyObject], error: NSErrorPointer) -> ()) {
-        let context = self.workerContext
+        let context = self.mainQueueContext
         context.performBlock { () -> Void in
             let startTime = NSDate()
             
@@ -91,15 +91,16 @@ class Datastore {
                         request.predicate = predicate
                         let results = context.executeFetchRequest(request, error: &error)
                         
+                        var managedSong: Song!
                         if results?.count > 0 {
-                            let song = results?[0] as Song
-                            existedSongs.addObject(song)
+                            managedSong = results?[0] as Song
                         } else {
-                            let newSong = NSEntityDescription.insertNewObjectForEntityForName("Song",
-                                inManagedObjectContext: self.workerContext) as Song
-                            newSong.parseItem(song)
-                            addedSongs.addObject(newSong)
+                            managedSong = NSEntityDescription.insertNewObjectForEntityForName("Song",
+                                inManagedObjectContext: context) as Song
+                            managedSong.parseItem(song)
                         }
+                        
+                        addedSongs.addObject(managedSong)
                     }
                 }
             }
@@ -111,6 +112,8 @@ class Datastore {
                 
                 if error != nil {
                     LocalyticsSession.shared().tagEvent("Unabled to save added songs. addSongs()")
+                } else {
+                    LocalyticsSession.shared().tagEvent("Added songs")
                 }
                 
                 completion(addedItems: addedSongs, error: error)

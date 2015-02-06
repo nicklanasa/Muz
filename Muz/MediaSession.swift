@@ -52,7 +52,7 @@ let _sharedSession = MediaSession()
 
     func fetchImageForArtist(#artist: Artist, completion: (image: UIImage?) -> ()) {
         
-        self.removeAllPredicatesFromQuert(artistsQuery)
+        self.removeAllPredicatesFromQuery(artistsQuery)
         
         artistsQuery.addFilterPredicate(MPMediaPropertyPredicate(value: artist.name,
             forProperty: MPMediaItemPropertyArtist,
@@ -76,7 +76,7 @@ let _sharedSession = MediaSession()
     // MARK: Albums
     
     func fetchAlbumCollectionForAlbum(#album: Album, completion: (collection: MPMediaItemCollection) -> ()) {
-        self.removeAllPredicatesFromQuert(albumsQuery)
+        self.removeAllPredicatesFromQuery(albumsQuery)
         
         albumsQuery.addFilterPredicate(MPMediaPropertyPredicate(value: album.title,
             forProperty: MPMediaItemPropertyAlbumTitle,
@@ -86,14 +86,14 @@ let _sharedSession = MediaSession()
     }
     
     func fetchAlbumsForArtist(#artist: Artist, completion: (results: [AnyObject]) -> ()) {
-        self.removeAllPredicatesFromQuert(albumsQuery)
+        self.removeAllPredicatesFromQuery(albumsQuery)
         albumsQuery.addFilterPredicate(MPMediaPropertyPredicate(value: artist.persistentID, forProperty: MPMediaItemPropertyArtistPersistentID, comparisonType: .EqualTo))
         completion(results: albumsQuery.items)
     }
     
     func fetchImageForAlbum(#album: Album, completion: (image: UIImage?) -> ()) {
         
-        self.removeAllPredicatesFromQuert(albumsQuery)
+        self.removeAllPredicatesFromQuery(albumsQuery)
         
         albumsQuery.addFilterPredicate(MPMediaPropertyPredicate(value: album.title,
             forProperty: MPMediaItemPropertyAlbumTitle,
@@ -117,12 +117,12 @@ let _sharedSession = MediaSession()
     // MARK: Songs
     
     func fetchSongsCollection(completion: (collection: MPMediaItemCollection) -> ()) {
-        self.removeAllPredicatesFromQuert(self.songsQuery)
+        self.removeAllPredicatesFromQuery(self.songsQuery)
         completion(collection: MPMediaItemCollection(items: self.songsQuery.items))
     }
     
     func fetchItemForSong(song: Song) -> MPMediaItem? {
-        self.removeAllPredicatesFromQuert(songsQuery)
+        self.removeAllPredicatesFromQuery(songsQuery)
         
         let predicate = MPMediaPropertyPredicate(value: song.persistentID,
             forProperty: MPMediaItemPropertyPersistentID,
@@ -139,7 +139,7 @@ let _sharedSession = MediaSession()
     
     func fetchImageForSong(#song: Song, completion: (image: UIImage?) -> ()) {
         
-        self.removeAllPredicatesFromQuert(songsQuery)
+        self.removeAllPredicatesFromQuery(songsQuery)
         
         songsQuery.addFilterPredicate(MPMediaPropertyPredicate(value: song.title,
             forProperty: MPMediaItemPropertyTitle,
@@ -161,13 +161,13 @@ let _sharedSession = MediaSession()
     }
     
     func fetchSongs(completion: (results: [AnyObject]) -> ()) {
-        let songsQuery = MPMediaQuery.songsQuery()
+        self.removeAllPredicatesFromQuery(songsQuery)
         completion(results: songsQuery.items)
     }
     
     // Helpers
     
-    func removeAllPredicatesFromQuert(query: MPMediaQuery) {
+    func removeAllPredicatesFromQuery(query: MPMediaQuery) {
         if query.filterPredicates != nil {
             for predicate in query.filterPredicates.allObjects as [MPMediaPropertyPredicate] {
                 query.removeFilterPredicate(predicate)
