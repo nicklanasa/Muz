@@ -190,7 +190,7 @@ NSFetchedResultsControllerDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if !self.isForExistingPlaylist {
             tableView.deselectRowAtIndexPath(indexPath, animated: true)
-            let playlist = self.playlistsController?.objectAtIndexPath(indexPath) as Playlist
+            var playlist = self.playlistsController?.objectAtIndexPath(indexPath) as Playlist
             DataManager.manager.datastore.updatePlaylist(playlist: playlist, completion: { () -> () in
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     let playlistSongsViewController = PlaylistSongsViewController(playlist: playlist)

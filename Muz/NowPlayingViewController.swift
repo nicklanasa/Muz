@@ -52,6 +52,20 @@ NowPlayingCollectionControllerDelegate {
         configureWithSong()
         
         self.tabBarItem.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self,
+            selector: "mediaLibraryDidChange",
+            name: MPMediaLibraryDidChangeNotification,
+            object: nil)
+    }
+    
+    /**
+    Handles updated the Datastore when iTunes library is updated
+    */
+    func mediaLibraryDidChange() {
+        DataManager.manager.syncSongs { (addedItems, error) -> () in
+            print("\n\nmedia library changed\n\n")
+        }
     }
     
     @IBAction func progressSliderTouchUpInside(sender: AnyObject) {
@@ -82,9 +96,14 @@ NowPlayingCollectionControllerDelegate {
         self.screenName = "Now Playing"
         self.navigationItem.title = ""
         
-        self.navigationItem.rightBarButtonItem = nil
+        if self.playerController.playbackState == .Playing {
+            self.item = self.playerController.nowPlayingItem
+            self.updateNowPlaying()
+        }
         
         super.viewWillAppear(animated)
+        
+        self.navigationItem.rightBarButtonItem = nil
     }
     
     private func configureWithSong() {
@@ -189,6 +208,14 @@ NowPlayingCollectionControllerDelegate {
     func playerControllerDidNowPlayingItemDidChange() {
         if let item = self.playerController.nowPlayingItem {
             self.item = item
+            var manager = DataManager.manager
+            
+            if let song = manager.datastore.songForSongName(self.item.title, artist: self.item.artist) {
+                manager.datastore.updateSong(song: song, completion: { () -> () in
+                    
+                })
+            }
+            
             self.updateView()
         }
         

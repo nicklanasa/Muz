@@ -311,6 +311,15 @@ class Datastore {
         managedSong.album = album
     }
     
+    func updateSong(#song: Song, completion: () -> ()) {
+        song.lastPlayedDate = NSDate()
+        
+        self.saveDatastoreWithCompletion({ (error) -> () in
+            println("Updated song with new lastPlayedDate: \(song.lastPlayedDate)")
+            completion()
+        })
+    }
+    
     func updatePlaylist(#playlist: Playlist, completion: () -> ()) {
         playlist.modifiedDate = NSDate()
         

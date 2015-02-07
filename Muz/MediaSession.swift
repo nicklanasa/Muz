@@ -26,13 +26,6 @@ let _sharedSession = MediaSession()
         }
     }
     
-    /**
-    Handles updated the Datastore when iTunes library is updated
-    */
-    func mediaLibraryDidChange() {
-        
-    }
-    
     class var sharedSession : MediaSession {
         return _sharedSession
     }
