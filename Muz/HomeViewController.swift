@@ -31,22 +31,9 @@ UICollectionViewDataSource {
     
     var similarArtistCell: LastFmSimilarArtistTableCell!
 
-    private lazy var recentPlaylistsController: NSFetchedResultsController = {
-        let controller = MediaSession.sharedSession.dataManager.datastore.playlistsControllerWithSortKey(sortKey: "modifiedDate",
-            ascending: false, 
-            limit: 3,
-            sectionNameKeyPath: nil)
-        controller.delegate = self
-        return controller
-    }()
+    private var recentPlaylistsController: NSFetchedResultsController?
     
-    private lazy var recentSongsController: NSFetchedResultsController = {
-        let controller = DataManager.manager.datastore.songsControllerWithSortKey("lastPlayedDate",
-            ascending: false,
-            sectionNameKeyPath: nil)
-        controller.delegate = self
-        return controller
-    }()
+    private var recentSongsController: NSFetchedResultsController?
     
     override init() {
         super.init(nibName: "HomeViewController", bundle: nil)
@@ -65,17 +52,96 @@ UICollectionViewDataSource {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
+        self.recentSongsController = DataManager.manager.datastore.songsControllerWithSortKey("lastPlayedDate",
+            limit: 3,
+            ascending: false,
+            sectionNameKeyPath: nil)
+        self.recentSongsController!.delegate = self
+        
+        self.recentPlaylistsController = DataManager.manager.datastore.playlistsControllerWithSortKey(sortKey: "modifiedDate",
+            ascending: true,
+            limit: 3,
+            sectionNameKeyPath: nil)
+        self.recentPlaylistsController!.delegate = self
+        
         self.fetchHomeData()
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
+//        self.recentSongsController = nil
+//        self.recentPlaylistsController = nil
+    }
+    
+    // MARK: Sectors NSFetchedResultsControllerDelegate
+    
+    func controllerWillChangeContent(controller: NSFetchedResultsController)
+    {
+        self.tableView.beginUpdates()
+    }
+    
+    func controller(controller: NSFetchedResultsController,
+        didChangeObject anObject: AnyObject,
+        atIndexPath indexPath: NSIndexPath?,
+        forChangeType type: NSFetchedResultsChangeType,
+        newIndexPath: NSIndexPath?)
+    {
+        var tableView = self.tableView
+        var indexPaths:[NSIndexPath] = [NSIndexPath]()
+        switch type {
+            
+        case .Insert:
+            indexPaths.append(newIndexPath!)
+            tableView.insertRowsAtIndexPaths(indexPaths, withRowAnimation: .Fade)
+            
+        case .Delete:
+            indexPaths.append(indexPath!)
+            tableView.deleteRowsAtIndexPaths(indexPaths, withRowAnimation: .Fade)
+            
+        case .Update:
+            indexPaths.append(indexPath!)
+            tableView.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: .Fade)
+            
+        case .Move:
+            indexPaths.append(indexPath!)
+            tableView.deleteRowsAtIndexPaths(indexPaths, withRowAnimation: .Fade)
+            indexPaths.removeAtIndex(0)
+            indexPaths.append(newIndexPath!)
+            tableView.insertRowsAtIndexPaths(indexPaths, withRowAnimation: .Fade)
+        }
+    }
+    
+    func controller(controller: NSFetchedResultsController,
+        didChangeSection sectionInfo: NSFetchedResultsSectionInfo,
+        atIndex sectionIndex: Int,
+        forChangeType type: NSFetchedResultsChangeType)
+    {
+        switch type {
+            
+        case .Insert:
+            self.tableView.insertSections(NSIndexSet(index: sectionIndex),
+                withRowAnimation: .Fade)
+            
+        case .Delete:
+            self.tableView.deleteSections(NSIndexSet(index: sectionIndex),
+                withRowAnimation: .Fade)
+            
+        case .Update, .Move: println("Move or delete called in didChangeSection")
+        }
+    }
+    
+    func controllerDidChangeContent(controller: NSFetchedResultsController)
+    {
+        self.tableView.endUpdates()
     }
     
     func fetchHomeData() {
         var recentPlaylistsError: NSError?
         var recentSongsError: NSError?
-        if self.recentPlaylistsController.performFetch(&recentPlaylistsError) {
-            if self.recentSongsController.performFetch(&recentSongsError) {
-                if self.recentSongsController.sections?.count > 0 {
-                    if self.recentSongsController.sections?[0].numberOfObjects > 0 {
-                        if let song = self.recentSongsController.objectAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? Song {
+        if self.recentPlaylistsController!.performFetch(&recentPlaylistsError) {
+            if self.recentSongsController!.performFetch(&recentSongsError) {
+                if self.recentSongsController!.sections?.count > 0 {
+                    if self.recentSongsController!.sections?[0].numberOfObjects > 0 {
+                        if let song = self.recentSongsController!.objectAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? Song {
                             var similiarArtistLastFmRequest = LastFmSimiliarArtistsRequest(artist: song.artist)
                             similiarArtistLastFmRequest.delegate = self
                             similiarArtistLastFmRequest.sendURLRequest()
@@ -136,7 +202,7 @@ UICollectionViewDataSource {
         
         var cell = tableView.dequeueReusableCellWithIdentifier("Cell") as SongCell
         
-        var controller = self.recentSongsController
+        var controller = self.recentSongsController!
         switch sectionType {
         case .RelatedArtists:
             similarArtistCell.collectionView.delegate = self
@@ -149,7 +215,7 @@ UICollectionViewDataSource {
             
             return similarArtistCell
         case .RecentPlaylists:
-            controller = self.recentPlaylistsController
+            controller = self.recentPlaylistsController!
             
             let playlist = controller.objectAtIndexPath(NSIndexPath(forRow: indexPath.row, inSection: 0)) as Playlist
             
@@ -164,6 +230,8 @@ UICollectionViewDataSource {
             let song = controller.objectAtIndexPath(NSIndexPath(forRow: indexPath.row, inSection: 0)) as Song
             cell.updateWithSong(song)
         }
+        
+        cell.accessoryType = .DisclosureIndicator
         
         return cell
     }
@@ -209,18 +277,20 @@ UICollectionViewDataSource {
         switch sectionType {
         case .RelatedArtists: break
         case .RecentPlaylists:
-            let playlist = self.recentPlaylistsController.objectAtIndexPath(NSIndexPath(forRow: indexPath.row, inSection: 0)) as Playlist
+            let playlist = self.recentPlaylistsController!.objectAtIndexPath(NSIndexPath(forRow: indexPath.row, inSection: 0)) as Playlist
             let playlistsSongs = PlaylistSongsViewController(playlist: playlist)
             self.navigationController?.pushViewController(playlistsSongs, animated: true)
         case .RecentArtists:
-            let song = self.recentSongsController.objectAtIndexPath(NSIndexPath(forRow: indexPath.row, inSection: 0)) as Song
+            let song = self.recentSongsController!.objectAtIndexPath(NSIndexPath(forRow: indexPath.row, inSection: 0)) as Song
             if let artist = DataManager.manager.datastore.artistForSong(song: song) {
                 let artistAlbums = ArtistAlbumsViewController(artist: artist)
                 self.navigationController?.pushViewController(artistAlbums, animated: true)
             }
         default:
-            let song = self.recentSongsController.objectAtIndexPath(NSIndexPath(forRow: indexPath.row, inSection: 0)) as Song
-            self.presentNowPlayViewController(song, collection: MPMediaItemCollection(items: [song]))
+            let song = self.recentSongsController!.objectAtIndexPath(NSIndexPath(forRow: indexPath.row, inSection: 0)) as Song
+            DataManager.manager.fetchSongsCollection({ (collection, error) -> () in
+                self.presentNowPlayViewController(song, collection: collection)
+            })
         }
     }
     

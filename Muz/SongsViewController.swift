@@ -24,6 +24,7 @@ UISearchDisplayDelegate {
     // The NSFetchedResultsController used to pull tasks for the selected date.
     lazy var songsController: NSFetchedResultsController = {
         let controller = DataManager.manager.datastore.songsControllerWithSortKey("title",
+            limit: nil,
             ascending: true,
             sectionNameKeyPath: "title.stringByGroupingByFirstLetter")
         controller.delegate = self

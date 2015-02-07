@@ -85,11 +85,11 @@ NSFetchedResultsControllerDelegate {
     */
     private func fetchPlaylists() {
         if !self.isForExistingPlaylist {
-            self.playlistsController = MediaSession.sharedSession.dataManager.datastore.playlistsControllerWithSectionName(nil,
+            self.playlistsController = DataManager.manager.datastore.playlistsControllerWithSectionName(nil,
                 predicate: nil)
         } else {
             let predicate = NSPredicate(format: "persistentID == ''")
-            self.playlistsController = MediaSession.sharedSession.dataManager.datastore.playlistsControllerWithSectionName(nil,
+            self.playlistsController = DataManager.manager.datastore.playlistsControllerWithSectionName(nil,
                 predicate: predicate)
         }
         
@@ -191,11 +191,14 @@ NSFetchedResultsControllerDelegate {
         if !self.isForExistingPlaylist {
             tableView.deselectRowAtIndexPath(indexPath, animated: true)
             let playlist = self.playlistsController?.objectAtIndexPath(indexPath) as Playlist
-            let playlistSongsViewController = PlaylistSongsViewController(playlist: playlist)
-            self.navigationController?.pushViewController(playlistSongsViewController, animated: true)
+            DataManager.manager.datastore.updatePlaylist(playlist: playlist, completion: { () -> () in
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    let playlistSongsViewController = PlaylistSongsViewController(playlist: playlist)
+                    self.navigationController?.pushViewController(playlistSongsViewController, animated: true)
+                })
+            })
         } else {
             var playlist = self.playlistsController?.objectAtIndexPath(indexPath) as Playlist
-            DataManager.manager.datastore.updatePlaylist(playlist: playlist)
             self.navigationController?.popViewControllerAnimated(true)
             self.dismissWithPlaylist(playlist)
         }

@@ -311,11 +311,12 @@ class Datastore {
         managedSong.album = album
     }
     
-    func updatePlaylist(#playlist: Playlist) {
+    func updatePlaylist(#playlist: Playlist, completion: () -> ()) {
         playlist.modifiedDate = NSDate()
         
         self.saveDatastoreWithCompletion({ (error) -> () in
             println("Updated playlist with new modified date: \(playlist.modifiedDate)")
+            completion()
         })
     }
     
@@ -765,10 +766,14 @@ class Datastore {
             cacheName: ArtistsCacheName)
     }
     
-    func songsControllerWithSortKey(sortKey: NSString, ascending: Bool, sectionNameKeyPath: NSString?) -> NSFetchedResultsController {
+    func songsControllerWithSortKey(sortKey: NSString, limit: NSInteger?, ascending: Bool, sectionNameKeyPath: NSString?) -> NSFetchedResultsController {
         
         var request = NSFetchRequest()
-        request.fetchLimit = 3
+        
+        if let fetchLimit = limit {
+            request.fetchLimit = fetchLimit
+        }
+        
         request.entity = NSEntityDescription.entityForName("Song",
             inManagedObjectContext: self.mainQueueContext)
         

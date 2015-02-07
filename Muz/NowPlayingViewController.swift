@@ -79,16 +79,6 @@ NowPlayingCollectionControllerDelegate {
     }
     
     override func viewWillAppear(animated: Bool) {
-        if self.item == nil && playerController.nowPlayingItem != nil {
-            self.item = playerController.nowPlayingItem
-            
-            if playerController.playbackState != .Playing {
-                configureWithSong()
-            } else {
-                updateNowPlaying()
-            }
-        }
-        
         self.screenName = "Now Playing"
         self.navigationItem.title = ""
         

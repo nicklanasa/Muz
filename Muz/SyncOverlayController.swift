@@ -31,6 +31,7 @@ NSFetchedResultsControllerDelegate {
     
     lazy var songsController: NSFetchedResultsController = {
         let controller = DataManager.manager.datastore.songsControllerWithSortKey("artist",
+            limit: nil,
             ascending: true,
             sectionNameKeyPath: "artist.stringByGroupingByFirstLetter")
         controller.delegate = self
