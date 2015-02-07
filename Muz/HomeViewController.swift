@@ -32,7 +32,10 @@ UICollectionViewDataSource {
     var similarArtistCell: LastFmSimilarArtistTableCell!
 
     private lazy var recentPlaylistsController: NSFetchedResultsController = {
-        let controller = MediaSession.sharedSession.dataManager.datastore.playlistsControllerWithSortKey(sortKey: "modifiedDate", ascending: false, sectionNameKeyPath: nil)
+        let controller = MediaSession.sharedSession.dataManager.datastore.playlistsControllerWithSortKey(sortKey: "modifiedDate",
+            ascending: false, 
+            limit: 3,
+            sectionNameKeyPath: nil)
         controller.delegate = self
         return controller
     }()
@@ -70,10 +73,14 @@ UICollectionViewDataSource {
         var recentSongsError: NSError?
         if self.recentPlaylistsController.performFetch(&recentPlaylistsError) {
             if self.recentSongsController.performFetch(&recentSongsError) {
-                if let song = self.recentSongsController.objectAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? Song {
-                    var similiarArtistLastFmRequest = LastFmSimiliarArtistsRequest(artist: song.artist)
-                    similiarArtistLastFmRequest.delegate = self
-                    similiarArtistLastFmRequest.sendURLRequest()
+                if self.recentSongsController.sections?.count > 0 {
+                    if self.recentSongsController.sections?[0].numberOfObjects > 0 {
+                        if let song = self.recentSongsController.objectAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? Song {
+                            var similiarArtistLastFmRequest = LastFmSimiliarArtistsRequest(artist: song.artist)
+                            similiarArtistLastFmRequest.delegate = self
+                            similiarArtistLastFmRequest.sendURLRequest()
+                        }
+                    }
                 }
             }
         }

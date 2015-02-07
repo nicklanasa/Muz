@@ -410,13 +410,13 @@ class Datastore {
         let predicate = NSPredicate(format: "(artist contains[cd] %@)", artist)
         request.predicate = predicate
         
-        let results = self.workerContext.executeFetchRequest(request, error: &error)
+        let results = self.mainQueueContext.executeFetchRequest(request, error: &error)
         
         if results?.count > 0 {
             
             // Create smart playlist based on artists.
             let playlist = NSEntityDescription.insertNewObjectForEntityForName("Playlist",
-                inManagedObjectContext: self.workerContext) as Playlist
+                inManagedObjectContext: self.mainQueueContext) as Playlist
             playlist.name = name
             playlist.playlistType = NSNumber(unsignedLong: playlistType.rawValue)
             playlist.persistentID = ""
@@ -427,7 +427,7 @@ class Datastore {
             
             for song in results as [Song] {
                 let playlistSong = NSEntityDescription.insertNewObjectForEntityForName("PlaylistSong",
-                    inManagedObjectContext: self.workerContext) as PlaylistSong
+                    inManagedObjectContext: self.mainQueueContext) as PlaylistSong
                 
                 playlistSong.parseSong(song, playlist: playlist, order: order)
                 playlistSongs.addObject(playlistSong)
@@ -768,7 +768,7 @@ class Datastore {
     func songsControllerWithSortKey(sortKey: NSString, ascending: Bool, sectionNameKeyPath: NSString?) -> NSFetchedResultsController {
         
         var request = NSFetchRequest()
-        request.fetchLimit = 5
+        request.fetchLimit = 3
         request.entity = NSEntityDescription.entityForName("Song",
             inManagedObjectContext: self.mainQueueContext)
         
@@ -801,10 +801,11 @@ class Datastore {
             cacheName: ArtistsCacheName)
     }
     
-    func playlistsControllerWithSortKey(#sortKey: NSString!, ascending: Bool, sectionNameKeyPath: NSString?) -> NSFetchedResultsController {
+    func playlistsControllerWithSortKey(#sortKey: NSString!, ascending: Bool, limit: NSInteger, sectionNameKeyPath: NSString?) -> NSFetchedResultsController {
         var request = NSFetchRequest()
         request.entity = NSEntityDescription.entityForName("Playlist",
             inManagedObjectContext: self.mainQueueContext)
+        request.fetchLimit = limit
         
         let sort = NSSortDescriptor(key: sortKey, ascending: ascending)
         request.sortDescriptors = [sort]
