@@ -146,6 +146,11 @@ UICollectionViewDataSource {
             
             similarArtistCell.collectionView.reloadData()
             
+            if self.similiarArtists?.count > 0 {
+                similarArtistCell.collectionView.scrollToItemAtIndexPath(NSIndexPath(forRow: 0, inSection: 0),
+                    atScrollPosition: .Left, animated: true)
+            }
+            
             return similarArtistCell
         case .RecentPlaylists:
             controller = self.recentPlaylistsController!
