@@ -98,7 +98,7 @@ UITableViewDataSource {
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let song = self.sortedResults[indexPath.row] as MPMediaItem
-        presentNowPlayViewControllerWithItem(song)
+        //presentNowPlayViewControllerWithItem(song)
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     

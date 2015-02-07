@@ -38,6 +38,17 @@ class SongCell: UITableViewCell {
         self.songImageView.setImageForSong(song: song)
         self.songImageView.applyRoundedStyle()
     }
+
+    func updateWithSong(song: Song, forArtist: Bool) {
+        if forArtist {
+            self.songLabel.text = song.artist
+            self.infoLabel.text = song.albumTitle
+            self.songImageView.setImageForSong(song: song)
+            self.songImageView.applyRoundedStyle()
+        } else {
+            self.updateWithSong(song)
+        }
+    }
     
     override func prepareForReuse() {
         songImageView.image = nil

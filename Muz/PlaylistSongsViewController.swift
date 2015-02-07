@@ -165,8 +165,10 @@ NSFetchedResultsControllerDelegate {
             
             if self.isReadOnly {
                 let readOnlyPlaylist = self.readOnlyPlaylistSongsQuery?.collections?[indexPath.section] as MPMediaPlaylist
-                if let song = readOnlyPlaylist.items[indexPath.row] as? MPMediaItem {
-                    self.presentNowPlayViewControllerWithItem(song, collection: MPMediaItemCollection(items: readOnlyPlaylist.items))
+                if let item = readOnlyPlaylist.items[indexPath.row] as? MPMediaItem {
+                    if let song = DataManager.manager.datastore.songForSongName(item.title, artist: item.artist) {
+                        self.presentNowPlayViewController(song, collection: MPMediaItemCollection(items: readOnlyPlaylist.items))
+                    }
                 }
             } else {
                 // Create collection of playlist songs.

@@ -211,8 +211,8 @@ ArtistAlbumHeaderDelegate {
             if let albumArtist = self.artistsController.objectAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? Artist {
                 if let album = albumArtist.albums.allObjects[indexPath.section] as? Album {
                     if let song = album.songs.allObjects[indexPath.row] as? Song {
-//                    let createPlaylistOverlay = CreatePlaylistOverlay(items: [song])
-//                    self.presentModalOverlayController(createPlaylistOverlay, blurredController: self)
+                        let createPlaylistOverlay = CreatePlaylistOverlay(song: song)
+                        self.presentModalOverlayController(createPlaylistOverlay, blurredController: self)
                     }
                 }
             }
@@ -227,9 +227,8 @@ ArtistAlbumHeaderDelegate {
         let header = tableView.headerViewForSection(header.section) as ArtistAlbumHeader
         if let albumArtist = self.artistsController.objectAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? Artist {
             if let album = albumArtist.albums.allObjects[header.section] as? Album {
-//                    let items = songs.items as [MPMediaItem]
-//                    let createPlaylistOverlay = CreatePlaylistOverlay(items: items)
-//                    presentModalOverlayController(createPlaylistOverlay, blurredController: self)
+                let createPlaylistOverlay = CreatePlaylistOverlay(songs: album.songs.allObjects)
+                self.presentModalOverlayController(createPlaylistOverlay, blurredController: self)
             }
         }
     }

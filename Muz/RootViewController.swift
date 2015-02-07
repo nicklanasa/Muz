@@ -38,6 +38,12 @@ class RootViewController: UIViewController {
         if NSUserDefaults.standardUserDefaults().objectForKey("SyncLibrary") == nil {
             self.presentModalOverlayController(SyncOverlayController(), blurredController: self)
         }
+        
+        var nowPlayingBarButton = UIBarButtonItem(image: UIImage(named: "headphones"),
+            style: .Plain,
+            target: self,
+            action: "presentNowPlayViewController")
+        self.navigationItem.rightBarButtonItem = nowPlayingBarButton
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -71,85 +77,16 @@ class RootViewController: UIViewController {
     
     :param: item The MPMediaItem you want to play.
     */
-    func presentNowPlayViewControllerWithItem(item: MPMediaItem) {
-        let window = UIApplication.sharedApplication().keyWindow
-        if let tabBarController = window!.rootViewController as? UITabBarController {
-            if let fromView = tabBarController.selectedViewController {
-                if let vcs = tabBarController.viewControllers {
-                    if let navController = vcs[2] as? NavBarController {
-                        if let nowPlayingViewController = navController.viewControllers.first as? NowPlayingViewController {
-                            let toView = nowPlayingViewController.view
-                            UIView.transitionFromView(fromView.view,
-                                toView: toView,
-                                duration: 0.2,
-                                options: .TransitionCrossDissolve,
-                                completion: { (success) -> Void in
-                                    tabBarController.selectedIndex = 2
-                                    nowPlayingViewController.playItem(item)
-                            })
-                        }
-                        
-                    }
-                }
-            }
-        }
+    func presentNowPlayViewController() {
+        let nowPlayingViewController = NowPlayingViewController()
+        self.navigationController?.pushViewController(nowPlayingViewController, animated: true)
     }
     
     func presentNowPlayViewController(song: Song, collection: MPMediaItemCollection) {
-        let window = UIApplication.sharedApplication().keyWindow
-        if let tabBarController = window!.rootViewController as? UITabBarController {
-            if let fromView = tabBarController.selectedViewController {
-                if let vcs = tabBarController.viewControllers {
-                    if let navController = vcs[2] as? NavBarController {
-                        if let nowPlayingViewController = navController.viewControllers.first as? NowPlayingViewController {
-                            let toView = nowPlayingViewController.view
-                            UIView.transitionFromView(fromView.view,
-                                toView: toView,
-                                duration: 0.2,
-                                options: .TransitionCrossDissolve,
-                                completion: { (success) -> Void in
-                                    tabBarController.selectedIndex = 2
-                                    nowPlayingViewController.playSong(song, collection: collection)
-                            })
-                        }
-                        
-                    }
-                }
-            }
-        }
+        let nowPlayingViewController = NowPlayingViewController(song: song, collection: collection)
+        self.navigationController?.pushViewController(nowPlayingViewController, animated: true)
     }
-    
-    /**
-    TODO: Change this to use Song.
-    Presents the NowPlaying ViewController with the selected item.
-    
-    :param: item The MPMediaItem you want to play.
-    :param: collection The collection you wish to queue up.
-    */
-    func presentNowPlayViewControllerWithItem(item: MPMediaItem, collection: MPMediaItemCollection) {
-        let window = UIApplication.sharedApplication().keyWindow
-        if let tabBarController = window!.rootViewController as? UITabBarController {
-            if let fromView = tabBarController.selectedViewController {
-                if let vcs = tabBarController.viewControllers {
-                    if let navController = vcs[2] as? NavBarController {
-                        if let nowPlayingViewController = navController.viewControllers.first as? NowPlayingViewController {
-                            let toView = nowPlayingViewController.view
-                            UIView.transitionFromView(fromView.view,
-                                toView: toView,
-                                duration: 0.2,
-                                options: .TransitionCrossDissolve,
-                                completion: { (success) -> Void in
-                                    tabBarController.selectedIndex = 2
-                                    nowPlayingViewController.playItem(item, collection: collection)
-                            })
-                        }
-                        
-                    }
-                }
-            }
-        }
-    }
-    
+
     /**
     Presents a model overlay ViewController with the given controller and blurredController to blur in the background.
     

@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 import CoreData
-import MediaPlayer
 
 class ArtistsViewController: RootViewController,
 UITableViewDelegate,
@@ -69,7 +68,7 @@ UISearchDisplayDelegate {
         searchDisplayController?.searchResultsTableView.registerNib(UINib(nibName: "ArtistCell", bundle: nil), forCellReuseIdentifier: "Cell")
         searchDisplayController?.searchResultsTableView.registerNib(UINib(nibName: "ArtistsHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "Header")
         
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "search"),
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "search"),
             style: .Plain,
             target: self,
             action: "showSearch")
@@ -85,9 +84,9 @@ UISearchDisplayDelegate {
         var error: NSError?
         if self.artistsController.performFetch(&error) {
             self.tableView.reloadData()
-//            DataManager.manager.syncArtists({ (addedItems, error) -> () in
-//                
-//            })
+            DataManager.manager.syncArtists({ (addedItems, error) -> () in
+                
+            })
         }
     }
     
@@ -227,7 +226,7 @@ UISearchDisplayDelegate {
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
         if scrollView.contentOffset.y < 0 {
-            searchBar.becomeFirstResponder()
+            self.searchDisplayController?.setActive(true, animated: true)
         }
     }
     

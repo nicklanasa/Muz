@@ -48,6 +48,9 @@ let _sharedSession = MediaSession()
     
     func fetchArtists(completion: (results: [AnyObject]) -> ()) {
         self.removeAllPredicatesFromQuery(artistsQuery)
+        artistsQuery.addFilterPredicate(MPMediaPropertyPredicate(value: MPMediaType.Music.rawValue,
+            forProperty: MPMediaItemPropertyMediaType,
+            comparisonType: .EqualTo))
         completion(results: artistsQuery.items)
     }
 
@@ -142,18 +145,16 @@ let _sharedSession = MediaSession()
         
         self.removeAllPredicatesFromQuery(songsQuery)
         
-        songsQuery.addFilterPredicate(MPMediaPropertyPredicate(value: song.title,
-            forProperty: MPMediaItemPropertyTitle,
-            comparisonType: .Contains))
+        songsQuery.addFilterPredicate(MPMediaPropertyPredicate(value: song.persistentID,
+            forProperty: MPMediaItemPropertyPersistentID,
+            comparisonType: .EqualTo))
         
         var image: UIImage?
         if songsQuery.items.count > 0 {
-            for item in songsQuery.items as [MPMediaItem] {
-                if let artwork = item.artwork {
-                    if let songImage = artwork.imageWithSize(CGSizeMake(50, 50)) {
-                        image = songImage
-                        break
-                    }
+            let item = songsQuery.items[0] as MPMediaItem
+            if let artwork = item.artwork {
+                if let songImage = artwork.imageWithSize(CGSizeMake(50, 50)) {
+                    image = songImage
                 }
             }
         }

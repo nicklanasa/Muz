@@ -78,9 +78,7 @@ NSFetchedResultsControllerDelegate {
         let startTime = NSDate()
         
         self.syncButton.setTitle("", forState: .Normal)
-        
-        self.progressLabel.text = "Syncing library..."
-        
+                
         self.activityIndicator.startAnimating()
         
         if self.songsController.performFetch(&error) {

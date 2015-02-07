@@ -211,7 +211,7 @@ class Datastore {
                         }
                         
                         managedAlbum.parseItem(item)
-                        //managedAlbum.addSong(self.addSongForItem(item: item))
+                        self.addSongForItem(item: item, album: managedAlbum)
                         
                         artist.addAlbum(managedAlbum)
                     }
@@ -262,10 +262,26 @@ class Datastore {
         }
         
         managedAlbum.parseItem(item)
+        managedAlbum.artist = artist
         
         self.addSongForItem(item: item, album: managedAlbum)
+    }
+    
+    func artistForSong(#song: Song) -> Artist? {
+        var error: NSError?
+        var request = NSFetchRequest(entityName: "Artist")
+        let predicate = NSPredicate(format: "name = %@", song.artist)
+        request.fetchLimit = 1
+        request.predicate = predicate
+        let results = self.workerContext.executeFetchRequest(request, error: &error)
         
-        managedAlbum.artist = artist
+        var managedArtist: Artist!
+        if results?.count > 0 {
+            managedArtist = results?[0] as Artist
+            return managedArtist
+        } else {
+            return nil
+        }
     }
     
     /**
@@ -295,12 +311,20 @@ class Datastore {
         managedSong.album = album
     }
     
+    func updatePlaylist(#playlist: Playlist) {
+        playlist.modifiedDate = NSDate()
+        
+        self.saveDatastoreWithCompletion({ (error) -> () in
+            println("Updated playlist with new modified date: \(playlist.modifiedDate)")
+        })
+    }
+    
     func addPlaylists(playlists: [AnyObject], completion: (addedPlaylists: [AnyObject]?) -> ()) {
         
         var error: NSError?
 
         for playlist in playlists as [MPMediaPlaylist] {
-            let addedPlaylist = createPlaylistWithPlaylist(playlist, context: self.workerContext)
+            let addedPlaylist = createPlaylistWithPlaylist(playlist, context: self.mainQueueContext)
         }
         
         self.saveDatastoreWithCompletion({ (error) -> () in
@@ -744,6 +768,7 @@ class Datastore {
     func songsControllerWithSortKey(sortKey: NSString, ascending: Bool, sectionNameKeyPath: NSString?) -> NSFetchedResultsController {
         
         var request = NSFetchRequest()
+        request.fetchLimit = 5
         request.entity = NSEntityDescription.entityForName("Song",
             inManagedObjectContext: self.mainQueueContext)
         
@@ -774,6 +799,20 @@ class Datastore {
             managedObjectContext: self.mainQueueContext,
             sectionNameKeyPath: sectionNameKeyPath,
             cacheName: ArtistsCacheName)
+    }
+    
+    func playlistsControllerWithSortKey(#sortKey: NSString!, ascending: Bool, sectionNameKeyPath: NSString?) -> NSFetchedResultsController {
+        var request = NSFetchRequest()
+        request.entity = NSEntityDescription.entityForName("Playlist",
+            inManagedObjectContext: self.mainQueueContext)
+        
+        let sort = NSSortDescriptor(key: sortKey, ascending: ascending)
+        request.sortDescriptors = [sort]
+        
+        return NSFetchedResultsController(fetchRequest: request,
+            managedObjectContext: self.mainQueueContext,
+            sectionNameKeyPath: sectionNameKeyPath,
+            cacheName: nil)
     }
     
     func playlistsControllerWithSectionName(sectionNameKeyPath: NSString?, predicate: NSPredicate?) -> NSFetchedResultsController {
@@ -827,12 +866,12 @@ class Datastore {
     
     func deletePlaylistWithPlaylist(playlist: Playlist, completion: (error: NSErrorPointer?) -> ()) {
         
-        self.workerContext.performBlock { () -> Void in
+        self.mainQueueContext.performBlock { () -> Void in
             var error: NSError?
-            let object = self.workerContext.existingObjectWithID(playlist.objectID, error: &error)
+            let object = self.mainQueueContext.existingObjectWithID(playlist.objectID, error: &error)
             
             if error == nil {
-                self.workerContext.deleteObject(object!)
+                self.mainQueueContext.deleteObject(object!)
             }
             
             LocalyticsSession.shared().tagEvent("deletePlaylistWithPlaylist()")

@@ -177,7 +177,7 @@ PlaylistsViewControllerDelegate {
         } else {
             if self.artist == nil {
                 UIAlertView(title: "Error!",
-                    message: "You haven't selected to add to an existing playlist.",
+                    message: "You haven't selected anything to add to an existing playlist.",
                     delegate: self,
                     cancelButtonTitle: "Ok").show()
             } else {
@@ -246,9 +246,7 @@ PlaylistsViewControllerDelegate {
                 if countElements(self.createPlaylistCell.nameTextField.text) > 0 {
                     MediaSession.sharedSession.dataManager.datastore.createEmptyPlaylistWithName(self.createPlaylistCell.nameTextField.text,
                         playlistType: .None) { () -> () in
-                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                self.dismiss()
-                            })
+                            self.dismiss()
                     }
                 } else {
                     showEmptyPlaylistNameAlert()

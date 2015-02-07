@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6254" systemVersion="14C109" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6254" systemVersion="14D72i" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Album" syncable="YES">
         <attribute name="discCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="persistentID" optional="YES" attributeType="String" syncable="YES"/>
@@ -15,6 +15,7 @@
         <relationship name="albums" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Album" syncable="YES"/>
     </entity>
     <entity name="Playlist" representedClassName="Playlist" syncable="YES">
+        <attribute name="lastPlayDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="persistentID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="playlistType" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
@@ -59,7 +60,7 @@
     <elements>
         <element name="Album" positionX="-45" positionY="144" width="128" height="148"/>
         <element name="Artist" positionX="-54" positionY="135" width="128" height="88"/>
-        <element name="Playlist" positionX="-63" positionY="135" width="128" height="105"/>
+        <element name="Playlist" positionX="-63" positionY="135" width="128" height="120"/>
         <element name="PlaylistSong" positionX="-45" positionY="144" width="128" height="88"/>
         <element name="Song" positionX="-63" positionY="-18" width="128" height="480"/>
     </elements>

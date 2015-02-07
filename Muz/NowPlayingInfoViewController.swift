@@ -122,7 +122,6 @@ LastFmTrackBuyLinksRequestDelegate {
     */
     private func configureForSimiliarArtist() {
         self.segmentedControl.alpha = 0.0
-        self.segmentedControl.selectedSegmentIndex = 1
         
         handleSegmentedControlChange()
         
@@ -136,9 +135,9 @@ LastFmTrackBuyLinksRequestDelegate {
         // Tag switch to track in analytics
         switch segmentedControl.selectedSegmentIndex {
         case 0:
-            isShowingLastFm = false
-        default:
             isShowingLastFm = true
+        default:
+            isShowingLastFm = false
         }
         
         tableView?.reloadData()
@@ -150,7 +149,9 @@ LastFmTrackBuyLinksRequestDelegate {
     private func configureForItem() {
         
         if SettingsManager.defaultManager.valueForMoreSetting(.Lyrics) {
-            let stringURL = NSString(format: "http://search.azlyrics.com/search.php?q=%@ %@", self.item.artist, self.item.title).stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
+            let stringURL = NSString(format: "http://search.azlyrics.com/search.php?q=%@ %@",
+                self.item.artist,
+                self.item.title).stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
             print(stringURL)
             let lyricsURL = NSURL(string: stringURL!)!
             /*
@@ -160,16 +161,16 @@ LastFmTrackBuyLinksRequestDelegate {
             */
             azLyricsRequest = NSURLRequest(URL: lyricsURL)
         } else {
-            segmentedControl.selectedSegmentIndex = 1
-            segmentedControl.setEnabled(false, forSegmentAtIndex: 0)
             lyricsCell.activityIndicator.stopAnimating()
+            segmentedControl.selectedSegmentIndex = 0
+            segmentedControl.setEnabled(false, forSegmentAtIndex: 1)
         }
         
         if SettingsManager.defaultManager.valueForMoreSetting(.ArtistInfo) {
             requestLastFmDataWithArtist(self.item.artist)
         } else {
-            segmentedControl.selectedSegmentIndex = 0
-            segmentedControl.setEnabled(false, forSegmentAtIndex: 1)
+            segmentedControl.selectedSegmentIndex = 1
+            segmentedControl.setEnabled(false, forSegmentAtIndex: 0)
         }
         
         handleSegmentedControlChange()
@@ -183,7 +184,6 @@ LastFmTrackBuyLinksRequestDelegate {
         var similiarArtistLastFmRequest = LastFmSimiliarArtistsRequest(artist: artistName!)
         similiarArtistLastFmRequest.delegate = self
         similiarArtistLastFmRequest.sendURLRequest()
-        
         
         var artistEventsLastFmRequest = LastFmArtistEventsRequest(artist: artistName!)
         artistEventsLastFmRequest.delegate = self

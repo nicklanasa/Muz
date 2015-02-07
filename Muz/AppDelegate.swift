@@ -18,6 +18,8 @@ let MuzTitleFont = UIFont(name: MuzFontNameMedium, size: 18)!
 let MuzColor = UIColor.whiteColor()
 let MuzBlueColor = UIColor(red:255/255, green: 184/255, blue: 60/255, alpha: 1.0)
 let MuzGrayColor = UIColor(red:102/255, green: 102/255, blue: 102/255, alpha: 1.0)
+
+var CurrentNowPlayingArtwork: UIImage = UIImage(named: "nowPlayingDefault")!
 var CurrentAppBackgroundImage = UIImage(named: "random.jpg")!
 
 @UIApplicationMain
@@ -59,9 +61,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let navPlaylists = NavBarController(rootViewController: PlaylistsViewController())
         let navSongs = NavBarController(rootViewController: SongsViewController())
         let navMore = NavBarController(rootViewController: MoreViewController())
-        let navNowPlaying = NavBarController(rootViewController: NowPlayingViewController())
+        let navHome = NavBarController(rootViewController: HomeViewController())
         
-        tabbar.setViewControllers([nav, navSongs, navNowPlaying, navPlaylists, navMore], animated: false)
+        tabbar.setViewControllers([navHome, nav, navSongs, navPlaylists, navMore], animated: false)
         window.rootViewController = tabbar
         
         window.makeKeyAndVisible()

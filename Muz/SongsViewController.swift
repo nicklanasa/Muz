@@ -57,9 +57,6 @@ UISearchDisplayDelegate {
         var error: NSError?
         if self.songsController.performFetch(&error) {
             self.tableView.reloadData()
-            DataManager.manager.syncSongs({ (addedItems, error) -> () in
-                
-            })
         }
     }
     
@@ -80,7 +77,7 @@ UISearchDisplayDelegate {
         
         tableView.backgroundView = UIView()
         
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "search"),
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "search"),
             style: .Plain,
             target: self,
             action: "showSearch")

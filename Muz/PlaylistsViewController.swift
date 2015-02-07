@@ -66,7 +66,7 @@ NSFetchedResultsControllerDelegate {
         self.tableView.registerNib(UINib(nibName: "SongsHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "Header")
     
         if !self.isForExistingPlaylist {
-            self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "add"),
+            self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "add"),
                 style: .Plain,
                 target: self,
                 action: "addPlaylist");
@@ -194,8 +194,8 @@ NSFetchedResultsControllerDelegate {
             let playlistSongsViewController = PlaylistSongsViewController(playlist: playlist)
             self.navigationController?.pushViewController(playlistSongsViewController, animated: true)
         } else {
-            let playlist = self.playlistsController?.objectAtIndexPath(indexPath) as Playlist
-            
+            var playlist = self.playlistsController?.objectAtIndexPath(indexPath) as Playlist
+            DataManager.manager.datastore.updatePlaylist(playlist: playlist)
             self.navigationController?.popViewControllerAnimated(true)
             self.dismissWithPlaylist(playlist)
         }
@@ -223,12 +223,10 @@ NSFetchedResultsControllerDelegate {
                 if error == nil {
                     
                 } else {
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        UIAlertView(title: "Error!",
-                            message: "Unable to delete playlist!",
-                            delegate: self,
-                            cancelButtonTitle: "Ok").show()
-                    })
+                    UIAlertView(title: "Error!",
+                        message: "Unable to delete playlist!",
+                        delegate: self,
+                        cancelButtonTitle: "Ok").show()
                 }
             })
         })

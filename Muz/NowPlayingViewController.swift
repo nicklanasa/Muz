@@ -43,10 +43,11 @@ NowPlayingCollectionControllerDelegate {
         self.tabBarItem.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0)
     }
     
-    init(song: Song) {
+    init(song: Song, collection: MPMediaItemCollection) {
         super.init(nibName: "NowPlayingViewController", bundle: nil)
         
         self.song = song
+        self.collection = collection
         
         configureWithSong()
         
@@ -91,6 +92,8 @@ NowPlayingCollectionControllerDelegate {
         self.screenName = "Now Playing"
         self.navigationItem.title = ""
         
+        self.navigationItem.rightBarButtonItem = nil
+        
         super.viewWillAppear(animated)
     }
     
@@ -98,32 +101,14 @@ NowPlayingCollectionControllerDelegate {
         if let song = self.song {
             if let item = DataManager.manager.fetchItemForSong(song: song) {
                 self.item = item
-                self.updateNowPlaying()
+                self.playerController.setQueueWithItemCollection(collection)
+                self.play()
             }
         }
     }
 
-    func playSong(song: Song, collection: MPMediaItemCollection) {
-        self.song = song
-        self.item = DataManager.manager.fetchItemForSong(song: song)
-        self.collection = collection
-        self.playerController.setQueueWithItemCollection(collection)
+    func play() {
         self.playerController.play()
-        updateNowPlaying()
-    }
-    
-    func playItem(item: MPMediaItem) {
-        self.item = item
-        configureWithSong()
-        playerController.play()
-    }
-    
-    func playItem(item: MPMediaItem, collection: MPMediaItemCollection) {
-        self.item = item
-        self.collection = collection
-        self.playerController.setQueueWithItemCollection(collection)
-        self.playerController.play()
-        self.updateNowPlaying()
     }
     
     private func startSongTimer() {
@@ -183,6 +168,10 @@ NowPlayingCollectionControllerDelegate {
         
         progressSlider.setThumbImage(UIImage(named: "thumbImage"), forState: .Normal)
         progressSlider.setThumbImage(UIImage(named: "thumbImage"), forState: .Selected)
+        
+        if let song = self.song {
+            self.updateNowPlaying()
+        }
     }
     
     func showNowPlayingCollectionController() {
@@ -340,7 +329,7 @@ NowPlayingCollectionControllerDelegate {
         
         showNowPlayingViews()
         
-        let noArtwork = UIImage(named: "noArtwork")
+        let noArtwork = UIImage(named: "nowPlayingDefault")
         if let artwork = self.item.artwork {
             if let image = artwork.imageWithSize(CGSize(width:500, height:500)) {
                 self.artwork.image = image
@@ -353,7 +342,7 @@ NowPlayingCollectionControllerDelegate {
             self.artwork.image = noArtwork
             CurrentAppBackgroundImage = noArtwork!
         }
-        
+                
         self.backgroundImageView.image = CurrentAppBackgroundImage.applyDarkEffect()
         
         let songInfo = NSString(format: "%@\n%@\n%@", self.item.title, self.item.artist, self.item.albumTitle)
