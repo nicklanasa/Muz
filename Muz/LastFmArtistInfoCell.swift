@@ -21,6 +21,7 @@ class LastFmArtistInfoCell: LastFmCell {
     @IBOutlet weak var bioTextView: UITextView!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var similiarActivityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var bioActivityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var bioLabel: UILabel!
     @IBOutlet weak var playsDescriptionLabel: UILabel!
     @IBOutlet weak var listenersDescriptionLabel: UILabel!
@@ -65,7 +66,6 @@ class LastFmArtistInfoCell: LastFmCell {
                     self.listenersDescriptionLabel.alpha = 1.0
                     self.playsDescriptionLabel.alpha = 1.0
                     self.similiarArtistsLabel.alpha = 1.0
-                    
                     self.artistImageView.sd_setImageWithURL(artist.imageURL)
                     }) { (success) -> Void in
                         if success {
@@ -76,9 +76,15 @@ class LastFmArtistInfoCell: LastFmCell {
                             let listeners = artist.listeners ?? 0
                             
                             self.artistLabel.text = countElements(artist.name) > 0 ? artist.name : "Unknown name."
-                            self.listenersLabel.text = NSString(format: "%@", numberFormatter.stringFromNumber(listeners)!)
-                            self.playsLabel.text = NSString(format: "%@", numberFormatter.stringFromNumber(plays)!)
+                            self.listenersLabel.text = listeners == 0 ? "" :  NSString(format: "%@", numberFormatter.stringFromNumber(listeners)!)
+                            self.playsLabel.text = plays == 0 ? "" : NSString(format: "%@", numberFormatter.stringFromNumber(plays)!)
+                            
+                            if countElements(artist.bio) > 0 {
+                                self.bioActivityIndicator.stopAnimating()
+                            }
+                            
                             self.bioTextView.text = artist.bio
+                            
                             self.artistImageView.sd_setImageWithURL(artist.imageURL)
                             
                             self.collectionView.reloadData()

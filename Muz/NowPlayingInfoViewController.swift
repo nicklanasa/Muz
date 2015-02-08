@@ -209,6 +209,7 @@ LastFmTrackBuyLinksRequestDelegate {
     func lastFmSimiliarArtistsRequestDidComplete(request: LastFmSimiliarArtistsRequest, didCompleteWithLastFmArtists artists: [AnyObject]?) {
         self.similiarArtists = artists
         artistInfoCell.similiarActivityIndicator.stopAnimating()
+        artistInfoCell.bioActivityIndicator.stopAnimating()
         reloadTable()
     }
     

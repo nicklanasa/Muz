@@ -249,8 +249,19 @@ class Datastore {
         var error: NSError?
         var request = NSFetchRequest(entityName: "Album")
         
-        var managedAlbum = NSEntityDescription.insertNewObjectForEntityForName("Album",
-            inManagedObjectContext: self.mainQueueContext) as Album
+        let predicate = NSPredicate(format: "title = %@", item.albumTitle)
+        request.fetchLimit = 1
+        request.predicate = predicate
+        let results = self.mainQueueContext.executeFetchRequest(request, error: &error)
+        
+        var managedAlbum: Album!
+        if results?.count > 0 {
+            managedAlbum = results?[0] as Album
+        } else {
+            managedAlbum = NSEntityDescription.insertNewObjectForEntityForName("Album",
+                inManagedObjectContext: self.mainQueueContext) as Album
+        }
+
         managedAlbum.parseItem(item)
         managedAlbum.artist = artist
         
@@ -810,27 +821,16 @@ class Datastore {
             request.fetchLimit = fetchLimit
         }
         
-        request.propertiesToFetch = ["artist"]
+        request.propertiesToFetch = ["persistentID", "lastPlayedDate", "title", "artist"]
         request.returnsDistinctResults = true
         request.resultType = .DictionaryResultType
         
         let results = self.workerContext.executeFetchRequest(request, error: nil)
         
         if results?.count > 0 {
-            var predicates = NSMutableArray()
-            for artist in results as [NSDictionary] {
-                predicates.addObject(NSPredicate(format: "artist = %@", artist.objectForKey("artist") as NSString)!)
-            }
-            
-            var compoundPredicate = NSCompoundPredicate(type: .OrPredicateType, subpredicates: predicates)
-            request.predicate = compoundPredicate
-            
-            request.propertiesToFetch = ["artist", "title", "persistentID"]
-            
             var sort = NSSortDescriptor(key: sortKey, ascending: ascending)
-            request.sortDescriptors = [sort]
-            
-            return self.workerContext.executeFetchRequest(request, error: nil)
+            var sortedResults = NSArray(array: results!)
+            return sortedResults.sortedArrayUsingDescriptors([sort])
         }
         
         return nil

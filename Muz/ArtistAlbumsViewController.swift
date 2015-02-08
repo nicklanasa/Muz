@@ -76,9 +76,7 @@ ArtistAlbumHeaderDelegate {
     private func fetchArtistAlbums() {
         var error: NSError?
         if self.artistsController.performFetch(&error) {
-            DataManager.manager.syncAlbumsForArtist(artist: self.artist, completion: { (addedItems, error) -> () in
-                
-            })
+
         }
     }
     
