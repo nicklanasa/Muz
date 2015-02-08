@@ -13,8 +13,8 @@ import MediaPlayer
 
 enum HomeSectionType: NSInteger {
     case RelatedArtists
-    case RecentPlaylists
     case RecentArtists
+    case RecentPlaylists
     case RecentSongs
 }
 
@@ -28,14 +28,12 @@ UICollectionViewDataSource {
     @IBOutlet weak var tableView: UITableView!
     
     private var similiarArtists: [AnyObject]?
+    private var recentArtistSongs: NSArray?
     
     var similarArtistCell: LastFmSimilarArtistTableCell!
     var recentArtistCell: LastFmSimilarArtistTableCell!
-    var recentSongsCell: LastFmSimilarArtistTableCell!
 
     private var recentPlaylistsController: NSFetchedResultsController?
-    
-    private var recentSongsController: NSFetchedResultsController?
     
     override init() {
         super.init(nibName: "HomeViewController", bundle: nil)
@@ -54,8 +52,7 @@ UICollectionViewDataSource {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.recentSongsController = DataManager.manager.datastore.distinctArtistSongsControllerWithSortKey("lastPlayedDate", limit: 20, ascending: false)
-        self.recentSongsController!.delegate = self
+        self.recentArtistSongs = DataManager.manager.datastore.distinctArtistSongsWithSortKey("lastPlayedDate", limit: 5, ascending: false)
         
         self.recentPlaylistsController = DataManager.manager.datastore.playlistsControllerWithSortKey(sortKey: "modifiedDate",
             ascending: false,
@@ -70,15 +67,11 @@ UICollectionViewDataSource {
         var recentPlaylistsError: NSError?
         var recentSongsError: NSError?
         if self.recentPlaylistsController!.performFetch(&recentPlaylistsError) {
-            if self.recentSongsController!.performFetch(&recentSongsError) {
-                if self.recentSongsController!.sections?.count > 0 {
-                    if self.recentSongsController!.sections?[0].numberOfObjects > 0 {
-                        if let song = self.recentSongsController!.objectAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? Song {
-                            var similiarArtistLastFmRequest = LastFmSimiliarArtistsRequest(artist: song.artist)
-                            similiarArtistLastFmRequest.delegate = self
-                            similiarArtistLastFmRequest.sendURLRequest()
-                        }
-                    }
+            if self.recentArtistSongs?.count > 0 {
+                if let song = self.recentArtistSongs?[0] as? NSDictionary {
+                    var similiarArtistLastFmRequest = LastFmSimiliarArtistsRequest(artist: song.objectForKey("artist") as NSString)
+                    similiarArtistLastFmRequest.delegate = self
+                    similiarArtistLastFmRequest.sendURLRequest()
                 }
             }
         }
@@ -87,6 +80,7 @@ UICollectionViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.tableView.registerNib(UINib(nibName: "SongCell", bundle: nil), forCellReuseIdentifier: "SongCell")
         self.tableView.registerNib(UINib(nibName: "PlaylistCell", bundle: nil), forCellReuseIdentifier: "PlaylistCell")
         self.tableView.registerNib(UINib(nibName: "ArtistsHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "Header")
         
@@ -95,9 +89,6 @@ UICollectionViewDataSource {
         
         let recentArtistCellNib = UINib(nibName: "LastFmSimilarArtistTableCell", bundle: nil)
         recentArtistCell = recentArtistCellNib.instantiateWithOwner(self, options: nil)[0] as? LastFmSimilarArtistTableCell
-        
-        let recentSongsCellNib = UINib(nibName: "LastFmSimilarArtistTableCell", bundle: nil)
-        recentSongsCell = recentSongsCellNib.instantiateWithOwner(self, options: nil)[0] as? LastFmSimilarArtistTableCell
         
         self.navigationItem.title = "Charts"
     }
@@ -113,10 +104,12 @@ UICollectionViewDataSource {
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if self.recentSongsController != nil && self.recentPlaylistsController != nil {
+        if self.recentArtistSongs?.count > 0 && self.recentPlaylistsController != nil {
             if let sectionType = HomeSectionType(rawValue: section) {
                 var controller: NSFetchedResultsController!
                 switch sectionType {
+                case .RecentSongs:
+                    return self.recentArtistSongs?.count ?? 0
                 case .RecentPlaylists:
                     controller = self.recentPlaylistsController
                     
@@ -138,7 +131,8 @@ UICollectionViewDataSource {
         
         let sectionType = HomeSectionType(rawValue: indexPath.section)!
         
-        var controller = self.recentSongsController!
+        var songCell = tableView.dequeueReusableCellWithIdentifier("SongCell") as SongCell
+        
         switch sectionType {
         case .RelatedArtists:
             similarArtistCell.collectionView.delegate = self
@@ -156,9 +150,8 @@ UICollectionViewDataSource {
             
             return similarArtistCell
         case .RecentPlaylists:
-            controller = self.recentPlaylistsController!
             
-            let playlist = controller.objectAtIndexPath(NSIndexPath(forRow: indexPath.row, inSection: 0)) as Playlist
+            let playlist = self.recentPlaylistsController!.objectAtIndexPath(NSIndexPath(forRow: indexPath.row, inSection: 0)) as Playlist
             
             var cell = tableView.dequeueReusableCellWithIdentifier("PlaylistCell") as PlaylistCell
             cell.updateWithPlaylist(playlist)
@@ -168,6 +161,8 @@ UICollectionViewDataSource {
             recentArtistCell.collectionView.delegate = self
             recentArtistCell.collectionView.dataSource = self
             
+            recentArtistCell.similiarActivityIndicator.stopAnimating()
+            
             let nib = UINib(nibName: "SimiliarArtistCollectionViewCell", bundle: nil)
             recentArtistCell.collectionView.registerNib(nib, forCellWithReuseIdentifier: "SimiliarArtistCell")
             
@@ -175,15 +170,10 @@ UICollectionViewDataSource {
             
             return recentArtistCell
         default:
-            recentSongsCell.collectionView.delegate = self
-            recentSongsCell.collectionView.dataSource = self
+            let song = self.recentArtistSongs?[indexPath.row] as NSDictionary
+            songCell.updateWithSongData(song)
             
-            let nib = UINib(nibName: "SimiliarArtistCollectionViewCell", bundle: nil)
-            recentSongsCell.collectionView.registerNib(nib, forCellWithReuseIdentifier: "SimiliarArtistCell")
-            
-            recentSongsCell.collectionView.reloadData()
-            
-            return recentSongsCell
+            return songCell
         }
     }
     
@@ -195,7 +185,6 @@ UICollectionViewDataSource {
         if let sectionType = HomeSectionType(rawValue: indexPath.section) {
             switch sectionType {
             case .RelatedArtists: return 124
-            case .RecentSongs: return 124
             case .RecentArtists: return 124
             default: return 55
             }
@@ -214,7 +203,7 @@ UICollectionViewDataSource {
             case .RecentSongs:
                 header.infoLabel.text = "Recent Songs"
             case .RelatedArtists:
-                header.infoLabel.text = "Related Artists"
+                header.infoLabel.text = "Recommended Artists"
             default:
                 header.infoLabel.text = "Recent Playlists"
             }
@@ -233,31 +222,17 @@ UICollectionViewDataSource {
             let playlist = self.recentPlaylistsController!.objectAtIndexPath(NSIndexPath(forRow: indexPath.row, inSection: 0)) as Playlist
             let playlistsSongs = PlaylistSongsViewController(playlist: playlist)
             self.navigationController?.pushViewController(playlistsSongs, animated: true)
-        case .RecentArtists:
-            let song = self.recentSongsController!.objectAtIndexPath(NSIndexPath(forRow: indexPath.row, inSection: 0)) as Song
-            if let artist = DataManager.manager.datastore.artistForSong(song: song) {
-                let artistAlbums = ArtistAlbumsViewController(artist: artist)
-                self.navigationController?.pushViewController(artistAlbums, animated: true)
-            }
-        default:
-            let song = self.recentSongsController!.objectAtIndexPath(NSIndexPath(forRow: indexPath.row, inSection: 0)) as Song
-            DataManager.manager.fetchSongsCollection({ (collection, error) -> () in
-                self.presentNowPlayViewController(song, collection: collection)
-            })
+        default: break
         }
+        
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
     // MARK: UICollectionViewDataSource
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if collectionView == self.recentArtistCell.collectionView ||
-            collectionView == self.recentSongsCell.collectionView {
-            if let numberOfRowsInSection = self.recentSongsController!.sections?[0].numberOfObjects {
-                print(numberOfRowsInSection)
-                return numberOfRowsInSection
-            } else {
-                return 0
-            }
+        if collectionView == self.recentArtistCell.collectionView {
+            return self.recentArtistSongs?.count ?? 0
         }
         return self.similiarArtists?.count ?? 0
     }
@@ -267,11 +242,8 @@ UICollectionViewDataSource {
             forIndexPath: indexPath) as SimiliarArtistCollectionViewCell
         
         if collectionView == self.recentArtistCell.collectionView {
-            let song = self.recentSongsController!.objectAtIndexPath(NSIndexPath(forRow: indexPath.row, inSection: 0)) as NSDictionary
+            let song = self.recentArtistSongs?[indexPath.row] as NSDictionary
             cell.updateWithSongData(song, forArtist: true)
-        } else if collectionView == self.recentSongsCell.collectionView {
-            let song = self.recentSongsController!.objectAtIndexPath(NSIndexPath(forRow: indexPath.row, inSection: 0)) as NSDictionary
-            cell.updateWithSongData(song, forArtist: false)
         } else {
             if let artist = similiarArtists?[indexPath.row] as? LastFmArtist {
                 cell.updateWithArtist(artist)
@@ -282,9 +254,17 @@ UICollectionViewDataSource {
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        if let artist = self.similiarArtists?[indexPath.row] as? LastFmArtist {
-            let nowPlaying = NowPlayingInfoViewController(artist: artist, isForSimiliarArtist: true)
-            self.navigationController?.pushViewController(nowPlaying, animated: true)
+        if collectionView == self.recentArtistCell.collectionView {
+            let song = self.recentArtistSongs?[indexPath.row] as NSDictionary
+            if let artist = DataManager.manager.datastore.artistForSongData(song: song) {
+                let artistAlbums = ArtistAlbumsViewController(artist: artist)
+                self.navigationController?.pushViewController(artistAlbums, animated: true)
+            }
+        } else {
+            if let artist = self.similiarArtists?[indexPath.row] as? LastFmArtist {
+                let nowPlaying = NowPlayingInfoViewController(artist: artist, isForSimiliarArtist: true)
+                self.navigationController?.pushViewController(nowPlaying, animated: true)
+            }
         }
     }
 }

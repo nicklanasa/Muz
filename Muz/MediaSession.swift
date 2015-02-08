@@ -159,7 +159,7 @@ let _sharedSession = MediaSession()
         
         self.removeAllPredicatesFromQuery(songsQuery)
         
-        let persistentID = song.objectForKey("persistentID") as NSString
+        let persistentID = song.objectForKey("persistentID") as NSNumber
         
         songsQuery.addFilterPredicate(MPMediaPropertyPredicate(value: persistentID,
             forProperty: MPMediaItemPropertyPersistentID,

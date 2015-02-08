@@ -141,8 +141,18 @@ class Datastore {
                     
                     if let artistName = item.artist {
                         
-                        var managedArtist = NSEntityDescription.insertNewObjectForEntityForName("Artist",
-                            inManagedObjectContext: self.mainQueueContext) as Artist
+                        let predicate = NSPredicate(format: "name = %@", artistName)
+                        request.fetchLimit = 1
+                        request.predicate = predicate
+                        let results = self.mainQueueContext.executeFetchRequest(request, error: &error)
+                        
+                        var managedArtist: Artist!
+                        if results?.count > 0 {
+                            managedArtist = results?[0] as Artist
+                        } else {
+                            managedArtist = NSEntityDescription.insertNewObjectForEntityForName("Artist",
+                                inManagedObjectContext: self.mainQueueContext) as Artist
+                        }
                         
                         managedArtist.parseItem(item)
                         
@@ -251,6 +261,23 @@ class Datastore {
         var error: NSError?
         var request = NSFetchRequest(entityName: "Artist")
         let predicate = NSPredicate(format: "name = %@", song.artist)
+        request.fetchLimit = 1
+        request.predicate = predicate
+        let results = self.workerContext.executeFetchRequest(request, error: &error)
+        
+        var managedArtist: Artist!
+        if results?.count > 0 {
+            managedArtist = results?[0] as Artist
+            return managedArtist
+        } else {
+            return nil
+        }
+    }
+    
+    func artistForSongData(#song: NSDictionary) -> Artist? {
+        var error: NSError?
+        var request = NSFetchRequest(entityName: "Artist")
+        let predicate = NSPredicate(format: "name = %@", song.objectForKey("artist") as NSString)
         request.fetchLimit = 1
         request.predicate = predicate
         let results = self.workerContext.executeFetchRequest(request, error: &error)
@@ -770,29 +797,43 @@ class Datastore {
             cacheName: nil)
     }
     
-    func distinctArtistSongsControllerWithSortKey(sortKey: NSString,
+    func distinctArtistSongsWithSortKey(sortKey: NSString,
         limit: NSInteger?,
-        ascending: Bool) -> NSFetchedResultsController {
+        ascending: Bool) -> NSArray?
+    {
         
         var request = NSFetchRequest()
         request.entity = NSEntityDescription.entityForName("Song",
-            inManagedObjectContext: self.mainQueueContext)
+            inManagedObjectContext: self.workerContext)
         
         if let fetchLimit = limit {
             request.fetchLimit = fetchLimit
         }
         
-        request.resultType = .DictionaryResultType
-        request.propertiesToFetch = ["artist", "persistentID", "artist", "title"]
+        request.propertiesToFetch = ["artist"]
         request.returnsDistinctResults = true
+        request.resultType = .DictionaryResultType
         
-        var sort = NSSortDescriptor(key: sortKey, ascending: ascending)
-        request.sortDescriptors = [sort]
+        let results = self.workerContext.executeFetchRequest(request, error: nil)
         
-        return NSFetchedResultsController(fetchRequest: request,
-            managedObjectContext: self.mainQueueContext,
-            sectionNameKeyPath: nil,
-            cacheName: nil)
+        if results?.count > 0 {
+            var predicates = NSMutableArray()
+            for artist in results as [NSDictionary] {
+                predicates.addObject(NSPredicate(format: "artist = %@", artist.objectForKey("artist") as NSString)!)
+            }
+            
+            var compoundPredicate = NSCompoundPredicate(type: .OrPredicateType, subpredicates: predicates)
+            request.predicate = compoundPredicate
+            
+            request.propertiesToFetch = ["artist", "title", "persistentID"]
+            
+            var sort = NSSortDescriptor(key: sortKey, ascending: ascending)
+            request.sortDescriptors = [sort]
+            
+            return self.workerContext.executeFetchRequest(request, error: nil)
+        }
+        
+        return nil
     }
     
     func lovedControllerWithSortKey(sortKey: NSString, ascending: Bool, sectionNameKeyPath: NSString?) -> NSFetchedResultsController {

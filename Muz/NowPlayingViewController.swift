@@ -63,9 +63,9 @@ NowPlayingCollectionControllerDelegate {
     Handles updated the Datastore when iTunes library is updated
     */
     func mediaLibraryDidChange() {
-        DataManager.manager.syncSongs { (addedItems, error) -> () in
-            print("\n\nmedia library changed\n\n")
-        }
+//        DataManager.manager.syncSongs { (addedItems, error) -> () in
+//            print("\n\nmedia library changed\n\n")
+//        }
     }
     
     @IBAction func progressSliderTouchUpInside(sender: AnyObject) {

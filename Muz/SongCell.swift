@@ -50,6 +50,13 @@ class SongCell: UITableViewCell {
         }
     }
     
+    func updateWithSongData(song: NSDictionary) {
+        self.songLabel.text = song.objectForKey("title") as NSString
+        self.infoLabel.text = song.objectForKey("artist") as NSString
+        self.songImageView.setImageWithSongData(song: song)
+        self.songImageView.applyRoundedStyle()
+    }
+    
     override func prepareForReuse() {
         songImageView.image = nil
     }

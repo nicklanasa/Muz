@@ -38,7 +38,6 @@ class SimiliarArtistCollectionViewCell: UICollectionViewCell {
         } else {
             artistLabel.text = song.objectForKey("title") as NSString
         }
-        
         artistImageView.setImageWithSongData(song: song)
     }
     
