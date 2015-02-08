@@ -11,6 +11,7 @@ import UIKit
 
 class NoMusicOverlayController: UIViewController {
     
+    @IBOutlet weak var noMusicLabel: UILabel!
     override init() {
         super.init(nibName: "NoMusicOverlayController", bundle: nil)
     }
@@ -26,5 +27,11 @@ class NoMusicOverlayController: UIViewController {
     override func viewDidLoad() {
         self.view.autoresizingMask = .FlexibleWidth | .FlexibleHeight
         self.view.frame = UIScreen.mainScreen().bounds
+        
+        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+            self.noMusicLabel.text = "Your music library is empty. Please add music to your iPad."
+        } else {
+            self.noMusicLabel.text = "Your music library is empty. Please add music to your iPhone."
+        }
     }
 }

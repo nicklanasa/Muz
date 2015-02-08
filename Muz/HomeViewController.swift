@@ -109,20 +109,22 @@ UICollectionViewDataSource {
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let sectionType = HomeSectionType(rawValue: section) {
-            var controller: NSFetchedResultsController!
-            switch sectionType {
-            case .RelatedArtists: return 1
-            case .RecentPlaylists:
-                controller = self.recentPlaylistsController
-            default:
-                controller = self.recentSongsController
-            }
-            
-            if let numberOfRowsInSection = controller.sections?[0].numberOfObjects {
-                return numberOfRowsInSection
-            } else {
-                return 0
+        if self.recentSongsController != nil && self.recentPlaylistsController != nil {
+            if let sectionType = HomeSectionType(rawValue: section) {
+                var controller: NSFetchedResultsController!
+                switch sectionType {
+                case .RelatedArtists: return 1
+                case .RecentPlaylists:
+                    controller = self.recentPlaylistsController
+                default:
+                    controller = self.recentSongsController
+                }
+                
+                if let numberOfRowsInSection = controller.sections?[0].numberOfObjects {
+                    return numberOfRowsInSection
+                } else {
+                    return 0
+                }
             }
         }
         
