@@ -11,7 +11,7 @@ import Foundation
 extension UIImageView {
     
     func applyRoundedStyle() {
-        self.layer.cornerRadius = self.frame.size.width/2
+        self.layer.cornerRadius = 2
         self.layer.masksToBounds = true
     }
     
