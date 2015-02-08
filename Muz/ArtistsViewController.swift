@@ -21,7 +21,8 @@ UISearchDisplayDelegate {
     @IBOutlet weak var searchBar: UISearchBar!
     
     lazy var artistsController: NSFetchedResultsController = {
-        let controller = DataManager.manager.datastore.artistsController(nil, sortKey: "name",
+        let predicate = NSPredicate(format: "albums.@count > %d", 0)
+        let controller = DataManager.manager.datastore.artistsController(predicate, sortKey: "name",
             ascending: true,
             sectionNameKeyPath: "name.stringByGroupingByFirstLetter")
         controller.delegate = self
