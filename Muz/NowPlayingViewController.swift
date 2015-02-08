@@ -96,8 +96,8 @@ NowPlayingCollectionControllerDelegate {
         self.screenName = "Now Playing"
         self.navigationItem.title = ""
         
-        if self.playerController.playbackState == .Playing {
-            self.item = self.playerController.nowPlayingItem
+        if let item = self.playerController.nowPlayingItem {
+            self.item = item
             self.updateNowPlaying()
         }
         
@@ -387,6 +387,11 @@ NowPlayingCollectionControllerDelegate {
     private func updateNowPlaying() {
         
         playerController.nowPlayingItem = self.item
+        
+        var manager = DataManager.manager
+        manager.datastore.updateSong(song: manager.datastore.songForSongName(self.item.title, artist: self.item.artist)!) { () -> () in
+            print("Updated song: \(self.item.artist) \(self.item.title)")
+        }
         
         self.updateView()
         

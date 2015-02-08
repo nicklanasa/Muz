@@ -817,23 +817,63 @@ class Datastore {
         request.entity = NSEntityDescription.entityForName("Song",
             inManagedObjectContext: self.workerContext)
         
+        request.fetchLimit = 100
+        request.propertiesToFetch = ["persistentID", "lastPlayedDate", "artist"]
+        request.returnsDistinctResults = true
+        request.resultType = .DictionaryResultType
+        
+        var sort = NSSortDescriptor(key: sortKey, ascending: ascending)
+        request.sortDescriptors = [sort]
+        var results = self.workerContext.executeFetchRequest(request, error: nil)
+        
+        if let capacity = limit {
+            var recentArtists = Array<AnyObject>()
+            
+            if results?.count > 0 {
+                for artistData in results as [NSDictionary] {
+                    
+                    if recentArtists.count >= limit {
+                        return recentArtists
+                    }
+                    
+                    var found = false
+                    
+                    for artist in recentArtists as [NSDictionary] {
+                        var artistName = artist.objectForKey("artist") as NSString
+                        if artistName == artistData.objectForKey("artist") as NSString {
+                            found = true
+                        }
+                    }
+                    
+                    if !found {
+                        recentArtists.append(artistData)
+                    }
+                }
+                
+                return recentArtists
+            }
+        }
+        
+        return nil
+    }
+    
+    func recentlyPlayedSongs(
+        #limit: NSInteger?) -> NSArray?
+    {
+        var request = NSFetchRequest()
+        request.entity = NSEntityDescription.entityForName("Song",
+            inManagedObjectContext: self.workerContext)
+        
         if let fetchLimit = limit {
             request.fetchLimit = fetchLimit
         }
         
         request.propertiesToFetch = ["persistentID", "lastPlayedDate", "title", "artist"]
-        request.returnsDistinctResults = true
         request.resultType = .DictionaryResultType
         
-        let results = self.workerContext.executeFetchRequest(request, error: nil)
-        
-        if results?.count > 0 {
-            var sort = NSSortDescriptor(key: sortKey, ascending: ascending)
-            var sortedResults = NSArray(array: results!)
-            return sortedResults.sortedArrayUsingDescriptors([sort])
-        }
-        
-        return nil
+        var sort = NSSortDescriptor(key: "lastPlayedDate", ascending: false)
+        request.sortDescriptors = [sort]
+        return self.workerContext.executeFetchRequest(request, error: nil)
     }
     
     func lovedControllerWithSortKey(sortKey: NSString, ascending: Bool, sectionNameKeyPath: NSString?) -> NSFetchedResultsController {
@@ -1036,25 +1076,4 @@ class Datastore {
             }
         }
     }
-    
-    /**
-    Returns a NSFetchedResultsController with all levels.
-    
-    :param: keyPath A key path on result objects that returns the section name.
-    
-    :returns: A NSFetchedResultsController with all levels.
-    */
-//    func levelsControllerWithSectionKeyPath(sectionKeyPath: String?) -> NSFetchedResultsController {
-//        let request = NSFetchRequest()
-//        let entity = NSEntityDescription.entityForName("Level", inManagedObjectContext: self.mainQueueContext)
-//        request.entity = entity
-//        
-//        let sort = NSSortDescriptor(key: "name", ascending: false)
-//        request.sortDescriptors = [sort]
-//        
-//        return NSFetchedResultsController(fetchRequest: request,
-//            managedObjectContext: self.mainQueueContext,
-//            sectionNameKeyPath: sectionKeyPath,
-//            cacheName: AllLevels)
-//    }
 }

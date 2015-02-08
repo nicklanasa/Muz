@@ -38,12 +38,6 @@ class RootViewController: UIViewController {
         if NSUserDefaults.standardUserDefaults().objectForKey("SyncLibrary") == nil {
             self.presentModalOverlayController(SyncOverlayController(), blurredController: self)
         }
-        
-        var nowPlayingBarButton = UIBarButtonItem(image: UIImage(named: "headphones"),
-            style: .Plain,
-            target: self,
-            action: "presentNowPlayViewController")
-        self.navigationItem.rightBarButtonItem = nowPlayingBarButton
     }
     
     override func viewDidAppear(animated: Bool) {

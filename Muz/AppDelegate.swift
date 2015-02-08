@@ -63,7 +63,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let navMore = NavBarController(rootViewController: MoreViewController())
         let navHome = NavBarController(rootViewController: HomeViewController())
         
-        tabbar.setViewControllers([navHome, nav, navSongs, navPlaylists, navMore], animated: false)
+        tabbar.setViewControllers([nav, navSongs, navHome, navPlaylists, navMore], animated: false)
+        tabbar.selectedIndex = 2
         window.rootViewController = tabbar
         
         window.makeKeyAndVisible()

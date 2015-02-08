@@ -28,7 +28,16 @@ UICollectionViewDataSource {
     @IBOutlet weak var tableView: UITableView!
     
     private var similiarArtists: [AnyObject]?
-    private var recentArtistSongs: NSArray?
+    private var recentArtistSongs: NSArray? {
+        didSet {
+            self.tableView.reloadData()
+        }
+    }
+    private var recentSongs: NSArray? {
+        didSet {
+            self.tableView.reloadData()
+        }
+    }
     
     var similarArtistCell: LastFmSimilarArtistTableCell!
     var recentArtistCell: LastFmSimilarArtistTableCell!
@@ -39,8 +48,8 @@ UICollectionViewDataSource {
         super.init(nibName: "HomeViewController", bundle: nil)
         
         self.tabBarItem = UITabBarItem(title: nil,
-            image: UIImage(named: "858-line-chart"),
-            selectedImage: UIImage(named: "858-line-chart"))
+            image: UIImage(named: "headphones"),
+            selectedImage: UIImage(named: "headphones"))
         
         self.tabBarItem.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0)
     }
@@ -52,7 +61,8 @@ UICollectionViewDataSource {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.recentArtistSongs = DataManager.manager.datastore.distinctArtistSongsWithSortKey("lastPlayedDate", limit: 5, ascending: false)
+        self.recentArtistSongs = DataManager.manager.datastore.distinctArtistSongsWithSortKey("lastPlayedDate", limit: 25, ascending: false)
+        self.recentSongs = DataManager.manager.datastore.recentlyPlayedSongs(limit: 5)
         
         self.recentPlaylistsController = DataManager.manager.datastore.playlistsControllerWithSortKey(sortKey: "modifiedDate",
             ascending: false,
@@ -61,12 +71,21 @@ UICollectionViewDataSource {
         self.recentPlaylistsController!.delegate = self
         
         self.fetchHomeData()
+        
+        DataManager.manager.syncPlaylists({ (addedItems, error) -> () in
+            self.tableView.reloadData()
+        })
     }
     
     func fetchHomeData() {
         var recentPlaylistsError: NSError?
         var recentSongsError: NSError?
         if self.recentPlaylistsController!.performFetch(&recentPlaylistsError) {
+            
+            DataManager.manager.syncPlaylists({ (addedItems, error) -> () in
+                
+            })
+            
             if self.recentArtistSongs?.count > 0 {
                 if let song = self.recentArtistSongs?[0] as? NSDictionary {
                     var similiarArtistLastFmRequest = LastFmSimiliarArtistsRequest(artist: song.objectForKey("artist") as NSString)
@@ -90,7 +109,7 @@ UICollectionViewDataSource {
         let recentArtistCellNib = UINib(nibName: "LastFmSimilarArtistTableCell", bundle: nil)
         recentArtistCell = recentArtistCellNib.instantiateWithOwner(self, options: nil)[0] as? LastFmSimilarArtistTableCell
         
-        self.navigationItem.title = "Charts"
+        self.navigationItem.title = "Now Playing"
     }
     
     func lastFmSimiliarArtistsRequestDidComplete(request: LastFmSimiliarArtistsRequest, didCompleteWithLastFmArtists artists: [AnyObject]?) {
@@ -109,7 +128,7 @@ UICollectionViewDataSource {
                 var controller: NSFetchedResultsController!
                 switch sectionType {
                 case .RecentSongs:
-                    return self.recentArtistSongs?.count ?? 0
+                    return self.recentSongs?.count ?? 0
                 case .RecentPlaylists:
                     controller = self.recentPlaylistsController
                     
@@ -170,7 +189,7 @@ UICollectionViewDataSource {
             
             return recentArtistCell
         default:
-            let song = self.recentArtistSongs?[indexPath.row] as NSDictionary
+            let song = self.recentSongs?[indexPath.row] as NSDictionary
             songCell.updateWithSongData(song)
             
             return songCell
@@ -223,7 +242,7 @@ UICollectionViewDataSource {
             let playlistsSongs = PlaylistSongsViewController(playlist: playlist)
             self.navigationController?.pushViewController(playlistsSongs, animated: true)
         case .RecentSongs:
-            let songData = self.recentArtistSongs?[indexPath.row] as NSDictionary
+            let songData = self.recentSongs?[indexPath.row] as NSDictionary
             if let song = DataManager.manager.datastore.songForSongName(songData.objectForKey("title") as NSString, artist: songData.objectForKey("artist") as NSString) {
                 MediaSession.sharedSession.fetchSongsCollection({ (collection) -> () in
                     self.navigationController!.pushViewController(NowPlayingViewController(song: song, collection: collection), animated: true)
