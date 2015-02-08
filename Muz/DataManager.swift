@@ -64,6 +64,12 @@ class DataManager {
         }
     }
     
+    func fetchImageWithSongData(#song: NSDictionary, completion: (image: UIImage?, error: NSError?) -> ()) {
+        MediaSession.sharedSession.fetchImageWithSongData(song: song) { (image) -> () in
+            completion(image: image, error: nil)
+        }
+    }
+    
     func fetchItemForSong(#song: Song) -> MPMediaItem? {
         return MediaSession.sharedSession.fetchItemForSong(song)
     }

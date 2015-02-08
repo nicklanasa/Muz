@@ -155,6 +155,29 @@ let _sharedSession = MediaSession()
         completion(image: image)
     }
     
+    func fetchImageWithSongData(#song: NSDictionary, completion: (image: UIImage?) -> ()) {
+        
+        self.removeAllPredicatesFromQuery(songsQuery)
+        
+        let persistentID = song.objectForKey("persistentID") as NSString
+        
+        songsQuery.addFilterPredicate(MPMediaPropertyPredicate(value: persistentID,
+            forProperty: MPMediaItemPropertyPersistentID,
+            comparisonType: .EqualTo))
+        
+        var image: UIImage?
+        if songsQuery.items.count > 0 {
+            let item = songsQuery.items[0] as MPMediaItem
+            if let artwork = item.artwork {
+                if let songImage = artwork.imageWithSize(CGSizeMake(50, 50)) {
+                    image = songImage
+                }
+            }
+        }
+        
+        completion(image: image)
+    }
+    
     func fetchSongs(completion: (results: [AnyObject]) -> ()) {
         self.removeAllPredicatesFromQuery(songsQuery)
         completion(results: songsQuery.items)

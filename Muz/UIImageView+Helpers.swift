@@ -11,7 +11,7 @@ import Foundation
 extension UIImageView {
     
     func applyRoundedStyle() {
-        self.layer.cornerRadius = self.frame.size.width/2
+        self.layer.cornerRadius = 0
         self.layer.masksToBounds = true
     }
     
@@ -41,6 +41,18 @@ extension UIImageView {
     
     func setImageForSong(#song: Song) {
         DataManager.manager.fetchImageForSong(song: song) { (image, error) -> () in
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                if let albumImage = image {
+                    self.image = albumImage
+                } else {
+                    self.image = UIImage(named: "nowPlayingDefault")
+                }
+            })
+        }
+    }
+    
+    func setImageWithSongData(#song: NSDictionary) {
+        DataManager.manager.fetchImageWithSongData(song: song) { (image, error) -> () in
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 if let albumImage = image {
                     self.image = albumImage

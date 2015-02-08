@@ -12,10 +12,10 @@ import CoreData
 import MediaPlayer
 
 enum HomeSectionType: NSInteger {
+    case RelatedArtists
     case RecentPlaylists
     case RecentArtists
     case RecentSongs
-    case RelatedArtists
 }
 
 class HomeViewController: RootViewController,
@@ -30,6 +30,8 @@ UICollectionViewDataSource {
     private var similiarArtists: [AnyObject]?
     
     var similarArtistCell: LastFmSimilarArtistTableCell!
+    var recentArtistCell: LastFmSimilarArtistTableCell!
+    var recentSongsCell: LastFmSimilarArtistTableCell!
 
     private var recentPlaylistsController: NSFetchedResultsController?
     
@@ -52,10 +54,7 @@ UICollectionViewDataSource {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.recentSongsController = DataManager.manager.datastore.songsControllerWithSortKey("lastPlayedDate",
-            limit: 3,
-            ascending: false,
-            sectionNameKeyPath: nil)
+        self.recentSongsController = DataManager.manager.datastore.distinctArtistSongsControllerWithSortKey("lastPlayedDate", limit: 20, ascending: false)
         self.recentSongsController!.delegate = self
         
         self.recentPlaylistsController = DataManager.manager.datastore.playlistsControllerWithSortKey(sortKey: "modifiedDate",
@@ -88,12 +87,17 @@ UICollectionViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.tableView.registerNib(UINib(nibName: "SongCell", bundle: nil), forCellReuseIdentifier: "Cell")
         self.tableView.registerNib(UINib(nibName: "PlaylistCell", bundle: nil), forCellReuseIdentifier: "PlaylistCell")
         self.tableView.registerNib(UINib(nibName: "ArtistsHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "Header")
         
         let similarArtistCellNib = UINib(nibName: "LastFmSimilarArtistTableCell", bundle: nil)
         similarArtistCell = similarArtistCellNib.instantiateWithOwner(self, options: nil)[0] as? LastFmSimilarArtistTableCell
+        
+        let recentArtistCellNib = UINib(nibName: "LastFmSimilarArtistTableCell", bundle: nil)
+        recentArtistCell = recentArtistCellNib.instantiateWithOwner(self, options: nil)[0] as? LastFmSimilarArtistTableCell
+        
+        let recentSongsCellNib = UINib(nibName: "LastFmSimilarArtistTableCell", bundle: nil)
+        recentSongsCell = recentSongsCellNib.instantiateWithOwner(self, options: nil)[0] as? LastFmSimilarArtistTableCell
         
         self.navigationItem.title = "Charts"
     }
@@ -113,17 +117,16 @@ UICollectionViewDataSource {
             if let sectionType = HomeSectionType(rawValue: section) {
                 var controller: NSFetchedResultsController!
                 switch sectionType {
-                case .RelatedArtists: return 1
                 case .RecentPlaylists:
                     controller = self.recentPlaylistsController
+                    
+                    if let numberOfRowsInSection = controller.sections?[0].numberOfObjects {
+                        return numberOfRowsInSection
+                    } else {
+                        return 0
+                    }
                 default:
-                    controller = self.recentSongsController
-                }
-                
-                if let numberOfRowsInSection = controller.sections?[0].numberOfObjects {
-                    return numberOfRowsInSection
-                } else {
-                    return 0
+                    return 1
                 }
             }
         }
@@ -134,8 +137,6 @@ UICollectionViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let sectionType = HomeSectionType(rawValue: indexPath.section)!
-        
-        var cell = tableView.dequeueReusableCellWithIdentifier("Cell") as SongCell
         
         var controller = self.recentSongsController!
         switch sectionType {
@@ -164,16 +165,26 @@ UICollectionViewDataSource {
             
             return cell
         case .RecentArtists:
-            let song = controller.objectAtIndexPath(NSIndexPath(forRow: indexPath.row, inSection: 0)) as Song
-            cell.updateWithSong(song, forArtist: true)
+            recentArtistCell.collectionView.delegate = self
+            recentArtistCell.collectionView.dataSource = self
+            
+            let nib = UINib(nibName: "SimiliarArtistCollectionViewCell", bundle: nil)
+            recentArtistCell.collectionView.registerNib(nib, forCellWithReuseIdentifier: "SimiliarArtistCell")
+            
+            recentArtistCell.collectionView.reloadData()
+            
+            return recentArtistCell
         default:
-            let song = controller.objectAtIndexPath(NSIndexPath(forRow: indexPath.row, inSection: 0)) as Song
-            cell.updateWithSong(song)
+            recentSongsCell.collectionView.delegate = self
+            recentSongsCell.collectionView.dataSource = self
+            
+            let nib = UINib(nibName: "SimiliarArtistCollectionViewCell", bundle: nil)
+            recentSongsCell.collectionView.registerNib(nib, forCellWithReuseIdentifier: "SimiliarArtistCell")
+            
+            recentSongsCell.collectionView.reloadData()
+            
+            return recentSongsCell
         }
-        
-        cell.accessoryType = .DisclosureIndicator
-        
-        return cell
     }
     
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -184,6 +195,8 @@ UICollectionViewDataSource {
         if let sectionType = HomeSectionType(rawValue: indexPath.section) {
             switch sectionType {
             case .RelatedArtists: return 124
+            case .RecentSongs: return 124
+            case .RecentArtists: return 124
             default: return 55
             }
         }
@@ -237,6 +250,15 @@ UICollectionViewDataSource {
     // MARK: UICollectionViewDataSource
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if collectionView == self.recentArtistCell.collectionView ||
+            collectionView == self.recentSongsCell.collectionView {
+            if let numberOfRowsInSection = self.recentSongsController!.sections?[0].numberOfObjects {
+                print(numberOfRowsInSection)
+                return numberOfRowsInSection
+            } else {
+                return 0
+            }
+        }
         return self.similiarArtists?.count ?? 0
     }
     
@@ -244,8 +266,16 @@ UICollectionViewDataSource {
         var cell = collectionView.dequeueReusableCellWithReuseIdentifier("SimiliarArtistCell",
             forIndexPath: indexPath) as SimiliarArtistCollectionViewCell
         
-        if let artist = similiarArtists?[indexPath.row] as? LastFmArtist {
-            cell.updateWithArtist(artist)
+        if collectionView == self.recentArtistCell.collectionView {
+            let song = self.recentSongsController!.objectAtIndexPath(NSIndexPath(forRow: indexPath.row, inSection: 0)) as NSDictionary
+            cell.updateWithSongData(song, forArtist: true)
+        } else if collectionView == self.recentSongsCell.collectionView {
+            let song = self.recentSongsController!.objectAtIndexPath(NSIndexPath(forRow: indexPath.row, inSection: 0)) as NSDictionary
+            cell.updateWithSongData(song, forArtist: false)
+        } else {
+            if let artist = similiarArtists?[indexPath.row] as? LastFmArtist {
+                cell.updateWithArtist(artist)
+            }
         }
         
         return cell

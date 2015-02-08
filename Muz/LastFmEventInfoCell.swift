@@ -13,7 +13,7 @@ class LastFmEventInfoCell: UICollectionViewCell {
     @IBOutlet weak var infoLabel: UILabel!
     
     override func awakeFromNib() {
-        artistImageView.layer.cornerRadius = artistImageView.frame.size.height / 2
+        artistImageView.layer.cornerRadius = 0
         artistImageView.layer.masksToBounds = true
     }
     

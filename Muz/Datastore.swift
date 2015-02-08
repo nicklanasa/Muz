@@ -128,7 +128,7 @@ class Datastore {
     :param: completion The completion block called at the end of the execution.
     */
     func addArtists(artists: NSArray, completion: (addedItems: [AnyObject], error: NSErrorPointer) -> ()) {
-        self.workerContext.performBlock { () -> Void in
+        self.mainQueueContext.performBlock { () -> Void in
            
             let startTime = NSDate()
             var request = NSFetchRequest(entityName: "Artist")
@@ -141,18 +141,8 @@ class Datastore {
                     
                     if let artistName = item.artist {
                         
-                        let predicate = NSPredicate(format: "name = %@", artistName)
-                        request.fetchLimit = 1
-                        request.predicate = predicate
-                        let results = self.workerContext.executeFetchRequest(request, error: &error)
-                        
-                        var managedArtist: Artist!
-                        if results?.count > 0 {
-                            managedArtist = results?[0] as Artist
-                        } else {
-                            managedArtist = NSEntityDescription.insertNewObjectForEntityForName("Artist",
-                                inManagedObjectContext: self.workerContext) as Artist
-                        }
+                        var managedArtist = NSEntityDescription.insertNewObjectForEntityForName("Artist",
+                            inManagedObjectContext: self.mainQueueContext) as Artist
                         
                         managedArtist.parseItem(item)
                         
@@ -248,19 +238,9 @@ class Datastore {
     func addAlbumForItem(#item: MPMediaItem, artist: Artist) {
         var error: NSError?
         var request = NSFetchRequest(entityName: "Album")
-        let predicate = NSPredicate(format: "title = %@", item.albumTitle)
-        request.fetchLimit = 1
-        request.predicate = predicate
-        let results = self.workerContext.executeFetchRequest(request, error: &error)
         
-        var managedAlbum: Album!
-        if results?.count > 0 {
-            managedAlbum = results?[0] as Album
-        } else {
-            managedAlbum = NSEntityDescription.insertNewObjectForEntityForName("Album",
-                inManagedObjectContext: self.workerContext) as Album
-        }
-        
+        var managedAlbum = NSEntityDescription.insertNewObjectForEntityForName("Album",
+            inManagedObjectContext: self.mainQueueContext) as Album
         managedAlbum.parseItem(item)
         managedAlbum.artist = artist
         
@@ -294,19 +274,8 @@ class Datastore {
     func addSongForItem(#item: MPMediaItem, album: Album) {
         var error: NSError?
         var request = NSFetchRequest(entityName: "Song")
-        let predicate = NSPredicate(format: "title = %@", item.title)
-        request.fetchLimit = 1
-        request.predicate = predicate
-        let results = self.workerContext.executeFetchRequest(request, error: &error)
-        
-        var managedSong: Song!
-        if results?.count > 0 {
-            managedSong = results?[0] as Song
-        } else {
-            managedSong = NSEntityDescription.insertNewObjectForEntityForName("Song",
-                inManagedObjectContext: self.workerContext) as Song
-        }
-        
+        var managedSong = NSEntityDescription.insertNewObjectForEntityForName("Song",
+            inManagedObjectContext: self.mainQueueContext) as Song
         managedSong.parseItem(item)
         managedSong.album = album
     }
@@ -713,7 +682,10 @@ class Datastore {
             cacheName: ArtistsCacheName)
     }
     
-    func artistsAlbumsControllerWithSortKey(artist: Artist, sortKey: NSString, ascending: Bool, sectionNameKeyPath: NSString?) -> NSFetchedResultsController {
+    func artistsAlbumsControllerWithSortKey(artist: Artist,
+        sortKey: NSString,
+        ascending: Bool,
+        sectionNameKeyPath: NSString?) -> NSFetchedResultsController {
         
         var request = NSFetchRequest()
         request.entity = NSEntityDescription.entityForName("Album",
@@ -775,7 +747,10 @@ class Datastore {
             cacheName: ArtistsCacheName)
     }
     
-    func songsControllerWithSortKey(sortKey: NSString, limit: NSInteger?, ascending: Bool, sectionNameKeyPath: NSString?) -> NSFetchedResultsController {
+    func songsControllerWithSortKey(sortKey: NSString,
+        limit: NSInteger?,
+        ascending: Bool,
+        sectionNameKeyPath: NSString?) -> NSFetchedResultsController {
         
         var request = NSFetchRequest()
         
@@ -792,6 +767,31 @@ class Datastore {
         return NSFetchedResultsController(fetchRequest: request,
             managedObjectContext: self.mainQueueContext,
             sectionNameKeyPath: sectionNameKeyPath,
+            cacheName: nil)
+    }
+    
+    func distinctArtistSongsControllerWithSortKey(sortKey: NSString,
+        limit: NSInteger?,
+        ascending: Bool) -> NSFetchedResultsController {
+        
+        var request = NSFetchRequest()
+        request.entity = NSEntityDescription.entityForName("Song",
+            inManagedObjectContext: self.mainQueueContext)
+        
+        if let fetchLimit = limit {
+            request.fetchLimit = fetchLimit
+        }
+        
+        request.resultType = .DictionaryResultType
+        request.propertiesToFetch = ["artist", "persistentID", "artist", "title"]
+        request.returnsDistinctResults = true
+        
+        var sort = NSSortDescriptor(key: sortKey, ascending: ascending)
+        request.sortDescriptors = [sort]
+        
+        return NSFetchedResultsController(fetchRequest: request,
+            managedObjectContext: self.mainQueueContext,
+            sectionNameKeyPath: nil,
             cacheName: nil)
     }
     
@@ -815,7 +815,10 @@ class Datastore {
             cacheName: ArtistsCacheName)
     }
     
-    func playlistsControllerWithSortKey(#sortKey: NSString!, ascending: Bool, limit: NSInteger, sectionNameKeyPath: NSString?) -> NSFetchedResultsController {
+    func playlistsControllerWithSortKey(#sortKey: NSString!,
+        ascending: Bool,
+        limit: NSInteger,
+        sectionNameKeyPath: NSString?) -> NSFetchedResultsController {
         var request = NSFetchRequest()
         request.entity = NSEntityDescription.entityForName("Playlist",
             inManagedObjectContext: self.mainQueueContext)
@@ -830,7 +833,8 @@ class Datastore {
             cacheName: nil)
     }
     
-    func playlistsControllerWithSectionName(sectionNameKeyPath: NSString?, predicate: NSPredicate?) -> NSFetchedResultsController {
+    func playlistsControllerWithSectionName(sectionNameKeyPath: NSString?,
+        predicate: NSPredicate?) -> NSFetchedResultsController {
         var request = NSFetchRequest()
         request.entity = NSEntityDescription.entityForName("Playlist",
             inManagedObjectContext: self.mainQueueContext)
@@ -849,7 +853,8 @@ class Datastore {
             cacheName: nil)
     }
     
-    func playlistSongsControllerWithPlaylist(playlist: Playlist, sectionNameKeyPath: NSString?) -> NSFetchedResultsController {
+    func playlistSongsControllerWithPlaylist(playlist: Playlist,
+        sectionNameKeyPath: NSString?) -> NSFetchedResultsController {
         var request = NSFetchRequest()
         request.entity = NSEntityDescription.entityForName("PlaylistSong",
             inManagedObjectContext: self.mainQueueContext)
@@ -863,7 +868,8 @@ class Datastore {
             cacheName: nil)
     }
     
-    func updatePlaylistSongOrder(playlistsongSource: Playlist, sectionNameKeyPath: NSString?) -> NSFetchedResultsController {
+    func updatePlaylistSongOrder(playlistsongSource: Playlist,
+        sectionNameKeyPath: NSString?) -> NSFetchedResultsController {
         var request = NSFetchRequest()
         request.entity = NSEntityDescription.entityForName("PlaylistSong",
             inManagedObjectContext: self.mainQueueContext)

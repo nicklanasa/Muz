@@ -38,7 +38,7 @@ class LastFmArtistInfoCell: LastFmCell {
     override func awakeFromNib() {
         bringSubviewToFront(collectionView)
         
-        artistImageView.layer.cornerRadius = artistImageView.frame.size.height / 2
+        artistImageView.layer.cornerRadius = 0
         artistImageView.layer.masksToBounds = true
         
         self.buyAlbumButton.layer.borderColor = UIColor.whiteColor().CGColor

@@ -543,8 +543,6 @@
 				CE49F35F1A3A83C8008DE25E /* NowPlayingPageController.swift */,
 				CEE153441A3B41CD00BB16EB /* NowPlayingInfoViewController.swift */,
 				CEE153461A3B41D900BB16EB /* NowPlayingInfoViewController.xib */,
-				CE3038D71A3E033100DCC5EB /* SimiliarArtistCollectionViewCell.xib */,
-				CE3038D91A3E037700DCC5EB /* SimiliarArtistCollectionViewCell.swift */,
 				CE9BCFAD1A43C77300522F18 /* NowPlayingCollectionController.xib */,
 				CE9BCFAF1A43C77D00522F18 /* NowPlayingCollectionController.swift */,
 			);
@@ -588,8 +586,10 @@
 				CE4184DB1A4A3CCB0011C0DA /* LastFmEventMapController.xib */,
 				CEE1534D1A3B567C00BB16EB /* NowPlayingInfoLyricsCell.swift */,
 				CEE1534F1A3B568400BB16EB /* NowPlayingInfoLyricsCell.xib */,
-				CE5E31A71A86A3CC00969647 /* LastFmSimilarArtistTableCell.swift */,
 				CE5E31A91A86A40100969647 /* LastFmSimilarArtistTableCell.xib */,
+				CE5E31A71A86A3CC00969647 /* LastFmSimilarArtistTableCell.swift */,
+				CE3038D71A3E033100DCC5EB /* SimiliarArtistCollectionViewCell.xib */,
+				CE3038D91A3E037700DCC5EB /* SimiliarArtistCollectionViewCell.swift */,
 			);
 			name = LastFm;
 			sourceTree = "<group>";
