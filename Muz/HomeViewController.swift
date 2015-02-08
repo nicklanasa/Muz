@@ -12,6 +12,7 @@ import CoreData
 import MediaPlayer
 
 enum HomeSectionType: NSInteger {
+    case NowPlaying
     case RelatedArtists
     case RecentArtists
     case RecentPlaylists
@@ -41,6 +42,7 @@ UICollectionViewDataSource {
     
     var similarArtistCell: LastFmSimilarArtistTableCell!
     var recentArtistCell: LastFmSimilarArtistTableCell!
+    var nowPlayingCell: NowPlayingTableViewCell!
 
     private var recentPlaylistsController: NSFetchedResultsController?
     
@@ -73,6 +75,8 @@ UICollectionViewDataSource {
         self.fetchHomeData()
         
         DataManager.manager.syncPlaylists({ (addedItems, error) -> () in
+            self.tableView.beginUpdates()
+            self.tableView.endUpdates()
             self.tableView.reloadData()
         })
     }
@@ -109,6 +113,9 @@ UICollectionViewDataSource {
         let recentArtistCellNib = UINib(nibName: "LastFmSimilarArtistTableCell", bundle: nil)
         recentArtistCell = recentArtistCellNib.instantiateWithOwner(self, options: nil)[0] as? LastFmSimilarArtistTableCell
         
+        let nowPlayingCellNib = UINib(nibName: "NowPlayingTableViewCell", bundle: nil)
+        nowPlayingCell = nowPlayingCellNib.instantiateWithOwner(self, options: nil)[0] as? NowPlayingTableViewCell
+        
         self.navigationItem.title = "Now Playing"
     }
     
@@ -119,7 +126,7 @@ UICollectionViewDataSource {
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 4
+        return 5
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -153,6 +160,9 @@ UICollectionViewDataSource {
         var songCell = tableView.dequeueReusableCellWithIdentifier("SongCell") as SongCell
         
         switch sectionType {
+        case .NowPlaying:
+            return nowPlayingCell
+            
         case .RelatedArtists:
             similarArtistCell.collectionView.delegate = self
             similarArtistCell.collectionView.dataSource = self
@@ -197,12 +207,20 @@ UICollectionViewDataSource {
     }
     
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 0 {
+            return 0
+        }
         return 30
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if let sectionType = HomeSectionType(rawValue: indexPath.section) {
             switch sectionType {
+            case .NowPlaying:
+                if let item = self.nowPlayingCell.playerController.nowPlayingItem {
+                    return 81
+                }
+                return 0
             case .RelatedArtists: return 124
             case .RecentArtists: return 124
             default: return 55
@@ -217,6 +235,8 @@ UICollectionViewDataSource {
             let header = tableView.dequeueReusableHeaderFooterViewWithIdentifier("Header") as ArtistsHeader
             
             switch sectionType {
+            case .NowPlaying:
+                header.infoLabel.text = ""
             case .RecentArtists:
                 header.infoLabel.text = "Recent Artists"
             case .RecentSongs:
@@ -237,6 +257,8 @@ UICollectionViewDataSource {
         let sectionType = HomeSectionType(rawValue: indexPath.section)!
         switch sectionType {
         case .RelatedArtists: break
+        case .NowPlaying:
+            self.presentNowPlayViewController()
         case .RecentPlaylists:
             let playlist = self.recentPlaylistsController!.objectAtIndexPath(NSIndexPath(forRow: indexPath.row, inSection: 0)) as Playlist
             let playlistsSongs = PlaylistSongsViewController(playlist: playlist)

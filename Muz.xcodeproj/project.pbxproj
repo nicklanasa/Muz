@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		011AF3B91A880C5300E298DD /* NowPlayingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011AF3B81A880C5300E298DD /* NowPlayingTableViewCell.swift */; };
+		011AF3BB1A880C5C00E298DD /* NowPlayingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 011AF3BA1A880C5C00E298DD /* NowPlayingTableViewCell.xib */; };
 		18FE78E2938CE235720BDF0D /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CC5E238686D44A286C24637D /* libPods.a */; };
 		CE167DA01A855A7700A9EC1A /* Artist.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE167D9F1A855A7700A9EC1A /* Artist.swift */; };
 		CE167DA31A855E6800A9EC1A /* Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE167DA21A855E6800A9EC1A /* Album.swift */; };
@@ -141,6 +143,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		011AF3B81A880C5300E298DD /* NowPlayingTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NowPlayingTableViewCell.swift; sourceTree = "<group>"; };
+		011AF3BA1A880C5C00E298DD /* NowPlayingTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NowPlayingTableViewCell.xib; sourceTree = "<group>"; };
 		B5C84601BD2F3431F5F52BE9 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		CC5E238686D44A286C24637D /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE167D9F1A855A7700A9EC1A /* Artist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Artist.swift; sourceTree = "<group>"; };
@@ -545,6 +549,8 @@
 				CEE153461A3B41D900BB16EB /* NowPlayingInfoViewController.xib */,
 				CE9BCFAD1A43C77300522F18 /* NowPlayingCollectionController.xib */,
 				CE9BCFAF1A43C77D00522F18 /* NowPlayingCollectionController.swift */,
+				011AF3B81A880C5300E298DD /* NowPlayingTableViewCell.swift */,
+				011AF3BA1A880C5C00E298DD /* NowPlayingTableViewCell.xib */,
 			);
 			name = NowPlaying;
 			sourceTree = "<group>";
@@ -704,6 +710,7 @@
 				CE9BCFAE1A43C77300522F18 /* NowPlayingCollectionController.xib in Resources */,
 				CEA4A1411A8676B0003FDF0D /* HomeViewController.xib in Resources */,
 				CE4184DC1A4A3CCB0011C0DA /* LastFmEventMapController.xib in Resources */,
+				011AF3BB1A880C5C00E298DD /* NowPlayingTableViewCell.xib in Resources */,
 				CE3D29911A507FD2000CCC90 /* NowPlayingViewControllerLandscape.xib in Resources */,
 				CE4184CE1A4922900011C0DA /* LaunchScreen.xib in Resources */,
 				CEDB61951A37D21B00B90B2D /* SongsViewController.xib in Resources */,
@@ -794,6 +801,7 @@
 				CEBC1EF21A813C19000AF2F1 /* Album+Helpers.swift in Sources */,
 				CECCC10A1A40CC2700799854 /* PlaylistSongsViewController.swift in Sources */,
 				CE9BCFDD1A45D18F00522F18 /* LastFmEventCell.swift in Sources */,
+				011AF3B91A880C5300E298DD /* NowPlayingTableViewCell.swift in Sources */,
 				CEBC1EF61A816D7B000AF2F1 /* UIImageView+Helpers.swift in Sources */,
 				CEDB61871A37BA2B00B90B2D /* NavBarController.swift in Sources */,
 				CE3D29931A508087000CCC90 /* NowPlayingViewControllerLandscape.swift in Sources */,

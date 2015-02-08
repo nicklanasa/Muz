@@ -102,8 +102,6 @@ NowPlayingCollectionControllerDelegate {
         }
         
         super.viewWillAppear(animated)
-        
-        self.navigationItem.rightBarButtonItem = nil
     }
     
     private func configureWithSong() {
