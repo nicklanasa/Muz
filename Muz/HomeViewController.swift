@@ -72,6 +72,9 @@ UICollectionViewDataSource {
             sectionNameKeyPath: nil)
         self.recentPlaylistsController!.delegate = self
         
+        let nowPlayingCellNib = UINib(nibName: "NowPlayingTableViewCell", bundle: nil)
+        nowPlayingCell = nowPlayingCellNib.instantiateWithOwner(self, options: nil)[0] as? NowPlayingTableViewCell
+        
         self.fetchHomeData()
         
         DataManager.manager.syncPlaylists({ (addedItems, error) -> () in
@@ -112,9 +115,6 @@ UICollectionViewDataSource {
         
         let recentArtistCellNib = UINib(nibName: "LastFmSimilarArtistTableCell", bundle: nil)
         recentArtistCell = recentArtistCellNib.instantiateWithOwner(self, options: nil)[0] as? LastFmSimilarArtistTableCell
-        
-        let nowPlayingCellNib = UINib(nibName: "NowPlayingTableViewCell", bundle: nil)
-        nowPlayingCell = nowPlayingCellNib.instantiateWithOwner(self, options: nil)[0] as? NowPlayingTableViewCell
         
         self.navigationItem.title = "Now Playing"
     }

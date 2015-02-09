@@ -102,6 +102,8 @@ NowPlayingCollectionControllerDelegate {
         }
         
         super.viewWillAppear(animated)
+        
+        self.startSongTimer()
     }
     
     private func configureWithSong() {
@@ -127,9 +129,13 @@ NowPlayingCollectionControllerDelegate {
     }
     
     func updateProgress() {
-        if let currentlyPlayingSong = self.song {
-            progressSlider.value = Float(playerController.currentPlaybackTime) / currentlyPlayingSong.playbackDuration.floatValue
+        if let item = self.playerController.nowPlayingItem {
+            progressSlider.value = Float(playerController.currentPlaybackTime) / Float(item.playbackDuration)
         }
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        songTimer?.invalidate()
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -182,7 +188,6 @@ NowPlayingCollectionControllerDelegate {
     }
     
     func showNowPlayingCollectionController() {
-        
         let nowPlayingCollectionController = NowPlayingCollectionController(collection: collection)
         nowPlayingCollectionController.delegate = self
         
