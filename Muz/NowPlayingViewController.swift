@@ -104,6 +104,14 @@ NowPlayingCollectionControllerDelegate {
         super.viewWillAppear(animated)
         
         self.startSongTimer()
+        
+        if let collection = CurrentQueueItems {
+            self.collection = collection
+        }
+    }
+    
+    func dismiss() {
+        self.navigationController?.popViewControllerAnimated(true)
     }
     
     private func configureWithSong() {
@@ -135,6 +143,7 @@ NowPlayingCollectionControllerDelegate {
     }
     
     override func viewWillDisappear(animated: Bool) {
+        CurrentQueueItems = self.collection
         songTimer?.invalidate()
     }
 

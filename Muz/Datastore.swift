@@ -121,13 +121,18 @@ class Datastore {
         }
     }
     
+    private func dispatchAddBlock(dispatchBlock: () -> ()) -> () {
+        dispatch_async(dispatch_get_main_queue(), dispatchBlock)
+    }
+    
     /**
     Adds artists to the datastore.
     
     :param: artists    The artists you want to add.
     :param: completion The completion block called at the end of the execution.
     */
-    func addArtists(artists: NSArray, completion: (addedItems: [AnyObject], error: NSErrorPointer) -> ()) {
+    func addArtists(artists: NSArray, completion: (addedItems: [AnyObject], error: NSErrorPointer) -> (),
+        progress: (addedItems: [AnyObject]) -> ()) {
         self.mainQueueContext.performBlock { () -> Void in
            
             let startTime = NSDate()
@@ -160,6 +165,11 @@ class Datastore {
                         self.addAlbumForItem(item: item, artist: managedArtist)
                         
                         addedArtists.addObject(managedArtist)
+                        
+                        let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
+                        dispatch_async(dispatch_get_global_queue(priority, 0)) {
+                            progress(addedItems: addedArtists)
+                        }
                     }
                 }
             })

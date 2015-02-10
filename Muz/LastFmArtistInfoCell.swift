@@ -12,7 +12,14 @@ import MediaPlayer
 
 let LastFmArtistInfoCellHeight: CGFloat = 605.0
 
+protocol LastFmArtistInfoCellDelegate {
+    func lastFmArtistInfoCell(cell: LastFmArtistInfoCell, didTapTopAlbumsButton albums: [AnyObject]?)
+    func lastFmArtistInfoCell(cell: LastFmArtistInfoCell, didTapTopTracksButton tracks: [AnyObject]?)
+}
+
 class LastFmArtistInfoCell: LastFmCell {
+    
+    var delegate: LastFmArtistInfoCellDelegate?
     
     @IBOutlet weak var artistLabel: UILabel!
     @IBOutlet weak var artistImageView: UIImageView!
@@ -29,8 +36,8 @@ class LastFmArtistInfoCell: LastFmCell {
     @IBOutlet weak var buyAlbumButton: UIButton!
     @IBOutlet weak var buySongButton: UIButton!
     
-    var albumBuyLinks: [AnyObject]?
-    var songBuyLinks: [AnyObject]?
+    var topAlbums: [AnyObject]?
+    var topTracks: [AnyObject]?
     
     var actionSheet: LastFmBuyLinksViewController!
     
@@ -95,29 +102,11 @@ class LastFmArtistInfoCell: LastFmCell {
     }
     
     @IBAction func buySongButtonPressed(sender: AnyObject) {
-        if let buyLinks = songBuyLinks {
-            if buyLinks.count > 0 {
-                actionSheet = LastFmBuyLinksViewController(buyLinks: buyLinks)
-                actionSheet.showInView(self)
-            } else {
-                showBuySongError()
-            }
-        } else {
-            showBuySongError()
-        }
+        self.delegate?.lastFmArtistInfoCell(self, didTapTopTracksButton: self.topTracks)
     }
     
     @IBAction func buyAlbumButtonPressed(sender: AnyObject) {
-        if let buyLinks = albumBuyLinks {
-            if buyLinks.count > 0 {
-                actionSheet = LastFmBuyLinksViewController(buyLinks: buyLinks)
-                actionSheet.showInView(self)
-            } else {
-                showBuyAlbumError()
-            }
-        } else {
-            showBuyAlbumError()
-        }
+        self.delegate?.lastFmArtistInfoCell(self, didTapTopAlbumsButton: self.topAlbums)
     }
     
     private func showBuyAlbumError() {

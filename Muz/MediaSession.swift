@@ -12,6 +12,8 @@ import MediaPlayer
 
 let _sharedSession = MediaSession()
 
+var CurrentQueueItems: MPMediaItemCollection!
+
 @objc class MediaSession {
     
     let dataManager = DataManager.manager
@@ -19,11 +21,17 @@ let _sharedSession = MediaSession()
     var albumsQuery = MPMediaQuery.albumsQuery()
     var songsQuery = MPMediaQuery.songsQuery()
     
+    var currentQueueCollection: MPMediaItemCollection?
+    
     var isMediaLibraryEmpty: Bool {
         get {
             var query = MPMediaQuery.songsQuery()
             return query.items.count == 0
         }
+    }
+    
+    init() {
+        
     }
     
     class var sharedSession : MediaSession {

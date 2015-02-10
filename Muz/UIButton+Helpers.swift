@@ -15,5 +15,11 @@ extension UIButton {
         self.layer.borderColor = UIColor.whiteColor().CGColor
         self.layer.borderWidth = 4
     }
+    
+    func applyBuyStyle() {
+        self.layer.borderColor = UIColor.whiteColor().CGColor
+        self.layer.borderWidth = 1
+        self.layer.cornerRadius = 5
+    }
 }
     

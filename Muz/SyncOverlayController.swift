@@ -20,6 +20,8 @@ NSFetchedResultsControllerDelegate {
     
     var scrollTimer: NSTimer!
     
+    var syncedItems: [AnyObject]?
+    
     var endPoint: CGPoint! {
         get {
             return CGPoint(x: self.collectionView.contentSize.width,
@@ -49,7 +51,7 @@ NSFetchedResultsControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.syncButton.applyRoundedStyle()
+        self.syncButton.applyBuyStyle()
         
         let nib = UINib(nibName: "SimiliarArtistCollectionViewCell", bundle: nil)
         collectionView.registerNib(nib, forCellWithReuseIdentifier: "ArtistCell")
@@ -84,7 +86,6 @@ NSFetchedResultsControllerDelegate {
         
         if self.songsController.performFetch(&error) {
             DataManager.manager.syncArtists({ (addedItems, error) -> () in
-                
                 self.activityIndicator.stopAnimating()
                 
                 let endTime = NSDate()
@@ -97,6 +98,11 @@ NSFetchedResultsControllerDelegate {
                     NSUserDefaults.standardUserDefaults().setObject(NSNumber(bool: true),
                         forKey: "SyncLibrary")
                     self.dismissViewControllerAnimated(true, completion: nil)
+                })
+            }, progress: { (addedItems) -> () in
+                self.syncedItems = addedItems
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    //self.collectionView.insertItemsAtIndexPaths(NSIndexPath(forRow: self.syncedItems?.count, inSection: <#Int#>))
                 })
             })
         }
@@ -139,24 +145,20 @@ NSFetchedResultsControllerDelegate {
     }
     
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        return self.songsController.sections?.count ?? 0
+        return 1
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if let numberOfRowsInSection = self.songsController.sections?[section].numberOfObjects {
-            return numberOfRowsInSection
-        } else {
-            return 0
-        }
+        return self.syncedItems?.count ?? 0
     }
     
     // The cell that is returned must be retrieved from a call to -dequeueReusableCellWithReuseIdentifier:forIndexPath:
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         var cell = collectionView.dequeueReusableCellWithReuseIdentifier("ArtistCell",
             forIndexPath: indexPath) as SimiliarArtistCollectionViewCell
-        let song = self.songsController.objectAtIndexPath(indexPath) as Song
-        cell.artistImageView.setImageForSong(song: song)
-        cell.artistLabel.text = song.artist
+        let artist = syncedItems?[indexPath.row] as Artist
+        cell.artistImageView.setImageForArtist(artist: artist)
+        cell.artistLabel.text = artist.name
         return cell
     }
 }

@@ -26,7 +26,10 @@ LastFmArtistEventsRequestDelegate,
 UICollectionViewDelegate,
 UICollectionViewDataSource,
 LastFmAlbumBuyLinksRequestDelegate,
-LastFmTrackBuyLinksRequestDelegate {
+LastFmTrackBuyLinksRequestDelegate,
+LastFmTopAlbumsRequestDelegate,
+LastFmTopTracksRequestDelegate,
+LastFmArtistInfoCellDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var segmentedControl: UISegmentedControl!
@@ -36,6 +39,7 @@ LastFmTrackBuyLinksRequestDelegate {
     
     var item: MPMediaItem!
     var lyrics: NSString?
+    var artist: NSString?
     var lastFmArtist: LastFmArtist?
     var similiarArtists: [AnyObject]?
     var isShowingLastFm = false
@@ -47,6 +51,8 @@ LastFmTrackBuyLinksRequestDelegate {
     
     var albumBuyLinks: [AnyObject]?
     var songBuyLinks: [AnyObject]?
+    var topAlbums: [AnyObject]?
+    var topTracks: [AnyObject]?
     
     var events: [AnyObject]?
     
@@ -70,6 +76,8 @@ LastFmTrackBuyLinksRequestDelegate {
         let artistInfoCellNib = UINib(nibName: "LastFmArtistInfoCell", bundle: nil)
         artistInfoCell = artistInfoCellNib.instantiateWithOwner(self, options: nil)[0] as? LastFmArtistInfoCell
         
+        artistInfoCell.delegate = self
+        
         if isForSimiliarArtist {
             configureForSimiliarArtist()
         } else {
@@ -82,14 +90,14 @@ LastFmTrackBuyLinksRequestDelegate {
     
     override func viewWillAppear(animated: Bool) {
         if isForSimiliarArtist {
-            self.screenName = "Similar Artist"
             segmentedControl?.alpha = 0.0
         } else {
-            self.screenName = "Now Playing Info"
             segmentedControl?.alpha = 1.0
         }
         
-        self.navigationItem.title = ""
+        self.screenName = "Artist Info"
+        
+        self.navigationItem.title = "Info"
         
         super.viewWillAppear(animated)
     }
@@ -111,9 +119,9 @@ LastFmTrackBuyLinksRequestDelegate {
         self.item = item
     }
     
-    init(artist: LastFmArtist, isForSimiliarArtist: Bool) {
+    init(artist: NSString, isForSimiliarArtist: Bool) {
         super.init(nibName: "NowPlayingInfoViewController", bundle: nil)
-        self.lastFmArtist = artist
+        self.artist = artist
         self.isForSimiliarArtist = isForSimiliarArtist
     }
     
@@ -125,7 +133,7 @@ LastFmTrackBuyLinksRequestDelegate {
         
         handleSegmentedControlChange()
         
-        requestLastFmDataWithArtist(self.lastFmArtist?.name)
+        requestLastFmDataWithArtist(self.artist)
     }
     
     /**
@@ -188,16 +196,24 @@ LastFmTrackBuyLinksRequestDelegate {
         var artistEventsLastFmRequest = LastFmArtistEventsRequest(artist: artistName!)
         artistEventsLastFmRequest.delegate = self
         artistEventsLastFmRequest.sendURLRequest()
+        
+        var topAlbumsLastFmRequest = LastFmTopAlbumsRequest(artist: artistName!)
+        topAlbumsLastFmRequest.delegate = self
+        topAlbumsLastFmRequest.sendURLRequest()
+        
+        var topTracksLastFmRequest = LastFmTopTracksRequest(artist: artistName!)
+        topTracksLastFmRequest.delegate = self
+        topTracksLastFmRequest.sendURLRequest()
 
         
         if !isForSimiliarArtist && self.item != nil {
-            var lastFmAlbumBuyLinksRequest = LastFmAlbumBuyLinksRequest(artist: self.item!.artist, album: self.item!.albumTitle)
-            lastFmAlbumBuyLinksRequest.delegate = self
-            lastFmAlbumBuyLinksRequest.sendURLRequest()
-            
-            var lastFmTrackBuyLinksRequest = LastFmTrackBuyLinksRequest(artist: self.item!.artist, title: self.item!.title)
-            lastFmTrackBuyLinksRequest.delegate = self
-            lastFmTrackBuyLinksRequest.sendURLRequest()
+//            var lastFmAlbumBuyLinksRequest = LastFmAlbumBuyLinksRequest(artist: self.item!.artist, album: self.item!.albumTitle)
+//            lastFmAlbumBuyLinksRequest.delegate = self
+//            lastFmAlbumBuyLinksRequest.sendURLRequest()
+//            
+//            var lastFmTrackBuyLinksRequest = LastFmTrackBuyLinksRequest(artist: self.item!.artist, title: self.item!.title)
+//            lastFmTrackBuyLinksRequest.delegate = self
+//            lastFmTrackBuyLinksRequest.sendURLRequest()
         }
     }
     
@@ -231,6 +247,16 @@ LastFmTrackBuyLinksRequestDelegate {
 
     func lyricsRequestDidComplete(request: LyricsRequest, didCompleteWithLyrics lyrics: String?) {
         self.lyrics = lyrics
+        reloadTable()
+    }
+    
+    func lastFmTopAlbumsRequestDidComplete(request: LastFmTopAlbumsRequest, didCompleteWithAlbums albums: [AnyObject]?) {
+        self.topAlbums = albums
+        reloadTable()
+    }
+    
+    func lastFmTopTracksRequestDidComplete(request: LastFmTopTracksRequest, didCompleteWithTracks tracks: [AnyObject]?) {
+        self.topTracks = tracks
         reloadTable()
     }
     
@@ -280,21 +306,15 @@ LastFmTrackBuyLinksRequestDelegate {
                 let nib = UINib(nibName: "SimiliarArtistCollectionViewCell", bundle: nil)
                 artistInfoCell.collectionView.registerNib(nib, forCellWithReuseIdentifier: "SimiliarArtistCell")
                 
-                artistInfoCell.songBuyLinks = songBuyLinks
-                artistInfoCell.albumBuyLinks = albumBuyLinks
+                artistInfoCell.topTracks = topTracks
+                artistInfoCell.topAlbums = topAlbums
                 
-                if isForSimiliarArtist {
-                    artistInfoCell.buySongButton.alpha = 0.0
-                    artistInfoCell.buyAlbumButton.alpha = 0.0
-                } else {
-                    
-                    if songBuyLinks?.count > 0 {
-                        artistInfoCell.buySongButton.alpha = 1.0
-                    }
-                    
-                    if albumBuyLinks?.count > 0 {
-                        artistInfoCell.buyAlbumButton.alpha = 1.0
-                    }
+                if topTracks?.count > 0 {
+                    artistInfoCell.buySongButton.alpha = 1.0
+                }
+                
+                if topAlbums?.count > 0 {
+                    artistInfoCell.buyAlbumButton.alpha = 1.0
                 }
                 
                 return artistInfoCell
@@ -365,9 +385,25 @@ LastFmTrackBuyLinksRequestDelegate {
                 self.navigationController?.pushViewController(LastFmEventInfoController(event: event), animated: true)
             }
         } else {
-            if let artist = self.similiarArtists?[indexPath.row] as? LastFmArtist {
-                let nowPlaying = NowPlayingInfoViewController(artist: artist, isForSimiliarArtist: true)
+            if let lastFmArtist = self.similiarArtists?[indexPath.row] as? LastFmArtist {
+                let nowPlaying = NowPlayingInfoViewController(artist: lastFmArtist.name, isForSimiliarArtist: true)
                 self.navigationController?.pushViewController(nowPlaying, animated: true)
+            }
+        }
+    }
+    
+    func lastFmArtistInfoCell(cell: LastFmArtistInfoCell, didTapTopAlbumsButton albums: [AnyObject]?) {
+        if let topAlbums = albums {
+            let topAlbumsViewController = TopAlbumsViewController(topAlbums: topAlbums)
+            self.navigationController?.pushViewController(topAlbumsViewController, animated: true)
+        }
+    }
+    
+    func lastFmArtistInfoCell(cell: LastFmArtistInfoCell, didTapTopTracksButton tracks: [AnyObject]?) {
+        if let topTracks = tracks {
+            if let artist = similiarArtists?[self.tableView.indexPathForCell(cell)!.row] as? LastFmArtist {
+                let topTracksViewController = TopTracksViewController(topTracks: topTracks, artist: artist.name)
+                self.navigationController?.pushViewController(topTracksViewController, animated: true)
             }
         }
     }

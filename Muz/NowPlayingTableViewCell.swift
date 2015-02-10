@@ -14,7 +14,7 @@ class NowPlayingTableViewCell: UITableViewCell {
     @IBOutlet weak var songImageView: UIImageView!
     @IBOutlet weak var artistLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var progressView: UISlider!
+    @IBOutlet weak var progressView: UIProgressView!
     
     var updateTimer: NSTimer!
     let playerController = MPMusicPlayerController.iPodMusicPlayer()
@@ -37,7 +37,6 @@ class NowPlayingTableViewCell: UITableViewCell {
             self.progressView.alpha = 0.0
         }
         
-        self.progressView.setThumbImage(UIImage(), forState: .Normal)
         self.updateNowPlaying()
     }
     
@@ -51,7 +50,8 @@ class NowPlayingTableViewCell: UITableViewCell {
     
     func updateProgress() {
         if let item = playerController.nowPlayingItem {
-            progressView.value = (Float(self.playerController.currentPlaybackTime) / Float(item.playbackDuration)) * 0.001
+            progressView.progress = (Float(self.playerController.currentPlaybackTime) / Float(item.playbackDuration))
+            print("\nCurrent song progress value: \(progressView.progress)\n")
         }
     }
     

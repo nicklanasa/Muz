@@ -58,6 +58,14 @@
 		CE5E31AA1A86A40100969647 /* LastFmSimilarArtistTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE5E31A91A86A40100969647 /* LastFmSimilarArtistTableCell.xib */; };
 		CE6EF5001A38F07D001FE858 /* ArtistAlbumsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6EF4FF1A38F07D001FE858 /* ArtistAlbumsViewController.swift */; };
 		CE6EF5021A38F08C001FE858 /* ArtistAlbumsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE6EF5011A38F08C001FE858 /* ArtistAlbumsViewController.xib */; };
+		CE9211291A8926DF00758227 /* TopTracksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9211281A8926DF00758227 /* TopTracksViewController.swift */; };
+		CE92112B1A8926E900758227 /* TopAlbumsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE92112A1A8926E900758227 /* TopAlbumsViewController.swift */; };
+		CE92112D1A89270800758227 /* TopTracksViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE92112C1A89270800758227 /* TopTracksViewController.xib */; };
+		CE92112F1A89271000758227 /* TopAlbumsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE92112E1A89271000758227 /* TopAlbumsViewController.xib */; };
+		CE9211311A8927FC00758227 /* LastFmTopTracksRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9211301A8927FC00758227 /* LastFmTopTracksRequest.swift */; };
+		CE9211331A89280700758227 /* LastFmTopAlbumsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9211321A89280700758227 /* LastFmTopAlbumsRequest.swift */; };
+		CE9211361A8929CC00758227 /* LastFmAlbum.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9211351A8929CC00758227 /* LastFmAlbum.m */; };
+		CE9211391A892FBE00758227 /* LastFmTrack.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9211381A892FBE00758227 /* LastFmTrack.m */; };
 		CE95D9BD1A3DFB730060752A /* LastFmArtistInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE95D9BC1A3DFB730060752A /* LastFmArtistInfoCell.swift */; };
 		CE95D9BF1A3DFB860060752A /* LastFmArtistInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE95D9BE1A3DFB860060752A /* LastFmArtistInfoCell.xib */; };
 		CE9745411A3E548F00A65633 /* LastFmSimiliarArtistsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9745401A3E548F00A65633 /* LastFmSimiliarArtistsRequest.swift */; };
@@ -210,6 +218,16 @@
 		CE7D81291A51C70B001C1035 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		CE7D812B1A51C712001C1035 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		CE7D812D1A51C71A001C1035 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		CE9211281A8926DF00758227 /* TopTracksViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopTracksViewController.swift; sourceTree = "<group>"; };
+		CE92112A1A8926E900758227 /* TopAlbumsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopAlbumsViewController.swift; sourceTree = "<group>"; };
+		CE92112C1A89270800758227 /* TopTracksViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TopTracksViewController.xib; sourceTree = "<group>"; };
+		CE92112E1A89271000758227 /* TopAlbumsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TopAlbumsViewController.xib; sourceTree = "<group>"; };
+		CE9211301A8927FC00758227 /* LastFmTopTracksRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastFmTopTracksRequest.swift; sourceTree = "<group>"; };
+		CE9211321A89280700758227 /* LastFmTopAlbumsRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastFmTopAlbumsRequest.swift; sourceTree = "<group>"; };
+		CE9211341A8929CC00758227 /* LastFmAlbum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LastFmAlbum.h; sourceTree = "<group>"; };
+		CE9211351A8929CC00758227 /* LastFmAlbum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LastFmAlbum.m; sourceTree = "<group>"; };
+		CE9211371A892FBE00758227 /* LastFmTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LastFmTrack.h; sourceTree = "<group>"; };
+		CE9211381A892FBE00758227 /* LastFmTrack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LastFmTrack.m; sourceTree = "<group>"; };
 		CE95D9BC1A3DFB730060752A /* LastFmArtistInfoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastFmArtistInfoCell.swift; sourceTree = "<group>"; };
 		CE95D9BE1A3DFB860060752A /* LastFmArtistInfoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LastFmArtistInfoCell.xib; sourceTree = "<group>"; };
 		CE9745401A3E548F00A65633 /* LastFmSimiliarArtistsRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastFmSimiliarArtistsRequest.swift; sourceTree = "<group>"; };
@@ -338,9 +356,11 @@
 			isa = PBXGroup;
 			children = (
 				CE3038DB1A3E067500DCC5EB /* LastFmArtistInfoRequest.swift */,
+				CE9211321A89280700758227 /* LastFmTopAlbumsRequest.swift */,
+				CE9211301A8927FC00758227 /* LastFmTopTracksRequest.swift */,
+				CECCC1131A41135B00799854 /* LastFmAlbumBuyLinksRequest.swift */,
 				CE9745401A3E548F00A65633 /* LastFmSimiliarArtistsRequest.swift */,
 				CECCC10C1A40ED1200799854 /* LastFmArtistEventsRequest.swift */,
-				CECCC1131A41135B00799854 /* LastFmAlbumBuyLinksRequest.swift */,
 				CECCC1111A41134900799854 /* LastFmTrackBuyLinksRequest.swift */,
 				CE9745421A3E556900A65633 /* LastFmRequest.swift */,
 				CE3038EC1A3E0C4F00DCC5EB /* LastFmArtist.h */,
@@ -351,6 +371,10 @@
 				CECCC10F1A40F46300799854 /* LastFmEvent.m */,
 				CECCC1151A41168E00799854 /* LastFmBuyLink.h */,
 				CECCC1161A41168E00799854 /* LastFmBuyLink.m */,
+				CE9211371A892FBE00758227 /* LastFmTrack.h */,
+				CE9211381A892FBE00758227 /* LastFmTrack.m */,
+				CE9211341A8929CC00758227 /* LastFmAlbum.h */,
+				CE9211351A8929CC00758227 /* LastFmAlbum.m */,
 			);
 			name = LastFm;
 			sourceTree = "<group>";
@@ -512,6 +536,10 @@
 				CEFEB1C71A843DA00070A28D /* UIButton+Helpers.swift */,
 				CEFEB1C31A843A270070A28D /* SyncOverlayController.swift */,
 				CEFEB1C51A843A5B0070A28D /* SyncOverlayController.xib */,
+				CE9211281A8926DF00758227 /* TopTracksViewController.swift */,
+				CE92112C1A89270800758227 /* TopTracksViewController.xib */,
+				CE92112A1A8926E900758227 /* TopAlbumsViewController.swift */,
+				CE92112E1A89271000758227 /* TopAlbumsViewController.xib */,
 				CEA4A13E1A867678003FDF0D /* HomeViewController.swift */,
 				CEA4A1401A8676B0003FDF0D /* HomeViewController.xib */,
 				CE9BCFD41A44E98100522F18 /* Playlists */,
@@ -704,6 +732,7 @@
 				CEDB61E91A37DCEE00B90B2D /* MoreViewController.xib in Resources */,
 				CE3338231A393BA900281146 /* ArtistAlbumHeader.xib in Resources */,
 				CE444BDE1A36A27200153F77 /* ArtistCell.xib in Resources */,
+				CE92112D1A89270800758227 /* TopTracksViewController.xib in Resources */,
 				CE95D9BF1A3DFB860060752A /* LastFmArtistInfoCell.xib in Resources */,
 				CE3038D81A3E033100DCC5EB /* SimiliarArtistCollectionViewCell.xib in Resources */,
 				CE444BBB1A36A25500153F77 /* Main.storyboard in Resources */,
@@ -718,6 +747,7 @@
 				CE2BD1211A59F2710077D3FD /* MoreLastFmSettingCell.xib in Resources */,
 				CE3338611A3A0ADB00281146 /* ArtistsHeader.xib in Resources */,
 				CECCC0BB1A3F8E7400799854 /* PlaylistsViewController.xib in Resources */,
+				CE92112F1A89271000758227 /* TopAlbumsViewController.xib in Resources */,
 				CECCC0ED1A40941400799854 /* PlaylistCell.xib in Resources */,
 				CEA4A13D1A8665EA003FDF0D /* random.jpg in Resources */,
 				CE5E31AA1A86A40100969647 /* LastFmSimilarArtistTableCell.xib in Resources */,
@@ -816,6 +846,7 @@
 				CE3338291A39D7EB00281146 /* ArtistAlbumsSongCell.swift in Sources */,
 				CE4184D81A49E8330011C0DA /* SettingsManager.swift in Sources */,
 				CEFEB1C81A843DA00070A28D /* UIButton+Helpers.swift in Sources */,
+				CE9211331A89280700758227 /* LastFmTopAlbumsRequest.swift in Sources */,
 				CEFEB1C41A843A270070A28D /* SyncOverlayController.swift in Sources */,
 				CECCC1101A40F46300799854 /* LastFmEvent.m in Sources */,
 				CE3038EE1A3E0C4F00DCC5EB /* LastFmArtist.m in Sources */,
@@ -826,7 +857,10 @@
 				CECCC10D1A40ED1200799854 /* LastFmArtistEventsRequest.swift in Sources */,
 				CE9BCFE11A45D2CD00522F18 /* LastFmEventInfoCell.swift in Sources */,
 				CE9BCFCF1A44C39800522F18 /* CreatePlaylistOverlay.swift in Sources */,
+				CE92112B1A8926E900758227 /* TopAlbumsViewController.swift in Sources */,
 				CEB200D21A378B6400E857D8 /* UIImage+ImageEffects.m in Sources */,
+				CE9211291A8926DF00758227 /* TopTracksViewController.swift in Sources */,
+				CE9211311A8927FC00758227 /* LastFmTopTracksRequest.swift in Sources */,
 				CE33385D1A3A0A7D00281146 /* SongsHeader.swift in Sources */,
 				CE9745431A3E556900A65633 /* LastFmRequest.swift in Sources */,
 				CE3038DC1A3E067500DCC5EB /* LastFmArtistInfoRequest.swift in Sources */,
@@ -835,6 +869,7 @@
 				CEDB618E1A37C40000B90B2D /* LovedViewController.swift in Sources */,
 				CEA4A13F1A867678003FDF0D /* HomeViewController.swift in Sources */,
 				CEE153551A3B5B4B00BB16EB /* HTMLNode.m in Sources */,
+				CE9211391A892FBE00758227 /* LastFmTrack.m in Sources */,
 				CEBC1EF81A81781E000AF2F1 /* NSString+Helpers.swift in Sources */,
 				CEDB61EB1A37DE5400B90B2D /* NowPlayingViewController.swift in Sources */,
 				CEB524E31A3B766000027C71 /* LyricsRequest.swift in Sources */,
@@ -865,6 +900,7 @@
 				CE9BCFD61A44EB4C00522F18 /* CreatePlaylistCell.swift in Sources */,
 				CE3038DA1A3E037700DCC5EB /* SimiliarArtistCollectionViewCell.swift in Sources */,
 				CE9745411A3E548F00A65633 /* LastFmSimiliarArtistsRequest.swift in Sources */,
+				CE9211361A8929CC00758227 /* LastFmAlbum.m in Sources */,
 				CECCC0CF1A3FAA5600799854 /* PlaylistSong.swift in Sources */,
 				CE167DA01A855A7700A9EC1A /* Artist.swift in Sources */,
 				CE4184D41A4922900011C0DA /* Muz.xcdatamodeld in Sources */,

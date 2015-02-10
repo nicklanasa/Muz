@@ -14,7 +14,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Stolen Dance" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="NJ1-Bl-R2F">
-                        <rect key="frame" x="77" y="13" width="604" height="21"/>
+                        <rect key="frame" x="78" y="13" width="223" height="21"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="17"/>
                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
@@ -25,29 +25,28 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Milky Chance" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="xak-Uf-Gu3">
-                        <rect key="frame" x="78" y="36" width="604" height="21"/>
+                        <rect key="frame" x="78" y="36" width="223" height="21"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
                         <color key="textColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" id="qok-uC-VuU">
-                        <rect key="frame" x="-2" y="64" width="324" height="31"/>
+                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" id="fTP-cs-gOO">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="2"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="minimumTrackTintColor" red="1" green="0.72156862749999995" blue="0.23529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <color key="thumbTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    </slider>
+                        <color key="tintColor" red="1" green="0.72156862749999995" blue="0.23529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </progressView>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
                 <outlet property="artistLabel" destination="xak-Uf-Gu3" id="fCZ-CV-GXV"/>
-                <outlet property="progressView" destination="qok-uC-VuU" id="Eas-zL-P0w"/>
+                <outlet property="progressView" destination="fTP-cs-gOO" id="BO2-0V-FFu"/>
                 <outlet property="songImageView" destination="Oeq-B8-VWk" id="PBL-eq-uun"/>
                 <outlet property="titleLabel" destination="NJ1-Bl-R2F" id="mNT-bY-O6y"/>
             </connections>
-            <point key="canvasLocation" x="101" y="27.5"/>
+            <point key="canvasLocation" x="100" y="27.5"/>
         </tableViewCell>
     </objects>
     <resources>

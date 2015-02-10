@@ -8,6 +8,8 @@
 #import "LastFm.h"
 #import "LastFmEvent.h"
 #import "LastFmArtist.h"
+#import "LastFmAlbum.h"
+#import "LastFmTrack.h"
 #import "LastFmBuyLink.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <LastFm/LastFm.h>

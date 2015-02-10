@@ -310,7 +310,7 @@ UICollectionViewDataSource {
             }
         } else {
             if let artist = self.similiarArtists?[indexPath.row] as? LastFmArtist {
-                let nowPlaying = NowPlayingInfoViewController(artist: artist, isForSimiliarArtist: true)
+                let nowPlaying = NowPlayingInfoViewController(artist: artist.name, isForSimiliarArtist: true)
                 self.navigationController?.pushViewController(nowPlaying, animated: true)
             }
         }

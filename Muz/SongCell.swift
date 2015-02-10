@@ -14,9 +14,10 @@ class SongCell: UITableViewCell {
     @IBOutlet weak var songLabel: UILabel!
     @IBOutlet weak var infoLabel: UILabel!
     @IBOutlet weak var songImageView: UIImageView!
+    @IBOutlet weak var buyButton: UIButton!
     
     override func awakeFromNib() {
-
+        buyButton.applyBuyStyle()
     }
     
     func updateWithItem(item: MPMediaItem) {
@@ -42,7 +43,7 @@ class SongCell: UITableViewCell {
     func updateWithSong(song: Song, forArtist: Bool) {
         if forArtist {
             self.songLabel.text = song.artist
-            self.infoLabel.text = song.albumTitle
+            self.infoLabel.text = NSString(format: "%@ %@", song.artist, song.albumTitle)
             self.songImageView.setImageForSong(song: song)
             self.songImageView.applyRoundedStyle()
         } else {

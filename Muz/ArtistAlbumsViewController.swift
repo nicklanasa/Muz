@@ -62,6 +62,16 @@ ArtistAlbumHeaderDelegate {
         tableView.registerNib(UINib(nibName: "ArtistAlbumHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "Header")
     
         fetchArtistAlbums()
+        
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "info"),
+            style: .Plain,
+            target: self,
+            action: "artistInfo")
+    }
+    
+    func artistInfo() {
+        var controller = NowPlayingInfoViewController(artist: self.artist.name, isForSimiliarArtist: true)
+        self.navigationController?.pushViewController(controller, animated: true)
     }
     
     override func viewDidAppear(animated: Bool) {
