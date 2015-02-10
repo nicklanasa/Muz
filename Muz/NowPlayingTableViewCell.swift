@@ -51,7 +51,6 @@ class NowPlayingTableViewCell: UITableViewCell {
     func updateProgress() {
         if let item = playerController.nowPlayingItem {
             progressView.progress = (Float(self.playerController.currentPlaybackTime) / Float(item.playbackDuration))
-            print("\nCurrent song progress value: \(progressView.progress)\n")
         }
     }
     

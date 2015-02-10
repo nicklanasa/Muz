@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import MediaPlayer
 
-let LastFmArtistInfoCellHeight: CGFloat = 605.0
+let LastFmArtistInfoCellHeight: CGFloat = 570.0
 
 protocol LastFmArtistInfoCellDelegate {
     func lastFmArtistInfoCell(cell: LastFmArtistInfoCell, didTapTopAlbumsButton albums: [AnyObject]?)

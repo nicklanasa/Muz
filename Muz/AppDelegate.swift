@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MediaPlayer
 
 let MuzFontName = "HelveticaNeue-Thin"
 let MuzFontNameMedium = "HelveticaNeue-Medium"
@@ -123,28 +124,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         if !MediaSession.sharedSession.isMediaLibraryEmpty {
             noMusicOverlay.view.removeFromSuperview()
-            
         } else {
             if noMusicOverlay.view.superview == nil {
                 addNoMusicOverlay()
             }
-            
-            DataManager.manager.syncArtists({ (addedItems, error) -> () in
-                
-            }, progress: { (addedItems) -> () in
-                
-            })
         }
-        
-        
     }
 
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        
+        if NSUserDefaults.standardUserDefaults().objectForKey("SyncLibrary") != nil {
+            DataManager.manager.syncArtists({ (addedItems, error) -> () in
+                
+                }, progress: { (addedItems) -> () in
+                    
+            })
+        }
     }
 
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+        MPMusicPlayerController.iPodMusicPlayer().stop()
     }
     
     private func addNoMusicOverlay() {

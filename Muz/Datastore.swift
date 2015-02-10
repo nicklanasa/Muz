@@ -125,6 +125,23 @@ class Datastore {
         dispatch_async(dispatch_get_main_queue(), dispatchBlock)
     }
     
+    
+    func resetLibrary(completion: (error: NSErrorPointer) -> ()) {
+        /*
+        self.workerContext.performBlock { () -> Void in
+            var error: NSError?
+            var request = NSFetchRequest(entityName: "Song")
+            let results = self.workerContext.executeFetchRequest(request, error: &error)
+            
+            for song in results as [Song] {
+                self.workerContext.deleteObject(song)
+            }
+            
+            completion(error: &error)
+        }
+        */
+    }
+    
     /**
     Adds artists to the datastore.
     
@@ -133,7 +150,7 @@ class Datastore {
     */
     func addArtists(artists: NSArray, completion: (addedItems: [AnyObject], error: NSErrorPointer) -> (),
         progress: (addedItems: [AnyObject]) -> ()) {
-        self.mainQueueContext.performBlock { () -> Void in
+        self.workerContext.performBlock { () -> Void in
            
             let startTime = NSDate()
             var request = NSFetchRequest(entityName: "Artist")
@@ -149,14 +166,14 @@ class Datastore {
                         let predicate = NSPredicate(format: "name = %@", artistName)
                         request.fetchLimit = 1
                         request.predicate = predicate
-                        let results = self.mainQueueContext.executeFetchRequest(request, error: &error)
+                        let results = self.workerContext.executeFetchRequest(request, error: &error)
                         
                         var managedArtist: Artist!
                         if results?.count > 0 {
                             managedArtist = results?[0] as Artist
                         } else {
                             managedArtist = NSEntityDescription.insertNewObjectForEntityForName("Artist",
-                                inManagedObjectContext: self.mainQueueContext) as Artist
+                                inManagedObjectContext: self.workerContext) as Artist
                         }
                         
                         managedArtist.parseItem(item)
@@ -166,10 +183,7 @@ class Datastore {
                         
                         addedArtists.addObject(managedArtist)
                         
-                        let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
-                        dispatch_async(dispatch_get_global_queue(priority, 0)) {
-                            progress(addedItems: addedArtists)
-                        }
+                        progress(addedItems: [managedArtist])
                     }
                 }
             })
@@ -262,14 +276,14 @@ class Datastore {
         let predicate = NSPredicate(format: "title = %@", item.albumTitle)
         request.fetchLimit = 1
         request.predicate = predicate
-        let results = self.mainQueueContext.executeFetchRequest(request, error: &error)
+        let results = self.workerContext.executeFetchRequest(request, error: &error)
         
         var managedAlbum: Album!
         if results?.count > 0 {
             managedAlbum = results?[0] as Album
         } else {
             managedAlbum = NSEntityDescription.insertNewObjectForEntityForName("Album",
-                inManagedObjectContext: self.mainQueueContext) as Album
+                inManagedObjectContext: self.workerContext) as Album
         }
 
         managedAlbum.parseItem(item)
@@ -322,8 +336,26 @@ class Datastore {
     func addSongForItem(#item: MPMediaItem, album: Album) {
         var error: NSError?
         var request = NSFetchRequest(entityName: "Song")
-        var managedSong = NSEntityDescription.insertNewObjectForEntityForName("Song",
-            inManagedObjectContext: self.mainQueueContext) as Song
+        
+        var managedSong: Song!
+        
+        if NSUserDefaults.standardUserDefaults().objectForKey("SyncLibrary") != nil {
+            let predicate = NSPredicate(format: "persistentID = %@", String(item.persistentID))
+            request.fetchLimit = 1
+            request.predicate = predicate
+            let results = self.workerContext.executeFetchRequest(request, error: &error)
+            
+            if results?.count > 0 {
+                managedSong = results?[0] as Song
+            } else {
+                managedSong = NSEntityDescription.insertNewObjectForEntityForName("Song",
+                    inManagedObjectContext: self.workerContext) as Song
+            }
+        } else {
+            managedSong = NSEntityDescription.insertNewObjectForEntityForName("Song",
+                inManagedObjectContext: self.workerContext) as Song
+        }
+        
         managedSong.parseItem(item)
         managedSong.album = album
     }

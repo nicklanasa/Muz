@@ -183,16 +183,34 @@ NowPlayingCollectionControllerDelegate {
         
         playerController.beginGeneratingPlaybackNotifications()
         
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "list"),
+        var nowPlayinglist = UIBarButtonItem(image: UIImage(named: "list"),
             style: .Plain,
             target: self,
             action: "showNowPlayingCollectionController")
+        
+        var addToPlaylist = UIBarButtonItem(image: UIImage(named: "add"),
+            style: .Plain,
+            target: self,
+            action: "addToPlaylist")
+        
+        self.navigationItem.rightBarButtonItems = [nowPlayinglist, addToPlaylist]
         
         progressSlider.setThumbImage(UIImage(named: "thumbImage"), forState: .Normal)
         progressSlider.setThumbImage(UIImage(named: "thumbImage"), forState: .Selected)
         
         if let song = self.song {
             self.updateNowPlaying()
+        }
+    }
+    
+    func addToPlaylist() {
+        if let nowPlayingItem = self.playerController.nowPlayingItem {
+            if let song = DataManager.manager.datastore.songForSongName(nowPlayingItem.title, artist: nowPlayingItem.artist) {
+                let createPlaylistOverlay = CreatePlaylistOverlay(song: song)
+                self.presentModalOverlayController(createPlaylistOverlay, blurredController: self)
+            }
+        } else {
+            UIAlertView(title: "Error!", message: "You must be playing a song to do that!", delegate: self, cancelButtonTitle: "Ok").show()
         }
     }
     

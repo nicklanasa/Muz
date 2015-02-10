@@ -69,7 +69,7 @@ UISearchDisplayDelegate {
         searchDisplayController?.searchResultsTableView.registerNib(UINib(nibName: "ArtistCell", bundle: nil), forCellReuseIdentifier: "Cell")
         searchDisplayController?.searchResultsTableView.registerNib(UINib(nibName: "ArtistsHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "Header")
         
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "search"),
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "search"),
             style: .Plain,
             target: self,
             action: "showSearch")

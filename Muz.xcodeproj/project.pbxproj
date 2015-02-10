@@ -135,6 +135,9 @@
 		CEE153501A3B568400BB16EB /* NowPlayingInfoLyricsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEE1534F1A3B568400BB16EB /* NowPlayingInfoLyricsCell.xib */; };
 		CEE153551A3B5B4B00BB16EB /* HTMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE153521A3B5B4B00BB16EB /* HTMLNode.m */; };
 		CEE153561A3B5B4B00BB16EB /* HTMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE153541A3B5B4B00BB16EB /* HTMLParser.m */; };
+		CEF808291A8A94FF00B6D954 /* NSNumber+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF808281A8A94FF00B6D954 /* NSNumber+Helpers.swift */; };
+		CEF8082B1A8AAEB600B6D954 /* TopAlbumCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF8082A1A8AAEB600B6D954 /* TopAlbumCell.swift */; };
+		CEF8082D1A8AAEC100B6D954 /* TopAlbumCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEF8082C1A8AAEC100B6D954 /* TopAlbumCell.xib */; };
 		CEFEB1C41A843A270070A28D /* SyncOverlayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEFEB1C31A843A270070A28D /* SyncOverlayController.swift */; };
 		CEFEB1C61A843A5B0070A28D /* SyncOverlayController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEFEB1C51A843A5B0070A28D /* SyncOverlayController.xib */; };
 		CEFEB1C81A843DA00070A28D /* UIButton+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEFEB1C71A843DA00070A28D /* UIButton+Helpers.swift */; };
@@ -303,6 +306,9 @@
 		CEE153521A3B5B4B00BB16EB /* HTMLNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTMLNode.m; sourceTree = "<group>"; };
 		CEE153531A3B5B4B00BB16EB /* HTMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTMLParser.h; sourceTree = "<group>"; };
 		CEE153541A3B5B4B00BB16EB /* HTMLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTMLParser.m; sourceTree = "<group>"; };
+		CEF808281A8A94FF00B6D954 /* NSNumber+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSNumber+Helpers.swift"; sourceTree = "<group>"; };
+		CEF8082A1A8AAEB600B6D954 /* TopAlbumCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopAlbumCell.swift; sourceTree = "<group>"; };
+		CEF8082C1A8AAEC100B6D954 /* TopAlbumCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TopAlbumCell.xib; sourceTree = "<group>"; };
 		CEFEB1C31A843A270070A28D /* SyncOverlayController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncOverlayController.swift; sourceTree = "<group>"; };
 		CEFEB1C51A843A5B0070A28D /* SyncOverlayController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SyncOverlayController.xib; sourceTree = "<group>"; };
 		CEFEB1C71A843DA00070A28D /* UIButton+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton+Helpers.swift"; sourceTree = "<group>"; };
@@ -470,6 +476,8 @@
 				CE33385E1A3A0AD100281146 /* SongsHeader.xib */,
 				CEC66D9C1A38DA2400560754 /* SongCell.swift */,
 				CEC66DA01A38DB9300560754 /* SongCell.xib */,
+				CEF8082A1A8AAEB600B6D954 /* TopAlbumCell.swift */,
+				CEF8082C1A8AAEC100B6D954 /* TopAlbumCell.xib */,
 			);
 			name = Songs;
 			sourceTree = "<group>";
@@ -498,6 +506,7 @@
 				CECCC0D61A3FB65700799854 /* PlaylistSong+Helpers.swift */,
 				CE444BE01A36A28700153F77 /* Song+Helpers.swift */,
 				CE3038E21A3E0A9F00DCC5EB /* LastFm */,
+				CEF808281A8A94FF00B6D954 /* NSNumber+Helpers.swift */,
 			);
 			name = Data;
 			sourceTree = "<group>";
@@ -766,6 +775,7 @@
 				CECCC10B1A40CC2700799854 /* PlaylistSongsViewController.xib in Resources */,
 				CE3126271A50E9280071AD27 /* ShadowsIntoLight.ttf in Resources */,
 				CE33385F1A3A0AD100281146 /* SongsHeader.xib in Resources */,
+				CEF8082D1A8AAEC100B6D954 /* TopAlbumCell.xib in Resources */,
 				CE444BC01A36A25500153F77 /* LaunchScreen.xib in Resources */,
 				CE4184CF1A4922900011C0DA /* Main.storyboard in Resources */,
 				CE9BCFED1A45E2D700522F18 /* LastFmEventInfoDetailsCell.xib in Resources */,
@@ -866,6 +876,7 @@
 				CE3038DC1A3E067500DCC5EB /* LastFmArtistInfoRequest.swift in Sources */,
 				CEC66D8C1A37EFA700560754 /* ArtistCell.swift in Sources */,
 				CECCC1191A4127D400799854 /* LastFmBuyLinksViewController.swift in Sources */,
+				CEF808291A8A94FF00B6D954 /* NSNumber+Helpers.swift in Sources */,
 				CEDB618E1A37C40000B90B2D /* LovedViewController.swift in Sources */,
 				CEA4A13F1A867678003FDF0D /* HomeViewController.swift in Sources */,
 				CEE153551A3B5B4B00BB16EB /* HTMLNode.m in Sources */,
@@ -906,6 +917,7 @@
 				CE4184D41A4922900011C0DA /* Muz.xcdatamodeld in Sources */,
 				CE2BD11F1A59F2670077D3FD /* MoreLastFmSettingCell.swift in Sources */,
 				CEE1534E1A3B567C00BB16EB /* NowPlayingInfoLyricsCell.swift in Sources */,
+				CEF8082B1A8AAEB600B6D954 /* TopAlbumCell.swift in Sources */,
 				CE33385B1A3A0A7300281146 /* ArtistsHeader.swift in Sources */,
 				CE444BE51A36A28700153F77 /* Song+Helpers.swift in Sources */,
 			);

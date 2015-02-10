@@ -33,7 +33,7 @@ class TopAlbumsViewController: RootViewController, LastFmAlbumBuyLinksRequestDel
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tableView.registerNib(UINib(nibName: "SongCell", bundle: nil), forCellReuseIdentifier: "SongCell")
+        self.tableView.registerNib(UINib(nibName: "TopAlbumCell", bundle: nil), forCellReuseIdentifier: "TopAlbumCell")
         
         self.navigationItem.title = "Top Albums"
     }
@@ -52,8 +52,8 @@ class TopAlbumsViewController: RootViewController, LastFmAlbumBuyLinksRequestDel
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("SongCell",
-            forIndexPath: indexPath) as SongCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("TopAlbumCell",
+            forIndexPath: indexPath) as TopAlbumCell
         
         let topAlbum = self.topAlbums[indexPath.row] as LastFmAlbum
         cell.songLabel.text = topAlbum.title
@@ -63,6 +63,8 @@ class TopAlbumsViewController: RootViewController, LastFmAlbumBuyLinksRequestDel
         } else {
             cell.songImageView.image = UIImage(named: "nowPlayingDefault")
         }
+        
+        
         cell.buyButton.hidden = false
         
         cell.selectionStyle = .None

@@ -97,7 +97,7 @@ LastFmArtistInfoCellDelegate {
         
         self.screenName = "Artist Info"
         
-        self.navigationItem.title = "Info"
+        self.navigationItem.title = ""
         
         super.viewWillAppear(animated)
     }

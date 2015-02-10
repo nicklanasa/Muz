@@ -48,6 +48,7 @@ var CurrentQueueItems: MPMediaItemCollection!
     // Artists
     
     func fetchArtists(completion: (results: [AnyObject]) -> ()) {
+        artistsQuery = MPMediaQuery.artistsQuery()
         self.removeAllPredicatesFromQuery(artistsQuery)
         artistsQuery.addFilterPredicate(MPMediaPropertyPredicate(value: MPMediaType.Music.rawValue,
             forProperty: MPMediaItemPropertyMediaType,
@@ -67,7 +68,7 @@ var CurrentQueueItems: MPMediaItemCollection!
         if artistsQuery.items.count > 0 {
             for item in artistsQuery.items as [MPMediaItem] {
                 if let artwork = item.artwork {
-                    if let artistImage = artwork.imageWithSize(CGSizeMake(50, 50)) {
+                    if let artistImage = artwork.imageWithSize(CGSizeMake(200, 200)) {
                         image = artistImage
                         break
                     }

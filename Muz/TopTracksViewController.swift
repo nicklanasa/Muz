@@ -55,7 +55,7 @@ class TopTracksViewController: RootViewController, LastFmTrackBuyLinksRequestDel
         
         let topTrack = self.topTracks[indexPath.row] as LastFmTrack
         cell.songLabel.text = topTrack.name
-        cell.infoLabel.text = topTrack.playcount.description + " plays"
+        cell.infoLabel.text = topTrack.playcount.integerValue.abbreviateNumber() + " plays"
         if let image = topTrack.image {
             cell.songImageView.sd_setImageWithURL(NSURL(string: image))
         } else {
