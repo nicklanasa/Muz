@@ -128,6 +128,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             if noMusicOverlay.view.superview == nil {
                 addNoMusicOverlay()
             }
+            
+            DataManager.manager.syncArtists({ (addedItems, error) -> () in
+                
+            }, progress: { (addedItems) -> () in
+                
+            })
         }
         
         
