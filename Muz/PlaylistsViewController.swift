@@ -66,7 +66,7 @@ NSFetchedResultsControllerDelegate {
         self.tableView.registerNib(UINib(nibName: "SongsHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "Header")
     
         if !self.isForExistingPlaylist {
-            self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "add"),
+            self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "add"),
                 style: .Plain,
                 target: self,
                 action: "addPlaylist");

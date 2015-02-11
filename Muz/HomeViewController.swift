@@ -77,32 +77,17 @@ UICollectionViewDataSource {
         nowPlayingCell = nowPlayingCellNib.instantiateWithOwner(self, options: nil)[0] as? NowPlayingTableViewCell
         
         self.fetchHomeData()
-        
-        DataManager.manager.syncPlaylists({ (addedItems, error) -> () in
-            self.tableView.beginUpdates()
-            self.tableView.endUpdates()
-            self.tableView.reloadData()
-        })
     }
     
     func fetchHomeData() {
         var recentPlaylistsError: NSError?
         var recentSongsError: NSError?
         if self.recentPlaylistsController!.performFetch(&recentPlaylistsError) {
-            
-            DataManager.manager.syncPlaylists({ (addedItems, error) -> () in
-                
-            })
-            
             if self.recentArtistSongs?.count > 0 {
                 if let song = self.recentArtistSongs?[0] as? NSDictionary {
                     var similiarArtistLastFmRequest = LastFmSimiliarArtistsRequest(artist: song.objectForKey("artist") as NSString)
                     similiarArtistLastFmRequest.delegate = self
                     similiarArtistLastFmRequest.sendURLRequest()
-                    
-                    similarArtistCell.noContentLabel.hidden = true
-                } else {
-                    similarArtistCell.noContentLabel.hidden = false
                 }
             }
         }
@@ -174,6 +159,13 @@ UICollectionViewDataSource {
             similarArtistCell.collectionView.registerNib(nib, forCellWithReuseIdentifier: "SimiliarArtistCell")
             
             similarArtistCell.collectionView.reloadData()
+            
+            if self.similiarArtists?.count == 0 {
+                similarArtistCell.noContentLabel.hidden = false
+                similarArtistCell.noContentLabel.text = "Start playing some music to see recommended Artists"
+            } else {
+                similarArtistCell.noContentLabel.hidden = true
+            }
             
             if self.similiarArtists?.count > 0 {
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in

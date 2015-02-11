@@ -65,6 +65,7 @@ class TopTracksViewController: RootViewController, LastFmTrackBuyLinksRequestDel
         
         //cell.buyButton.hidden = false
         cell.selectionStyle = .None
+        cell.accessoryType = .None
         
         cell.buyButton.addTarget(self, action: "fetchBuyLinks:", forControlEvents: .TouchUpInside)
         cell.buyButton.tag = indexPath.row

@@ -10,6 +10,8 @@
 	<string>Muz</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
+		<key>24E37BDAB5151BC32E483D17474FE87659404E4C</key>
+		<string>bitbucket.org:nytekproductions/stocks.git</string>
 		<key>90860180419678B429275CA2DE5856F290734037</key>
 		<string>bitbucket.org:nlanasa/muz.git</string>
 	</dict>
@@ -17,6 +19,8 @@
 	<string>Muz.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
+		<key>24E37BDAB5151BC32E483D17474FE87659404E4C</key>
+		<string>../../Stocks</string>
 		<key>90860180419678B429275CA2DE5856F290734037</key>
 		<string>..</string>
 	</dict>
@@ -35,6 +39,14 @@
 			<string>90860180419678B429275CA2DE5856F290734037</string>
 			<key>IDESourceControlWCCName</key>
 			<string>Muz</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>24E37BDAB5151BC32E483D17474FE87659404E4C</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Stocks</string>
 		</dict>
 	</array>
 </dict>

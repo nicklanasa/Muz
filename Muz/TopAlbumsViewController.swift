@@ -93,11 +93,12 @@ class TopAlbumsViewController: RootViewController, LastFmAlbumBuyLinksRequestDel
         self.albumBuyLinks = buyLinks
         
         if let buyLinks = albumBuyLinks {
-            if buyLinks.count > 0 {
-                actionSheet = LastFmBuyLinksViewController(buyLinks: buyLinks)
-                actionSheet.showInView(self.view)
+            actionSheet = LastFmBuyLinksViewController(buyLinks: buyLinks)
+        
+            if actionSheet.numberOfValidBuyLinks == 0 {
+               showBuyAlbumError()
             } else {
-                showBuyAlbumError()
+                actionSheet.showInView(self.view)
             }
         } else {
             showBuyAlbumError()

@@ -15,6 +15,8 @@ UIActionSheetDelegate {
     
     private var buyLinksActionSheet: UIActionSheet!
     
+    var numberOfValidBuyLinks: Int = 0
+    
     /**
     Creates a new LastFmBuyLinksActionSheet with the given array of buy links.
     
@@ -49,6 +51,7 @@ UIActionSheetDelegate {
             if countElements(buyLink.name) > 0 && buyLink.price.integerValue > 0 {
                 let buttonTitle = NSString(format: "%@ - $%@", buyLink.name, buyLink.price)
                 self.buyLinksActionSheet.addButtonWithTitle(buttonTitle)
+                self.numberOfValidBuyLinks++
             }
         }
     }

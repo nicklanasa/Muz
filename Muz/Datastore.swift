@@ -151,11 +151,11 @@ class Datastore {
     func addArtists(artists: NSArray, completion: (addedItems: [AnyObject], error: NSErrorPointer) -> (),
         progress: (addedItems: [AnyObject], total: Int) -> ())
     {
-        var context = self.mainQueueContext
+        var context = self.workerContext
         
-        if NSUserDefaults.standardUserDefaults().objectForKey("SyncLibrary") == nil {
-            context = self.workerContext
-        }
+//        if NSUserDefaults.standardUserDefaults().objectForKey("SyncLibrary") == nil {
+//            context = self.workerContext
+//        }
         
         context.performBlock { () -> Void in
            

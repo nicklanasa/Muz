@@ -126,6 +126,12 @@ NowPlayingCollectionControllerDelegate {
 
     func play() {
         self.playerController.play()
+        
+        if let song = DataManager.manager.datastore.songForSongName(self.item.title, artist: self.item.artist) {
+            DataManager.manager.datastore.updateSong(song: song, completion: { () -> () in
+                
+            })
+        }
     }
     
     private func startSongTimer() {
@@ -239,12 +245,6 @@ NowPlayingCollectionControllerDelegate {
         if let item = self.playerController.nowPlayingItem {
             self.item = item
             var manager = DataManager.manager
-            
-            if let song = manager.datastore.songForSongName(self.item.title, artist: self.item.artist) {
-                manager.datastore.updateSong(song: song, completion: { () -> () in
-                    
-                })
-            }
             
             self.updateView()
         }
