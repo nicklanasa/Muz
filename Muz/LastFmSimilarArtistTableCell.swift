@@ -11,6 +11,7 @@ import UIKit
 
 class LastFmSimilarArtistTableCell: UITableViewCell {
     
+    @IBOutlet weak var noContentLabel: UILabel!
     @IBOutlet weak var similiarActivityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var collectionView: UICollectionView!
     

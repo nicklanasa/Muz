@@ -13,7 +13,7 @@ extension UIButton {
         self.layer.cornerRadius = self.frame.size.width/2
         self.layer.masksToBounds = true
         self.layer.borderColor = UIColor.whiteColor().CGColor
-        self.layer.borderWidth = 4
+        self.layer.borderWidth = 1
     }
     
     func applyBuyStyle() {

@@ -149,8 +149,15 @@ class Datastore {
     :param: completion The completion block called at the end of the execution.
     */
     func addArtists(artists: NSArray, completion: (addedItems: [AnyObject], error: NSErrorPointer) -> (),
-        progress: (addedItems: [AnyObject]) -> ()) {
-        self.workerContext.performBlock { () -> Void in
+        progress: (addedItems: [AnyObject], total: Int) -> ())
+    {
+        var context = self.mainQueueContext
+        
+        if NSUserDefaults.standardUserDefaults().objectForKey("SyncLibrary") == nil {
+            context = self.workerContext
+        }
+        
+        context.performBlock { () -> Void in
            
             let startTime = NSDate()
             var request = NSFetchRequest(entityName: "Artist")
@@ -166,24 +173,24 @@ class Datastore {
                         let predicate = NSPredicate(format: "name = %@", artistName)
                         request.fetchLimit = 1
                         request.predicate = predicate
-                        let results = self.workerContext.executeFetchRequest(request, error: &error)
+                        let results = context.executeFetchRequest(request, error: &error)
                         
                         var managedArtist: Artist!
                         if results?.count > 0 {
                             managedArtist = results?[0] as Artist
                         } else {
                             managedArtist = NSEntityDescription.insertNewObjectForEntityForName("Artist",
-                                inManagedObjectContext: self.workerContext) as Artist
+                                inManagedObjectContext: context) as Artist
                         }
                         
                         managedArtist.parseItem(item)
                         
                         // Add albums
-                        self.addAlbumForItem(item: item, artist: managedArtist)
+                        self.addAlbumForItem(item: item, artist: managedArtist, context: context)
                         
                         addedArtists.addObject(managedArtist)
                         
-                        progress(addedItems: [managedArtist])
+                        progress(addedItems: addedArtists, total: artists.count)
                     }
                 }
             })
@@ -235,7 +242,7 @@ class Datastore {
                         }
                         
                         managedAlbum.parseItem(item)
-                        self.addSongForItem(item: item, album: managedAlbum)
+                        self.addSongForItem(item: item, album: managedAlbum, context: self.workerContext)
                         
                         artist.addAlbum(managedAlbum)
                     }
@@ -248,7 +255,7 @@ class Datastore {
             self.saveDatastoreWithCompletion({ (error) -> () in
                 let endTime = NSDate()
                 let executionTime = endTime.timeIntervalSinceDate(startTime)
-                NSLog("addAlbums() - executionTime = %f\n addAlbums count: %d\n existedSongs count: %d", (executionTime * 1000), addedAlbums.count);
+                NSLog("addAlbums() - executionTime = %f\n addAlbums count: %d", (executionTime * 1000), addedAlbums.count);
                 
                 if error != nil {
                     LocalyticsSession.shared().tagEvent("Unabled to save added ablums.")
@@ -269,27 +276,27 @@ class Datastore {
     
     :returns: The created/existing album or nil.
     */
-    func addAlbumForItem(#item: MPMediaItem, artist: Artist) {
+    func addAlbumForItem(#item: MPMediaItem, artist: Artist, context: NSManagedObjectContext) {
         var error: NSError?
         var request = NSFetchRequest(entityName: "Album")
         
         let predicate = NSPredicate(format: "title = %@", item.albumTitle)
         request.fetchLimit = 1
         request.predicate = predicate
-        let results = self.workerContext.executeFetchRequest(request, error: &error)
+        let results = context.executeFetchRequest(request, error: &error)
         
         var managedAlbum: Album!
         if results?.count > 0 {
             managedAlbum = results?[0] as Album
         } else {
             managedAlbum = NSEntityDescription.insertNewObjectForEntityForName("Album",
-                inManagedObjectContext: self.workerContext) as Album
+                inManagedObjectContext: context) as Album
         }
 
         managedAlbum.parseItem(item)
         managedAlbum.artist = artist
         
-        self.addSongForItem(item: item, album: managedAlbum)
+        self.addSongForItem(item: item, album: managedAlbum, context: context)
     }
     
     func artistForSong(#song: Song) -> Artist? {
@@ -333,7 +340,7 @@ class Datastore {
     
     :returns: The added song.
     */
-    func addSongForItem(#item: MPMediaItem, album: Album) {
+    func addSongForItem(#item: MPMediaItem, album: Album, context: NSManagedObjectContext) {
         var error: NSError?
         var request = NSFetchRequest(entityName: "Song")
         
@@ -343,17 +350,17 @@ class Datastore {
             let predicate = NSPredicate(format: "persistentID = %@", String(item.persistentID))
             request.fetchLimit = 1
             request.predicate = predicate
-            let results = self.workerContext.executeFetchRequest(request, error: &error)
+            let results = context.executeFetchRequest(request, error: &error)
             
             if results?.count > 0 {
                 managedSong = results?[0] as Song
             } else {
                 managedSong = NSEntityDescription.insertNewObjectForEntityForName("Song",
-                    inManagedObjectContext: self.workerContext) as Song
+                    inManagedObjectContext: context) as Song
             }
         } else {
             managedSong = NSEntityDescription.insertNewObjectForEntityForName("Song",
-                inManagedObjectContext: self.workerContext) as Song
+                inManagedObjectContext: context) as Song
         }
         
         managedSong.parseItem(item)

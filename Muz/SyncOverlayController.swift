@@ -13,9 +13,12 @@ import CoreData
 class SyncOverlayController: OverlayController {
     @IBOutlet weak var syncButton: UIButton!
     @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var progressView: UIProgressView!
+    @IBOutlet weak var detailedLabel: UILabel!
+    @IBOutlet weak var syncLibraryLabel: UILabel!
     
     var syncedItems: [AnyObject]?
-    
+        
     override init() {
         super.init(nibName: "SyncOverlayController", bundle: nil)
     }
@@ -27,11 +30,16 @@ class SyncOverlayController: OverlayController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.syncButton.applyBuyStyle()
+        self.syncButton.applyRoundedStyle()
     }
     
     @IBAction func syncButtonPressed(sender: AnyObject) {
         var error: NSError?
+        
+        self.syncButton.hidden = true
+        self.syncLibraryLabel.hidden = true
+        self.detailedLabel.hidden = true
+        self.progressView.hidden = false
         
         let startTime = NSDate()
         
@@ -45,17 +53,18 @@ class SyncOverlayController: OverlayController {
             
             LocalyticsSession.shared().tagEvent("Sync Library")
             
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                NSUserDefaults.standardUserDefaults().setObject(NSNumber(bool: true),
-                    forKey: "SyncLibrary")
-                self.dismissViewControllerAnimated(true, completion: nil)
-            })
-            }, progress: { (addedItems) -> () in
+            NSUserDefaults.standardUserDefaults().setObject(NSNumber(bool: true),
+                forKey: "SyncLibrary")
+            self.dismissViewControllerAnimated(true, completion: nil)
+            }, progress: { (addedItems, total) -> () in
                 self.syncedItems = addedItems
-                
                 if self.syncedItems?.count > 0 {
-                    if let artist = self.syncedItems?[0] as? Artist {
-                        self.imageView.setImageForArtist(artist: artist)
+                    if let artist = self.syncedItems?[self.syncedItems!.count-1] as? Artist {
+                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            self.imageView.setImageForArtist(artist: artist)
+                            print(Float(self.syncedItems!.count) / Float(total))
+                            self.progressView.progress = Float(self.syncedItems!.count) / Float(total)
+                        })
                     }
                 }
         })

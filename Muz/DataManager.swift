@@ -31,12 +31,12 @@ class DataManager {
     }
     
     func syncArtists(completion: (addedItems: [AnyObject], error: NSErrorPointer) -> (),
-        progress: (addedItems: [AnyObject]) -> ()) {
+        progress: (addedItems: [AnyObject], total: Int) -> ()) {
         MediaSession.sharedSession.fetchArtists { (results) -> () in
             self.datastore.addArtists(results, completion: { (addedItems, error) -> () in
                 completion(addedItems: addedItems, error: error)
-            }, progress: { (addedItems) -> () in
-                progress(addedItems: addedItems)
+            }, progress: { (addedItems, total) -> () in
+                progress(addedItems: addedItems, total: total)
             })
         }
     }

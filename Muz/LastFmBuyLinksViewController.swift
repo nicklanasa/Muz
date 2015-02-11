@@ -60,6 +60,7 @@ UIActionSheetDelegate {
         }
         
         if let buyLink = self.buyLinks[buttonIndex - 1] as? LastFmBuyLink {
+            LocalyticsSession.shared().tagEvent("Buy album button tapped")
             UIApplication.sharedApplication().openURL(buyLink.url)
         }
     }

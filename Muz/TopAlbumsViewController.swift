@@ -39,6 +39,7 @@ class TopAlbumsViewController: RootViewController, LastFmAlbumBuyLinksRequestDel
     }
     
     override func viewWillAppear(animated: Bool) {
+        self.screenName = "Top Albums"
         super.viewWillAppear(animated)
     }
     

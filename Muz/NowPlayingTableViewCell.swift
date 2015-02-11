@@ -23,6 +23,7 @@ class NowPlayingTableViewCell: UITableViewCell {
         updateTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "updateProgress", userInfo: nil, repeats: true)
         
         var tapGesture = UITapGestureRecognizer(target: self, action: "pausePlay")
+        tapGesture.numberOfTapsRequired = 1
         self.songImageView.gestureRecognizers = [tapGesture]
         
         NSNotificationCenter.defaultCenter().addObserver(self,

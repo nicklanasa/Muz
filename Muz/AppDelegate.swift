@@ -136,8 +136,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         if NSUserDefaults.standardUserDefaults().objectForKey("SyncLibrary") != nil {
             DataManager.manager.syncArtists({ (addedItems, error) -> () in
-                
-                }, progress: { (addedItems) -> () in
+                DataManager.manager.syncPlaylists({ (addedItems, error) -> () in
+                    
+                })
+            }, progress: { (addedItems) -> () in
                     
             })
         }

@@ -38,7 +38,18 @@ class ArtistCell: UITableViewCell {
     
     func updateWithArtist(artist: Artist) {
         artistLabel.text = artist.name
-        infoLabel.text = NSString(format: "%d %@", artist.albums.allObjects.count, artist.albums.allObjects.count == 1 ? "album" : "albums")
+        if artist.albums.count > 0 {
+            var songs = 0
+            
+            for album in artist.albums.allObjects as [Album] {
+                songs += album.songs.count
+            }
+            
+            infoLabel.text = NSString(format: "%d %@, %d %@", artist.albums.allObjects.count,
+                artist.albums.allObjects.count == 1 ? "album" : "albums", songs, songs == 1 ? "song" : "songs")
+        } else {
+            infoLabel.hidden = true
+        }
         
         artistImageView.setImageForArtist(artist: artist)
         

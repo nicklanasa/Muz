@@ -37,6 +37,7 @@ class TopTracksViewController: RootViewController, LastFmTrackBuyLinksRequestDel
     }
     
     override func viewWillAppear(animated: Bool) {
+        self.screenName = "Top Tracks"
         super.viewWillAppear(animated)
     }
     

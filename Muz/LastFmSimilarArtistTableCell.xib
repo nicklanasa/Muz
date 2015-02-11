@@ -27,14 +27,23 @@
                     </collectionViewFlowLayout>
                     <cells/>
                 </collectionView>
+                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Unabled to find recommeneded artists" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="jkb-fT-7qH">
+                    <rect key="frame" x="25" y="21" width="270" height="81"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
+                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="collectionView" destination="2jq-2G-72l" id="Oos-VH-MDd"/>
+                <outlet property="noContentLabel" destination="jkb-fT-7qH" id="Iak-4z-BXD"/>
                 <outlet property="similiarActivityIndicator" destination="KLQ-UR-Ewd" id="fba-eQ-CBR"/>
             </connections>
-            <point key="canvasLocation" x="351" y="423"/>
+            <point key="canvasLocation" x="-15" y="341"/>
         </view>
     </objects>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

@@ -8,8 +8,11 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SyncOverlayController" customModule="Muz" customModuleProvider="target">
             <connections>
                 <outlet property="backgroundImageView" destination="Tuc-O6-98P" id="gT9-Al-E06"/>
+                <outlet property="detailedLabel" destination="UT4-Ow-d5k" id="Avg-Cx-Rq6"/>
                 <outlet property="imageView" destination="bpn-HU-Ua3" id="BIV-Fx-L3R"/>
+                <outlet property="progressView" destination="ShY-uh-az5" id="2Ag-q8-JXs"/>
                 <outlet property="syncButton" destination="bJZ-5N-hvM" id="kqW-7d-D4e"/>
+                <outlet property="syncLibraryLabel" destination="HYX-D6-6nx" id="872-SD-pCN"/>
                 <outlet property="view" destination="Byj-E2-SF0" id="Jh1-cQ-VMi"/>
             </connections>
         </placeholder>
@@ -22,11 +25,15 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 </imageView>
+                <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="bpn-HU-Ua3">
+                    <rect key="frame" x="52" y="182" width="270" height="270"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                </imageView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="bJZ-5N-hvM">
-                    <rect key="frame" x="15" y="596" width="344" height="42"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                    <rect key="frame" x="120" y="472" width="134" height="134"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="20"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="25"/>
                     <state key="normal" title="Sync">
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -35,20 +42,51 @@
                         <action selector="syncButtonPressed:" destination="-1" eventType="touchUpInside" id="CLY-Fo-dVY"/>
                     </connections>
                 </button>
-                <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="bpn-HU-Ua3">
-                    <rect key="frame" x="52" y="199" width="270" height="270"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                </imageView>
-                <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" id="ShY-uh-az5">
-                    <rect key="frame" x="112" y="500" width="150" height="2"/>
+                <progressView hidden="YES" opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" id="ShY-uh-az5">
+                    <rect key="frame" x="73" y="483" width="229" height="2"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="tintColor" red="1" green="0.72156862749999995" blue="0.23529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </progressView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sync your library" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Lfp-ZL-aTL">
-                    <rect key="frame" x="82" y="46" width="211" height="129"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="44"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sync Library" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="HYX-D6-6nx">
+                    <rect key="frame" x="52" y="77" width="270" height="60"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="32"/>
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="UT4-Ow-d5k">
+                    <rect key="frame" x="52" y="156" width="270" height="161"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                    <attributedString key="attributedText">
+                        <fragment content="Muz">
+                            <attributes>
+                                <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <font key="NSFont" size="20" name="HelveticaNeue"/>
+                                <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                            </attributes>
+                        </fragment>
+                        <fragment content=" will sync your music library with ">
+                            <attributes>
+                                <color key="NSColor" cocoaTouchSystemColor="lightTextColor"/>
+                                <font key="NSFont" size="20" name="HelveticaNeue-Thin"/>
+                                <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                            </attributes>
+                        </fragment>
+                        <fragment content="Last.fm">
+                            <attributes>
+                                <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <font key="NSFont" size="20" name="HelveticaNeue"/>
+                                <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                            </attributes>
+                        </fragment>
+                        <fragment content=" to give you the best possible music listening experience personalize to your library.">
+                            <attributes>
+                                <color key="NSColor" cocoaTouchSystemColor="lightTextColor"/>
+                                <font key="NSFont" size="20" name="HelveticaNeue-Thin"/>
+                                <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                            </attributes>
+                        </fragment>
+                    </attributedString>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>

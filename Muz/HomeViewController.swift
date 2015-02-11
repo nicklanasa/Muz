@@ -61,6 +61,7 @@ UICollectionViewDataSource {
     }
     
     override func viewWillAppear(animated: Bool) {
+        self.screenName = "Now Playing"
         super.viewWillAppear(animated)
         
         self.recentArtistSongs = DataManager.manager.datastore.distinctArtistSongsWithSortKey("lastPlayedDate", limit: 25, ascending: false)
@@ -98,6 +99,10 @@ UICollectionViewDataSource {
                     var similiarArtistLastFmRequest = LastFmSimiliarArtistsRequest(artist: song.objectForKey("artist") as NSString)
                     similiarArtistLastFmRequest.delegate = self
                     similiarArtistLastFmRequest.sendURLRequest()
+                    
+                    similarArtistCell.noContentLabel.hidden = true
+                } else {
+                    similarArtistCell.noContentLabel.hidden = false
                 }
             }
         }
@@ -115,8 +120,6 @@ UICollectionViewDataSource {
         
         let recentArtistCellNib = UINib(nibName: "LastFmSimilarArtistTableCell", bundle: nil)
         recentArtistCell = recentArtistCellNib.instantiateWithOwner(self, options: nil)[0] as? LastFmSimilarArtistTableCell
-        
-        self.navigationItem.title = "Now Playing"
     }
     
     func lastFmSimiliarArtistsRequestDidComplete(request: LastFmSimiliarArtistsRequest, didCompleteWithLastFmArtists artists: [AnyObject]?) {
@@ -173,8 +176,10 @@ UICollectionViewDataSource {
             similarArtistCell.collectionView.reloadData()
             
             if self.similiarArtists?.count > 0 {
-                similarArtistCell.collectionView.scrollToItemAtIndexPath(NSIndexPath(forRow: 0, inSection: 0),
-                    atScrollPosition: .Left, animated: true)
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    self.similarArtistCell.collectionView.scrollToItemAtIndexPath(NSIndexPath(forRow: 0, inSection: 0),
+                        atScrollPosition: .Left, animated: true)
+                })
             }
             
             return similarArtistCell

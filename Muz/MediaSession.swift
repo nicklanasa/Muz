@@ -109,7 +109,7 @@ var CurrentQueueItems: MPMediaItemCollection!
         if albumsQuery.items.count > 0 {
             for item in albumsQuery.items as [MPMediaItem] {
                 if let artwork = item.artwork {
-                    if let albumImage = artwork.imageWithSize(CGSizeMake(50, 50)) {
+                    if let albumImage = artwork.imageWithSize(CGSizeMake(200, 200)) {
                         image = albumImage
                         break
                     }
