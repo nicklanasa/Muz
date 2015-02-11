@@ -246,7 +246,7 @@ PlaylistsViewControllerDelegate {
                 if countElements(self.createPlaylistCell.nameTextField.text) > 0 {
                     MediaSession.sharedSession.dataManager.datastore.createEmptyPlaylistWithName(self.createPlaylistCell.nameTextField.text,
                         playlistType: .None) { () -> () in
-                            self.dismiss()
+                            self.handleCreatePlaylistFinishWithAddedSongs([])
                     }
                 } else {
                     showEmptyPlaylistNameAlert()
