@@ -31,9 +31,6 @@ class LastFmEventInfoDetailsCell: UITableViewCell {
     var event: LastFmEvent!
     
     override func awakeFromNib() {
-        self.artistImageView.layer.cornerRadius = self.artistImageView.frame.size.height / 2
-        self.artistImageView.layer.masksToBounds = true
-        
         self.linkButton.layer.borderColor = UIColor.whiteColor().CGColor
         self.linkButton.layer.borderWidth = 1
         self.linkButton.layer.cornerRadius = 5
@@ -57,6 +54,12 @@ class LastFmEventInfoDetailsCell: UITableViewCell {
         self.attendenceLabel.text = NSString(format: "Attendence: %d", event.attendance.integerValue)
         self.artistImageView.sd_setImageWithURL(event.image)
         self.descriptionTextView.text = event.eventDescription
+        
+        if countElements(event.eventDescription) == 0 {
+            self.descriptionLabel.hidden = true
+        } else {
+            self.descriptionLabel.hidden = false
+        }
         
         let formatter = NSDateFormatter()
         formatter.dateStyle = .ShortStyle

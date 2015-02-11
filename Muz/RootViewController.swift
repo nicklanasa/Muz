@@ -77,8 +77,10 @@ class RootViewController: UIViewController {
     }
     
     func presentNowPlayViewController(song: Song, collection: MPMediaItemCollection) {
-        let nowPlayingViewController = NowPlayingViewController(song: song, collection: collection)
-        self.navigationController?.pushViewController(nowPlayingViewController, animated: true)
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            let nowPlayingViewController = NowPlayingViewController(song: song, collection: collection)
+            self.navigationController?.pushViewController(nowPlayingViewController, animated: true)
+        })
     }
 
     /**

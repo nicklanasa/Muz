@@ -86,7 +86,7 @@ var CurrentQueueItems: MPMediaItemCollection!
         
         albumsQuery.addFilterPredicate(MPMediaPropertyPredicate(value: album.title,
             forProperty: MPMediaItemPropertyAlbumTitle,
-            comparisonType: .Contains))
+            comparisonType: .EqualTo))
         
         completion(collection: MPMediaItemCollection(items: albumsQuery.items))
     }
