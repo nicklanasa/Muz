@@ -62,7 +62,6 @@ class SyncOverlayController: OverlayController {
                     if let artist = self.syncedItems?[self.syncedItems!.count-1] as? Artist {
                         dispatch_async(dispatch_get_main_queue(), { () -> Void in
                             self.imageView.setImageForArtist(artist: artist)
-                            print(Float(self.syncedItems!.count) / Float(total))
                             self.progressView.progress = Float(self.syncedItems!.count) / Float(total)
                         })
                     }

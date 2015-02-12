@@ -347,7 +347,7 @@ class Datastore {
         var managedSong: Song!
         
         if NSUserDefaults.standardUserDefaults().objectForKey("SyncLibrary") != nil {
-            let predicate = NSPredicate(format: "persistentID = %@", String(item.persistentID))
+            let predicate = NSPredicate(format: "title = %@ AND artist = %@", item.title, item.artist)
             request.fetchLimit = 1
             request.predicate = predicate
             let results = context.executeFetchRequest(request, error: &error)
