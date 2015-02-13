@@ -405,6 +405,23 @@ NowPlayingCollectionControllerDelegate {
         startSongTimer()
         
         progressSlider.hidden = false
+        
+        if self.playerController.shuffleMode == .Off {
+            shuffleButton.setTitleColor(MuzColor, forState: .Normal)
+        } else {
+            shuffleButton.setTitleColor(MuzBlueColor, forState: .Normal)
+        }
+        
+        if self.playerController.repeatMode == .One {
+            self.repeatButton.setTitleColor(MuzBlueColor, forState: .Normal)
+        } else if self.playerController.repeatMode == .All {
+            self.repeatButton.setTitleColor(MuzBlueColor, forState: .Normal)
+            self.repeatButton.setTitle("Repeat All", forState: .Normal)
+        } else {
+            
+            self.repeatButton.setTitleColor(MuzColor, forState: .Normal)
+            self.repeatButton.setTitle("Repeat", forState: .Normal)
+        }
     }
     
     private func updateNowPlaying() {
@@ -453,7 +470,7 @@ NowPlayingCollectionControllerDelegate {
         }
     }
     
-    @IBAction func shuffleButtonPressed(sender: AnyObject) {
+    private func updateShuffle() {
         if playerController.shuffleMode == .Songs {
             playerController.shuffleMode = .Off
             shuffleButton.setTitleColor(MuzColor, forState: .Normal)
@@ -463,7 +480,15 @@ NowPlayingCollectionControllerDelegate {
         }
     }
     
+    @IBAction func shuffleButtonPressed(sender: AnyObject) {
+        self.updateShuffle()
+    }
+    
     @IBAction func repeatButtonPressed(sender: AnyObject) {
+        self.updateRepeat()
+    }
+    
+    func updateRepeat() {
         UIView.animateWithDuration(0.3, animations: { () -> Void in
             if self.playerController.repeatMode == .One {
                 self.playerController.repeatMode = .None
@@ -479,8 +504,8 @@ NowPlayingCollectionControllerDelegate {
                 self.repeatButton.setTitle("Repeat All", forState: .Normal)
             }
         })
+
     }
-    
     
     func nowPlayingCollectionController(controller: NowPlayingCollectionController,
         didSelectItem item: MPMediaItem) {
