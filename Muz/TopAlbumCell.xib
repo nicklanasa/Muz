@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14D72i" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -13,27 +14,29 @@
             <tableViewCellContentView key="contentView" autoresizesSubviews="NO" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="AYV-fm-Alu" id="2OV-Oo-2BW">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="2hP-QZ-Kjg">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2hP-QZ-Kjg">
                         <rect key="frame" x="62" y="27" width="250" height="21"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="Id8-rz-dDJ"/>
+                        </constraints>
                         <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="14"/>
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="bi4-UY-Qgv">
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bi4-UY-Qgv">
                         <rect key="frame" x="8" y="7" width="40" height="40"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="40" id="5qO-cV-UHq"/>
+                        </constraints>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="NI0-X1-JZ6">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NI0-X1-JZ6">
                         <rect key="frame" x="62" y="5" width="250" height="22"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="18"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="LMg-Hu-Ana">
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LMg-Hu-Ana">
                         <rect key="frame" x="320" y="12" width="47" height="30"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
                         <state key="normal" title="Buy">
@@ -42,6 +45,21 @@
                         </state>
                     </button>
                 </subviews>
+                <constraints>
+                    <constraint firstItem="NI0-X1-JZ6" firstAttribute="leading" secondItem="bi4-UY-Qgv" secondAttribute="trailing" constant="14" id="1u4-kj-Hc9"/>
+                    <constraint firstItem="bi4-UY-Qgv" firstAttribute="leading" secondItem="2OV-Oo-2BW" secondAttribute="leadingMargin" id="G2d-Sx-LPu"/>
+                    <constraint firstItem="LMg-Hu-Ana" firstAttribute="leading" secondItem="NI0-X1-JZ6" secondAttribute="trailing" constant="8" symbolic="YES" id="LU3-6d-HDS"/>
+                    <constraint firstItem="LMg-Hu-Ana" firstAttribute="centerY" secondItem="2OV-Oo-2BW" secondAttribute="centerY" id="Mbx-EO-VLi"/>
+                    <constraint firstItem="LMg-Hu-Ana" firstAttribute="centerY" secondItem="bi4-UY-Qgv" secondAttribute="centerY" id="VV0-EK-VYh"/>
+                    <constraint firstItem="bi4-UY-Qgv" firstAttribute="top" secondItem="2OV-Oo-2BW" secondAttribute="topMargin" constant="-1" id="W6o-aN-0Pi"/>
+                    <constraint firstItem="LMg-Hu-Ana" firstAttribute="trailing" secondItem="2OV-Oo-2BW" secondAttribute="trailingMargin" id="c2i-kJ-wbj"/>
+                    <constraint firstItem="LMg-Hu-Ana" firstAttribute="top" secondItem="2OV-Oo-2BW" secondAttribute="topMargin" constant="4" id="d8J-An-YR2"/>
+                    <constraint firstItem="NI0-X1-JZ6" firstAttribute="top" secondItem="2OV-Oo-2BW" secondAttribute="topMargin" constant="-3" id="dyi-om-naW"/>
+                    <constraint firstItem="2hP-QZ-Kjg" firstAttribute="leading" secondItem="NI0-X1-JZ6" secondAttribute="leading" id="rDm-e0-AdJ"/>
+                    <constraint firstItem="LMg-Hu-Ana" firstAttribute="leading" secondItem="2hP-QZ-Kjg" secondAttribute="trailing" constant="8" symbolic="YES" id="wIG-xe-wfS"/>
+                    <constraint firstItem="2hP-QZ-Kjg" firstAttribute="top" secondItem="NI0-X1-JZ6" secondAttribute="bottom" id="wMS-1P-4Sy"/>
+                    <constraint firstItem="2hP-QZ-Kjg" firstAttribute="centerX" secondItem="2OV-Oo-2BW" secondAttribute="centerX" id="xIr-0Z-WqX"/>
+                </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <inset key="separatorInset" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>

@@ -47,6 +47,8 @@ class ArtistCell: UITableViewCell {
             
             infoLabel.text = NSString(format: "%d %@, %d %@", artist.albums.allObjects.count,
                 artist.albums.allObjects.count == 1 ? "album" : "albums", songs, songs == 1 ? "song" : "songs")
+            infoLabel.hidden = false
+            
         } else {
             infoLabel.hidden = true
         }

@@ -102,8 +102,6 @@ NSFetchedResultsControllerDelegate {
         var error: NSError?
         if self.playlistsController!.performFetch(&error) {
             self.tableView.reloadData()
-            DataManager.manager.syncPlaylists({ (addedItems, error) -> () in
-            })
         }
     }
     

@@ -30,7 +30,7 @@ class MoreViewController: RootViewController,
     var hud: MBProgressHUD!
     
     // Make this DB driven
-    private let tableDataSectionSettings = ["Sync your library", "Lyrics", "Artist info"]
+    private let tableDataSectionSettings = ["Sync iPod library", "Lyrics", "Artist info"]
     private let tableDataSectionInfo = ["Rate app", "Facebook", "Twitter", "Website", "Feedback"]
     
     private let lyricsSwitch = UISwitch(frame: CGRectMake(0, 0, 50, 50))

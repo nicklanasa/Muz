@@ -385,30 +385,32 @@ class Datastore {
     
     func addPlaylists(playlists: [AnyObject], completion: (addedPlaylists: [AnyObject]?) -> ()) {
         
-        var error: NSError?
-
-        var request = NSFetchRequest()
-        request.entity = NSEntityDescription.entityForName("Playlist",
-            inManagedObjectContext: self.workerContext)
-        
-        let results = self.workerContext.executeFetchRequest(request, error: nil)
-        
-        if results?.count > 0 {
-            for existingPlaylist in results as [Playlist] {
-                if existingPlaylist.persistentID != "" {
-                    self.workerContext.deleteObject(existingPlaylist)
+        self.workerContext.performBlock { () -> Void in
+            var error: NSError?
+            
+            var request = NSFetchRequest()
+            request.entity = NSEntityDescription.entityForName("Playlist",
+                inManagedObjectContext: self.workerContext)
+            
+            let results = self.workerContext.executeFetchRequest(request, error: nil)
+            
+            if results?.count > 0 {
+                for existingPlaylist in results as [Playlist] {
+                    if existingPlaylist.persistentID != "" {
+                        self.workerContext.deleteObject(existingPlaylist)
+                    }
                 }
             }
+            
+            
+            for playlist in playlists as [MPMediaPlaylist] {
+                let addedPlaylist = self.createPlaylistWithPlaylist(playlist, context: self.workerContext)
+            }
+            
+            self.saveDatastoreWithCompletion({ (error) -> () in
+                println("Saved datastore for playlists.")
+            })
         }
-        
-        
-        for playlist in playlists as [MPMediaPlaylist] {
-            let addedPlaylist = createPlaylistWithPlaylist(playlist, context: self.workerContext)
-        }
-        
-        self.saveDatastoreWithCompletion({ (error) -> () in
-            println("Saved datastore for playlists.")
-        })
     }
 
     func createPlaylistWithSimiliarArtists(artist: NSString!, artists: [AnyObject]!,
