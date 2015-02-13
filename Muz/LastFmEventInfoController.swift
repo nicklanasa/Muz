@@ -14,7 +14,7 @@ import MediaPlayer
 class LastFmEventInfoController: RootViewController,
 UITableViewDelegate,
 UITableViewDataSource,
-LastFmEventInfoDetailsCellDelegate {
+UIActionSheetDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     
@@ -24,6 +24,23 @@ LastFmEventInfoDetailsCellDelegate {
         super.viewDidLoad()
         
         tableView.registerNib(UINib(nibName: "LastFmEventInfoDetailsCell", bundle: nil), forCellReuseIdentifier: "LastFmEventInfoDetailsCell")
+        
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: "eventActions")
+    }
+    
+    func eventActions() {
+        let actionSheet = UIAlertController(title: "Select action", message: nil, preferredStyle: .ActionSheet)
+        actionSheet.addAction(UIAlertAction(title: "Open in Safari", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+            self.openInBrowser()
+        }))
+        actionSheet.addAction(UIAlertAction(title: "View Map", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+            self.showMap()
+        }))
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Destructive, handler: { (action) -> Void in
+            
+        }))
+        
+        self.presentViewController(actionSheet, animated: true, completion: nil)
     }
     
     override init() {
@@ -54,11 +71,14 @@ LastFmEventInfoDetailsCellDelegate {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCellWithIdentifier("LastFmEventInfoDetailsCell") as LastFmEventInfoDetailsCell
         cell.updateWithEvent(event)
-        cell.delegate = self
         return cell
     }
     
-    func lastFmEventInfoDetailsCell(cell: LastFmEventInfoDetailsCell, didTapViewMapButton sender: AnyObject) {
+    func openInBrowser() {
+        UIApplication.sharedApplication().openURL(self.event.url)
+    }
+    
+    func showMap() {
         self.navigationController?.pushViewController(LastFmEventMapController(event: event), animated: true)
     }
 }

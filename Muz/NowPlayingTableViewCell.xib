@@ -24,8 +24,8 @@
                         <rect key="frame" x="14" y="13" width="54" height="54"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Milky Chance" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="xak-Uf-Gu3">
-                        <rect key="frame" x="78" y="36" width="234" height="21"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Milky Chance" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.80000000000000027" id="xak-Uf-Gu3">
+                        <rect key="frame" x="78" y="36" width="229" height="37"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
                         <color key="textColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
@@ -47,7 +47,7 @@
                 <outlet property="songImageView" destination="Oeq-B8-VWk" id="PBL-eq-uun"/>
                 <outlet property="titleLabel" destination="NJ1-Bl-R2F" id="mNT-bY-O6y"/>
             </connections>
-            <point key="canvasLocation" x="102" y="-16.5"/>
+            <point key="canvasLocation" x="-53" y="-15.5"/>
         </tableViewCell>
     </objects>
     <resources>
