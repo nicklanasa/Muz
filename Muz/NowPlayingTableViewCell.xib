@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14D72i" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -13,31 +14,48 @@
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kG1-lB-0GV" id="znf-hy-YhF">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Stolen Dance" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="NJ1-Bl-R2F">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Stolen Dance" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NJ1-Bl-R2F">
                         <rect key="frame" x="78" y="13" width="234" height="21"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="rxI-5N-hae"/>
+                        </constraints>
                         <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="17"/>
                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="nowPlayingDefault" id="Oeq-B8-VWk">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="nowPlayingDefault" translatesAutoresizingMaskIntoConstraints="NO" id="Oeq-B8-VWk">
                         <rect key="frame" x="14" y="13" width="54" height="54"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="54" id="Aab-7z-qae"/>
+                        </constraints>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Milky Chance" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.80000000000000027" id="xak-Uf-Gu3">
-                        <rect key="frame" x="78" y="36" width="229" height="37"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Milky Chance" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.80000000000000027" translatesAutoresizingMaskIntoConstraints="NO" id="xak-Uf-Gu3">
+                        <rect key="frame" x="78" y="36" width="234" height="37"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
                         <color key="textColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" id="fTP-cs-gOO">
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fTP-cs-gOO">
                         <color key="tintColor" red="1" green="0.72156862749999995" blue="0.23529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="trackTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </progressView>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                <constraints>
+                    <constraint firstItem="Oeq-B8-VWk" firstAttribute="leading" secondItem="znf-hy-YhF" secondAttribute="leadingMargin" constant="6" id="3Kv-wJ-Q0E"/>
+                    <constraint firstItem="NJ1-Bl-R2F" firstAttribute="leading" secondItem="Oeq-B8-VWk" secondAttribute="trailing" constant="10" id="3yj-sn-f2n"/>
+                    <constraint firstItem="Oeq-B8-VWk" firstAttribute="centerY" secondItem="znf-hy-YhF" secondAttribute="centerY" id="4GW-t5-NS0"/>
+                    <constraint firstItem="fTP-cs-gOO" firstAttribute="leading" secondItem="znf-hy-YhF" secondAttribute="leading" id="8Jy-wf-akz"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="xak-Uf-Gu3" secondAttribute="bottom" constant="-0.5" id="9sW-zu-GkC"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="Oeq-B8-VWk" secondAttribute="bottom" constant="5.5" id="Bnz-Ij-mhV"/>
+                    <constraint firstItem="xak-Uf-Gu3" firstAttribute="trailing" secondItem="NJ1-Bl-R2F" secondAttribute="trailing" id="F7i-0T-Chj"/>
+                    <constraint firstItem="xak-Uf-Gu3" firstAttribute="leading" secondItem="NJ1-Bl-R2F" secondAttribute="leading" id="GUj-U6-jhL"/>
+                    <constraint firstItem="xak-Uf-Gu3" firstAttribute="top" secondItem="NJ1-Bl-R2F" secondAttribute="bottom" constant="2" id="KF3-HQ-9uF"/>
+                    <constraint firstItem="xak-Uf-Gu3" firstAttribute="trailing" secondItem="znf-hy-YhF" secondAttribute="trailingMargin" id="Lsm-TM-2FA"/>
+                    <constraint firstItem="fTP-cs-gOO" firstAttribute="top" secondItem="znf-hy-YhF" secondAttribute="top" id="UhY-9Q-Sjy"/>
+                    <constraint firstAttribute="trailing" secondItem="fTP-cs-gOO" secondAttribute="trailing" id="fgZ-bL-NNG"/>
+                    <constraint firstItem="Oeq-B8-VWk" firstAttribute="top" secondItem="NJ1-Bl-R2F" secondAttribute="top" id="s6h-xh-pWr"/>
+                </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
