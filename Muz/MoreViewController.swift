@@ -67,6 +67,7 @@ class MoreViewController: RootViewController,
         self.tableView.registerNib(UINib(nibName: "SongsHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "Header")
         
         self.lyricsSwitch.addTarget(self, action: "updatedSetting:", forControlEvents: .ValueChanged)
+        self.artistInfoSwitch.addTarget(self, action: "updatedSetting:", forControlEvents: .ValueChanged)
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
