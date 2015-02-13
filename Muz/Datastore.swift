@@ -127,7 +127,6 @@ class Datastore {
     
     
     func resetLibrary(completion: (error: NSErrorPointer) -> ()) {
-        /*
         self.workerContext.performBlock { () -> Void in
             var error: NSError?
             var request = NSFetchRequest(entityName: "Song")
@@ -139,7 +138,6 @@ class Datastore {
             
             completion(error: &error)
         }
-        */
     }
     
     /**
@@ -389,15 +387,30 @@ class Datastore {
         
         var error: NSError?
 
+        var request = NSFetchRequest()
+        request.entity = NSEntityDescription.entityForName("Playlist",
+            inManagedObjectContext: self.workerContext)
+        
+        let results = self.workerContext.executeFetchRequest(request, error: nil)
+        
+        if results?.count > 0 {
+            for existingPlaylist in results as [Playlist] {
+                if existingPlaylist.persistentID != "" {
+                    self.workerContext.deleteObject(existingPlaylist)
+                }
+            }
+        }
+        
+        
         for playlist in playlists as [MPMediaPlaylist] {
-            let addedPlaylist = createPlaylistWithPlaylist(playlist, context: self.mainQueueContext)
+            let addedPlaylist = createPlaylistWithPlaylist(playlist, context: self.workerContext)
         }
         
         self.saveDatastoreWithCompletion({ (error) -> () in
             println("Saved datastore for playlists.")
         })
     }
-    
+
     func createPlaylistWithSimiliarArtists(artist: NSString!, artists: [AnyObject]!,
         fetchLimit: NSInteger,
         name: NSString!,
@@ -643,6 +656,12 @@ class Datastore {
             
             newPlaylist.parsePlaylist(playlist)
             
+            for item in playlist.items as [MPMediaItem] {
+                if let song = self.songForSongName(item.title, artist: item.artist) {
+                    self.addSongToPlaylist(newPlaylist, song: song, originalPlaylist: nil, context: context)
+                }
+            }
+            
             println("Created playlist with name: \(newPlaylist.name) and type: \(newPlaylist.playlistType.integerValue)")
             
             return newPlaylist
@@ -654,7 +673,7 @@ class Datastore {
         var songs = NSMutableSet()
         var error: NSError?
         var request = NSFetchRequest(entityName: "PlaylistSong")
-        let predicate = NSPredicate(format: "persistentID = %@", playlist.persistentID)
+        let predicate = NSPredicate(format: "persistentID = %@", playlist.persistentID!)
         request.fetchLimit = 1
         let results = context.executeFetchRequest(request, error: &error)
         
@@ -676,7 +695,7 @@ class Datastore {
     func songForSongName(songName: String, artist: NSString) -> Song? {
         var request = NSFetchRequest()
         request.entity = NSEntityDescription.entityForName("Song",
-            inManagedObjectContext: self.mainQueueContext)
+            inManagedObjectContext: self.workerContext)
         
         request.fetchLimit = 1
         
@@ -684,7 +703,7 @@ class Datastore {
         request.predicate = predicate
         
         var error = NSErrorPointer()
-        let results = self.mainQueueContext.executeFetchRequest(request, error: error)
+        let results = self.workerContext.executeFetchRequest(request, error: error)
         
         if results?.count > 0 {
             if let song = results?[0] as? Song {

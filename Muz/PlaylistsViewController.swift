@@ -52,6 +52,10 @@ NSFetchedResultsControllerDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func viewWillDisappear(animated: Bool) {
+        self.playlistsController = nil
+    }
+    
     override func viewWillAppear(animated: Bool) {
         self.fetchPlaylists()
         super.viewWillAppear(animated)
@@ -97,9 +101,8 @@ NSFetchedResultsControllerDelegate {
         
         var error: NSError?
         if self.playlistsController!.performFetch(&error) {
-            self.tableView.reloadData()
             DataManager.manager.syncPlaylists({ (addedItems, error) -> () in
-                
+                self.tableView.reloadData()
             })
         }
     }
@@ -210,7 +213,7 @@ NSFetchedResultsControllerDelegate {
     
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         let playlist = self.playlistsController?.objectAtIndexPath(indexPath) as Playlist
-        return countElements(playlist.persistentID) == 0
+        return countElements(playlist.persistentID!) == 0
     }
     
     func tableView(tableView: UITableView,

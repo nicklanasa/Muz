@@ -204,6 +204,7 @@ PlaylistsViewControllerDelegate {
             self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
             self.hud.mode = MBProgressHUDModeIndeterminate
             self.hud.labelText = "Getting similiar artists"
+            self.hud.labelFont = MuzTitleFont
             requestSimiliarArtists()
         } else {
             if let artist = self.artist {
@@ -229,13 +230,15 @@ PlaylistsViewControllerDelegate {
                             MediaSession.sharedSession.dataManager.datastore.createPlaylistWithSongs(self.createPlaylistCell.nameTextField.text,
                                 songs: songs,
                                 completion: { (addedSongs) -> () in
-                                self.handleCreatePlaylistFinishWithAddedSongs(addedSongs)
+                                LocalyticsSession.shared().tagEvent("Playlist created.")
+                                self.dismiss()
                             })
                         } else {
                             MediaSession.sharedSession.dataManager.datastore.createPlaylistWithArtist(self.artist,
                                 name: self.createPlaylistCell.nameTextField.text,
                                 playlistType: .None) { (addedSongs) -> () in
-                                    self.handleCreatePlaylistFinishWithAddedSongs(addedSongs)
+                                    LocalyticsSession.shared().tagEvent("Playlist created.")
+                                    self.dismiss()
                             }
                         }
                     } else {
@@ -246,7 +249,8 @@ PlaylistsViewControllerDelegate {
                 if countElements(self.createPlaylistCell.nameTextField.text) > 0 {
                     MediaSession.sharedSession.dataManager.datastore.createEmptyPlaylistWithName(self.createPlaylistCell.nameTextField.text,
                         playlistType: .None) { () -> () in
-                            self.handleCreatePlaylistFinishWithAddedSongs([])
+                            LocalyticsSession.shared().tagEvent("Playlist created.")
+                            self.dismiss()
                     }
                 } else {
                     showEmptyPlaylistNameAlert()
@@ -264,20 +268,18 @@ PlaylistsViewControllerDelegate {
     }
     
     private func handleCreatePlaylistFinishWithAddedSongs(addedSongs: [AnyObject]?) {
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            if let songsAdded = addedSongs {
-                LocalyticsSession.shared().tagEvent("Successful smart playlist created.")
-                self.dismiss()
-            } else {
-                LocalyticsSession.shared().tagEvent("Create smart playlist failed.")
-                let errorMessage = "Unable to find any songs based on \(self.artist)"
-                UIAlertView(title: "Error!",
-                    message: errorMessage,
-                    delegate: self,
-                    cancelButtonTitle: "Ok").show()
-                self.hud.hide(true)
-            }
-        })
+        if let songsAdded = addedSongs {
+            LocalyticsSession.shared().tagEvent("Successful smart playlist created.")
+            self.dismiss()
+        } else {
+            LocalyticsSession.shared().tagEvent("Create smart playlist failed.")
+            let errorMessage = "Unable to find any songs based on \(self.artist)"
+            UIAlertView(title: "Error!",
+                message: errorMessage,
+                delegate: self,
+                cancelButtonTitle: "Ok").show()
+            self.hud.hide(true)
+        }
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {

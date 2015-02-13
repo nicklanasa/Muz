@@ -47,8 +47,6 @@ NSFetchedResultsControllerDelegate {
         super.viewWillAppear(animated)
         
         self.screenName = "Playlist songs"
-        
-        self.navigationItem.title = self.playlist.name
     }
     
     override func viewDidLoad() {
@@ -56,15 +54,20 @@ NSFetchedResultsControllerDelegate {
         
         self.tableView.registerNib(UINib(nibName: "SongCell", bundle: nil), forCellReuseIdentifier: "Cell")
         
-        var songs = NSSet(set: self.playlist.playlistSongs)
-        let sort = NSSortDescriptor(key: "order", ascending: true)
-        self.sortedPlaylistSongs = songs.sortedArrayUsingDescriptors([sort])
-        
-        if self.playlist.persistentID.isEmpty {
-            self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit",
-                style: .Plain,
-                target: self,
-                action: "editPlaylist")
+        if let playlist = self.playlist {
+            self.navigationItem.title = self.playlist?.name
+            var songs = NSSet(set: self.playlist.playlistSongs)
+            let sort = NSSortDescriptor(key: "order", ascending: true)
+            self.sortedPlaylistSongs = songs.sortedArrayUsingDescriptors([sort])
+            
+            if let persistentID = self.playlist.persistentID {
+                if persistentID.isEmpty {
+                    self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit",
+                        style: .Plain,
+                        target: self,
+                        action: "editPlaylist")
+                }
+            }
         }
         
         self.tableView.allowsMultipleSelectionDuringEditing = true
@@ -117,12 +120,14 @@ NSFetchedResultsControllerDelegate {
     }
     
     private func fetchPlaylistSongs() {
-        if !self.playlist.persistentID.isEmpty {
-            self.isReadOnly = true
-            
-            self.readOnlyPlaylistSongsQuery = MediaSession.sharedSession.playlistSongsForPlaylist(self.playlist)
-            
-            self.tableView.reloadData()
+        if let persistentID = self.playlist.persistentID {
+            if !persistentID.isEmpty {
+                self.isReadOnly = true
+                
+                self.readOnlyPlaylistSongsQuery = MediaSession.sharedSession.playlistSongsForPlaylist(self.playlist)
+                
+                self.tableView.reloadData()
+            }
         }
     }
     

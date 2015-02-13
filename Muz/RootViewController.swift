@@ -45,16 +45,15 @@ class RootViewController: UIViewController {
     }
     
     override func viewDidLoad() {
-        self.backgroundImageView = UIImageView(frame: UIScreen.mainScreen().bounds)
-        self.backgroundImageView.contentMode = UIViewContentMode.ScaleToFill
-        self.backgroundImageView.autoresizingMask = .FlexibleWidth
-        
-        self.configureBackgroundImage()
-        
-        if self.backgroundImageView.superview == nil {
+        if backgroundImageView == nil {
+            self.backgroundImageView = UIImageView(frame: UIScreen.mainScreen().bounds)
+            self.backgroundImageView.contentMode = UIViewContentMode.ScaleToFill
+            self.backgroundImageView.autoresizingMask = .FlexibleWidth
             self.view.insertSubview(self.backgroundImageView, atIndex: 0)
         }
         
+        self.configureBackgroundImage()
+
         self.searchDisplayController?.searchResultsTableView.backgroundColor = UIColor.clearColor()
         self.searchDisplayController?.searchResultsTableView.separatorStyle = .None
         

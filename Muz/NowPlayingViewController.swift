@@ -59,6 +59,17 @@ NowPlayingCollectionControllerDelegate {
             object: nil)
     }
     
+    private func configureWithSong() {
+        if let song = self.song {
+            if let item = DataManager.manager.fetchItemForSong(song: song) {
+                self.item = item
+                self.playerController.setQueueWithItemCollection(collection)
+                self.playerController.nowPlayingItem = self.item
+                self.play()
+            }
+        }
+    }
+    
     /**
     Handles updated the Datastore when iTunes library is updated
     */
@@ -96,32 +107,18 @@ NowPlayingCollectionControllerDelegate {
         self.screenName = "Now Playing"
         self.navigationItem.title = ""
         
+        super.viewWillAppear(animated)
+    }
+    
+    override func viewDidAppear(animated: Bool) {
         if let item = self.playerController.nowPlayingItem {
             self.item = item
             self.updateNowPlaying()
-        }
-        
-        super.viewWillAppear(animated)
-        
-        self.startSongTimer()
-        
-        if let collection = CurrentQueueItems {
-            self.collection = collection
         }
     }
     
     func dismiss() {
         self.navigationController?.popViewControllerAnimated(true)
-    }
-    
-    private func configureWithSong() {
-        if let song = self.song {
-            if let item = DataManager.manager.fetchItemForSong(song: song) {
-                self.item = item
-                self.playerController.setQueueWithItemCollection(collection)
-                self.play()
-            }
-        }
     }
 
     func play() {
@@ -203,10 +200,6 @@ NowPlayingCollectionControllerDelegate {
         
         progressSlider.setThumbImage(UIImage(named: "thumbImage"), forState: .Normal)
         progressSlider.setThumbImage(UIImage(named: "thumbImage"), forState: .Selected)
-        
-        if let song = self.song {
-            self.updateNowPlaying()
-        }
     }
     
     func addToPlaylist() {

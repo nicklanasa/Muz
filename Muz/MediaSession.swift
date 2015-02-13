@@ -260,8 +260,8 @@ var CurrentQueueItems: MPMediaItemCollection!
     }
     
     func playlistSongsForPlaylist(playlist: Playlist) -> MPMediaQuery {
-        println(playlist.persistentID.toInt())
-        let predicate = MPMediaPropertyPredicate(value: playlist.persistentID.toInt(),
+        println(playlist.persistentID!.toInt())
+        let predicate = MPMediaPropertyPredicate(value: playlist.persistentID!.toInt(),
             forProperty: MPMediaPlaylistPropertyPersistentID,
             comparisonType: .EqualTo)
         let typePredicate = MPMediaPropertyPredicate(value: MPMediaType.AnyAudio.rawValue,

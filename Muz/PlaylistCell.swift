@@ -48,22 +48,25 @@ class PlaylistCell: UITableViewCell {
         var songs = playlist.playlistSongs.allObjects
         var playlistDuration = 0.0
         
-        if countElements(playlist.persistentID) > 0 {
-            let predicate = MPMediaPropertyPredicate(value: playlist.persistentID.toInt(),
-                forProperty: MPMediaPlaylistPropertyPersistentID,
-                comparisonType: .EqualTo)
-            self.playlistQuery.addFilterPredicate(predicate)
-            
-            songs = playlistQuery.items
-            
-            for item in self.playlistQuery.items {
-                playlistDuration = playlistDuration + item.playbackDuration
-            }
-        } else {
-            for playlistSong in songs as [PlaylistSong] {
-                playlistDuration = playlistDuration + playlistSong.song.playbackDuration.doubleValue
+        if let persistentID = playlist.persistentID {
+            if countElements(persistentID) > 0 {
+                let predicate = MPMediaPropertyPredicate(value: persistentID.toInt(),
+                    forProperty: MPMediaPlaylistPropertyPersistentID,
+                    comparisonType: .EqualTo)
+                self.playlistQuery.addFilterPredicate(predicate)
+                
+                songs = playlistQuery.items
+                
+                for item in self.playlistQuery.items {
+                    playlistDuration = playlistDuration + item.playbackDuration
+                }
+            } else {
+                for playlistSong in songs as [PlaylistSong] {
+                    playlistDuration = playlistDuration + playlistSong.song.playbackDuration.doubleValue
+                }
             }
         }
+        
         
         self.infoLabel.text = songs.count == 1 ? "\(songs.count) song" : "\(songs.count) songs"
         

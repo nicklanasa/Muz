@@ -16,19 +16,21 @@ enum MoreSectionType: NSInteger {
 }
 
 enum MoreSetting: NSInteger {
+    case Sync
     case Lyrics
     case ArtistInfo
 }
 
 class MoreViewController: RootViewController,
     UITableViewDelegate,
-    UITableViewDataSource,
-NSFetchedResultsControllerDelegate {
+    UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
     
+    var hud: MBProgressHUD!
+    
     // Make this DB driven
-    private let tableDataSectionSettings = ["Lyrics", "Artist info"]
+    private let tableDataSectionSettings = ["Sync your library", "Lyrics", "Artist info"]
     private let tableDataSectionInfo = ["Rate app", "Facebook", "Twitter", "Website", "Feedback"]
     
     private let lyricsSwitch = UISwitch(frame: CGRectMake(0, 0, 50, 50))
@@ -83,6 +85,8 @@ NSFetchedResultsControllerDelegate {
         var cell = tableView.dequeueReusableCellWithIdentifier("Cell",
             forIndexPath: indexPath) as UITableViewCell
         
+        cell.textLabel?.font = MuzSettingFont
+        
         switch indexPath.section {
         case MoreSectionType.Settings.rawValue:
             switch indexPath.row {
@@ -92,9 +96,13 @@ NSFetchedResultsControllerDelegate {
                 lastFmCell.artistInfoSwitch.addTarget(self, action: "updatedSetting:", forControlEvents: .ValueChanged)
                 return lastFmCell
             default:
-                self.lyricsSwitch.on = SettingsManager.defaultManager.valueForMoreSetting(.Lyrics)
-                cell.accessoryView = self.lyricsSwitch
-                
+                if indexPath.row == 0 {
+                    cell.textLabel?.textAlignment = .Center
+                    cell.textLabel?.font = MuzTitleFont
+                } else {
+                    self.lyricsSwitch.on = SettingsManager.defaultManager.valueForMoreSetting(.Lyrics)
+                    cell.accessoryView = self.lyricsSwitch
+                }
                 cell.textLabel?.text = self.tableDataSectionSettings[indexPath.row] as NSString
             }
         default:
@@ -102,7 +110,6 @@ NSFetchedResultsControllerDelegate {
             cell.accessoryType = .DisclosureIndicator
         }
         
-        cell.textLabel?.font = MuzSettingFont
         cell.textLabel?.textColor = UIColor.whiteColor()
         
         return cell
@@ -111,7 +118,23 @@ NSFetchedResultsControllerDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         switch indexPath.section {
         case MoreSectionType.Settings.rawValue:
-            break;
+            if indexPath.row == 0 {
+                self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+                self.hud.mode = MBProgressHUDModeDeterminate
+                self.hud.labelText = "Syncing library..."
+                self.hud.labelFont = MuzTitleFont
+                DataManager.manager.syncArtists({ (addedItems, error) -> () in
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        self.hud.hide(true)
+                    })
+                    
+                    DataManager.manager.syncPlaylists({ (addedItems, error) -> () in
+                    
+                    })
+                }, progress: { (addedItems, total) -> () in
+                    self.hud.progress = Float(addedItems.count) / Float(total)
+                })
+            }
         default:
             switch indexPath.row {
             case 0: UIApplication.sharedApplication().openURL(NSURL(string: "https://itunes.apple.com/us/app/muz/id951709415?ls=1&mt=8")!)

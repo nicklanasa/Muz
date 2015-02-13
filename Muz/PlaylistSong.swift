@@ -2,8 +2,8 @@
 //  PlaylistSong.swift
 //  Muz
 //
-//  Created by Nick Lanasa on 12/15/14.
-//  Copyright (c) 2014 Nytek Productions. All rights reserved.
+//  Created by Nick Lanasa on 2/12/15.
+//  Copyright (c) 2015 Nytek Productions. All rights reserved.
 //
 
 import Foundation
@@ -13,7 +13,7 @@ import CoreData
 class PlaylistSong: NSManagedObject {
 
     @NSManaged var order: NSNumber
-    @NSManaged var song: Song
     @NSManaged var playlists: NSSet
+    @NSManaged var song: Song
 
 }
