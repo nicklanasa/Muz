@@ -151,20 +151,6 @@
 			remoteGlobalIDString = CE444BAF1A36A25500153F77;
 			remoteInfo = Muz;
 		};
-		CE57ABC21A8B2428005C5EFD /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = CE57ABBD1A8B2428005C5EFD /* Stocks.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 01C975431A733B5200C81919;
-			remoteInfo = Stocks;
-		};
-		CE57ABC41A8B2428005C5EFD /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = CE57ABBD1A8B2428005C5EFD /* Stocks.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 01C9755B1A733B5200C81919;
-			remoteInfo = StocksTests;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -224,7 +210,6 @@
 		CE444BE21A36A28700153F77 /* Datastore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Datastore.swift; sourceTree = "<group>"; };
 		CE444BE31A36A28700153F77 /* MediaSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSession.swift; sourceTree = "<group>"; };
 		CE49F35F1A3A83C8008DE25E /* NowPlayingPageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NowPlayingPageController.swift; sourceTree = "<group>"; };
-		CE57ABBD1A8B2428005C5EFD /* Stocks.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Stocks.xcodeproj; path = ../../Stocks/Stocks.xcodeproj; sourceTree = "<group>"; };
 		CE5E31A71A86A3CC00969647 /* LastFmSimilarArtistTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastFmSimilarArtistTableCell.swift; sourceTree = "<group>"; };
 		CE5E31A91A86A40100969647 /* LastFmSimilarArtistTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LastFmSimilarArtistTableCell.xib; sourceTree = "<group>"; };
 		CE6EF4FF1A38F07D001FE858 /* ArtistAlbumsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArtistAlbumsViewController.swift; sourceTree = "<group>"; };
@@ -543,7 +528,6 @@
 		CE4931EB1A3A1B4400B3A4BE /* Application */ = {
 			isa = PBXGroup;
 			children = (
-				CE57ABBD1A8B2428005C5EFD /* Stocks.xcodeproj */,
 				CECCC1181A4127D400799854 /* LastFmBuyLinksViewController.swift */,
 				CE3126161A50DA480071AD27 /* NoMusicOverlayController.swift */,
 				CE3126181A50DA500071AD27 /* NoMusicOverlayController.xib */,
@@ -606,15 +590,6 @@
 				011AF3BA1A880C5C00E298DD /* NowPlayingTableViewCell.xib */,
 			);
 			name = NowPlaying;
-			sourceTree = "<group>";
-		};
-		CE57ABBE1A8B2428005C5EFD /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				CE57ABC31A8B2428005C5EFD /* Stocks.app */,
-				CE57ABC51A8B2428005C5EFD /* StocksTests.xctest */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		CE9BCFD41A44E98100522F18 /* Playlists */ = {
@@ -750,12 +725,6 @@
 			mainGroup = CE444BA71A36A25500153F77;
 			productRefGroup = CE444BB11A36A25500153F77 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = CE57ABBE1A8B2428005C5EFD /* Products */;
-					ProjectRef = CE57ABBD1A8B2428005C5EFD /* Stocks.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				CE444BAF1A36A25500153F77 /* Muz */,
@@ -763,23 +732,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		CE57ABC31A8B2428005C5EFD /* Stocks.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = Stocks.app;
-			remoteRef = CE57ABC21A8B2428005C5EFD /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		CE57ABC51A8B2428005C5EFD /* StocksTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = StocksTests.xctest;
-			remoteRef = CE57ABC41A8B2428005C5EFD /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		CE444BAE1A36A25500153F77 /* Resources */ = {
