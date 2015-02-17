@@ -219,7 +219,7 @@ ArtistAlbumHeaderDelegate {
             if let albumArtist = self.artistsController.objectAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? Artist {
                 if let album = albumArtist.albums.allObjects[indexPath.section] as? Album {
                     if let song = album.songs.allObjects[indexPath.row] as? Song {
-                        let createPlaylistOverlay = CreatePlaylistOverlay(song: song)
+                        let createPlaylistOverlay = CreatePlaylistOverlay(songs: [song])
                         self.presentModalOverlayController(createPlaylistOverlay, blurredController: self)
                     }
                 }
