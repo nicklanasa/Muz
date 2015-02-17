@@ -205,7 +205,7 @@ NowPlayingCollectionControllerDelegate {
     func addToPlaylist() {
         if let nowPlayingItem = self.playerController.nowPlayingItem {
             if let song = DataManager.manager.datastore.songForSongName(nowPlayingItem.title, artist: nowPlayingItem.artist) {
-                let createPlaylistOverlay = CreatePlaylistOverlay(song: song)
+                let createPlaylistOverlay = CreatePlaylistOverlay(songs: [song])
                 self.presentModalOverlayController(createPlaylistOverlay, blurredController: self)
             }
         } else {
