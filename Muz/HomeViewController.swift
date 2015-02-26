@@ -198,6 +198,7 @@ UICollectionViewDataSource {
         default:
             let song = self.recentSongs?[indexPath.row] as NSDictionary
             songCell.updateWithSongData(song)
+            songCell.accessoryType = .DisclosureIndicator
             
             return songCell
         }
