@@ -32,9 +32,7 @@ class LastFmEventInfoDetailsCell: UITableViewCell {
         self.descriptionTextView.text = event.eventDescription
         
         if countElements(event.eventDescription) == 0 {
-            self.descriptionLabel.hidden = true
-        } else {
-            self.descriptionLabel.hidden = false
+            self.descriptionTextView.text = "Description unavailable"
         }
         
         let formatter = NSDateFormatter()
