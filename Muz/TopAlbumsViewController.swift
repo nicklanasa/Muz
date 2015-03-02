@@ -72,6 +72,7 @@ class TopAlbumsViewController: RootViewController, LastFmAlbumBuyLinksRequestDel
         
         cell.buyButton.addTarget(self, action: "fetchBuyLinks:", forControlEvents: .TouchUpInside)
         cell.buyButton.tag = indexPath.row
+        cell.buyButton.hidden = true
         
         return cell
     }
