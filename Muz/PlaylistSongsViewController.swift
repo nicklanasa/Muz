@@ -159,6 +159,8 @@ NSFetchedResultsControllerDelegate {
             cell.updateWithSong(song)
         }
         
+        cell.accessoryType = .DisclosureIndicator
+        
         return cell
     }
     

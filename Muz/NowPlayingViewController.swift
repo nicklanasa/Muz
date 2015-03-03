@@ -214,7 +214,7 @@ NowPlayingCollectionControllerDelegate {
     }
     
     func showNowPlayingCollectionController() {
-        let nowPlayingCollectionController = NowPlayingCollectionController(collection: collection)
+        let nowPlayingCollectionController = NowPlayingCollectionController(collection: CurrentQueueItems)
         nowPlayingCollectionController.delegate = self
         
         presentModalOverlayController(nowPlayingCollectionController, blurredController: self)
