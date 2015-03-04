@@ -85,6 +85,8 @@ LastFmArtistInfoCellDelegate {
             segmentedControl.alpha = 1.0
             
             configureForItem()
+            
+            
         }
     }
     
