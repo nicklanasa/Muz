@@ -79,6 +79,16 @@ var CurrentQueueItems: MPMediaItemCollection!
         completion(image: image)
     }
     
+    func fetchArtistCollectionForArtist(#artist: String, completion: (collection: MPMediaItemCollection) -> ()) {
+        self.removeAllPredicatesFromQuery(artistsQuery)
+        
+        artistsQuery.addFilterPredicate(MPMediaPropertyPredicate(value: artist,
+            forProperty: MPMediaItemPropertyArtist,
+            comparisonType: .EqualTo))
+        
+        completion(collection: MPMediaItemCollection(items: artistsQuery.items))
+    }
+    
     // MARK: Albums
     
     func fetchAlbumCollectionForAlbum(#album: Album, completion: (collection: MPMediaItemCollection) -> ()) {

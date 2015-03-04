@@ -49,7 +49,7 @@ UIActionSheetDelegate {
         
         for buyLink in self.buyLinks as [LastFmBuyLink] {
             if countElements(buyLink.name) > 0 && buyLink.price.integerValue > 0 {
-                let buttonTitle = NSString(format: "%@ - $%@", buyLink.name, buyLink.price)
+                let buttonTitle = NSString(format: "%@", buyLink.name, buyLink.price)
                 self.buyLinksActionSheet.addButtonWithTitle(buttonTitle)
                 self.numberOfValidBuyLinks++
             }

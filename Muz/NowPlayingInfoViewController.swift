@@ -34,6 +34,8 @@ LastFmArtistInfoCellDelegate {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     
+    var artistsController: NSFetchedResultsController!
+    
     var lyricsRequest: LyricsRequest?
     var azLyricsRequest: NSURLRequest!
     
@@ -85,9 +87,36 @@ LastFmArtistInfoCellDelegate {
             segmentedControl.alpha = 1.0
             
             configureForItem()
-            
-            
         }
+        
+        self.checkLibraryForArtist()
+    }
+    
+    func checkLibraryForArtist() {
+        if self.artist == nil {
+            if let item = self.item {
+                self.artist = self.item.artist
+            }
+        }
+        
+        if let artist = self.artist {
+            let predicate = NSPredicate(format: "name = %@", artist)
+            artistsController = DataManager.manager.datastore.artistsController(predicate, sortKey: "name", ascending: true, sectionNameKeyPath: nil)
+            if artistsController.performFetch(nil) {
+                if artistsController.fetchedObjects?.count > 0 {
+                    self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "albums"),
+                        style: .Plain,
+                        target: self,
+                        action: "artistAlbums")
+                }
+            }
+        }
+    }
+    
+    func artistAlbums() {
+        let artist = artistsController.fetchedObjects?[0] as Artist
+        let artistAlbumsViewController = ArtistAlbumsViewController(artist: artist)
+        navigationController?.pushViewController(artistAlbumsViewController, animated: true)
     }
     
     override func viewWillAppear(animated: Bool) {

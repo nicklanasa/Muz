@@ -449,6 +449,7 @@ class Datastore {
             playlist.name = name
             playlist.playlistType = NSNumber(unsignedLong: playlistType.rawValue)
             playlist.persistentID = ""
+            playlist.modifiedDate = NSDate()
             
             // Create PlaySongs
             var playlistSongs = NSMutableSet()
@@ -501,6 +502,7 @@ class Datastore {
             playlist.name = name
             playlist.playlistType = NSNumber(unsignedLong: playlistType.rawValue)
             playlist.persistentID = ""
+            playlist.modifiedDate = NSDate()
             
             // Create PlaySongs
             var playlistSongs = NSMutableSet()
@@ -562,6 +564,7 @@ class Datastore {
                 let combinedSongs = NSMutableSet(set: playlist.playlistSongs)
                 combinedSongs.addObjectsFromArray(playlistSongs.allObjects)
                 playlist.playlistSongs = combinedSongs
+                playlist.modifiedDate = NSDate()
             }
             
             LocalyticsSession.shared().tagEvent("addArtistSongsToPlaylist()")
@@ -596,6 +599,7 @@ class Datastore {
         }
         
         playlist.playlistSongs = playlistSongs
+        playlist.modifiedDate = NSDate()
         
         LocalyticsSession.shared().tagEvent("createPlaylistWithItems()")
         
@@ -619,6 +623,7 @@ class Datastore {
         }
         
         playlist.playlistSongs = playlistSongs
+        playlist.modifiedDate = NSDate()
         
         self.saveDatastoreWithCompletion { (error) -> () in
             completion(addedSongs: playlistSongs.allObjects)
@@ -631,6 +636,7 @@ class Datastore {
         playlist.name = name
         playlist.playlistType = NSNumber(unsignedLong: playlistType.rawValue)
         playlist.persistentID = ""
+        playlist.modifiedDate = NSDate()
         
         LocalyticsSession.shared().tagEvent("createEmptyPlaylistWithName()")
         
@@ -697,7 +703,7 @@ class Datastore {
     func songForSongName(songName: String, artist: NSString) -> Song? {
         var request = NSFetchRequest()
         request.entity = NSEntityDescription.entityForName("Song",
-            inManagedObjectContext: self.workerContext)
+            inManagedObjectContext: self.mainQueueContext)
         
         request.fetchLimit = 1
         
@@ -705,7 +711,7 @@ class Datastore {
         request.predicate = predicate
         
         var error = NSErrorPointer()
-        let results = self.workerContext.executeFetchRequest(request, error: error)
+        let results = self.mainQueueContext.executeFetchRequest(request, error: error)
         
         if results?.count > 0 {
             if let song = results?[0] as? Song {

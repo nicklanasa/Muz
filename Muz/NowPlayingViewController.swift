@@ -203,13 +203,53 @@ NowPlayingCollectionControllerDelegate {
     }
     
     func addToPlaylist() {
+        
         if let nowPlayingItem = self.playerController.nowPlayingItem {
-            if let song = DataManager.manager.datastore.songForSongName(nowPlayingItem.title, artist: nowPlayingItem.artist) {
-                let createPlaylistOverlay = CreatePlaylistOverlay(songs: [song])
-                self.presentModalOverlayController(createPlaylistOverlay, blurredController: self)
+            
+            let alertViewController = UIAlertController(title: "Select Option", message: "Please select what you want to create a playlist from", preferredStyle: UIAlertControllerStyle.ActionSheet)
+            
+            let addAllArtistSongsAction = UIAlertAction(title: "All songs from Artist", style: .Default) { (action) -> Void in
+                if let song = DataManager.manager.datastore.songForSongName(nowPlayingItem.title, artist: nowPlayingItem.artist) {
+                    
+                    let songsController = DataManager.manager.datastore.songsControllerWithSortKey("title", limit: nil, ascending: true, sectionNameKeyPath: nil)
+                    songsController.fetchRequest.predicate = NSPredicate(format: "artist = %@", song.artist)
+                    
+                    if songsController.performFetch(nil) {
+                        if let songs = songsController.fetchedObjects {
+                            let createPlaylistOverlay = CreatePlaylistOverlay(songs: songs)
+                            self.presentModalOverlayController(createPlaylistOverlay, blurredController: self)
+                        } else {
+                            UIAlertView(title: "Error!",
+                                message: "Unable to find songs from that Artist.",
+                                delegate: self,
+                                cancelButtonTitle: "Ok").show()
+                        }
+                    }
+                }
             }
+            
+            let addSongAction = UIAlertAction(title: "Currently playing song", style: .Default) { (action) -> Void in
+                if let song = DataManager.manager.datastore.songForSongName(nowPlayingItem.title, artist: nowPlayingItem.artist) {
+                    let createPlaylistOverlay = CreatePlaylistOverlay(songs: [song])
+                    self.presentModalOverlayController(createPlaylistOverlay, blurredController: self)
+                }
+            }
+            
+            let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (action) -> Void in
+                
+            }
+            
+            alertViewController.addAction(addAllArtistSongsAction)
+            alertViewController.addAction(addSongAction)
+            alertViewController.addAction(cancelAction)
+            
+            self.presentViewController(alertViewController, animated: true, completion: nil)
+            
         } else {
-            UIAlertView(title: "Error!", message: "You must be playing a song to do that!", delegate: self, cancelButtonTitle: "Ok").show()
+            UIAlertView(title: "Error!",
+                message: "You must be playing a song to do that!",
+                delegate: self,
+                cancelButtonTitle: "Ok").show()
         }
     }
     

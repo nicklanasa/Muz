@@ -53,6 +53,12 @@ class DataManager {
         }
     }
     
+    func fetchCollectionForArtist(#artist: String, completion: (collection: MPMediaItemCollection, error: NSErrorPointer) -> ()) {
+        MediaSession.sharedSession.fetchArtistCollectionForArtist(artist: artist) { (collection) -> () in
+            completion(collection: collection, error: nil)
+        }
+    }
+    
     func syncAlbumsForArtist(#artist: Artist, completion: (addedItems: [AnyObject], error: NSErrorPointer) -> ()) {
         MediaSession.sharedSession.fetchAlbumsForArtist(artist: artist) { (results) -> () in
             self.datastore.addAlbumsForArtist(artist: artist, albums: results, completion: { (addedItems, error) -> () in
