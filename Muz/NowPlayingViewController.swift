@@ -553,17 +553,4 @@ NowPlayingCollectionControllerDelegate {
         playerController.nowPlayingItem = item
         playerController.play()
     }
-    
-    override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
-        super.willRotateToInterfaceOrientation(toInterfaceOrientation, duration: duration)
-        if toInterfaceOrientation == .LandscapeLeft || toInterfaceOrientation == .LandscapeRight {
-            var landscapeNowPlaying = NowPlayingViewControllerLandscape()
-            self.navigationController?.pushViewController(landscapeNowPlaying, animated: false)
-            landscapeNowPlaying.updateNowPlayingWithItem(self.item)
-        }
-    }
-    
-    override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
-        super.didRotateFromInterfaceOrientation(fromInterfaceOrientation)
-    }
 }

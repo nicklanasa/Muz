@@ -34,8 +34,6 @@
 		CE33385F1A3A0AD100281146 /* SongsHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE33385E1A3A0AD100281146 /* SongsHeader.xib */; };
 		CE3338611A3A0ADB00281146 /* ArtistsHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE3338601A3A0ADB00281146 /* ArtistsHeader.xib */; };
 		CE3D298E1A4F88EA000CCC90 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE3D298D1A4F88EA000CCC90 /* Images.xcassets */; };
-		CE3D29911A507FD2000CCC90 /* NowPlayingViewControllerLandscape.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE3D29901A507FD2000CCC90 /* NowPlayingViewControllerLandscape.xib */; };
-		CE3D29931A508087000CCC90 /* NowPlayingViewControllerLandscape.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3D29921A508087000CCC90 /* NowPlayingViewControllerLandscape.swift */; };
 		CE4184CE1A4922900011C0DA /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE4184C41A4922900011C0DA /* LaunchScreen.xib */; };
 		CE4184CF1A4922900011C0DA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE4184C61A4922900011C0DA /* Main.storyboard */; };
 		CE4184D41A4922900011C0DA /* Muz.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CE4184CC1A4922900011C0DA /* Muz.xcdatamodeld */; };
@@ -90,6 +88,10 @@
 		CEA4A13D1A8665EA003FDF0D /* random.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CEA4A13C1A8665EA003FDF0D /* random.jpg */; };
 		CEA4A13F1A867678003FDF0D /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA4A13E1A867678003FDF0D /* HomeViewController.swift */; };
 		CEA4A1411A8676B0003FDF0D /* HomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEA4A1401A8676B0003FDF0D /* HomeViewController.xib */; };
+		CEAA2A971AA7CF2E00DDCD23 /* LastFmLoginOverlayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAA2A961AA7CF2E00DDCD23 /* LastFmLoginOverlayController.swift */; };
+		CEAA2A991AA7CF5C00DDCD23 /* LastFmLoginOverlayController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEAA2A981AA7CF5C00DDCD23 /* LastFmLoginOverlayController.xib */; };
+		CEAA2A9B1AA7D0DC00DDCD23 /* LastFmLoginCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAA2A9A1AA7D0DC00DDCD23 /* LastFmLoginCell.swift */; };
+		CEAA2A9F1AA7D0FB00DDCD23 /* LastFmLoginCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEAA2A9E1AA7D0FB00DDCD23 /* LastFmLoginCell.xib */; };
 		CEB200D21A378B6400E857D8 /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB200D11A378B6400E857D8 /* UIImage+ImageEffects.m */; };
 		CEB200D41A379C7000E857D8 /* ArtistsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEB200D31A379C7000E857D8 /* ArtistsViewController.xib */; };
 		CEB524E31A3B766000027C71 /* LyricsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB524E21A3B766000027C71 /* LyricsRequest.swift */; };
@@ -184,8 +186,6 @@
 		CE33385E1A3A0AD100281146 /* SongsHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SongsHeader.xib; sourceTree = "<group>"; };
 		CE3338601A3A0ADB00281146 /* ArtistsHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ArtistsHeader.xib; sourceTree = "<group>"; };
 		CE3D298D1A4F88EA000CCC90 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		CE3D29901A507FD2000CCC90 /* NowPlayingViewControllerLandscape.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NowPlayingViewControllerLandscape.xib; sourceTree = "<group>"; };
-		CE3D29921A508087000CCC90 /* NowPlayingViewControllerLandscape.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NowPlayingViewControllerLandscape.swift; sourceTree = "<group>"; };
 		CE3F8AD41A801A370025A75E /* Muz 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Muz 2.xcdatamodel"; sourceTree = "<group>"; };
 		CE4184C51A4922900011C0DA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = LaunchScreen.xib; sourceTree = "<group>"; };
 		CE4184C71A4922900011C0DA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Main.storyboard; sourceTree = "<group>"; };
@@ -255,6 +255,10 @@
 		CEA4A13C1A8665EA003FDF0D /* random.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = random.jpg; sourceTree = "<group>"; };
 		CEA4A13E1A867678003FDF0D /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		CEA4A1401A8676B0003FDF0D /* HomeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeViewController.xib; sourceTree = "<group>"; };
+		CEAA2A961AA7CF2E00DDCD23 /* LastFmLoginOverlayController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastFmLoginOverlayController.swift; sourceTree = "<group>"; };
+		CEAA2A981AA7CF5C00DDCD23 /* LastFmLoginOverlayController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LastFmLoginOverlayController.xib; sourceTree = "<group>"; };
+		CEAA2A9A1AA7D0DC00DDCD23 /* LastFmLoginCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastFmLoginCell.swift; sourceTree = "<group>"; };
+		CEAA2A9E1AA7D0FB00DDCD23 /* LastFmLoginCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LastFmLoginCell.xib; sourceTree = "<group>"; };
 		CEB200CF1A378B6300E857D8 /* Muz-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Muz-Bridging-Header.h"; sourceTree = "<group>"; };
 		CEB200D01A378B6400E857D8 /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
 		CEB200D11A378B6400E857D8 /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
@@ -528,7 +532,7 @@
 		CE4931EB1A3A1B4400B3A4BE /* Application */ = {
 			isa = PBXGroup;
 			children = (
-				CECCC1181A4127D400799854 /* LastFmBuyLinksViewController.swift */,
+				CE9BCFE91A45E22400522F18 /* LastFm */,
 				CE3126161A50DA480071AD27 /* NoMusicOverlayController.swift */,
 				CE3126181A50DA500071AD27 /* NoMusicOverlayController.xib */,
 				CEDB618C1A37C40000B90B2D /* LovedViewController.swift */,
@@ -576,9 +580,6 @@
 		CE4931ED1A3A1B8700B3A4BE /* NowPlaying */ = {
 			isa = PBXGroup;
 			children = (
-				CE9BCFE91A45E22400522F18 /* LastFm */,
-				CE3D29921A508087000CCC90 /* NowPlayingViewControllerLandscape.swift */,
-				CE3D29901A507FD2000CCC90 /* NowPlayingViewControllerLandscape.xib */,
 				CEDB61EA1A37DE5400B90B2D /* NowPlayingViewController.swift */,
 				CEDB61EC1A37DE6100B90B2D /* NowPlayingViewController.xib */,
 				CE49F35F1A3A83C8008DE25E /* NowPlayingPageController.swift */,
@@ -612,6 +613,11 @@
 		CE9BCFE91A45E22400522F18 /* LastFm */ = {
 			isa = PBXGroup;
 			children = (
+				CEAA2A9A1AA7D0DC00DDCD23 /* LastFmLoginCell.swift */,
+				CEAA2A9E1AA7D0FB00DDCD23 /* LastFmLoginCell.xib */,
+				CEAA2A961AA7CF2E00DDCD23 /* LastFmLoginOverlayController.swift */,
+				CEAA2A981AA7CF5C00DDCD23 /* LastFmLoginOverlayController.xib */,
+				CECCC1181A4127D400799854 /* LastFmBuyLinksViewController.swift */,
 				CE2BD11E1A59F2670077D3FD /* MoreLastFmSettingCell.swift */,
 				CE2BD1201A59F2710077D3FD /* MoreLastFmSettingCell.xib */,
 				CE9BCFEA1A45E2CB00522F18 /* LastFmEventInfoDetailsCell.swift */,
@@ -749,10 +755,10 @@
 				CEA4A1411A8676B0003FDF0D /* HomeViewController.xib in Resources */,
 				CE4184DC1A4A3CCB0011C0DA /* LastFmEventMapController.xib in Resources */,
 				011AF3BB1A880C5C00E298DD /* NowPlayingTableViewCell.xib in Resources */,
-				CE3D29911A507FD2000CCC90 /* NowPlayingViewControllerLandscape.xib in Resources */,
 				CE4184CE1A4922900011C0DA /* LaunchScreen.xib in Resources */,
 				CEDB61951A37D21B00B90B2D /* SongsViewController.xib in Resources */,
 				CEFEB1C61A843A5B0070A28D /* SyncOverlayController.xib in Resources */,
+				CEAA2A9F1AA7D0FB00DDCD23 /* LastFmLoginCell.xib in Resources */,
 				CE2BD1211A59F2710077D3FD /* MoreLastFmSettingCell.xib in Resources */,
 				CE3338611A3A0ADB00281146 /* ArtistsHeader.xib in Resources */,
 				CECCC0BB1A3F8E7400799854 /* PlaylistsViewController.xib in Resources */,
@@ -763,6 +769,7 @@
 				CE9BCFE71A45E21900522F18 /* LastFmEventInfoController.xib in Resources */,
 				CE9BCFD11A44C3BA00522F18 /* CreatePlaylistOverlay.xib in Resources */,
 				CEE153471A3B41D900BB16EB /* NowPlayingInfoViewController.xib in Resources */,
+				CEAA2A991AA7CF5C00DDCD23 /* LastFmLoginOverlayController.xib in Resources */,
 				CE31261D1A50E77A0071AD27 /* TutorialController.xib in Resources */,
 				CEC66DA11A38DB9300560754 /* SongCell.xib in Resources */,
 				CEE153501A3B568400BB16EB /* NowPlayingInfoLyricsCell.xib in Resources */,
@@ -844,7 +851,6 @@
 				011AF3B91A880C5300E298DD /* NowPlayingTableViewCell.swift in Sources */,
 				CEBC1EF61A816D7B000AF2F1 /* UIImageView+Helpers.swift in Sources */,
 				CEDB61871A37BA2B00B90B2D /* NavBarController.swift in Sources */,
-				CE3D29931A508087000CCC90 /* NowPlayingViewControllerLandscape.swift in Sources */,
 				CECCC1271A412AB400799854 /* MuzButton.swift in Sources */,
 				CEDB617E1A37AF9700B90B2D /* RootViewController.swift in Sources */,
 				CEBB56161A3B951D00AE8CAA /* NSString+Lyrics.m in Sources */,
@@ -881,6 +887,7 @@
 				CEDB618E1A37C40000B90B2D /* LovedViewController.swift in Sources */,
 				CEA4A13F1A867678003FDF0D /* HomeViewController.swift in Sources */,
 				CEE153551A3B5B4B00BB16EB /* HTMLNode.m in Sources */,
+				CEAA2A971AA7CF2E00DDCD23 /* LastFmLoginOverlayController.swift in Sources */,
 				CE9211391A892FBE00758227 /* LastFmTrack.m in Sources */,
 				CEBC1EF81A81781E000AF2F1 /* NSString+Helpers.swift in Sources */,
 				CEDB61EB1A37DE5400B90B2D /* NowPlayingViewController.swift in Sources */,
@@ -907,6 +914,7 @@
 				CE9BCFD31A44E68300522F18 /* OverlayController.swift in Sources */,
 				CECCC0B91A3F8E4700799854 /* PlaylistsViewController.swift in Sources */,
 				CE444BDB1A36A27200153F77 /* ArtistsViewController.swift in Sources */,
+				CEAA2A9B1AA7D0DC00DDCD23 /* LastFmLoginCell.swift in Sources */,
 				CE5E31A81A86A3CC00969647 /* LastFmSimilarArtistTableCell.swift in Sources */,
 				CE3126171A50DA480071AD27 /* NoMusicOverlayController.swift in Sources */,
 				CE9BCFD61A44EB4C00522F18 /* CreatePlaylistCell.swift in Sources */,

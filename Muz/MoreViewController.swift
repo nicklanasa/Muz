@@ -19,6 +19,7 @@ enum MoreSetting: NSInteger {
     case Sync
     case Lyrics
     case ArtistInfo
+    case LastFM
 }
 
 class MoreViewController: RootViewController,
@@ -30,12 +31,13 @@ class MoreViewController: RootViewController,
     var hud: MBProgressHUD!
     
     // Make this DB driven
-    private let tableDataSectionSettings = ["Sync iPod library", "Lyrics", "Artist info"]
+    private let tableDataSectionSettings = ["Sync iPod library", "Lyrics", "Artist info", "Last.fm"]
     private let tableDataSectionInfo = ["Rate app", "Facebook", "Twitter", "Website", "Feedback"]
     
     private let lyricsSwitch = UISwitch(frame: CGRectMake(0, 0, 50, 50))
     private let backgroundArtworkSwitch = UISwitch(frame: CGRectMake(0, 0, 50, 50))
     private let artistInfoSwitch = UISwitch(frame: CGRectMake(0, 0, 50, 50))
+    private let lastFmLoginSwitch = UISwitch(frame: CGRectMake(0, 0, 50, 50))
     
     override init() {
         super.init(nibName: "MoreViewController", bundle: nil)
@@ -100,6 +102,9 @@ class MoreViewController: RootViewController,
                 if indexPath.row == 0 {
                     cell.textLabel?.textAlignment = .Center
                     cell.textLabel?.font = MuzTitleFont
+                } else if indexPath.row == 3 {
+                    self.lastFmLoginSwitch.on = SettingsManager.defaultManager.valueForMoreSetting(.LastFM)
+                    cell.accessoryView = self.lastFmLoginSwitch
                 } else {
                     self.lyricsSwitch.on = SettingsManager.defaultManager.valueForMoreSetting(.Lyrics)
                     cell.accessoryView = self.lyricsSwitch

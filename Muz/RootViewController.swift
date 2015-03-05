@@ -128,20 +128,4 @@ class RootViewController: UIViewController {
             controller.view.alpha = 1.0
         })
     }
-    
-    override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
-        if fromInterfaceOrientation == .LandscapeLeft || fromInterfaceOrientation == .LandscapeRight {
-            println(UIScreen.mainScreen().bounds.size)
-            self.backgroundImageView.contentMode = UIViewContentMode.ScaleToFill
-            self.backgroundImageView.image = backgroundImageView.image
-        } else {
-            println(UIScreen.mainScreen().bounds.size)
-            self.backgroundImageView.contentMode = UIViewContentMode.ScaleAspectFill
-            self.backgroundImageView.image = backgroundImageView.image
-        }
-    }
-    
-    override func prefersStatusBarHidden() -> Bool {
-        return false
-    }
 }
