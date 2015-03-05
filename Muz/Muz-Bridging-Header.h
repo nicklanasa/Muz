@@ -20,3 +20,4 @@
 #import <uservoice-iphone-sdk/UserVoice.h>
 #import <uservoice-iphone-sdk/UVStyleSheet.h>
 #import <Appirater/Appirater.h>
+#import <FacebookSDK/FacebookSDK.h>

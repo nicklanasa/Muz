@@ -78,6 +78,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         LocalyticsSession.shared().integrateLocalytics("b25e652e274c5d45d413bc3-89bdf3a6-8e1f-11e4-a94d-009c5fda0a25",
             launchOptions: launchOptions)
         
+        FBLoginView.self
+        FBProfilePictureView.self
+        
         let types: UIUserNotificationType = (.Alert | .Badge | .Sound)
         let settings = UIUserNotificationSettings(forTypes: types, categories: nil)
         application.registerUserNotificationSettings(settings)
@@ -155,5 +158,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         noMusicOverlay.didMoveToParentViewController(self.window!.rootViewController)
         self.window!.rootViewController?.view.addSubview(noMusicOverlay.view)
     }
+    
+    func application(application: UIApplication, openURL url: NSURL, sourceApplication: NSString?, annotation: AnyObject) -> Bool {
+        var wasHandled:Bool = FBAppCall.handleOpenURL(url, sourceApplication: sourceApplication)
+        return wasHandled
+    }
+
 }
 

@@ -206,7 +206,7 @@ NowPlayingCollectionControllerDelegate {
         
         if let nowPlayingItem = self.playerController.nowPlayingItem {
             
-            let alertViewController = UIAlertController(title: "Select Option", message: "Please select what you want to create a playlist from", preferredStyle: UIAlertControllerStyle.ActionSheet)
+            let alertViewController = UIAlertController(title: "Create Playlist", message: "Please select what you want to create a playlist from.", preferredStyle: UIAlertControllerStyle.ActionSheet)
             
             let addAllArtistSongsAction = UIAlertAction(title: "All songs from Artist", style: .Default) { (action) -> Void in
                 if let song = DataManager.manager.datastore.songForSongName(nowPlayingItem.title, artist: nowPlayingItem.artist) {

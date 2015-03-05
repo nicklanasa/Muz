@@ -12,7 +12,6 @@ import UIKit
 class LastFmLoginCell: UITableViewCell, UITextFieldDelegate {
     @IBOutlet weak var usernameTextfield: UITextField!
     
-    @IBOutlet weak var signupButton: UIButton!
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var passwordTextfield: UITextField!
     

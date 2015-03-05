@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		011AF3B91A880C5300E298DD /* NowPlayingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011AF3B81A880C5300E298DD /* NowPlayingTableViewCell.swift */; };
 		011AF3BB1A880C5C00E298DD /* NowPlayingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 011AF3BA1A880C5C00E298DD /* NowPlayingTableViewCell.xib */; };
+		01A789571AA7F0570033CE4E /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01A789561AA7F0570033CE4E /* FacebookSDK.framework */; };
 		18FE78E2938CE235720BDF0D /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CC5E238686D44A286C24637D /* libPods.a */; };
 		CE167DA01A855A7700A9EC1A /* Artist.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE167D9F1A855A7700A9EC1A /* Artist.swift */; };
 		CE167DA31A855E6800A9EC1A /* Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE167DA21A855E6800A9EC1A /* Album.swift */; };
@@ -158,6 +159,7 @@
 /* Begin PBXFileReference section */
 		011AF3B81A880C5300E298DD /* NowPlayingTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NowPlayingTableViewCell.swift; sourceTree = "<group>"; };
 		011AF3BA1A880C5C00E298DD /* NowPlayingTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NowPlayingTableViewCell.xib; sourceTree = "<group>"; };
+		01A789561AA7F0570033CE4E /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = ../../Documents/FacebookSDK/FacebookSDK.framework; sourceTree = "<group>"; };
 		B5C84601BD2F3431F5F52BE9 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		CC5E238686D44A286C24637D /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE167D9F1A855A7700A9EC1A /* Artist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Artist.swift; sourceTree = "<group>"; };
@@ -325,6 +327,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				18FE78E2938CE235720BDF0D /* libPods.a in Frameworks */,
+				01A789571AA7F0570033CE4E /* FacebookSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -350,6 +353,7 @@
 		B66FEEBAE05911F3D2B14F8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				01A789561AA7F0570033CE4E /* FacebookSDK.framework */,
 				CE7D812D1A51C71A001C1035 /* libsqlite3.dylib */,
 				CE7D812B1A51C712001C1035 /* libz.dylib */,
 				CE7D81291A51C70B001C1035 /* StoreKit.framework */,
@@ -1076,6 +1080,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Muz/parse",
+					/Users/nick/Documents/FacebookSDK,
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1135,6 +1140,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Muz/parse",
+					/Users/nick/Documents/FacebookSDK,
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
