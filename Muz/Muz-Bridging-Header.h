@@ -15,6 +15,7 @@
 #import <LastFm/LastFm.h>
 #import "MBProgressHUD.h"
 #import "UIImage+Resize.h"
+#import "ItunesSearch.h"
 #import <Localytics-AMP/LocalyticsSession.h>
 #import <uservoice-iphone-sdk/UVConfig.h>
 #import <uservoice-iphone-sdk/UserVoice.h>

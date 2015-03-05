@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		011AF3B91A880C5300E298DD /* NowPlayingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011AF3B81A880C5300E298DD /* NowPlayingTableViewCell.swift */; };
 		011AF3BB1A880C5C00E298DD /* NowPlayingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 011AF3BA1A880C5C00E298DD /* NowPlayingTableViewCell.xib */; };
-		01A789571AA7F0570033CE4E /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01A789561AA7F0570033CE4E /* FacebookSDK.framework */; };
 		18FE78E2938CE235720BDF0D /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CC5E238686D44A286C24637D /* libPods.a */; };
 		CE167DA01A855A7700A9EC1A /* Artist.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE167D9F1A855A7700A9EC1A /* Artist.swift */; };
 		CE167DA31A855E6800A9EC1A /* Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE167DA21A855E6800A9EC1A /* Album.swift */; };
@@ -65,6 +64,8 @@
 		CE9211331A89280700758227 /* LastFmTopAlbumsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9211321A89280700758227 /* LastFmTopAlbumsRequest.swift */; };
 		CE9211361A8929CC00758227 /* LastFmAlbum.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9211351A8929CC00758227 /* LastFmAlbum.m */; };
 		CE9211391A892FBE00758227 /* LastFmTrack.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9211381A892FBE00758227 /* LastFmTrack.m */; };
+		CE9575881AA8B642002B444C /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE9575871AA8B642002B444C /* FacebookSDK.framework */; };
+		CE95758C1AA8BF0B002B444C /* ItunesSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = CE95758B1AA8BF0B002B444C /* ItunesSearch.m */; };
 		CE95D9BD1A3DFB730060752A /* LastFmArtistInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE95D9BC1A3DFB730060752A /* LastFmArtistInfoCell.swift */; };
 		CE95D9BF1A3DFB860060752A /* LastFmArtistInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE95D9BE1A3DFB860060752A /* LastFmArtistInfoCell.xib */; };
 		CE9745411A3E548F00A65633 /* LastFmSimiliarArtistsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9745401A3E548F00A65633 /* LastFmSimiliarArtistsRequest.swift */; };
@@ -159,7 +160,6 @@
 /* Begin PBXFileReference section */
 		011AF3B81A880C5300E298DD /* NowPlayingTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NowPlayingTableViewCell.swift; sourceTree = "<group>"; };
 		011AF3BA1A880C5C00E298DD /* NowPlayingTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NowPlayingTableViewCell.xib; sourceTree = "<group>"; };
-		01A789561AA7F0570033CE4E /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = ../../Documents/FacebookSDK/FacebookSDK.framework; sourceTree = "<group>"; };
 		B5C84601BD2F3431F5F52BE9 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		CC5E238686D44A286C24637D /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE167D9F1A855A7700A9EC1A /* Artist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Artist.swift; sourceTree = "<group>"; };
@@ -233,6 +233,9 @@
 		CE9211351A8929CC00758227 /* LastFmAlbum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LastFmAlbum.m; sourceTree = "<group>"; };
 		CE9211371A892FBE00758227 /* LastFmTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LastFmTrack.h; sourceTree = "<group>"; };
 		CE9211381A892FBE00758227 /* LastFmTrack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LastFmTrack.m; sourceTree = "<group>"; };
+		CE9575871AA8B642002B444C /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
+		CE95758A1AA8BF0B002B444C /* ItunesSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItunesSearch.h; sourceTree = "<group>"; };
+		CE95758B1AA8BF0B002B444C /* ItunesSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItunesSearch.m; sourceTree = "<group>"; };
 		CE95D9BC1A3DFB730060752A /* LastFmArtistInfoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastFmArtistInfoCell.swift; sourceTree = "<group>"; };
 		CE95D9BE1A3DFB860060752A /* LastFmArtistInfoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LastFmArtistInfoCell.xib; sourceTree = "<group>"; };
 		CE9745401A3E548F00A65633 /* LastFmSimiliarArtistsRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastFmSimiliarArtistsRequest.swift; sourceTree = "<group>"; };
@@ -327,7 +330,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				18FE78E2938CE235720BDF0D /* libPods.a in Frameworks */,
-				01A789571AA7F0570033CE4E /* FacebookSDK.framework in Frameworks */,
+				CE9575881AA8B642002B444C /* FacebookSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -353,7 +356,7 @@
 		B66FEEBAE05911F3D2B14F8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				01A789561AA7F0570033CE4E /* FacebookSDK.framework */,
+				CE9575871AA8B642002B444C /* FacebookSDK.framework */,
 				CE7D812D1A51C71A001C1035 /* libsqlite3.dylib */,
 				CE7D812B1A51C712001C1035 /* libz.dylib */,
 				CE7D81291A51C70B001C1035 /* StoreKit.framework */,
@@ -522,6 +525,7 @@
 		CE4931EA1A3A1B3700B3A4BE /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				CE9575891AA8BF0B002B444C /* iTunesSearch */,
 				CEE153511A3B5B4B00BB16EB /* HTMLNode.h */,
 				CEE153521A3B5B4B00BB16EB /* HTMLNode.m */,
 				CEE153531A3B5B4B00BB16EB /* HTMLParser.h */,
@@ -595,6 +599,15 @@
 				011AF3BA1A880C5C00E298DD /* NowPlayingTableViewCell.xib */,
 			);
 			name = NowPlaying;
+			sourceTree = "<group>";
+		};
+		CE9575891AA8BF0B002B444C /* iTunesSearch */ = {
+			isa = PBXGroup;
+			children = (
+				CE95758A1AA8BF0B002B444C /* ItunesSearch.h */,
+				CE95758B1AA8BF0B002B444C /* ItunesSearch.m */,
+			);
+			path = iTunesSearch;
 			sourceTree = "<group>";
 		};
 		CE9BCFD41A44E98100522F18 /* Playlists */ = {
@@ -858,6 +871,7 @@
 				CECCC1271A412AB400799854 /* MuzButton.swift in Sources */,
 				CEDB617E1A37AF9700B90B2D /* RootViewController.swift in Sources */,
 				CEBB56161A3B951D00AE8CAA /* NSString+Lyrics.m in Sources */,
+				CE95758C1AA8BF0B002B444C /* ItunesSearch.m in Sources */,
 				CEE153561A3B5B4B00BB16EB /* HTMLParser.m in Sources */,
 				CE9BCFEB1A45E2CB00522F18 /* LastFmEventInfoDetailsCell.swift in Sources */,
 				CECCC0D51A3FB64800799854 /* Playlist+Helpers.swift in Sources */,
@@ -1081,6 +1095,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Muz/parse",
 					/Users/nick/Documents/FacebookSDK,
+					"$(PROJECT_DIR)",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1141,6 +1156,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Muz/parse",
 					/Users/nick/Documents/FacebookSDK,
+					"$(PROJECT_DIR)",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",

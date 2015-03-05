@@ -54,7 +54,7 @@ FBLoginViewDelegate {
     
     func loginViewFetchedUserInfo(loginView : FBLoginView!, user: FBGraphUser) {
         println("User: \(user)")
-        println("User ID: \(user.objectID)")
+        //println("User ID: \(user.objectID)")
         println("User Name: \(user.name)")
         var userEmail = user.objectForKey("email") as String
         println("User Email: \(userEmail)")

@@ -12,18 +12,27 @@ import UIKit
 class TopAlbumsViewController: RootViewController, LastFmAlbumBuyLinksRequestDelegate {
     
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
-    let topAlbums: [AnyObject]!
+    var topAlbums: [AnyObject]!
     
-    var actionSheet: LastFmBuyLinksViewController!
-    var albumBuyLinks: [AnyObject]! {
+    var albums: [AnyObject] = [AnyObject]() {
         didSet {
-            
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                self.activityIndicator.stopAnimating()
+                self.tableView.reloadData()
+            })
         }
     }
     
+    var actionSheet: LastFmBuyLinksViewController!
+    var albumBuyLinks: [AnyObject]!
+    
     init(topAlbums: [AnyObject]) {
         super.init(nibName: "TopAlbumsViewController", bundle: nil)
+        
+        ItunesSearch.sharedInstance().affiliateToken = "10lSyo";
+        
         self.topAlbums = topAlbums
     }
     
@@ -36,6 +45,26 @@ class TopAlbumsViewController: RootViewController, LastFmAlbumBuyLinksRequestDel
         self.tableView.registerNib(UINib(nibName: "TopAlbumCell", bundle: nil), forCellReuseIdentifier: "TopAlbumCell")
         
         self.navigationItem.title = "Top Albums"
+        
+        if let album = self.topAlbums.first as? LastFmAlbum {
+            ItunesSearch.sharedInstance().getIdForArtist(album.artist, successHandler: { (artists) -> Void in
+                if artists.count > 0 {
+                    if let artistDict = artists.first as? NSDictionary {
+                        if let artistID = artistDict.objectForKey("artistId") as? NSNumber {
+                            ItunesSearch.sharedInstance().getAlbumsForArtist(artistID, limitOrNil: 100, successHandler: { (albums) -> Void in
+                                self.albums = albums
+                            }, failureHandler: { (error) -> Void in
+                                print(error)
+                                self.activityIndicator.stopAnimating()
+                            })
+                        }
+                    }
+                }
+                
+            }, failureHandler: { (error) -> Void in
+                self.activityIndicator.stopAnimating()
+            })
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -44,7 +73,7 @@ class TopAlbumsViewController: RootViewController, LastFmAlbumBuyLinksRequestDel
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.topAlbums.count
+        return self.albums.count
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -56,24 +85,47 @@ class TopAlbumsViewController: RootViewController, LastFmAlbumBuyLinksRequestDel
         let cell = tableView.dequeueReusableCellWithIdentifier("TopAlbumCell",
             forIndexPath: indexPath) as TopAlbumCell
         
-        let topAlbum = self.topAlbums[indexPath.row] as LastFmAlbum
-        cell.songLabel.text = topAlbum.title
-        cell.infoLabel.text = topAlbum.artist
-        if let image = topAlbum.image {
+        let album = self.albums[indexPath.row] as NSDictionary
+        cell.songLabel.text = album["artistName"] as? String
+        if let albumName = album["collectionName"] as? String {
+            if let rating = album["contentAdvisoryRating"] as? String {
+                cell.infoLabel.text = albumName + " - " + rating
+            } else {
+                cell.infoLabel.text = albumName
+            }
+        }
+        
+        if let image = album["artworkUrl100"] as? String {
             cell.songImageView.sd_setImageWithURL(NSURL(string: image))
         } else {
             cell.songImageView.image = UIImage(named: "nowPlayingDefault")
         }
         
-        
-        cell.buyButton.hidden = false
-        cell.accessoryType = .DisclosureIndicator
-        
-        cell.buyButton.addTarget(self, action: "fetchBuyLinks:", forControlEvents: .TouchUpInside)
         cell.buyButton.tag = indexPath.row
         cell.buyButton.hidden = true
         
+        if let albumPrice = album["collectionPrice"] as? NSNumber {
+            if let albumLink = album["collectionViewUrl"] as? String {
+                cell.buyButton.setTitle("$\(albumPrice.description)", forState: .Normal)
+                cell.buyButton.addTarget(self, action: "openAlbumLink:", forControlEvents: .TouchUpInside)
+                cell.buyButton.hidden = false
+            }
+        }
+        
         return cell
+    }
+    
+    func openAlbumLink(sender: AnyObject?) {
+        if let button = sender as? UIButton {
+            print("Button tag: \(button.tag)\n")
+            
+            let album = self.albums[button.tag] as NSDictionary
+            if let albumLink = album["collectionViewUrl"] as? String {
+                LocalyticsSession.shared().tagEvent("Buy album button tapped")
+                UIApplication.sharedApplication().openURL(NSURL(string: albumLink)!)
+            }
+            
+        }
     }
     
     func fetchBuyLinks(sender: AnyObject?) {

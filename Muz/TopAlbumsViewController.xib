@@ -7,6 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TopAlbumsViewController" customModule="Muz" customModuleProvider="target">
             <connections>
+                <outlet property="activityIndicator" destination="xln-cv-Rkn" id="CJn-tD-Tsf"/>
                 <outlet property="tableView" destination="dQJ-OE-rQr" id="Qyz-qD-yvh"/>
                 <outlet property="view" destination="eUK-zb-HOZ" id="h3Z-mA-VdR"/>
             </connections>
@@ -28,6 +29,10 @@
                         <outlet property="delegate" destination="-1" id="aDy-jc-kd0"/>
                     </connections>
                 </tableView>
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="white" id="xln-cv-Rkn">
+                    <rect key="frame" x="150" y="274" width="20" height="20"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
