@@ -17,8 +17,8 @@ enum MoreSectionType: NSInteger {
 
 enum MoreSetting: NSInteger {
     case Sync
-    case Lyrics
     case ArtistInfo
+    case Lyrics
     case LastFM
 }
 
@@ -31,7 +31,7 @@ class MoreViewController: RootViewController,
     var hud: MBProgressHUD!
     
     // Make this DB driven
-    private let tableDataSectionSettings = ["Sync iPod library", "Lyrics", "Artist info", "Last.fm"]
+    private let tableDataSectionSettings = ["Sync iPod library", "Artist info", "Lyrics", "Last.fm"]
     private let tableDataSectionInfo = ["Rate app", "Facebook", "Twitter", "Website", "Feedback"]
     
     private let lyricsSwitch = UISwitch(frame: CGRectMake(0, 0, 50, 50))
@@ -70,6 +70,7 @@ class MoreViewController: RootViewController,
         
         self.lyricsSwitch.addTarget(self, action: "updatedSetting:", forControlEvents: .ValueChanged)
         self.artistInfoSwitch.addTarget(self, action: "updatedSetting:", forControlEvents: .ValueChanged)
+        self.lastFmLoginSwitch.addTarget(self, action: "updatedSetting:", forControlEvents: .ValueChanged)
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -160,6 +161,14 @@ class MoreViewController: RootViewController,
             let value = NSNumber(bool: settingSwitch.on)
             if settingSwitch == self.lyricsSwitch {
                 SettingsManager.defaultManager.updateValueForMoreSetting(.Lyrics, value: value)
+            } else if settingSwitch == self.lastFmLoginSwitch {
+                
+                if let lastFmUser = NSUserDefaults.standardUserDefaults().objectForKey("lastFMUser") as? String {
+                    // Get session info and save.
+                    SettingsManager.defaultManager.updateValueForMoreSetting(.LastFM, value: value)
+                } else {
+                    self.presentModalOverlayController(LastFmLoginOverlayController(), blurredController: self)
+                }
             } else {
                 SettingsManager.defaultManager.updateValueForMoreSetting(.ArtistInfo, value: value)
             }

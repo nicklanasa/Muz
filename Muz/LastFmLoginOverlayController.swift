@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class LastFmLoginOverlayController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class LastFmLoginOverlayController: OverlayController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -17,12 +17,23 @@ class LastFmLoginOverlayController: UIViewController, UITableViewDelegate, UITab
         super.init(nibName: "LastFmLoginOverlayController", bundle: nil)
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required override init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel",
+            style: .Plain,
+            target: self,
+            action: "dismiss")
+        
         tableView.registerNib(UINib(nibName: "LastFmLoginCell", bundle: nil), forCellReuseIdentifier: "Cell")
+    }
+    
+    func dismiss() {
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

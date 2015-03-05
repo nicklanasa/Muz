@@ -9,6 +9,21 @@
 import Foundation
 import UIKit
 
-class LastFmLoginCell: UITableViewCell {
+class LastFmLoginCell: UITableViewCell, UITextFieldDelegate {
+    @IBOutlet weak var usernameTextfield: UITextField!
     
+    @IBOutlet weak var signupButton: UIButton!
+    @IBOutlet weak var loginButton: UIButton!
+    @IBOutlet weak var passwordTextfield: UITextField!
+    
+    override func awakeFromNib() {
+        self.passwordTextfield.delegate = self
+        self.usernameTextfield.delegate = self
+    }
+    
+    @IBAction func loginButtonTapped(sender: AnyObject) {
+    }
+    
+    @IBAction func signupButtonTapped(sender: AnyObject) {
+    }
 }
