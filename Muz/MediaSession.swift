@@ -137,7 +137,7 @@ var CurrentQueueItems: MPMediaItemCollection!
         completion(collection: MPMediaItemCollection(items: self.songsQuery.items))
     }
     
-    func fetchItemForSong(song: Song) -> MPMediaItem? {
+    func fetchItemForSong(song: Song, completion: (item: MPMediaItem?) -> ()) {
         self.removeAllPredicatesFromQuery(songsQuery)
         
         let predicate = MPMediaPropertyPredicate(value: song.persistentID,
@@ -147,9 +147,9 @@ var CurrentQueueItems: MPMediaItemCollection!
         songsQuery.addFilterPredicate(predicate)
         
         if songsQuery.items.count > 0 {
-            return songsQuery.items[0] as? MPMediaItem
+            completion(item: songsQuery.items[0] as? MPMediaItem)
         } else {
-            return nil
+            completion(item: nil)
         }
     }
     

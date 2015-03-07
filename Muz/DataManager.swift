@@ -79,8 +79,10 @@ class DataManager {
         }
     }
     
-    func fetchItemForSong(#song: Song) -> MPMediaItem? {
-        return MediaSession.sharedSession.fetchItemForSong(song)
+    func fetchItemForSong(#song: Song, completion: (item: MPMediaItem?) -> ())  {
+        return MediaSession.sharedSession.fetchItemForSong(song, completion: { (item) -> () in
+            completion(item: item)
+        })
     }
     
     func syncSongs(completion: (addedItems: [AnyObject], error: NSErrorPointer) -> ()) {

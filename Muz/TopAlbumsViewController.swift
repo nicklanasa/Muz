@@ -86,12 +86,12 @@ class TopAlbumsViewController: RootViewController, LastFmAlbumBuyLinksRequestDel
             forIndexPath: indexPath) as TopAlbumCell
         
         let album = self.albums[indexPath.row] as NSDictionary
-        cell.songLabel.text = album["artistName"] as? String
+        cell.infoLabel.text = album["artistName"] as? String
         if let albumName = album["collectionName"] as? String {
             if let rating = album["contentAdvisoryRating"] as? String {
-                cell.infoLabel.text = albumName + " - " + rating
+                cell.songLabel.text = albumName + " - " + rating
             } else {
-                cell.infoLabel.text = albumName
+                cell.songLabel.text = albumName
             }
         }
         

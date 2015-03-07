@@ -58,14 +58,16 @@ class NowPlayingTableViewCell: UITableViewCell {
     func updateNowPlaying() {
         if let item = playerController.nowPlayingItem {
             var manager = DataManager.manager
-            if let song = manager.datastore.songForSongName(item.title, artist: item.artist) {
-                self.songImageView.alpha = 1.0
-                self.artistLabel.alpha = 1.0
-                self.titleLabel.alpha = 1.0
-                self.songImageView.setImageForSong(song: song)
-                self.artistLabel.text = song.artist
-                self.titleLabel.text = song.title
-            }
+            DataManager.manager.datastore.songForSongName(item.title, artist: item.artist, completion: { (song) -> () in
+                if let newSong = song {
+                    self.songImageView.alpha = 1.0
+                    self.artistLabel.alpha = 1.0
+                    self.titleLabel.alpha = 1.0
+                    self.songImageView.setImageForSong(song: newSong)
+                    self.artistLabel.text = newSong.artist
+                    self.titleLabel.text = newSong.title
+                }
+            })
         }
     }
     

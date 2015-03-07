@@ -24,11 +24,13 @@ enum MoreSetting: NSInteger {
 
 class MoreViewController: RootViewController,
     UITableViewDelegate,
-    UITableViewDataSource {
+    UITableViewDataSource,
+    LastFmLoginCellDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     
     var hud: MBProgressHUD!
+    var isSigningIn = false
     
     // Make this DB driven
     private let tableDataSectionSettings = ["Sync iPod library", "Artist info", "Lyrics", "Last.fm"]
@@ -37,7 +39,8 @@ class MoreViewController: RootViewController,
     private let lyricsSwitch = UISwitch(frame: CGRectMake(0, 0, 50, 50))
     private let backgroundArtworkSwitch = UISwitch(frame: CGRectMake(0, 0, 50, 50))
     private let artistInfoSwitch = UISwitch(frame: CGRectMake(0, 0, 50, 50))
-    private let lastFmLoginSwitch = UISwitch(frame: CGRectMake(0, 0, 50, 50))
+    
+    var lastfmLoginCell: LastFmLoginCell!
     
     override init() {
         super.init(nibName: "MoreViewController", bundle: nil)
@@ -65,12 +68,24 @@ class MoreViewController: RootViewController,
         super.viewDidLoad()
         
         self.tableView.registerNib(UINib(nibName: "MoreLastFmSettingCell", bundle: nil), forCellReuseIdentifier: "LastFmCell")
+        self.tableView.registerNib(UINib(nibName: "LastFmLoginCell", bundle: nil), forCellReuseIdentifier: "LastFmLoginCell")
         self.tableView.registerClass(NSClassFromString("UITableViewCell"), forCellReuseIdentifier: "Cell")
         self.tableView.registerNib(UINib(nibName: "SongsHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "Header")
         
         self.lyricsSwitch.addTarget(self, action: "updatedSetting:", forControlEvents: .ValueChanged)
         self.artistInfoSwitch.addTarget(self, action: "updatedSetting:", forControlEvents: .ValueChanged)
-        self.lastFmLoginSwitch.addTarget(self, action: "updatedSetting:", forControlEvents: .ValueChanged)
+        
+        let lastFmLoginCellCellNib = UINib(nibName: "LastFmLoginCell", bundle: nil)
+        lastfmLoginCell = lastFmLoginCellCellNib.instantiateWithOwner(self, options: nil)[0] as? LastFmLoginCell
+        lastfmLoginCell.lastfmSwitch.addTarget(self, action: "updatedSetting:", forControlEvents: .ValueChanged)
+        lastfmLoginCell.delegate = self
+        
+        
+    }
+    
+    func dismissKeyboard() {
+        self.lastfmLoginCell.usernameTextfield.resignFirstResponder()
+        self.lastfmLoginCell.passwordTextfield.resignFirstResponder()
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -90,6 +105,8 @@ class MoreViewController: RootViewController,
             forIndexPath: indexPath) as UITableViewCell
         
         cell.textLabel?.font = MuzSettingFont
+        cell.textLabel?.text = ""
+        cell.textLabel?.textAlignment = .Left
         
         switch indexPath.section {
         case MoreSectionType.Settings.rawValue:
@@ -103,14 +120,22 @@ class MoreViewController: RootViewController,
                 if indexPath.row == 0 {
                     cell.textLabel?.textAlignment = .Center
                     cell.textLabel?.font = MuzTitleFont
+                    
+                    cell.textLabel?.text = self.tableDataSectionSettings[indexPath.row] as NSString
+                    
                 } else if indexPath.row == 3 {
-                    self.lastFmLoginSwitch.on = SettingsManager.defaultManager.valueForMoreSetting(.LastFM)
-                    cell.accessoryView = self.lastFmLoginSwitch
+                    lastfmLoginCell.lastfmSwitch.on = SettingsManager.defaultManager.valueForMoreSetting(.LastFM)
+                    lastfmLoginCell.lastfmSwitch.addTarget(self, action: "updatedSetting:", forControlEvents: .ValueChanged)
+                    
+                    lastfmLoginCell.lastfmSwitch.tag = indexPath.row
+                    
+                    return lastfmLoginCell
                 } else {
                     self.lyricsSwitch.on = SettingsManager.defaultManager.valueForMoreSetting(.Lyrics)
                     cell.accessoryView = self.lyricsSwitch
+                    
+                    cell.textLabel?.text = self.tableDataSectionSettings[indexPath.row] as NSString
                 }
-                cell.textLabel?.text = self.tableDataSectionSettings[indexPath.row] as NSString
             }
         default:
             cell.textLabel?.text = self.tableDataSectionInfo[indexPath.row] as NSString
@@ -120,6 +145,23 @@ class MoreViewController: RootViewController,
         cell.textLabel?.textColor = UIColor.whiteColor()
         
         return cell
+    }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        switch indexPath.section {
+        case MoreSectionType.Settings.rawValue:
+            switch indexPath.row {
+            default:
+                if indexPath.row == 3 {
+                    if self.isSigningIn {
+                        return 206
+                    }
+                }
+            }
+        default: break
+        }
+        
+        return 55
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -161,17 +203,81 @@ class MoreViewController: RootViewController,
             let value = NSNumber(bool: settingSwitch.on)
             if settingSwitch == self.lyricsSwitch {
                 SettingsManager.defaultManager.updateValueForMoreSetting(.Lyrics, value: value)
-            } else if settingSwitch == self.lastFmLoginSwitch {
-                
-                if let lastFmUser = NSUserDefaults.standardUserDefaults().objectForKey("lastFMUser") as? String {
-                    // Get session info and save.
-                    SettingsManager.defaultManager.updateValueForMoreSetting(.LastFM, value: value)
-                } else {
-                    self.presentModalOverlayController(LastFmLoginOverlayController(), blurredController: self)
-                }
+            } else if settingSwitch == lastfmLoginCell.lastfmSwitch {
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    if !settingSwitch.on {
+                        self.isSigningIn = false
+                        self.dismissKeyboard()
+                        
+                        LastFm.sharedInstance().logout()
+                        
+                        NSUserDefaults.standardUserDefaults().setObject(nil, forKey: "LastFMUsername")
+                        NSUserDefaults.standardUserDefaults().setObject(nil, forKey: "LastFMPassword")
+                        
+                        SettingsManager.defaultManager.updateValueForMoreSetting(.LastFM, value: NSNumber(bool: false))
+                        self.tableView.scrollEnabled = true
+                    } else {
+                        self.tableView.scrollToRowAtIndexPath(NSIndexPath(forItem: self.lastfmLoginCell.lastfmSwitch.tag, inSection: 0),
+                            atScrollPosition: .Top,
+                            animated: true)
+                        self.tableView.scrollEnabled = false
+                        self.isSigningIn = true
+                    }
+                    
+                    self.tableView.beginUpdates()
+                    self.tableView.endUpdates()
+                })
+            
             } else {
                 SettingsManager.defaultManager.updateValueForMoreSetting(.ArtistInfo, value: value)
             }
+        }
+    }
+    
+    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+        if self.isSigningIn {
+            self.isSigningIn = false
+            self.dismissKeyboard()
+            
+            self.tableView.beginUpdates()
+            self.tableView.endUpdates()
+        }
+    }
+    
+    func lastFmLoginCellDidTapLoginButton(cell: LastFmLoginCell) {
+        var hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        hud.mode = MBProgressHUDModeIndeterminate
+        hud.labelText = "Please wait..."
+        hud.labelFont = MuzTitleFont
+        
+        LastFm.sharedInstance().getSessionForUser(cell.usernameTextfield.text, password: cell.passwordTextfield.text, successHandler: { (userData) -> Void in
+            hud.hide(true)
+            SettingsManager.defaultManager.updateValueForMoreSetting(.LastFM, value: NSNumber(bool: true))
+            print(userData)
+            
+            let session = userData["key"] as String
+            NSUserDefaults.standardUserDefaults().setObject(cell.usernameTextfield.text, forKey: "LastFMUsername")
+            NSUserDefaults.standardUserDefaults().setObject(cell.passwordTextfield.text, forKey: "LastFMPassword")
+            NSUserDefaults.standardUserDefaults().setObject(session, forKey: "LastFMSession")
+            
+            self.isSigningIn = false
+            
+            self.dismissKeyboard()
+            
+            self.tableView.beginUpdates()
+            self.tableView.endUpdates()
+            
+            self.tableView.scrollEnabled = true
+            
+            LocalyticsSession.shared().tagEvent("Lastfm Login")
+        }) { (error) -> Void in
+            hud.hide(true)
+            self.tableView.scrollEnabled = true
+            LocalyticsSession.shared().tagEvent("Failed Lastfm Login")
+            UIAlertView(title: "Error!",
+                message: "Unable to login to Last.fm, please check your username and password.",
+                delegate: self,
+                cancelButtonTitle: "Ok").show()
         }
     }
 }

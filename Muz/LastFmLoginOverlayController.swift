@@ -69,35 +69,37 @@ FBLoginViewDelegate {
     }
     
     func signup() {
-        let alertViewController = UIAlertController(title: "Signup", message: "Please select source to pull email from.", preferredStyle: UIAlertControllerStyle.ActionSheet)
+//        let alertViewController = UIAlertController(title: "Signup", message: "Please select source to pull email from.", preferredStyle: UIAlertControllerStyle.ActionSheet)
+//        
+//        let facebookAction = UIAlertAction(title: "Facebook", style: .Default) { (action) -> Void in
+//            for obj in self.fbLoginView.subviews {
+//                if obj.className() == "UIButton" {
+//                    let button = obj as UIButton
+//                    button.sendActionsForControlEvents(.TouchUpInside)
+//                }
+//            }
+//        }
+//        
+//        let twitterAction = UIAlertAction(title: "Twitter", style: .Default) { (action) -> Void in
+//            
+//        }
+//        
+//        let usernameAndPassAction = UIAlertAction(title: "Username and password", style: .Default) { (action) -> Void in
+//            
+//        }
+//        
+//        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (action) -> Void in
+//            
+//        }
+//        
+//        alertViewController.addAction(facebookAction)
+//        alertViewController.addAction(twitterAction)
+//        alertViewController.addAction(usernameAndPassAction)
+//        alertViewController.addAction(cancelAction)
+//        
+//        self.presentViewController(alertViewController, animated: true, completion: nil)
         
-        let facebookAction = UIAlertAction(title: "Facebook", style: .Default) { (action) -> Void in
-            for obj in self.fbLoginView.subviews {
-                if obj.className() == "UIButton" {
-                    let button = obj as UIButton
-                    button.sendActionsForControlEvents(.TouchUpInside)
-                }
-            }
-        }
-        
-        let twitterAction = UIAlertAction(title: "Twitter", style: .Default) { (action) -> Void in
-            
-        }
-        
-        let usernameAndPassAction = UIAlertAction(title: "Username and password", style: .Default) { (action) -> Void in
-            
-        }
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (action) -> Void in
-            
-        }
-        
-        alertViewController.addAction(facebookAction)
-        alertViewController.addAction(twitterAction)
-        alertViewController.addAction(usernameAndPassAction)
-        alertViewController.addAction(cancelAction)
-        
-        self.presentViewController(alertViewController, animated: true, completion: nil)
+        UIApplication.sharedApplication().openURL(NSURL(string: "https://m.last.fm/join")!)
     }
     
     func dismiss() {

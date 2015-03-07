@@ -433,7 +433,7 @@ LastFmArtistInfoCellDelegate {
     func lastFmArtistInfoCell(cell: LastFmArtistInfoCell, didTapTopTracksButton tracks: [AnyObject]?) {
         if let topTracks = tracks {
             if let artist = similiarArtists?[self.tableView.indexPathForCell(cell)!.row] as? LastFmArtist {
-                let topTracksViewController = TopTracksViewController(topTracks: topTracks, artist: artist.name)
+                let topTracksViewController = TopTracksViewController(topTracks: topTracks, artist: self.artist)
                 self.navigationController?.pushViewController(topTracksViewController, animated: true)
             }
         }

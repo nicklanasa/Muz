@@ -9,11 +9,18 @@
 import Foundation
 import UIKit
 
+protocol LastFmLoginCellDelegate {
+    func lastFmLoginCellDidTapLoginButton(cell: LastFmLoginCell)
+}
+
 class LastFmLoginCell: UITableViewCell, UITextFieldDelegate {
     @IBOutlet weak var usernameTextfield: UITextField!
     
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var passwordTextfield: UITextField!
+    @IBOutlet weak var lastfmSwitch: UISwitch!
+    
+    var delegate: LastFmLoginCellDelegate?
     
     override func awakeFromNib() {
         self.passwordTextfield.delegate = self
@@ -21,8 +28,14 @@ class LastFmLoginCell: UITableViewCell, UITextFieldDelegate {
     }
     
     @IBAction func loginButtonTapped(sender: AnyObject) {
+        self.delegate?.lastFmLoginCellDidTapLoginButton(self)
     }
     
-    @IBAction func signupButtonTapped(sender: AnyObject) {
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        if textField == self.passwordTextfield {
+            self.delegate?.lastFmLoginCellDidTapLoginButton(self)
+        }
+        
+        return true
     }
 }

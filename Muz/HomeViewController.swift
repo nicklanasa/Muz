@@ -263,11 +263,13 @@ UICollectionViewDataSource {
             self.navigationController?.pushViewController(playlistsSongs, animated: true)
         case .RecentSongs:
             let songData = self.recentSongs?[indexPath.row] as NSDictionary
-            if let song = DataManager.manager.datastore.songForSongName(songData.objectForKey("title") as NSString, artist: songData.objectForKey("artist") as NSString) {
-                MediaSession.sharedSession.fetchSongsCollection({ (collection) -> () in
-                    self.navigationController!.pushViewController(NowPlayingViewController(song: song, collection: collection), animated: true)
-                })
-            }
+            DataManager.manager.datastore.songForSongName(songData.objectForKey("title") as NSString, artist: songData.objectForKey("artist") as NSString, completion: { (song) -> () in
+                if let playingSong = song {
+                    MediaSession.sharedSession.fetchSongsCollection({ (collection) -> () in
+                        self.navigationController!.pushViewController(NowPlayingViewController(song: playingSong, collection: collection), animated: true)
+                    })
+                }
+            })
         default: break
         }
         

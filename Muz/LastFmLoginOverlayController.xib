@@ -21,7 +21,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                 </imageView>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" style="plain" separatorStyle="none" allowsSelection="NO" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="171" sectionHeaderHeight="30" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="atD-zZ-9oe">
-                    <rect key="frame" x="0.0" y="165" width="320" height="171"/>
+                    <rect key="frame" x="0.0" y="180" width="320" height="171"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
@@ -37,7 +37,7 @@
                     </connections>
                 </tableView>
                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Last.fm_Logo_White" translatesAutoresizingMaskIntoConstraints="NO" id="GcD-wp-ahU">
-                    <rect key="frame" x="76" y="83" width="168" height="49"/>
+                    <rect key="frame" x="76" y="98" width="168" height="49"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="49" id="FC8-3f-KJ8"/>
                     </constraints>
@@ -47,7 +47,7 @@
             <constraints>
                 <constraint firstItem="atD-zZ-9oe" firstAttribute="top" secondItem="GcD-wp-ahU" secondAttribute="bottom" constant="33" id="3Wd-Q5-UOM"/>
                 <constraint firstItem="atD-zZ-9oe" firstAttribute="leading" secondItem="p0d-YV-4gZ" secondAttribute="leading" id="AwD-Nh-22F"/>
-                <constraint firstItem="GcD-wp-ahU" firstAttribute="top" secondItem="CwO-MJ-oNG" secondAttribute="top" constant="83" id="Hab-2t-pxS"/>
+                <constraint firstItem="GcD-wp-ahU" firstAttribute="top" secondItem="CwO-MJ-oNG" secondAttribute="top" constant="98" id="Hab-2t-pxS"/>
                 <constraint firstItem="atD-zZ-9oe" firstAttribute="leading" secondItem="CwO-MJ-oNG" secondAttribute="leading" id="Twg-tE-dne"/>
                 <constraint firstItem="atD-zZ-9oe" firstAttribute="trailing" secondItem="p0d-YV-4gZ" secondAttribute="trailing" id="Xsc-Er-Bps"/>
                 <constraint firstAttribute="trailing" secondItem="atD-zZ-9oe" secondAttribute="trailing" id="fIB-8h-87X"/>

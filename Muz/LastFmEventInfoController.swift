@@ -29,7 +29,7 @@ UIActionSheetDelegate {
     }
     
     func eventActions() {
-        let actionSheet = UIAlertController(title: "Select action", message: nil, preferredStyle: .ActionSheet)
+        var actionSheet = UIAlertController(title: "Select action", message: nil, preferredStyle: .ActionSheet)
         actionSheet.addAction(UIAlertAction(title: "Open in Safari", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
             self.openInBrowser()
         }))
@@ -39,6 +39,10 @@ UIActionSheetDelegate {
         actionSheet.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Destructive, handler: { (action) -> Void in
             
         }))
+        
+        if let popoverController = actionSheet.popoverPresentationController {
+            popoverController.barButtonItem = self.navigationItem.rightBarButtonItem
+        }
         
         self.presentViewController(actionSheet, animated: true, completion: nil)
     }

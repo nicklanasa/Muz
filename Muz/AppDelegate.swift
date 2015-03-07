@@ -75,6 +75,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
+        // Preloads keyboard so there's no lag on initial keyboard appearance.
+        var lagFreeField: UITextField = UITextField()
+        self.window?.addSubview(lagFreeField)
+        lagFreeField.becomeFirstResponder()
+        lagFreeField.resignFirstResponder()
+        lagFreeField.removeFromSuperview()
+        
+        
         LocalyticsSession.shared().integrateLocalytics("b25e652e274c5d45d413bc3-89bdf3a6-8e1f-11e4-a94d-009c5fda0a25",
             launchOptions: launchOptions)
         
@@ -100,8 +108,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UserVoice.initialize(config)
         
         Appirater.setAppId("951709415")
-        Appirater.setDaysUntilPrompt(1)
-        Appirater.setUsesUntilPrompt(3)
+        Appirater.setCustomAlertTitle("Rate Muz")
+        Appirater.setCustomAlertMessage("If you enjoy using Muz, would you mind taking a moment to rate it? It won't take more than a minute. Thanks for your support!")
+        Appirater.setCustomAlertRateButtonTitle("Rate Muz")
+        Appirater.setDaysUntilPrompt(2)
+        Appirater.setUsesUntilPrompt(5)
         Appirater.appLaunched(true)
         
         if MediaSession.sharedSession.isMediaLibraryEmpty {

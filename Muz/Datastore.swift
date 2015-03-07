@@ -665,9 +665,11 @@ class Datastore {
             newPlaylist.parsePlaylist(playlist)
             
             for item in playlist.items as [MPMediaItem] {
-                if let song = self.songForSongName(item.title, artist: item.artist) {
-                    self.addSongToPlaylist(newPlaylist, song: song, originalPlaylist: nil, context: context)
-                }
+                DataManager.manager.datastore.songForSongName(item.title, artist: item.artist, completion: { (song) -> () in
+                    if let playingSong = song {
+                        self.addSongToPlaylist(newPlaylist, song: playingSong, originalPlaylist: nil, context: context)
+                    }
+                })
             }
             
             println("Created playlist with name: \(newPlaylist.name) and type: \(newPlaylist.playlistType.integerValue)")
@@ -700,7 +702,7 @@ class Datastore {
         }
     }
     
-    func songForSongName(songName: String, artist: NSString) -> Song? {
+    func songForSongName(songName: String, artist: NSString, completion: (song: Song?) -> ()) {
         var request = NSFetchRequest()
         request.entity = NSEntityDescription.entityForName("Song",
             inManagedObjectContext: self.mainQueueContext)
@@ -711,16 +713,16 @@ class Datastore {
         request.predicate = predicate
         
         var error = NSErrorPointer()
-        let results = self.mainQueueContext.executeFetchRequest(request, error: error)
+        let results = self.workerContext.executeFetchRequest(request, error: error)
         
         if results?.count > 0 {
             if let song = results?[0] as? Song {
-                return song
+                completion(song: song)
             }
             
-            return nil
+            completion(song: nil)
         }
-        return nil
+        completion(song: nil)
     }
     
     // MARK: NSFetchedResultsControllers

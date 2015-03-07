@@ -30,6 +30,13 @@ class SettingsManager {
             }
             
             return false
+            
+        case .LastFM:
+            if let lastFM = NSUserDefaults.standardUserDefaults().objectForKey("lastFM") as? NSNumber {
+                return lastFM.boolValue
+            }
+            
+            return false
         default: return false
             
         }
@@ -43,6 +50,9 @@ class SettingsManager {
         case .ArtistInfo:
             NSUserDefaults.standardUserDefaults().setObject(value, forKey: "artistInfo")
             LocalyticsSession.shared().tagEvent("Artist info switch value updated.")
+        case .LastFM:
+            NSUserDefaults.standardUserDefaults().setObject(value, forKey: "lastFM")
+            LocalyticsSession.shared().tagEvent("LastFM info switch value updated.")
         default: break
             
         }

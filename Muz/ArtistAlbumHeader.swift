@@ -65,6 +65,7 @@ class ArtistAlbumHeader: UITableViewHeaderFooterView {
         self.albumImageView.applyRoundedStyle()
         
         albumLabel.text = album.title
+        infoLabel.text = album.artist.name
         let components = NSCalendar.currentCalendar().components(.CalendarUnitYear | .CalendarUnitMonth | .CalendarUnitDay, fromDate: album.releaseDate)
         yearLabel.text = "\(components.year)"
     }

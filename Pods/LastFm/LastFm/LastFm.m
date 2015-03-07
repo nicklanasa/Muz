@@ -62,8 +62,8 @@
 - (id)init {
     self = [super init];
     if (self) {
-        self.apiKey = @"";
-        self.apiSecret = @"";
+        self.apiKey = @"d55a72556285ca314e7af8b0fb093e29";
+        self.apiSecret = @"affa81f90053b2114888298f3aeb27b9";
         self.queue = [[NSOperationQueue alloc] init];
         self.maxConcurrentOperationCount = 4;
         self.timeoutInterval = 10;
