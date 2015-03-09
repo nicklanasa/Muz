@@ -20,6 +20,8 @@ ArtistAlbumHeaderDelegate {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
+    var artistAlbums = [AnyObject]()
+    
     lazy var artistsController: NSFetchedResultsController = {
         var predicate = NSPredicate(format: "name = %@", self.artist.name)
         let controller = DataManager.manager.datastore.artistsController(predicate,
@@ -86,7 +88,12 @@ ArtistAlbumHeaderDelegate {
     private func fetchArtistAlbums() {
         var error: NSError?
         if self.artistsController.performFetch(&error) {
-
+            if let albumArtist = self.artistsController.objectAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? Artist {
+                var albums = NSMutableArray(array: albumArtist.albums.allObjects)
+                var sort = NSSortDescriptor(key: "Song.albumTrackNumber", ascending: true)
+                self.artistAlbums = albums.sortedArrayUsingDescriptors([sort])
+                print(self.artistAlbums)
+            }
         }
     }
     
@@ -160,11 +167,9 @@ ArtistAlbumHeaderDelegate {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell",
             forIndexPath: indexPath) as ArtistAlbumsSongCell
-        if let albumArtist = self.artistsController.objectAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? Artist {
-            if let album = albumArtist.albums.allObjects[indexPath.section] as? Album {
-                if let song = album.songs.allObjects[indexPath.row] as? Song {
-                    cell.configure(song: song)
-                }
+        if let album = self.artistAlbums[indexPath.section] as? Album {
+            if let song = album.songs.allObjects[indexPath.row] as? Song {
+                cell.configure(song: song)
             }
         }
         return cell

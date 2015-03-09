@@ -230,9 +230,13 @@ NowPlayingCollectionControllerDelegate {
         
         LastFm.sharedInstance().apiKey = "d55a72556285ca314e7af8b0fb093e29"
         LastFm.sharedInstance().apiSecret = "affa81f90053b2114888298f3aeb27b9"
-        
-        LastFm.sharedInstance().session = NSUserDefaults.standardUserDefaults().objectForKey("LastFMSession") as String
-        LastFm.sharedInstance().username = NSUserDefaults.standardUserDefaults().objectForKey("LastFMUsername") as String
+
+        if let session = NSUserDefaults.standardUserDefaults().objectForKey("LastFMSession") as? String {
+            LastFm.sharedInstance().session = session
+            if let username = NSUserDefaults.standardUserDefaults().objectForKey("LastFMUsername") as? String {
+                LastFm.sharedInstance().username = username
+            }
+        }
     }
     
     func addToPlaylist() {

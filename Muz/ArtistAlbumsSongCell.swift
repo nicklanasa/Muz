@@ -21,6 +21,8 @@ class ArtistAlbumsSongCell: UITableViewCell {
     func configure(#song: Song) {
         self.songLabel.text = song.title
         
+        print(song.albumTrackNumber)
+        
         let min = floor(song.playbackDuration.doubleValue / 60)
         let sec = floor(song.playbackDuration.doubleValue - (min * 60))
         self.infoLabel.text = NSString(format: "%.0f:%@%.0f", min, sec < 10 ? "0" : "", sec)

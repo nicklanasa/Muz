@@ -42,6 +42,7 @@ extension Song: Printable {
         }
         
         self.playbackDuration = item.playbackDuration
+        
         self.albumTrackNumber = item.albumTrackNumber
         self.discNumber = item.discNumber
         
