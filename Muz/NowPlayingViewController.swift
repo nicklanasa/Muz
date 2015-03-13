@@ -268,7 +268,7 @@ NowPlayingCollectionControllerDelegate {
             let addSongAction = UIAlertAction(title: "Currently playing song", style: .Default) { (action) -> Void in
                 DataManager.manager.datastore.songForSongName(nowPlayingItem.title, artist: nowPlayingItem.artist, completion: { (song) -> () in
                     if let playingSong = song {
-                        let createPlaylistOverlay = CreatePlaylistOverlay(songs: [playingSong   ])
+                        let createPlaylistOverlay = CreatePlaylistOverlay(songs: [playingSong])
                         self.presentModalOverlayController(createPlaylistOverlay, blurredController: self)
                     }
                 })

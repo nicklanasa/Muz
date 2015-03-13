@@ -713,7 +713,7 @@ class Datastore {
         request.predicate = predicate
         
         var error = NSErrorPointer()
-        let results = self.workerContext.executeFetchRequest(request, error: error)
+        let results = self.mainQueueContext.executeFetchRequest(request, error: error)
         
         if results?.count > 0 {
             if let song = results?[0] as? Song {
