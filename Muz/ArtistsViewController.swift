@@ -20,14 +20,7 @@ UISearchDisplayDelegate {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
     
-    lazy var artistsController: NSFetchedResultsController = {
-        let predicate = NSPredicate(format: "albums.@count > 0")
-        let controller = DataManager.manager.datastore.artistsController(predicate, sortKey: "name",
-            ascending: true,
-            sectionNameKeyPath: "name.stringByGroupingByFirstLetter")
-        controller.delegate = self
-        return controller
-    }()
+    var artistsController: NSFetchedResultsController!
     
     override init() {
         super.init(nibName: "ArtistsViewController", bundle: nil)
@@ -49,6 +42,13 @@ UISearchDisplayDelegate {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
+        let predicate = NSPredicate(format: "albums.@count != 0")
+        self.artistsController = DataManager.manager.datastore.artistsController(predicate, sortKey: "name",
+            ascending: true,
+            sectionNameKeyPath: "name.stringByGroupingByFirstLetter")
+        self.artistsController.delegate = self
+        
         fetchArtists()
     }
     

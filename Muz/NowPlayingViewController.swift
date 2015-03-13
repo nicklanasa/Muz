@@ -115,26 +115,6 @@ NowPlayingCollectionControllerDelegate {
         super.viewWillAppear(animated)
     }
     
-    override func viewDidAppear(animated: Bool) {
-        if let item = self.playerController.nowPlayingItem {
-            self.item = item
-            
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                self.updateNowPlaying()
-                self.sendNowPlaying()
-                
-                var manager = DataManager.manager
-                manager.datastore.songForSongName(self.item.title, artist: self.item.artist) { (song) -> () in
-                    if let playingSong = song {
-                        manager.datastore.updateSong(song: playingSong, completion: { () -> () in
-                            
-                        })
-                    }
-                }
-            })
-        }
-    }
-    
     func dismiss() {
         self.navigationController?.popViewControllerAnimated(true)
     }
@@ -236,6 +216,24 @@ NowPlayingCollectionControllerDelegate {
             if let username = NSUserDefaults.standardUserDefaults().objectForKey("LastFMUsername") as? String {
                 LastFm.sharedInstance().username = username
             }
+        }
+        
+        if let item = self.playerController.nowPlayingItem {
+            self.item = item
+            
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                self.updateNowPlaying()
+                self.sendNowPlaying()
+                
+                var manager = DataManager.manager
+                manager.datastore.songForSongName(self.item.title, artist: self.item.artist) { (song) -> () in
+                    if let playingSong = song {
+                        manager.datastore.updateSong(song: playingSong, completion: { () -> () in
+                            
+                        })
+                    }
+                }
+            })
         }
     }
     
@@ -475,34 +473,36 @@ NowPlayingCollectionControllerDelegate {
         
         showNowPlayingViews()
         
-        let noArtwork = UIImage(named: "nowPlayingDefault")
-        if let artwork = self.item.artwork {
-            if let image = artwork.imageWithSize(CGSize(width:500, height:500)) {
-                self.artwork.image = image
-                CurrentAppBackgroundImage = image
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            let noArtwork = UIImage(named: "nowPlayingDefault")!
+            if let artwork = self.item.artwork {
+                if let image = artwork.imageWithSize(CGSize(width:500, height:500)) {
+                    self.artwork.image = image
+                    CurrentAppBackgroundImage = image.applyDarkEffect()
+                } else {
+                    self.artwork.image = noArtwork
+                    CurrentAppBackgroundImage = noArtwork.applyDarkEffect()
+                }
             } else {
                 self.artwork.image = noArtwork
-                CurrentAppBackgroundImage = noArtwork!
+                CurrentAppBackgroundImage = noArtwork.applyDarkEffect()
             }
-        } else {
-            self.artwork.image = noArtwork
-            CurrentAppBackgroundImage = noArtwork!
-        }
-                
-        self.backgroundImageView.image = CurrentAppBackgroundImage.applyDarkEffect()
-        
-        let songInfo = NSString(format: "%@\n%@\n%@", self.item.title, self.item.artist, self.item.albumTitle)
-        let attributedSongInfo = NSMutableAttributedString(string: songInfo)
-        let songFont = UIFont(name: MuzFontName, size: 35)!
-        let artistFont = UIFont(name: MuzFontNameRegular, size: 18)!
-        attributedSongInfo.addAttribute(NSFontAttributeName,
-            value: songFont,
-            range: NSMakeRange(0, countElements(self.item.title)))
-        attributedSongInfo.addAttribute(NSFontAttributeName,
-            value: artistFont,
-            range: NSMakeRange(countElements(self.item.title),
-                countElements(self.item.artist) + 1))
-        self.songLabel.attributedText = attributedSongInfo
+            
+            self.backgroundImageView.image = CurrentAppBackgroundImage
+            
+            let songInfo = NSString(format: "%@\n%@\n%@", self.item.title, self.item.artist, self.item.albumTitle)
+            let attributedSongInfo = NSMutableAttributedString(string: songInfo)
+            let songFont = UIFont(name: MuzFontName, size: 35)!
+            let artistFont = UIFont(name: MuzFontNameRegular, size: 18)!
+            attributedSongInfo.addAttribute(NSFontAttributeName,
+                value: songFont,
+                range: NSMakeRange(0, countElements(self.item.title)))
+            attributedSongInfo.addAttribute(NSFontAttributeName,
+                value: artistFont,
+                range: NSMakeRange(countElements(self.item.title),
+                    countElements(self.item.artist) + 1))
+            self.songLabel.attributedText = attributedSongInfo
+        })
         
         if let timer = songTimer {
             timer.invalidate()

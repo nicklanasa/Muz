@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
@@ -21,29 +21,30 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="Tuc-O6-98P">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Tuc-O6-98P">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 </imageView>
-                <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="bpn-HU-Ua3">
+                <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bpn-HU-Ua3">
                     <rect key="frame" x="52" y="182" width="270" height="270"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                 </imageView>
-                <progressView hidden="YES" opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" id="ShY-uh-az5">
+                <progressView hidden="YES" opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ShY-uh-az5">
                     <rect key="frame" x="73" y="483" width="229" height="2"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <color key="tintColor" red="1" green="0.72156862749999995" blue="0.23529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </progressView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sync Library" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="HYX-D6-6nx">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sync Library" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HYX-D6-6nx">
                     <rect key="frame" x="52" y="77" width="270" height="60"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="60" id="pcR-4G-Su7"/>
+                    </constraints>
                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="32"/>
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="UT4-Ow-d5k">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UT4-Ow-d5k">
                     <rect key="frame" x="52" y="156" width="270" height="161"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="161" id="ZTp-Ij-XPz"/>
+                    </constraints>
                     <attributedString key="attributedText">
                         <fragment content="Muz">
                             <attributes>
@@ -76,10 +77,13 @@
                     </attributedString>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="bJZ-5N-hvM">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bJZ-5N-hvM">
                     <rect key="frame" x="117" y="472" width="140" height="140"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="140" id="50V-v4-NBn"/>
+                        <constraint firstAttribute="height" constant="140" id="Y3c-Zp-vwL"/>
+                    </constraints>
                     <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="25"/>
                     <state key="normal" title="Sync">
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -91,6 +95,27 @@
                 </button>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="bJZ-5N-hvM" firstAttribute="top" secondItem="bpn-HU-Ua3" secondAttribute="bottom" constant="20" id="25c-35-cFM"/>
+                <constraint firstItem="Tuc-O6-98P" firstAttribute="top" secondItem="Byj-E2-SF0" secondAttribute="top" id="4ZL-pp-D3E"/>
+                <constraint firstItem="bpn-HU-Ua3" firstAttribute="leading" secondItem="UT4-Ow-d5k" secondAttribute="leading" id="5Ap-Fe-M6B"/>
+                <constraint firstItem="UT4-Ow-d5k" firstAttribute="leading" secondItem="HYX-D6-6nx" secondAttribute="leading" id="6xg-od-joo"/>
+                <constraint firstAttribute="bottom" secondItem="Tuc-O6-98P" secondAttribute="bottom" id="B3D-L5-Ale"/>
+                <constraint firstItem="bJZ-5N-hvM" firstAttribute="centerX" secondItem="ShY-uh-az5" secondAttribute="centerX" id="HKP-HW-HyA"/>
+                <constraint firstItem="bpn-HU-Ua3" firstAttribute="trailing" secondItem="UT4-Ow-d5k" secondAttribute="trailing" id="KYV-ZC-OgT"/>
+                <constraint firstAttribute="bottom" secondItem="bJZ-5N-hvM" secondAttribute="bottom" constant="55" id="TA7-N7-edh"/>
+                <constraint firstItem="HYX-D6-6nx" firstAttribute="trailing" secondItem="UT4-Ow-d5k" secondAttribute="trailing" id="TvF-sY-n50"/>
+                <constraint firstItem="HYX-D6-6nx" firstAttribute="top" secondItem="Byj-E2-SF0" secondAttribute="top" constant="77" id="XR5-Bo-xt3"/>
+                <constraint firstItem="bpn-HU-Ua3" firstAttribute="centerX" secondItem="ShY-uh-az5" secondAttribute="centerX" id="diO-Rs-Jpb"/>
+                <constraint firstItem="ShY-uh-az5" firstAttribute="leading" secondItem="Byj-E2-SF0" secondAttribute="leading" constant="73" id="euA-nd-0uH"/>
+                <constraint firstItem="bpn-HU-Ua3" firstAttribute="top" secondItem="HYX-D6-6nx" secondAttribute="bottom" constant="45" id="f0P-lf-jU4"/>
+                <constraint firstItem="HYX-D6-6nx" firstAttribute="centerX" secondItem="Tuc-O6-98P" secondAttribute="centerX" id="i0w-eV-NrB"/>
+                <constraint firstItem="Tuc-O6-98P" firstAttribute="leading" secondItem="Byj-E2-SF0" secondAttribute="leading" id="leD-CF-h77"/>
+                <constraint firstAttribute="trailing" secondItem="Tuc-O6-98P" secondAttribute="trailing" id="qEa-Mh-n4Z"/>
+                <constraint firstItem="HYX-D6-6nx" firstAttribute="leading" secondItem="Byj-E2-SF0" secondAttribute="leading" constant="52" id="sFk-l2-xNT"/>
+                <constraint firstItem="UT4-Ow-d5k" firstAttribute="top" secondItem="HYX-D6-6nx" secondAttribute="bottom" constant="19" id="tQ9-1K-YUe"/>
+                <constraint firstItem="ShY-uh-az5" firstAttribute="top" secondItem="bpn-HU-Ua3" secondAttribute="bottom" constant="31" id="xiD-VD-iS6"/>
+            </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
             <point key="canvasLocation" x="267.5" y="347.5"/>
         </view>

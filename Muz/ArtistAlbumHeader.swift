@@ -66,8 +66,11 @@ class ArtistAlbumHeader: UITableViewHeaderFooterView {
         
         albumLabel.text = album.title
         infoLabel.text = album.songs.count == 1 ? "\(album.songs.count) song" : "\(album.songs.count) songs"
-        let components = NSCalendar.currentCalendar().components(.CalendarUnitYear, fromDate: album.releaseDate)
-        print(album.releaseDate)
-        yearLabel.text = "\(components.year)"
+        if let releaseDate = album.releaseDate {
+            let components = NSCalendar.currentCalendar().components(.CalendarUnitYear, fromDate: releaseDate)
+            yearLabel.text = "\(components.year)"
+        } else {
+            yearLabel.hidden = true
+        }
     }
 }

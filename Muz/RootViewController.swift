@@ -61,7 +61,7 @@ class RootViewController: UIViewController {
     }
     
     func configureBackgroundImage() {
-        self.backgroundImageView.image = CurrentAppBackgroundImage.applyDarkEffect()
+        self.backgroundImageView.image = CurrentAppBackgroundImage
     }
     
     /**

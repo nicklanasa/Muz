@@ -204,15 +204,14 @@ ArtistAlbumHeaderDelegate {
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         // Get song.    
-        if let albumArtist = self.artistsController.objectAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? Artist {
-            if let album = albumArtist.albums.allObjects[indexPath.section] as? Album {
-                if let song = album.songs.allObjects[indexPath.row] as? Song {
-                    DataManager.manager.fetchCollectionForArtist(artist: song.artist, completion: { (collection, error) -> () in
-                        self.presentNowPlayViewController(song, collection: collection)
-                    })
-                }
+        if let songs = self.sortedSongs[indexPath.section] as? [AnyObject] {
+            if let song = songs[indexPath.row] as? Song {
+                DataManager.manager.fetchCollectionForArtist(artist: song.artist, completion: { (collection, error) -> () in
+                    self.presentNowPlayViewController(song, collection: collection)
+                })
             }
         }
+        
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     

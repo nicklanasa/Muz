@@ -21,7 +21,7 @@ let MuzBlueColor = UIColor(red:255/255, green: 184/255, blue: 60/255, alpha: 1.0
 let MuzGrayColor = UIColor(red:102/255, green: 102/255, blue: 102/255, alpha: 1.0)
 
 var CurrentNowPlayingArtwork: UIImage = UIImage(named: "nowPlayingDefault")!
-var CurrentAppBackgroundImage = UIImage(named: "nowPlayingDefault")!
+var CurrentAppBackgroundImage = UIImage(named: "nowPlayingDefault")?.applyDarkEffect()!
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
