@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1510" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SearchOverlayController" customModule="Muz" customModuleProvider="target">
+            <connections>
+                <outlet property="backgroundImageView" destination="Efw-Dy-G3p" id="JuW-P7-yhd"/>
+                <outlet property="searchBar" destination="UFE-Uk-J02" id="NLj-eB-YBn"/>
+                <outlet property="searchDisplayController" destination="vrU-vq-wHc" id="Liz-We-azQ"/>
+                <outlet property="tableView" destination="KYK-sg-BKi" id="M9i-cO-1Yu"/>
+                <outlet property="view" destination="ZWR-ue-apE" id="rxx-hm-oqQ"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="ZWR-ue-apE">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Efw-Dy-G3p">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                </imageView>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="40" sectionHeaderHeight="30" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="KYK-sg-BKi">
+                    <rect key="frame" x="0.0" y="123" width="320" height="439"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <color key="separatorColor" red="0.55676333109999998" green="0.55676333109999998" blue="0.55676333109999998" alpha="0.26000000000000001" colorSpace="calibratedRGB"/>
+                    <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="Avg-DN-5Gr"/>
+                        <outlet property="delegate" destination="-1" id="9Nd-YH-Vxs"/>
+                    </connections>
+                </tableView>
+                <searchBar contentMode="redraw" searchBarStyle="minimal" translatesAutoresizingMaskIntoConstraints="NO" id="UFE-Uk-J02">
+                    <rect key="frame" x="0.0" y="71" width="320" height="44"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="barTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <textInputTraits key="textInputTraits"/>
+                    <scopeButtonTitles>
+                        <string>Library</string>
+                        <string>iTunes Store</string>
+                    </scopeButtonTitles>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="Mp5-ky-m5I"/>
+                    </connections>
+                </searchBar>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="UFE-Uk-J02" firstAttribute="leading" secondItem="KYK-sg-BKi" secondAttribute="leading" id="3Qv-Pk-hfb"/>
+                <constraint firstItem="UFE-Uk-J02" firstAttribute="bottom" secondItem="KYK-sg-BKi" secondAttribute="top" constant="-8" id="Bb4-bv-nyE"/>
+                <constraint firstItem="KYK-sg-BKi" firstAttribute="top" secondItem="ZWR-ue-apE" secondAttribute="top" constant="123" id="Top-Bn-lvr"/>
+                <constraint firstItem="Efw-Dy-G3p" firstAttribute="bottom" secondItem="KYK-sg-BKi" secondAttribute="bottom" constant="6" id="Zfz-ez-yim"/>
+                <constraint firstItem="Efw-Dy-G3p" firstAttribute="top" secondItem="ZWR-ue-apE" secondAttribute="top" id="aP3-si-6l2"/>
+                <constraint firstItem="Efw-Dy-G3p" firstAttribute="leading" secondItem="ZWR-ue-apE" secondAttribute="leading" id="aT7-XP-wX1"/>
+                <constraint firstAttribute="trailing" secondItem="Efw-Dy-G3p" secondAttribute="trailing" id="c0x-U8-h5f"/>
+                <constraint firstItem="Efw-Dy-G3p" firstAttribute="leading" secondItem="KYK-sg-BKi" secondAttribute="leading" id="huX-ag-gT9"/>
+                <constraint firstItem="Efw-Dy-G3p" firstAttribute="trailing" secondItem="KYK-sg-BKi" secondAttribute="trailing" id="nef-Tn-w55"/>
+                <constraint firstItem="UFE-Uk-J02" firstAttribute="trailing" secondItem="KYK-sg-BKi" secondAttribute="trailing" id="q7z-Sa-PDP"/>
+                <constraint firstAttribute="bottom" secondItem="KYK-sg-BKi" secondAttribute="bottom" constant="6" id="rgX-h2-WSc"/>
+            </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+            <point key="canvasLocation" x="410" y="-42"/>
+        </view>
+        <searchDisplayController id="vrU-vq-wHc">
+            <connections>
+                <outlet property="delegate" destination="-1" id="jff-AO-s29"/>
+                <outlet property="searchBar" destination="UFE-Uk-J02" id="dab-sW-rMi"/>
+                <outlet property="searchContentsController" destination="-1" id="2OH-Zo-F6Z"/>
+                <outlet property="searchResultsDataSource" destination="-1" id="1Fy-XP-WWg"/>
+                <outlet property="searchResultsDelegate" destination="-1" id="A9v-jq-QWx"/>
+            </connections>
+        </searchDisplayController>
+    </objects>
+</document>

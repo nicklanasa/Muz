@@ -51,7 +51,8 @@ class TopAlbumsViewController: RootViewController, LastFmAlbumBuyLinksRequestDel
                 if artists.count > 0 {
                     if let artistDict = artists.first as? NSDictionary {
                         if let artistID = artistDict.objectForKey("artistId") as? NSNumber {
-                            ItunesSearch.sharedInstance().getAlbumsForArtist(artistID, limitOrNil: 100, successHandler: { (albums) -> Void in
+                            ItunesSearch.sharedInstance().getAlbumsForArtist(artistID, limitOrNil: 100,
+                                successHandler: { (albums) -> Void in
                                 self.albums = albums
                             }, failureHandler: { (error) -> Void in
                                 print(error)
@@ -124,7 +125,6 @@ class TopAlbumsViewController: RootViewController, LastFmAlbumBuyLinksRequestDel
                 LocalyticsSession.shared().tagEvent("Buy album button tapped")
                 UIApplication.sharedApplication().openURL(NSURL(string: albumLink)!)
             }
-            
         }
     }
     

@@ -769,6 +769,23 @@ class Datastore {
         cacheName: nil)
     }
     
+    func recommendationController(limit: Int) -> NSFetchedResultsController {
+        
+        var request = NSFetchRequest()
+        request.entity = NSEntityDescription.entityForName("Artist",
+            inManagedObjectContext: self.mainQueueContext)
+        
+        request.fetchLimit = limit
+        
+        var sort = NSSortDescriptor(key: "lastPlayedDate", ascending: false)
+        request.sortDescriptors = [sort]
+        
+        return NSFetchedResultsController(fetchRequest: request,
+            managedObjectContext: self.mainQueueContext,
+            sectionNameKeyPath: nil,
+            cacheName: nil)
+    }
+    
     func plsylistSsongsControllerWithSortKey(sortKey: NSString, ascending: Bool, sectionNameKeyPath: NSString?) -> NSFetchedResultsController {
         
         var request = NSFetchRequest()

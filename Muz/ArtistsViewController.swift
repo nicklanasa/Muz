@@ -78,7 +78,9 @@ UISearchDisplayDelegate {
     }
     
     func showSearch() {
-        self.searchDisplayController?.setActive(true, animated: true)
+        //self.searchDisplayController?.setActive(true, animated: true)
+        
+        self.presentModalOverlayController(SearchOverlayController(), blurredController: self)
     }
     
     func fetchArtists() {

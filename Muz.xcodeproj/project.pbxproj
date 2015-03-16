@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		011AF3B91A880C5300E298DD /* NowPlayingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011AF3B81A880C5300E298DD /* NowPlayingTableViewCell.swift */; };
 		011AF3BB1A880C5C00E298DD /* NowPlayingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 011AF3BA1A880C5C00E298DD /* NowPlayingTableViewCell.xib */; };
+		017497E41AB5FA11003EFF28 /* RecommendedSearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017497E31AB5FA11003EFF28 /* RecommendedSearchCell.swift */; };
+		017497E61AB5FA18003EFF28 /* RecommendedSearchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 017497E51AB5FA18003EFF28 /* RecommendedSearchCell.xib */; };
+		01F9B1531AB5EB9C00D0513B /* Muz+ItunesSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F9B1521AB5EB9C00D0513B /* Muz+ItunesSearch.swift */; };
+		01F9B1551AB5F62800D0513B /* SearchOverlayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F9B1541AB5F62800D0513B /* SearchOverlayController.swift */; };
+		01F9B1571AB5F72C00D0513B /* SearchOverlayController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01F9B1561AB5F72C00D0513B /* SearchOverlayController.xib */; };
 		18FE78E2938CE235720BDF0D /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CC5E238686D44A286C24637D /* libPods.a */; };
 		CE167DA01A855A7700A9EC1A /* Artist.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE167D9F1A855A7700A9EC1A /* Artist.swift */; };
 		CE167DA31A855E6800A9EC1A /* Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE167DA21A855E6800A9EC1A /* Album.swift */; };
@@ -160,6 +165,11 @@
 /* Begin PBXFileReference section */
 		011AF3B81A880C5300E298DD /* NowPlayingTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NowPlayingTableViewCell.swift; sourceTree = "<group>"; };
 		011AF3BA1A880C5C00E298DD /* NowPlayingTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NowPlayingTableViewCell.xib; sourceTree = "<group>"; };
+		017497E31AB5FA11003EFF28 /* RecommendedSearchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecommendedSearchCell.swift; sourceTree = "<group>"; };
+		017497E51AB5FA18003EFF28 /* RecommendedSearchCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RecommendedSearchCell.xib; sourceTree = "<group>"; };
+		01F9B1521AB5EB9C00D0513B /* Muz+ItunesSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Muz+ItunesSearch.swift"; sourceTree = "<group>"; };
+		01F9B1541AB5F62800D0513B /* SearchOverlayController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchOverlayController.swift; sourceTree = "<group>"; };
+		01F9B1561AB5F72C00D0513B /* SearchOverlayController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchOverlayController.xib; sourceTree = "<group>"; };
 		B5C84601BD2F3431F5F52BE9 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		CC5E238686D44A286C24637D /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE167D9F1A855A7700A9EC1A /* Artist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Artist.swift; sourceTree = "<group>"; };
@@ -344,6 +354,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		017497E21AB5F9FC003EFF28 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				01F9B1541AB5F62800D0513B /* SearchOverlayController.swift */,
+				01F9B1561AB5F72C00D0513B /* SearchOverlayController.xib */,
+				017497E31AB5FA11003EFF28 /* RecommendedSearchCell.swift */,
+				017497E51AB5FA18003EFF28 /* RecommendedSearchCell.xib */,
+			);
+			name = Search;
+			sourceTree = "<group>";
+		};
 		645DC876E38F9CCAA9D7D1A6 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -496,6 +517,8 @@
 		CE4931E91A3A1B2100B3A4BE /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				CEF808281A8A94FF00B6D954 /* NSNumber+Helpers.swift */,
+				01F9B1521AB5EB9C00D0513B /* Muz+ItunesSearch.swift */,
 				CE4184D71A49E8330011C0DA /* SettingsManager.swift */,
 				CEBB56141A3B951C00AE8CAA /* NSString+Lyrics.h */,
 				CEBB56151A3B951C00AE8CAA /* NSString+Lyrics.m */,
@@ -517,7 +540,6 @@
 				CECCC0D61A3FB65700799854 /* PlaylistSong+Helpers.swift */,
 				CE444BE01A36A28700153F77 /* Song+Helpers.swift */,
 				CE3038E21A3E0A9F00DCC5EB /* LastFm */,
-				CEF808281A8A94FF00B6D954 /* NSNumber+Helpers.swift */,
 			);
 			name = Data;
 			sourceTree = "<group>";
@@ -540,6 +562,7 @@
 		CE4931EB1A3A1B4400B3A4BE /* Application */ = {
 			isa = PBXGroup;
 			children = (
+				017497E21AB5F9FC003EFF28 /* Search */,
 				CE9BCFE91A45E22400522F18 /* LastFm */,
 				CE3126161A50DA480071AD27 /* NoMusicOverlayController.swift */,
 				CE3126181A50DA500071AD27 /* NoMusicOverlayController.xib */,
@@ -796,7 +819,9 @@
 				CE6EF5021A38F08C001FE858 /* ArtistAlbumsViewController.xib in Resources */,
 				CE3126191A50DA500071AD27 /* NoMusicOverlayController.xib in Resources */,
 				CEDB61ED1A37DE6100B90B2D /* NowPlayingViewController.xib in Resources */,
+				017497E61AB5FA18003EFF28 /* RecommendedSearchCell.xib in Resources */,
 				CECCC10B1A40CC2700799854 /* PlaylistSongsViewController.xib in Resources */,
+				01F9B1571AB5F72C00D0513B /* SearchOverlayController.xib in Resources */,
 				CE3126271A50E9280071AD27 /* ShadowsIntoLight.ttf in Resources */,
 				CE33385F1A3A0AD100281146 /* SongsHeader.xib in Resources */,
 				CEF8082D1A8AAEC100B6D954 /* TopAlbumCell.xib in Resources */,
@@ -859,6 +884,7 @@
 			files = (
 				CEDB61831A37B85D00B90B2D /* TabBarController.swift in Sources */,
 				CE444BE61A36A28700153F77 /* DataManager.swift in Sources */,
+				01F9B1531AB5EB9C00D0513B /* Muz+ItunesSearch.swift in Sources */,
 				CECCC1121A41134900799854 /* LastFmTrackBuyLinksRequest.swift in Sources */,
 				CECCC1171A41168E00799854 /* LastFmBuyLink.m in Sources */,
 				CE4184DA1A4A3CC30011C0DA /* LastFmEventMapController.swift in Sources */,
@@ -889,6 +915,7 @@
 				CEDB61E71A37DCE300B90B2D /* MoreViewController.swift in Sources */,
 				CE95D9BD1A3DFB730060752A /* LastFmArtistInfoCell.swift in Sources */,
 				CE9BCFE41A45D56500522F18 /* LastFmCell.swift in Sources */,
+				01F9B1551AB5F62800D0513B /* SearchOverlayController.swift in Sources */,
 				CECCC10D1A40ED1200799854 /* LastFmArtistEventsRequest.swift in Sources */,
 				CE9BCFE11A45D2CD00522F18 /* LastFmEventInfoCell.swift in Sources */,
 				CE9BCFCF1A44C39800522F18 /* CreatePlaylistOverlay.swift in Sources */,
@@ -934,6 +961,7 @@
 				CE444BDB1A36A27200153F77 /* ArtistsViewController.swift in Sources */,
 				CEAA2A9B1AA7D0DC00DDCD23 /* LastFmLoginCell.swift in Sources */,
 				CE5E31A81A86A3CC00969647 /* LastFmSimilarArtistTableCell.swift in Sources */,
+				017497E41AB5FA11003EFF28 /* RecommendedSearchCell.swift in Sources */,
 				CE3126171A50DA480071AD27 /* NoMusicOverlayController.swift in Sources */,
 				CE9BCFD61A44EB4C00522F18 /* CreatePlaylistCell.swift in Sources */,
 				CE3038DA1A3E037700DCC5EB /* SimiliarArtistCollectionViewCell.swift in Sources */,
