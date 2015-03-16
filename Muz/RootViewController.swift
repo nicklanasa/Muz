@@ -101,6 +101,18 @@ class RootViewController: UIViewController {
         presentViewController(nav, animated: true, completion: nil)
     }
     
+    func presentSearchOverlayController(controller: OverlayController, blurredController: UIViewController) {
+        
+        UIGraphicsBeginImageContext(blurredController.view.bounds.size)
+        self.view.layer.renderInContext(UIGraphicsGetCurrentContext())
+        var image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        controller.screenShot = image
+        
+        presentViewController(controller, animated: true, completion: nil)
+    }
+    
     /**
     Present the CreatePlaylist Controller with the given controller.
     

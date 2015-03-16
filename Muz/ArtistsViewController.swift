@@ -78,8 +78,6 @@ UISearchDisplayDelegate {
     }
     
     func showSearch() {
-        //self.searchDisplayController?.setActive(true, animated: true)
-        
         self.presentModalOverlayController(SearchOverlayController(), blurredController: self)
     }
     

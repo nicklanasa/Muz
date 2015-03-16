@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		011AF3B91A880C5300E298DD /* NowPlayingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011AF3B81A880C5300E298DD /* NowPlayingTableViewCell.swift */; };
 		011AF3BB1A880C5C00E298DD /* NowPlayingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 011AF3BA1A880C5C00E298DD /* NowPlayingTableViewCell.xib */; };
+		0158A37E1AB65B3100A31082 /* SearchSwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0158A37D1AB65B3100A31082 /* SearchSwitchCell.swift */; };
+		0158A3801AB65BA900A31082 /* SearchSwitchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0158A37F1AB65BA900A31082 /* SearchSwitchCell.xib */; };
 		017497E41AB5FA11003EFF28 /* RecommendedSearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017497E31AB5FA11003EFF28 /* RecommendedSearchCell.swift */; };
 		017497E61AB5FA18003EFF28 /* RecommendedSearchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 017497E51AB5FA18003EFF28 /* RecommendedSearchCell.xib */; };
 		01F9B1531AB5EB9C00D0513B /* Muz+ItunesSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F9B1521AB5EB9C00D0513B /* Muz+ItunesSearch.swift */; };
@@ -165,6 +167,8 @@
 /* Begin PBXFileReference section */
 		011AF3B81A880C5300E298DD /* NowPlayingTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NowPlayingTableViewCell.swift; sourceTree = "<group>"; };
 		011AF3BA1A880C5C00E298DD /* NowPlayingTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NowPlayingTableViewCell.xib; sourceTree = "<group>"; };
+		0158A37D1AB65B3100A31082 /* SearchSwitchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchSwitchCell.swift; sourceTree = "<group>"; };
+		0158A37F1AB65BA900A31082 /* SearchSwitchCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchSwitchCell.xib; sourceTree = "<group>"; };
 		017497E31AB5FA11003EFF28 /* RecommendedSearchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecommendedSearchCell.swift; sourceTree = "<group>"; };
 		017497E51AB5FA18003EFF28 /* RecommendedSearchCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RecommendedSearchCell.xib; sourceTree = "<group>"; };
 		01F9B1521AB5EB9C00D0513B /* Muz+ItunesSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Muz+ItunesSearch.swift"; sourceTree = "<group>"; };
@@ -361,6 +365,8 @@
 				01F9B1561AB5F72C00D0513B /* SearchOverlayController.xib */,
 				017497E31AB5FA11003EFF28 /* RecommendedSearchCell.swift */,
 				017497E51AB5FA18003EFF28 /* RecommendedSearchCell.xib */,
+				0158A37D1AB65B3100A31082 /* SearchSwitchCell.swift */,
+				0158A37F1AB65BA900A31082 /* SearchSwitchCell.xib */,
 			);
 			name = Search;
 			sourceTree = "<group>";
@@ -822,6 +828,7 @@
 				017497E61AB5FA18003EFF28 /* RecommendedSearchCell.xib in Resources */,
 				CECCC10B1A40CC2700799854 /* PlaylistSongsViewController.xib in Resources */,
 				01F9B1571AB5F72C00D0513B /* SearchOverlayController.xib in Resources */,
+				0158A3801AB65BA900A31082 /* SearchSwitchCell.xib in Resources */,
 				CE3126271A50E9280071AD27 /* ShadowsIntoLight.ttf in Resources */,
 				CE33385F1A3A0AD100281146 /* SongsHeader.xib in Resources */,
 				CEF8082D1A8AAEC100B6D954 /* TopAlbumCell.xib in Resources */,
@@ -939,6 +946,7 @@
 				CEB524E31A3B766000027C71 /* LyricsRequest.swift in Sources */,
 				CE3038F11A3E0DEF00DCC5EB /* LastFmSimiliarArtist.m in Sources */,
 				CECCC1141A41135B00799854 /* LastFmAlbumBuyLinksRequest.swift in Sources */,
+				0158A37E1AB65B3100A31082 /* SearchSwitchCell.swift in Sources */,
 				CE9BCFE81A45E21900522F18 /* LastFmEventInfoController.swift in Sources */,
 				CECCC0EC1A40941400799854 /* PlaylistCell.swift in Sources */,
 				CE9BCFB01A43C77D00522F18 /* NowPlayingCollectionController.swift in Sources */,

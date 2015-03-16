@@ -105,8 +105,17 @@ UICollectionViewDataSource {
         
         let recentArtistCellNib = UINib(nibName: "LastFmSimilarArtistTableCell", bundle: nil)
         recentArtistCell = recentArtistCellNib.instantiateWithOwner(self, options: nil)[0] as? LastFmSimilarArtistTableCell
+        
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "search"),
+            style: .Plain,
+            target: self,
+            action: "showSearch")
     }
     
+    func showSearch() {
+        self.presentSearchOverlayController(SearchOverlayController(), blurredController: self)
+    }
+
     func lastFmSimiliarArtistsRequestDidComplete(request: LastFmSimiliarArtistsRequest, didCompleteWithLastFmArtists artists: [AnyObject]?) {
         self.similiarArtists = artists
         similarArtistCell.similiarActivityIndicator.stopAnimating()

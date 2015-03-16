@@ -40,7 +40,7 @@ class TopAlbumCell: UITableViewCell {
     func updateWithArtist(artist: NSDictionary) {
         print(artist)
         self.songLabel.text = artist["artistName"] as? String
-        
+        self.infoLabel.text = artist["primaryGenreName"] as? String
         if let image = artist["artworkUrl100"] as? String {
             self.songImageView.sd_setImageWithURL(NSURL(string: image))
         } else {

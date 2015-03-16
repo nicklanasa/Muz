@@ -22,8 +22,8 @@
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Efw-Dy-G3p">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                 </imageView>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="40" sectionHeaderHeight="30" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="KYK-sg-BKi">
-                    <rect key="frame" x="0.0" y="123" width="320" height="439"/>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" style="plain" separatorStyle="none" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="40" sectionHeaderHeight="30" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="KYK-sg-BKi">
+                    <rect key="frame" x="0.0" y="68" width="320" height="494"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <color key="separatorColor" red="0.55676333109999998" green="0.55676333109999998" blue="0.55676333109999998" alpha="0.26000000000000001" colorSpace="calibratedRGB"/>
@@ -34,15 +34,10 @@
                     </connections>
                 </tableView>
                 <searchBar contentMode="redraw" searchBarStyle="minimal" translatesAutoresizingMaskIntoConstraints="NO" id="UFE-Uk-J02">
-                    <rect key="frame" x="0.0" y="71" width="320" height="44"/>
+                    <rect key="frame" x="0.0" y="19" width="320" height="44"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <color key="barTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <textInputTraits key="textInputTraits"/>
-                    <scopeButtonTitles>
-                        <string>Library</string>
-                        <string>iTunes Store</string>
-                    </scopeButtonTitles>
                     <connections>
                         <outlet property="delegate" destination="-1" id="Mp5-ky-m5I"/>
                     </connections>
@@ -51,17 +46,17 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="UFE-Uk-J02" firstAttribute="leading" secondItem="KYK-sg-BKi" secondAttribute="leading" id="3Qv-Pk-hfb"/>
-                <constraint firstItem="UFE-Uk-J02" firstAttribute="bottom" secondItem="KYK-sg-BKi" secondAttribute="top" constant="-8" id="Bb4-bv-nyE"/>
-                <constraint firstItem="KYK-sg-BKi" firstAttribute="top" secondItem="ZWR-ue-apE" secondAttribute="top" constant="123" id="Top-Bn-lvr"/>
-                <constraint firstItem="Efw-Dy-G3p" firstAttribute="bottom" secondItem="KYK-sg-BKi" secondAttribute="bottom" constant="6" id="Zfz-ez-yim"/>
-                <constraint firstItem="Efw-Dy-G3p" firstAttribute="top" secondItem="ZWR-ue-apE" secondAttribute="top" id="aP3-si-6l2"/>
-                <constraint firstItem="Efw-Dy-G3p" firstAttribute="leading" secondItem="ZWR-ue-apE" secondAttribute="leading" id="aT7-XP-wX1"/>
-                <constraint firstAttribute="trailing" secondItem="Efw-Dy-G3p" secondAttribute="trailing" id="c0x-U8-h5f"/>
-                <constraint firstItem="Efw-Dy-G3p" firstAttribute="leading" secondItem="KYK-sg-BKi" secondAttribute="leading" id="huX-ag-gT9"/>
-                <constraint firstItem="Efw-Dy-G3p" firstAttribute="trailing" secondItem="KYK-sg-BKi" secondAttribute="trailing" id="nef-Tn-w55"/>
-                <constraint firstItem="UFE-Uk-J02" firstAttribute="trailing" secondItem="KYK-sg-BKi" secondAttribute="trailing" id="q7z-Sa-PDP"/>
-                <constraint firstAttribute="bottom" secondItem="KYK-sg-BKi" secondAttribute="bottom" constant="6" id="rgX-h2-WSc"/>
+                <constraint firstItem="KYK-sg-BKi" firstAttribute="leading" secondItem="UFE-Uk-J02" secondAttribute="leading" id="6Hy-DI-Qv0"/>
+                <constraint firstItem="UFE-Uk-J02" firstAttribute="leading" secondItem="Efw-Dy-G3p" secondAttribute="leading" id="6by-aK-HFX"/>
+                <constraint firstItem="UFE-Uk-J02" firstAttribute="trailing" secondItem="KYK-sg-BKi" secondAttribute="trailing" id="8Xe-sc-f2d"/>
+                <constraint firstItem="UFE-Uk-J02" firstAttribute="top" secondItem="ZWR-ue-apE" secondAttribute="top" constant="19" id="A5M-1X-VbD"/>
+                <constraint firstItem="Efw-Dy-G3p" firstAttribute="trailing" secondItem="KYK-sg-BKi" secondAttribute="trailing" id="LEd-s9-iJG"/>
+                <constraint firstAttribute="bottom" secondItem="KYK-sg-BKi" secondAttribute="bottom" constant="6" id="TaX-Dw-CMC"/>
+                <constraint firstItem="KYK-sg-BKi" firstAttribute="leading" secondItem="ZWR-ue-apE" secondAttribute="leading" id="TkV-yL-Nbq"/>
+                <constraint firstAttribute="trailing" secondItem="Efw-Dy-G3p" secondAttribute="trailing" id="cEq-Wd-fUo"/>
+                <constraint firstItem="Efw-Dy-G3p" firstAttribute="top" secondItem="ZWR-ue-apE" secondAttribute="top" id="jsQ-dg-AXt"/>
+                <constraint firstItem="KYK-sg-BKi" firstAttribute="top" secondItem="UFE-Uk-J02" secondAttribute="bottom" constant="5" id="qGn-cK-btV"/>
+                <constraint firstAttribute="bottom" secondItem="Efw-Dy-G3p" secondAttribute="bottom" id="tbF-9l-hvS"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
             <point key="canvasLocation" x="410" y="-42"/>
