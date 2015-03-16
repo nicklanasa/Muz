@@ -25,6 +25,10 @@ class SearchSwitchCell: UITableViewCell {
     
     var delegate: SearchSwitchCellDelegate?
     
+    override func awakeFromNib() {
+        self.bringSubviewToFront(self.searchSegmentationControl)
+    }
+    
     @IBAction func searchSegmentChanged(sender: AnyObject) {
         if let index = SearchIndex(rawValue: searchSegmentationControl.selectedSegmentIndex) {
             self.delegate?.searchSwitchCell(self, searchIndexDidChange: index)

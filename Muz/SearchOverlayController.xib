@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1510" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14D87h" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SearchOverlayController" customModule="Muz" customModuleProvider="target">
             <connections>
                 <outlet property="backgroundImageView" destination="Efw-Dy-G3p" id="JuW-P7-yhd"/>
+                <outlet property="cancelButton" destination="jjY-IL-auj" id="Ke3-OT-AR8"/>
                 <outlet property="searchBar" destination="UFE-Uk-J02" id="NLj-eB-YBn"/>
                 <outlet property="searchDisplayController" destination="vrU-vq-wHc" id="Liz-We-azQ"/>
                 <outlet property="tableView" destination="KYK-sg-BKi" id="M9i-cO-1Yu"/>
@@ -23,7 +25,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                 </imageView>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" style="plain" separatorStyle="none" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="40" sectionHeaderHeight="30" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="KYK-sg-BKi">
-                    <rect key="frame" x="0.0" y="68" width="320" height="494"/>
+                    <rect key="frame" x="0.0" y="98" width="320" height="412"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <color key="separatorColor" red="0.55676333109999998" green="0.55676333109999998" blue="0.55676333109999998" alpha="0.26000000000000001" colorSpace="calibratedRGB"/>
@@ -34,7 +36,7 @@
                     </connections>
                 </tableView>
                 <searchBar contentMode="redraw" searchBarStyle="minimal" translatesAutoresizingMaskIntoConstraints="NO" id="UFE-Uk-J02">
-                    <rect key="frame" x="0.0" y="19" width="320" height="44"/>
+                    <rect key="frame" x="0.0" y="22" width="320" height="44"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <textInputTraits key="textInputTraits"/>
@@ -42,24 +44,41 @@
                         <outlet property="delegate" destination="-1" id="Mp5-ky-m5I"/>
                     </connections>
                 </searchBar>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jjY-IL-auj">
+                    <rect key="frame" x="8" y="517" width="304" height="43"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="43" id="vMX-3S-NTP"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                    <state key="normal" title="Cancel">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="cancelButtonTapped:" destination="-1" eventType="touchUpInside" id="vlm-VS-gVv"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="KYK-sg-BKi" firstAttribute="leading" secondItem="UFE-Uk-J02" secondAttribute="leading" id="6Hy-DI-Qv0"/>
-                <constraint firstItem="UFE-Uk-J02" firstAttribute="leading" secondItem="Efw-Dy-G3p" secondAttribute="leading" id="6by-aK-HFX"/>
-                <constraint firstItem="UFE-Uk-J02" firstAttribute="trailing" secondItem="KYK-sg-BKi" secondAttribute="trailing" id="8Xe-sc-f2d"/>
-                <constraint firstItem="UFE-Uk-J02" firstAttribute="top" secondItem="ZWR-ue-apE" secondAttribute="top" constant="19" id="A5M-1X-VbD"/>
-                <constraint firstItem="Efw-Dy-G3p" firstAttribute="trailing" secondItem="KYK-sg-BKi" secondAttribute="trailing" id="LEd-s9-iJG"/>
-                <constraint firstAttribute="bottom" secondItem="KYK-sg-BKi" secondAttribute="bottom" constant="6" id="TaX-Dw-CMC"/>
-                <constraint firstItem="KYK-sg-BKi" firstAttribute="leading" secondItem="ZWR-ue-apE" secondAttribute="leading" id="TkV-yL-Nbq"/>
-                <constraint firstAttribute="trailing" secondItem="Efw-Dy-G3p" secondAttribute="trailing" id="cEq-Wd-fUo"/>
-                <constraint firstItem="Efw-Dy-G3p" firstAttribute="top" secondItem="ZWR-ue-apE" secondAttribute="top" id="jsQ-dg-AXt"/>
-                <constraint firstItem="KYK-sg-BKi" firstAttribute="top" secondItem="UFE-Uk-J02" secondAttribute="bottom" constant="5" id="qGn-cK-btV"/>
-                <constraint firstAttribute="bottom" secondItem="Efw-Dy-G3p" secondAttribute="bottom" id="tbF-9l-hvS"/>
+                <constraint firstItem="jjY-IL-auj" firstAttribute="bottom" secondItem="ZWR-ue-apE" secondAttribute="bottomMargin" id="1kX-oh-V86"/>
+                <constraint firstItem="KYK-sg-BKi" firstAttribute="trailing" secondItem="UFE-Uk-J02" secondAttribute="trailing" id="88H-pI-Wqc"/>
+                <constraint firstItem="UFE-Uk-J02" firstAttribute="leading" secondItem="ZWR-ue-apE" secondAttribute="leading" id="DJq-YW-Uoy"/>
+                <constraint firstItem="UFE-Uk-J02" firstAttribute="top" secondItem="ZWR-ue-apE" secondAttribute="top" constant="22" id="Eo8-9o-0BO"/>
+                <constraint firstAttribute="bottom" secondItem="Efw-Dy-G3p" secondAttribute="bottom" id="NPH-1O-b9t"/>
+                <constraint firstItem="KYK-sg-BKi" firstAttribute="centerX" secondItem="jjY-IL-auj" secondAttribute="centerX" id="VD6-4i-q0G"/>
+                <constraint firstItem="KYK-sg-BKi" firstAttribute="leading" secondItem="UFE-Uk-J02" secondAttribute="leading" id="XLf-Ds-07K"/>
+                <constraint firstItem="jjY-IL-auj" firstAttribute="leading" secondItem="ZWR-ue-apE" secondAttribute="leadingMargin" id="ZR1-4b-w3a"/>
+                <constraint firstItem="Efw-Dy-G3p" firstAttribute="top" secondItem="ZWR-ue-apE" secondAttribute="top" id="cKt-af-CzI"/>
+                <constraint firstItem="jjY-IL-auj" firstAttribute="top" secondItem="KYK-sg-BKi" secondAttribute="bottom" constant="7" id="hIV-4F-ufB"/>
+                <constraint firstItem="KYK-sg-BKi" firstAttribute="leading" secondItem="Efw-Dy-G3p" secondAttribute="leading" id="hMA-gl-akV"/>
+                <constraint firstItem="KYK-sg-BKi" firstAttribute="top" secondItem="UFE-Uk-J02" secondAttribute="bottom" constant="32" id="kn5-i1-6M1"/>
+                <constraint firstAttribute="trailing" secondItem="Efw-Dy-G3p" secondAttribute="trailing" id="nRn-Gc-Mlg"/>
+                <constraint firstItem="UFE-Uk-J02" firstAttribute="trailing" secondItem="Efw-Dy-G3p" secondAttribute="trailing" id="xZV-KB-eoE"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
-            <point key="canvasLocation" x="410" y="-42"/>
+            <point key="canvasLocation" x="392" y="-107"/>
         </view>
         <searchDisplayController id="vrU-vq-wHc">
             <connections>

@@ -57,4 +57,12 @@ class TopAlbumCell: UITableViewCell {
             self.songImageView.image = UIImage(named: "nowPlayingDefault")
         }
     }
+    
+    override func prepareForReuse() {
+        self.accessoryType = .None
+        self.songImageView.image = nil
+        self.songLabel.text = ""
+        self.infoLabel.text = ""
+        self.buyButton.hidden = true
+    }
 }

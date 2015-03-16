@@ -21,10 +21,12 @@ class SearchOverlayController: OverlayController,
 UITableViewDelegate,
 UITableViewDataSource,
 UISearchBarDelegate,
+UISearchDisplayDelegate,
 SearchSwitchCellDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var cancelButton: UIButton!
     
     var recentSongs: NSArray?
     
@@ -81,25 +83,34 @@ SearchSwitchCellDelegate {
     }
     
     override func viewWillAppear(animated: Bool) {
+        self.overlayScreenName = "Search"
         super.viewWillAppear(animated)
+        
+        self.searchDisplayController?.setActive(true, animated: true)
+        self.searchDisplayController?.searchBar.becomeFirstResponder()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationController?.navigationBar.hidden = true
+        tableView.registerNib(UINib(nibName: "RecommendedSearchCell", bundle: nil),
+            forCellReuseIdentifier: "RecommendedSearchCell")
+        tableView.registerNib(UINib(nibName: "ArtistsHeader", bundle: nil),
+            forHeaderFooterViewReuseIdentifier: "Header")
         
-        tableView.registerNib(UINib(nibName: "RecommendedSearchCell", bundle: nil), forCellReuseIdentifier: "RecommendedSearchCell")
-        tableView.registerNib(UINib(nibName: "ArtistsHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "Header")
-        
-        searchDisplayController?.searchResultsTableView.registerNib(UINib(nibName: "ArtistCell", bundle: nil), forCellReuseIdentifier: "ArtistCell")
-        searchDisplayController?.searchResultsTableView.registerNib(UINib(nibName: "TopAlbumCell", bundle: nil), forCellReuseIdentifier: "AblumCell")
-        searchDisplayController?.searchResultsTableView.registerNib(UINib(nibName: "ArtistsHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "Header")
+        searchDisplayController?.searchResultsTableView.registerNib(UINib(nibName: "ArtistCell", bundle: nil),
+            forCellReuseIdentifier: "ArtistCell")
+        searchDisplayController?.searchResultsTableView.registerNib(UINib(nibName: "TopAlbumCell", bundle: nil),
+            forCellReuseIdentifier: "AblumCell")
+        searchDisplayController?.searchResultsTableView.registerNib(UINib(nibName: "ArtistsHeader", bundle: nil),
+            forHeaderFooterViewReuseIdentifier: "Header")
         
         searchDisplayController?.searchResultsTableView.backgroundColor = UIColor.clearColor()
         searchDisplayController?.searchResultsTableView.separatorStyle = .None
         
-        self.recentSongs = DataManager.manager.datastore.distinctArtistSongsWithSortKey("lastPlayedDate", limit: 10, ascending: false)
+        self.recentSongs = DataManager.manager.datastore.distinctArtistSongsWithSortKey("lastPlayedDate",
+            limit: 10,
+            ascending: false)
         
         let searchSwitchCellNib = UINib(nibName: "SearchSwitchCell", bundle: nil)
         searchSwitchCell = searchSwitchCellNib.instantiateWithOwner(self, options: nil)[0] as? SearchSwitchCell
@@ -153,48 +164,47 @@ SearchSwitchCellDelegate {
             cell.songLabel.text = ""
             cell.infoLabel.text = ""
             cell.buyButton.hidden = true
-            
-            if let searchSection = SearchResultsSection(rawValue: indexPath.section) {
-                switch searchSection {
-                case .SearchSwitch:
-                    return self.searchSwitchCell
-                case .Artists:
-                    let artist = self.artists?[indexPath.row] as NSDictionary
-                    cell.updateWithArtist(artist)
-                    cell.buyButton.hidden = true
-                    cell.accessoryType = .DisclosureIndicator
-                case .Albums:
-                    let album = self.albums?[indexPath.row] as NSDictionary
-                    cell.updateWithAlbum(album)
-                    
-                    cell.buyButton.tag = indexPath.row
-                    cell.buyButton.hidden = true
-                    
-                    if let albumPrice = album["collectionPrice"] as? NSNumber {
-                        if let albumLink = album["collectionViewUrl"] as? String {
-                            cell.buyButton.setTitle("$\(albumPrice.description)", forState: .Normal)
-                            cell.buyButton.addTarget(self, action: "openAlbumLink:", forControlEvents: .TouchUpInside)
-                            cell.buyButton.hidden = false
-                        }
-                    }
-                default:
-                    let topTrack = self.tracks?[indexPath.row] as NSDictionary
-                    cell.updateWithSong(topTrack)
-                    
-                    cell.buyButton.hidden = true
-                    cell.buyButton.tag = indexPath.row
-                    
-                    if let trackPrice = topTrack["trackPrice"] as? NSNumber {
-                        if let trackLink = topTrack["trackViewUrl"] as? String {
-                            cell.buyButton.setTitle("$\(trackPrice.description)", forState: .Normal)
-                            cell.buyButton.addTarget(self, action: "openTrackLink:", forControlEvents: .TouchUpInside)
-                            cell.buyButton.hidden = false
-                        }
+
+            let searchSection = SearchResultsSection(rawValue: indexPath.section)!
+            switch searchSection {
+            case .SearchSwitch:
+                cell.songImageView.image = nil
+                return self.searchSwitchCell
+            case .Artists:
+                let artist = self.artists?[indexPath.row] as NSDictionary
+                cell.updateWithArtist(artist)
+                cell.buyButton.hidden = true
+                cell.accessoryType = .DisclosureIndicator
+                
+                return cell
+            case .Albums:
+                let album = self.albums?[indexPath.row] as NSDictionary
+                cell.updateWithAlbum(album)
+                cell.buyButton.hidden = false
+                cell.buyButton.tag = indexPath.row
+                if let albumPrice = album["collectionPrice"] as? NSNumber {
+                    if let albumLink = album["collectionViewUrl"] as? String {
+                        cell.buyButton.setTitle("$\(albumPrice.description)", forState: .Normal)
+                        cell.buyButton.addTarget(self, action: "openAlbumLink:", forControlEvents: .TouchUpInside)
                     }
                 }
+                
+                return cell
+            default:
+                let topTrack = self.tracks?[indexPath.row] as NSDictionary
+                cell.updateWithSong(topTrack)
+                cell.buyButton.tag = indexPath.row
+                cell.buyButton.hidden = false
+                if let trackPrice = topTrack["trackPrice"] as? NSNumber {
+                    if let trackLink = topTrack["trackViewUrl"] as? String {
+                        cell.buyButton.setTitle("$\(trackPrice.description)", forState: .Normal)
+                        cell.buyButton.addTarget(self, action: "openTrackLink:", forControlEvents: .TouchUpInside)
+                    }
+                }
+                
+                return cell
             }
-            
-            return cell
+
         } else {
             let cell = tableView.dequeueReusableCellWithIdentifier("RecommendedSearchCell",
                 forIndexPath: indexPath) as RecommendedSearchCell
@@ -320,7 +330,7 @@ SearchSwitchCellDelegate {
     }
     
     func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
-        self.searchDisplayController?.setActive(true, animated: true)
+        //self.searchDisplayController?.setActive(true, animated: true)
     }
     
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
@@ -334,11 +344,13 @@ SearchSwitchCellDelegate {
     func searchDisplayControllerWillBeginSearch(controller: UISearchDisplayController) {
         self.searchDisplayController?.searchBar.showsCancelButton = false
         self.tableView.alpha = 0.0
+        self.cancelButton.alpha = 0.0
     }
     
     func searchDisplayControllerWillEndSearch(controller: UISearchDisplayController) {
         self.searchDisplayController?.searchBar.showsCancelButton = true
         self.tableView.alpha = 1.0
+        self.cancelButton.alpha = 1.0
     }
     
     func searchDisplayController(controller: UISearchDisplayController, willShowSearchResultsTableView tableView: UITableView) {
@@ -378,5 +390,8 @@ SearchSwitchCellDelegate {
         case .Itunes: break
         default: break
         }
+    }
+    @IBAction func cancelButtonTapped(sender: AnyObject) {
+        self.dismiss()
     }
 }

@@ -514,8 +514,6 @@
 				CE33385E1A3A0AD100281146 /* SongsHeader.xib */,
 				CEC66D9C1A38DA2400560754 /* SongCell.swift */,
 				CEC66DA01A38DB9300560754 /* SongCell.xib */,
-				CEF8082A1A8AAEB600B6D954 /* TopAlbumCell.swift */,
-				CEF8082C1A8AAEC100B6D954 /* TopAlbumCell.xib */,
 			);
 			name = Songs;
 			sourceTree = "<group>";
@@ -568,16 +566,13 @@
 		CE4931EB1A3A1B4400B3A4BE /* Application */ = {
 			isa = PBXGroup;
 			children = (
+				CE59C2771AB720D900415E5B /* Root */,
 				017497E21AB5F9FC003EFF28 /* Search */,
 				CE9BCFE91A45E22400522F18 /* LastFm */,
 				CE3126161A50DA480071AD27 /* NoMusicOverlayController.swift */,
 				CE3126181A50DA500071AD27 /* NoMusicOverlayController.xib */,
 				CEDB618C1A37C40000B90B2D /* LovedViewController.swift */,
 				CEDB618D1A37C40000B90B2D /* LovedViewController.xib */,
-				CEDB61861A37BA2B00B90B2D /* NavBarController.swift */,
-				CEDB61821A37B85D00B90B2D /* TabBarController.swift */,
-				CEDB617D1A37AF9700B90B2D /* RootViewController.swift */,
-				CE9BCFD21A44E68300522F18 /* OverlayController.swift */,
 				CE31261C1A50E77A0071AD27 /* TutorialController.xib */,
 				CE31261E1A50E7870071AD27 /* TutorialController.swift */,
 				CEDB61E61A37DCE300B90B2D /* MoreViewController.swift */,
@@ -590,6 +585,8 @@
 				CE92112C1A89270800758227 /* TopTracksViewController.xib */,
 				CE92112A1A8926E900758227 /* TopAlbumsViewController.swift */,
 				CE92112E1A89271000758227 /* TopAlbumsViewController.xib */,
+				CEF8082A1A8AAEB600B6D954 /* TopAlbumCell.swift */,
+				CEF8082C1A8AAEC100B6D954 /* TopAlbumCell.xib */,
 				CEA4A13E1A867678003FDF0D /* HomeViewController.swift */,
 				CEA4A1401A8676B0003FDF0D /* HomeViewController.xib */,
 				CE9BCFD41A44E98100522F18 /* Playlists */,
@@ -628,6 +625,17 @@
 				011AF3BA1A880C5C00E298DD /* NowPlayingTableViewCell.xib */,
 			);
 			name = NowPlaying;
+			sourceTree = "<group>";
+		};
+		CE59C2771AB720D900415E5B /* Root */ = {
+			isa = PBXGroup;
+			children = (
+				CEDB61861A37BA2B00B90B2D /* NavBarController.swift */,
+				CEDB61821A37B85D00B90B2D /* TabBarController.swift */,
+				CEDB617D1A37AF9700B90B2D /* RootViewController.swift */,
+				CE9BCFD21A44E68300522F18 /* OverlayController.swift */,
+			);
+			name = Root;
 			sourceTree = "<group>";
 		};
 		CE9575891AA8BF0B002B444C /* iTunesSearch */ = {
