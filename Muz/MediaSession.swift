@@ -79,7 +79,7 @@ var CurrentQueueItems: MPMediaItemCollection!
         completion(image: image)
     }
     
-    func fetc0st(#artist: String, completion: (collection: MPMediaItemCollection) -> ()) {
+    func fetchArtistCollectionForArtist(#artist: String, completion: (collection: MPMediaItemCollection) -> ()) {
         self.removeAllPredicatesFromQuery(artistsQuery)
         
         artistsQuery.addFilterPredicate(MPMediaPropertyPredicate(value: artist,

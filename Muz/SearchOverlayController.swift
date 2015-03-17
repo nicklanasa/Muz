@@ -16,6 +16,10 @@ enum SearchResultsSection: Int {
     case Tracks
 }
 
+protocol SearchOverlayControllerDelegate {
+    func searchOverlayController(controller: SearchOverlayController, didTapArtist artist: String!)
+}
+
 class SearchOverlayController: OverlayController,
 UITableViewDelegate,
 UITableViewDataSource,
@@ -28,6 +32,8 @@ RecommendedSearchCellDelegate {
     @IBOutlet weak var cancelButton: UIButton!
     
     var recentSongs: NSArray?
+    
+    var delegate: SearchOverlayControllerDelegate?
     
     var artists: NSArray? {
         didSet {
@@ -265,8 +271,13 @@ RecommendedSearchCellDelegate {
                     switch searchSection {
                     case .Artists:
                         let artist = self.artists?[indexPath.row] as NSDictionary
-                        var controller = NowPlayingInfoViewController(artist: artist["artistName"] as String, isForSimiliarArtist: false)
-                        self.navigationController?.pushViewController(controller, animated: true)
+                        /*
+                        self.dismissViewControllerAnimated(true, completion: { () -> Void in
+                            self.delegate?.searchOverlayController(self, didTapArtist: artist["artistName"] as String)
+                        })
+                        */
+                        
+                        self.navigationController?.pushViewController(NowPlayingInfoViewController(artist: artist["artistName"] as String, isForSimiliarArtist: true), animated: true)
                     case .Albums: break
                         
                     default: break
@@ -286,12 +297,11 @@ RecommendedSearchCellDelegate {
             if artists.count > 0 {
                 if let artistDict = artists.first as? NSDictionary {
                     if let artistID = artistDict.objectForKey("artistId") as? NSNumber {
-                        ItunesSearch.sharedInstance().getAlbumsForArtist(artistID, limitOrNil: 3,
+                        ItunesSearch.sharedInstance().getAlbumsForArtist(artistID, limitOrNil: 1,
                             successHandler: { (artistAlbums) -> Void in
                                 self.artists = artistAlbums
                             }, failureHandler: { (error) -> Void in
                                 print(error)
-                                //self.activityIndicator.stopAnimating()
                         })
                     }
                 }

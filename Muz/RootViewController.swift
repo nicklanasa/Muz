@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import MediaPlayer
 
-class RootViewController: UIViewController {
+class RootViewController: UIViewController, SearchOverlayControllerDelegate {
     
     var backgroundImageView: UIImageView!
     
@@ -101,7 +101,7 @@ class RootViewController: UIViewController {
         presentViewController(nav, animated: true, completion: nil)
     }
     
-    func presentSearchOverlayController(controller: OverlayController, blurredController: UIViewController) {
+    func presentSearchOverlayController(controller: SearchOverlayController, blurredController: UIViewController) {
         
         UIGraphicsBeginImageContext(blurredController.view.bounds.size)
         self.view.layer.renderInContext(UIGraphicsGetCurrentContext())
@@ -110,7 +110,11 @@ class RootViewController: UIViewController {
         
         controller.screenShot = image
         
-        presentViewController(controller, animated: true, completion: nil)
+        let nav = NavBarController(rootViewController: controller)
+        
+        controller.delegate = self
+        
+        presentViewController(nav, animated: true, completion: nil)
     }
     
     /**
@@ -138,6 +142,13 @@ class RootViewController: UIViewController {
         UIView.animateWithDuration(0.4, animations: { () -> Void in
             controller.view.frame = CGRectOffset(controller.view.frame, 0, -400.0)
             controller.view.alpha = 1.0
+        })
+    }
+    
+    func searchOverlayController(controller: SearchOverlayController, didTapArtist artist: String!) {
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            let infoController = NowPlayingInfoViewController(artist: artist, isForSimiliarArtist: true)
+            self.navigationController?.pushViewController(infoController, animated: true)
         })
     }
 }

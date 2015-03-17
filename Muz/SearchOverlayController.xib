@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14D105g" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1510" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
@@ -25,29 +25,30 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                 </imageView>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" style="plain" separatorStyle="none" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="40" sectionHeaderHeight="30" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="KYK-sg-BKi">
-                    <rect key="frame" x="0.0" y="98" width="320" height="412"/>
+                    <rect key="frame" x="0.0" y="63" width="320" height="447"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <color key="separatorColor" red="0.55676333109999998" green="0.55676333109999998" blue="0.55676333109999998" alpha="0.26000000000000001" colorSpace="calibratedRGB"/>
                     <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    <searchBar key="tableHeaderView" contentMode="redraw" searchBarStyle="minimal" id="UFE-Uk-J02">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <textInputTraits key="textInputTraits"/>
+                        <connections>
+                            <outlet property="delegate" destination="-1" id="Mp5-ky-m5I"/>
+                        </connections>
+                    </searchBar>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="Avg-DN-5Gr"/>
                         <outlet property="delegate" destination="-1" id="9Nd-YH-Vxs"/>
                     </connections>
                 </tableView>
-                <searchBar contentMode="redraw" searchBarStyle="minimal" translatesAutoresizingMaskIntoConstraints="NO" id="UFE-Uk-J02">
-                    <rect key="frame" x="0.0" y="22" width="320" height="44"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <textInputTraits key="textInputTraits"/>
-                    <connections>
-                        <outlet property="delegate" destination="-1" id="Mp5-ky-m5I"/>
-                    </connections>
-                </searchBar>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jjY-IL-auj">
                     <rect key="frame" x="8" y="517" width="304" height="43"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="43" id="vMX-3S-NTP"/>
+                        <constraint firstAttribute="height" constant="43" id="HZX-Xg-15s"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                     <state key="normal" title="Cancel">
@@ -62,20 +63,17 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="jjY-IL-auj" firstAttribute="bottom" secondItem="ZWR-ue-apE" secondAttribute="bottomMargin" id="1kX-oh-V86"/>
-                <constraint firstItem="KYK-sg-BKi" firstAttribute="trailing" secondItem="UFE-Uk-J02" secondAttribute="trailing" id="88H-pI-Wqc"/>
-                <constraint firstItem="UFE-Uk-J02" firstAttribute="leading" secondItem="ZWR-ue-apE" secondAttribute="leading" id="DJq-YW-Uoy"/>
-                <constraint firstItem="UFE-Uk-J02" firstAttribute="top" secondItem="ZWR-ue-apE" secondAttribute="top" constant="22" id="Eo8-9o-0BO"/>
-                <constraint firstAttribute="bottom" secondItem="Efw-Dy-G3p" secondAttribute="bottom" id="NPH-1O-b9t"/>
-                <constraint firstItem="KYK-sg-BKi" firstAttribute="centerX" secondItem="jjY-IL-auj" secondAttribute="centerX" id="VD6-4i-q0G"/>
-                <constraint firstItem="KYK-sg-BKi" firstAttribute="leading" secondItem="UFE-Uk-J02" secondAttribute="leading" id="XLf-Ds-07K"/>
-                <constraint firstItem="jjY-IL-auj" firstAttribute="leading" secondItem="ZWR-ue-apE" secondAttribute="leadingMargin" id="ZR1-4b-w3a"/>
-                <constraint firstItem="Efw-Dy-G3p" firstAttribute="top" secondItem="ZWR-ue-apE" secondAttribute="top" id="cKt-af-CzI"/>
-                <constraint firstItem="jjY-IL-auj" firstAttribute="top" secondItem="KYK-sg-BKi" secondAttribute="bottom" constant="7" id="hIV-4F-ufB"/>
-                <constraint firstItem="KYK-sg-BKi" firstAttribute="leading" secondItem="Efw-Dy-G3p" secondAttribute="leading" id="hMA-gl-akV"/>
-                <constraint firstItem="KYK-sg-BKi" firstAttribute="top" secondItem="UFE-Uk-J02" secondAttribute="bottom" constant="32" id="kn5-i1-6M1"/>
-                <constraint firstAttribute="trailing" secondItem="Efw-Dy-G3p" secondAttribute="trailing" id="nRn-Gc-Mlg"/>
-                <constraint firstItem="UFE-Uk-J02" firstAttribute="trailing" secondItem="Efw-Dy-G3p" secondAttribute="trailing" id="xZV-KB-eoE"/>
+                <constraint firstItem="jjY-IL-auj" firstAttribute="top" secondItem="KYK-sg-BKi" secondAttribute="bottom" constant="7" id="9mA-o3-IwD"/>
+                <constraint firstItem="jjY-IL-auj" firstAttribute="bottom" secondItem="ZWR-ue-apE" secondAttribute="bottomMargin" id="Big-0M-abd"/>
+                <constraint firstAttribute="bottom" secondItem="Efw-Dy-G3p" secondAttribute="bottom" id="DID-pN-emi"/>
+                <constraint firstAttribute="trailing" secondItem="Efw-Dy-G3p" secondAttribute="trailing" id="Uze-vi-GXW"/>
+                <constraint firstItem="Efw-Dy-G3p" firstAttribute="leading" secondItem="ZWR-ue-apE" secondAttribute="leading" id="WGz-Rv-8VT"/>
+                <constraint firstItem="Efw-Dy-G3p" firstAttribute="top" secondItem="ZWR-ue-apE" secondAttribute="top" id="aP8-Ul-xiK"/>
+                <constraint firstItem="KYK-sg-BKi" firstAttribute="top" secondItem="ZWR-ue-apE" secondAttribute="top" constant="63" id="fT8-AX-UBu"/>
+                <constraint firstItem="jjY-IL-auj" firstAttribute="leading" secondItem="ZWR-ue-apE" secondAttribute="leadingMargin" id="irA-xH-C3m"/>
+                <constraint firstItem="KYK-sg-BKi" firstAttribute="trailing" secondItem="Efw-Dy-G3p" secondAttribute="trailing" id="ouj-2p-YyJ"/>
+                <constraint firstItem="KYK-sg-BKi" firstAttribute="leading" secondItem="Efw-Dy-G3p" secondAttribute="leading" id="wkg-AH-19z"/>
+                <constraint firstItem="jjY-IL-auj" firstAttribute="centerX" secondItem="KYK-sg-BKi" secondAttribute="centerX" id="y0Z-sG-Y97"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
             <point key="canvasLocation" x="392" y="-107"/>
