@@ -11,7 +11,6 @@ import UIKit
 import CoreData
 
 enum SearchResultsSection: Int {
-    case SearchSwitch
     case Artists
     case Albums
     case Tracks
@@ -22,15 +21,13 @@ UITableViewDelegate,
 UITableViewDataSource,
 UISearchBarDelegate,
 UISearchDisplayDelegate,
-SearchSwitchCellDelegate {
+RecommendedSearchCellDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var cancelButton: UIButton!
     
     var recentSongs: NSArray?
-    
-    var searchSwitchCell: SearchSwitchCell!
     
     var artists: NSArray? {
         didSet {
@@ -111,10 +108,6 @@ SearchSwitchCellDelegate {
         self.recentSongs = DataManager.manager.datastore.distinctArtistSongsWithSortKey("lastPlayedDate",
             limit: 10,
             ascending: false)
-        
-        let searchSwitchCellNib = UINib(nibName: "SearchSwitchCell", bundle: nil)
-        searchSwitchCell = searchSwitchCellNib.instantiateWithOwner(self, options: nil)[0] as? SearchSwitchCell
-        searchSwitchCell.delegate = self
     }
     
     func dismiss() {
@@ -125,7 +118,6 @@ SearchSwitchCellDelegate {
         if tableView == self.searchDisplayController?.searchResultsTableView {
             if let searchSection = SearchResultsSection(rawValue: section) {
                 switch searchSection {
-                case .SearchSwitch: return 1
                 case .Artists: return self.artists?.count ?? 0
                 case .Albums: return self.albums?.count ?? 0
                 default: return self.tracks?.count ?? 0
@@ -139,7 +131,7 @@ SearchSwitchCellDelegate {
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         if tableView == self.searchDisplayController?.searchResultsTableView {
-            return 4
+            return 3
         }
         
         return 1
@@ -158,18 +150,9 @@ SearchSwitchCellDelegate {
             
             let cell = searchDisplayController?.searchResultsTableView.dequeueReusableCellWithIdentifier("AblumCell",
                 forIndexPath: indexPath) as TopAlbumCell
-            
-            cell.accessoryType = .None
-            cell.songImageView.image = nil
-            cell.songLabel.text = ""
-            cell.infoLabel.text = ""
-            cell.buyButton.hidden = true
 
             let searchSection = SearchResultsSection(rawValue: indexPath.section)!
             switch searchSection {
-            case .SearchSwitch:
-                cell.songImageView.image = nil
-                return self.searchSwitchCell
             case .Artists:
                 let artist = self.artists?[indexPath.row] as NSDictionary
                 cell.updateWithArtist(artist)
@@ -212,6 +195,8 @@ SearchSwitchCellDelegate {
             let song = self.recentSongs?[indexPath.row] as NSDictionary
             cell.updateWithSong(song: song)
             
+            cell.delegate = self
+            
             return cell
         }
     }
@@ -223,8 +208,6 @@ SearchSwitchCellDelegate {
             if tableView == self.searchDisplayController?.searchResultsTableView {
                 if let searchSection = SearchResultsSection(rawValue: section) {
                     switch searchSection {
-                    case .SearchSwitch:
-                        return nil
                     case .Artists:
                         if self.artists?.count == 0 {
                             return nil
@@ -256,8 +239,6 @@ SearchSwitchCellDelegate {
         if tableView == self.searchDisplayController?.searchResultsTableView {
             if let searchSection = SearchResultsSection(rawValue: section) {
                 switch searchSection {
-                case .SearchSwitch:
-                    return 0
                 case .Artists:
                     if self.artists?.count == 0 {
                         return 0
@@ -284,7 +265,7 @@ SearchSwitchCellDelegate {
                     switch searchSection {
                     case .Artists:
                         let artist = self.artists?[indexPath.row] as NSDictionary
-                        var controller = NowPlayingInfoViewController(artist: artist["artistName"] as String, isForSimiliarArtist: true)
+                        var controller = NowPlayingInfoViewController(artist: artist["artistName"] as String, isForSimiliarArtist: false)
                         self.navigationController?.pushViewController(controller, animated: true)
                     case .Albums: break
                         
@@ -305,7 +286,7 @@ SearchSwitchCellDelegate {
             if artists.count > 0 {
                 if let artistDict = artists.first as? NSDictionary {
                     if let artistID = artistDict.objectForKey("artistId") as? NSNumber {
-                        ItunesSearch.sharedInstance().getAlbumsForArtist(artistID, limitOrNil: 1,
+                        ItunesSearch.sharedInstance().getAlbumsForArtist(artistID, limitOrNil: 3,
                             successHandler: { (artistAlbums) -> Void in
                                 self.artists = artistAlbums
                             }, failureHandler: { (error) -> Void in
@@ -320,17 +301,13 @@ SearchSwitchCellDelegate {
                 print(error)
         })
         
-        ItunesSearch.sharedInstance().getAlbums(searchText, limit: 5, completion: { (error, results) -> () in
+        ItunesSearch.sharedInstance().getAlbums(searchText, limit: 10, completion: { (error, results) -> () in
             self.albums = results
         })
         
-        ItunesSearch.sharedInstance().getTracks(searchText, limit: 5, completion: { (error, results) -> () in
+        ItunesSearch.sharedInstance().getTracks(searchText, limit: 10, completion: { (error, results) -> () in
             self.tracks = results
         })
-    }
-    
-    func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
-        //self.searchDisplayController?.setActive(true, animated: true)
     }
     
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
@@ -385,13 +362,18 @@ SearchSwitchCellDelegate {
         }
     }
     
-    func searchSwitchCell(cell: SearchSwitchCell, searchIndexDidChange index: SearchIndex) {
-        switch index {
-        case .Itunes: break
-        default: break
-        }
-    }
     @IBAction func cancelButtonTapped(sender: AnyObject) {
         self.dismiss()
+    }
+    
+    func recommendedSearchCell(cell: RecommendedSearchCell, didTapRecommendedButton button: AnyObject) {
+        if let artistButton = button as? UIButton {
+            self.searchDisplayController?.setActive(true, animated: true)
+            if let searchText = artistButton.titleForState(.Normal) {
+                self.searchDisplayController?.setActive(true, animated: true)
+                self.searchDisplayController?.searchBar.text = searchText
+                self.searchBar(self.searchDisplayController!.searchBar, textDidChange: searchText)
+            }
+        }
     }
 }
