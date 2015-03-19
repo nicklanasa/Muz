@@ -15,15 +15,9 @@ class TopAlbumCell: UITableViewCell {
     @IBOutlet weak var infoLabel: UILabel!
     @IBOutlet weak var songImageView: UIImageView!
     @IBOutlet weak var buyButton: UIButton!
-    @IBOutlet weak var songLabelTrailingSpaceConstraint: NSLayoutConstraint!
-    @IBOutlet weak var infoLabelTrailingSpaceConstraint: NSLayoutConstraint!
-    @IBOutlet weak var progressView: FFCircularProgressView!
     
     override func awakeFromNib() {
         buyButton.applyBuyStyle()
-        progressView.progress = 0.0
-        progressView.tintColor = MuzBlueColor
-        progressView.tickColor = MuzBlueColor
     }
     
     func updateWithAlbum(album: AnyObject,

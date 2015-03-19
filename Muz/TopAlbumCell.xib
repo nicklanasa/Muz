@@ -14,10 +14,6 @@
             <tableViewCellContentView key="contentView" autoresizesSubviews="NO" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="AYV-fm-Alu" id="2OV-Oo-2BW">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Yfz-Xj-QS4" customClass="FFCircularProgressView">
-                        <rect key="frame" x="331" y="12" width="30" height="30"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2hP-QZ-Kjg">
                         <rect key="frame" x="62" y="26" width="236" height="21"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="14"/>
@@ -68,7 +64,6 @@
             <connections>
                 <outlet property="buyButton" destination="LMg-Hu-Ana" id="Ljr-Ra-GxQ"/>
                 <outlet property="infoLabel" destination="2hP-QZ-Kjg" id="keY-bD-x4K"/>
-                <outlet property="progressView" destination="Yfz-Xj-QS4" id="F95-Tf-8ic"/>
                 <outlet property="songImageView" destination="bi4-UY-Qgv" id="bb2-Bg-vAc"/>
                 <outlet property="songLabel" destination="NI0-X1-JZ6" id="x7Q-ba-6dw"/>
             </connections>
