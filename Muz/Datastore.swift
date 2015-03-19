@@ -880,6 +880,23 @@ class Datastore {
             cacheName: ArtistsCacheName)
     }
     
+    func albumsControllerWithSortKey(sortKey: NSString,
+        ascending: Bool,
+        sectionNameKeyPath: NSString?) -> NSFetchedResultsController {
+        var request = NSFetchRequest()
+            
+        request.entity = NSEntityDescription.entityForName("Album",
+            inManagedObjectContext: self.mainQueueContext)
+        
+        var sort = NSSortDescriptor(key: sortKey, ascending: ascending)
+        request.sortDescriptors = [sort]
+        
+        return NSFetchedResultsController(fetchRequest: request,
+            managedObjectContext: self.mainQueueContext,
+            sectionNameKeyPath: sectionNameKeyPath,
+            cacheName: nil)
+    }
+    
     func songsControllerWithSortKey(sortKey: NSString,
         limit: NSInteger?,
         ascending: Bool,

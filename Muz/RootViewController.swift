@@ -110,11 +110,11 @@ class RootViewController: UIViewController, SearchOverlayControllerDelegate {
         
         controller.screenShot = image
         
-        let nav = NavBarController(rootViewController: controller)
+        //let nav = NavBarController(rootViewController: controller)
         
         controller.delegate = self
         
-        presentViewController(nav, animated: true, completion: nil)
+        presentViewController(controller, animated: true, completion: nil)
     }
     
     /**
@@ -145,10 +145,16 @@ class RootViewController: UIViewController, SearchOverlayControllerDelegate {
         })
     }
     
-    func searchOverlayController(controller: SearchOverlayController, didTapArtist artist: String!) {
+    func searchOverlayController(controller: SearchOverlayController, didTapArtist artist: Artist) {
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            let infoController = NowPlayingInfoViewController(artist: artist, isForSimiliarArtist: true)
-            self.navigationController?.pushViewController(infoController, animated: true)
+            let artistAlbums = ArtistAlbumsViewController(artist: artist)
+            self.navigationController?.pushViewController(artistAlbums, animated: true)
         })
+    }
+    
+    func searchOverlayController(controller: SearchOverlayController, didTapSong song: Song) {
+        MediaSession.sharedSession.fetchArtistCollectionForArtist(artist: song.artist) { (collection) -> () in
+            self.presentNowPlayViewController(song, collection: collection)
+        }
     }
 }

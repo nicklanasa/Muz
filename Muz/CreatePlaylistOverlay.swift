@@ -202,7 +202,7 @@ PlaylistsViewControllerDelegate {
     func createPlaylist() {
         if self.createPlaylistCell.smartSwitch.on {
             self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-            self.hud.mode = MBProgressHUDModeIndeterminate
+            self.hud.mode = .Indeterminate
             self.hud.labelText = "Getting similiar artists"
             self.hud.labelFont = MuzTitleFont
             requestSimiliarArtists()

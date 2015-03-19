@@ -39,7 +39,42 @@ class SongCell: UITableViewCell {
         self.songImageView.setImageForSong(song: song)
         self.songImageView.applyRoundedStyle()
     }
-
+    
+    func updateWithArtist(artist: AnyObject) {
+        let libraryArtist = artist as Artist
+        self.songLabel.text = libraryArtist.name
+        
+        if libraryArtist.albums.count > 0 {
+            var songs = 0
+            
+            for album in libraryArtist.albums.allObjects as [Album] {
+                songs += album.songs.count
+            }
+            
+            infoLabel.text = NSString(format: "%d %@, %d %@", songs,
+                songs == 1 ? "album" : "albums", songs, songs == 1 ? "song" : "songs")
+            infoLabel.hidden = false
+            
+        } else {
+            infoLabel.hidden = true
+        }
+        
+        self.songImageView.setImageForArtist(artist: libraryArtist)
+        
+        self.buyButton.hidden = true
+        self.accessoryType = .DisclosureIndicator
+    }
+    
+    func updateWithAlbum(album: Album) {
+        let artistAlbum = album as Album
+        self.songLabel.text = artistAlbum.title
+        self.infoLabel.text = artistAlbum.songs.count == 1 ? "\(artistAlbum.songs.count) song" : "\(artistAlbum.songs.count) songs"
+        self.songImageView.setImageForAlbum(album: artistAlbum)
+        
+        self.buyButton.hidden = true
+        self.accessoryType = .DisclosureIndicator
+    }
+    
     func updateWithSong(song: Song, forArtist: Bool) {
         if forArtist {
             self.songLabel.text = song.artist
@@ -60,5 +95,7 @@ class SongCell: UITableViewCell {
     
     override func prepareForReuse() {
         songImageView.image = nil
+        self.songLabel.text = ""
+        self.infoLabel.text = ""
     }
 }

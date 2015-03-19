@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14D87h" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1510" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
@@ -14,29 +14,30 @@
             <tableViewCellContentView key="contentView" autoresizesSubviews="NO" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="AYV-fm-Alu" id="2OV-Oo-2BW">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
+                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Yfz-Xj-QS4" customClass="FFCircularProgressView">
+                        <rect key="frame" x="331" y="12" width="30" height="30"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2hP-QZ-Kjg">
-                        <rect key="frame" x="62" y="23" width="236" height="21"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="21" id="Yzr-Y6-Dza"/>
-                        </constraints>
+                        <rect key="frame" x="62" y="26" width="236" height="21"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="14"/>
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bi4-UY-Qgv">
-                        <rect key="frame" x="8" y="7" width="40" height="40"/>
+                        <rect key="frame" x="8" y="8" width="40" height="40"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="40" id="w4A-Oa-37T"/>
+                            <constraint firstAttribute="width" constant="40" id="MUT-FJ-sp2"/>
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NI0-X1-JZ6">
-                        <rect key="frame" x="62" y="5" width="250" height="22"/>
+                        <rect key="frame" x="62" y="8" width="250" height="21"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LMg-Hu-Ana">
-                        <rect key="frame" x="312" y="17" width="55" height="21"/>
+                        <rect key="frame" x="312" y="18" width="55" height="21"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
                         <state key="normal">
@@ -46,20 +47,20 @@
                     </button>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="NI0-X1-JZ6" firstAttribute="leading" secondItem="bi4-UY-Qgv" secondAttribute="trailing" constant="14" id="0w9-Ks-glv"/>
-                    <constraint firstItem="LMg-Hu-Ana" firstAttribute="centerY" secondItem="2OV-Oo-2BW" secondAttribute="centerY" id="1Up-rW-X1R"/>
-                    <constraint firstItem="LMg-Hu-Ana" firstAttribute="leading" secondItem="2hP-QZ-Kjg" secondAttribute="trailing" constant="14" id="AMC-Lo-h3A"/>
-                    <constraint firstItem="bi4-UY-Qgv" firstAttribute="top" secondItem="2OV-Oo-2BW" secondAttribute="topMargin" constant="-1" id="CaS-9s-3ja"/>
-                    <constraint firstItem="LMg-Hu-Ana" firstAttribute="top" secondItem="2OV-Oo-2BW" secondAttribute="topMargin" constant="9" id="DNQ-QR-dof"/>
-                    <constraint firstItem="LMg-Hu-Ana" firstAttribute="leading" secondItem="NI0-X1-JZ6" secondAttribute="trailing" id="JZZ-nc-hXU"/>
-                    <constraint firstAttribute="bottomMargin" secondItem="2hP-QZ-Kjg" secondAttribute="bottom" constant="2.5" id="PYr-S8-UDR"/>
-                    <constraint firstItem="NI0-X1-JZ6" firstAttribute="centerX" secondItem="2OV-Oo-2BW" secondAttribute="centerX" id="YFF-YZ-IX8"/>
-                    <constraint firstItem="2hP-QZ-Kjg" firstAttribute="top" secondItem="NI0-X1-JZ6" secondAttribute="bottom" constant="-4" id="Zuk-Rd-6NU"/>
-                    <constraint firstItem="2hP-QZ-Kjg" firstAttribute="leading" secondItem="NI0-X1-JZ6" secondAttribute="leading" id="b9D-E3-MUH"/>
-                    <constraint firstItem="bi4-UY-Qgv" firstAttribute="leading" secondItem="2OV-Oo-2BW" secondAttribute="leadingMargin" id="sEJ-3F-hai"/>
-                    <constraint firstItem="LMg-Hu-Ana" firstAttribute="trailing" secondItem="2OV-Oo-2BW" secondAttribute="trailingMargin" id="wXw-aD-ySd"/>
-                    <constraint firstItem="NI0-X1-JZ6" firstAttribute="top" secondItem="2OV-Oo-2BW" secondAttribute="topMargin" constant="-3" id="xhR-0k-05L"/>
-                    <constraint firstItem="LMg-Hu-Ana" firstAttribute="centerY" secondItem="bi4-UY-Qgv" secondAttribute="centerY" id="ym5-Zq-xxh"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="bi4-UY-Qgv" secondAttribute="bottom" constant="-2" id="4qb-ew-t59"/>
+                    <constraint firstItem="LMg-Hu-Ana" firstAttribute="centerY" secondItem="bi4-UY-Qgv" secondAttribute="centerY" id="7rS-ty-k9O"/>
+                    <constraint firstItem="NI0-X1-JZ6" firstAttribute="leading" secondItem="bi4-UY-Qgv" secondAttribute="trailing" constant="14" id="8Y2-aR-s22"/>
+                    <constraint firstItem="LMg-Hu-Ana" firstAttribute="top" secondItem="2OV-Oo-2BW" secondAttribute="topMargin" constant="10" id="HcS-nj-Ddp"/>
+                    <constraint firstItem="2hP-QZ-Kjg" firstAttribute="top" secondItem="2OV-Oo-2BW" secondAttribute="topMargin" constant="18" id="LHu-tX-SvS"/>
+                    <constraint firstItem="LMg-Hu-Ana" firstAttribute="trailing" secondItem="2OV-Oo-2BW" secondAttribute="trailingMargin" id="LLZ-Tn-aco"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="2hP-QZ-Kjg" secondAttribute="bottom" constant="-1" id="W1k-rW-cyg"/>
+                    <constraint firstItem="NI0-X1-JZ6" firstAttribute="centerX" secondItem="2OV-Oo-2BW" secondAttribute="centerX" id="cDC-qe-jYD"/>
+                    <constraint firstItem="bi4-UY-Qgv" firstAttribute="top" secondItem="2OV-Oo-2BW" secondAttribute="topMargin" id="dFS-EX-b8t"/>
+                    <constraint firstItem="NI0-X1-JZ6" firstAttribute="top" secondItem="2OV-Oo-2BW" secondAttribute="topMargin" id="eY2-SF-B6c"/>
+                    <constraint firstItem="LMg-Hu-Ana" firstAttribute="leading" secondItem="NI0-X1-JZ6" secondAttribute="trailing" id="k3G-sx-VP0"/>
+                    <constraint firstItem="bi4-UY-Qgv" firstAttribute="leading" secondItem="2OV-Oo-2BW" secondAttribute="leadingMargin" id="mYu-z6-2fd"/>
+                    <constraint firstItem="LMg-Hu-Ana" firstAttribute="leading" secondItem="2hP-QZ-Kjg" secondAttribute="trailing" constant="14" id="wzE-N3-Dkp"/>
+                    <constraint firstItem="NI0-X1-JZ6" firstAttribute="leading" secondItem="2hP-QZ-Kjg" secondAttribute="leading" id="zfq-P7-TnU"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -67,10 +68,11 @@
             <connections>
                 <outlet property="buyButton" destination="LMg-Hu-Ana" id="Ljr-Ra-GxQ"/>
                 <outlet property="infoLabel" destination="2hP-QZ-Kjg" id="keY-bD-x4K"/>
+                <outlet property="progressView" destination="Yfz-Xj-QS4" id="F95-Tf-8ic"/>
                 <outlet property="songImageView" destination="bi4-UY-Qgv" id="bb2-Bg-vAc"/>
                 <outlet property="songLabel" destination="NI0-X1-JZ6" id="x7Q-ba-6dw"/>
             </connections>
-            <point key="canvasLocation" x="318.5" y="110.5"/>
+            <point key="canvasLocation" x="266.5" y="76.5"/>
         </tableViewCell>
     </objects>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

@@ -19,9 +19,7 @@ UISearchBarDelegate,
 UISearchDisplayDelegate {
     
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var searchBar: UISearchBar!
     
-    // The NSFetchedResultsController used to pull tasks for the selected date.
     lazy var songsController: NSFetchedResultsController = {
         let controller = DataManager.manager.datastore.songsControllerWithSortKey("title",
             limit: nil,
@@ -64,9 +62,7 @@ UISearchDisplayDelegate {
     }
     
     override func viewWillDisappear(animated: Bool) {
-        searchBar.resignFirstResponder()
         self.tableView.setEditing(false, animated: false)
-        self.searchDisplayController?.setActive(false, animated: false)
     }
 
     override func viewDidLoad() {
@@ -75,9 +71,6 @@ UISearchDisplayDelegate {
         tableView.registerNib(UINib(nibName: "SongCell", bundle: nil), forCellReuseIdentifier: "Cell")
         tableView.registerNib(UINib(nibName: "SongsHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "Header")
         
-        searchDisplayController?.searchResultsTableView.registerNib(UINib(nibName: "SongCell", bundle: nil), forCellReuseIdentifier: "Cell")
-        searchDisplayController?.searchResultsTableView.registerNib(UINib(nibName: "SongsHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "Header")
-        
         tableView.backgroundView = UIView()
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "search"),
@@ -85,9 +78,9 @@ UISearchDisplayDelegate {
             target: self,
             action: "showSearch")
     }
-    
+
     func showSearch() {
-        self.searchDisplayController?.setActive(true, animated: true)
+        self.presentModalOverlayController(SearchOverlayController(), blurredController: self)
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -166,46 +159,5 @@ UISearchDisplayDelegate {
         })
         
         return [addToPlaylistAction]
-    }
-    
-    func scrollViewDidScroll(scrollView: UIScrollView) {
-        if scrollView.contentOffset.y < 0 {
-            searchBar.becomeFirstResponder()
-        }
-    }
-    
-    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
-        if countElements(searchText) == 0 {
-            self.songsController.fetchRequest.predicate = nil
-        } else {
-            // Change predicate and re-fetch.
-            self.songsController.fetchRequest.predicate = NSPredicate(format: "title contains[cd] %@ OR artist contains[cd] %@ OR albumTitle contains[cd] %@ ", searchText, searchText, searchText)
-        }
-        
-        fetchSongs()
-    }
-    
-    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
-        fetchSongs()
-    }
-    
-    func searchDisplayControllerWillBeginSearch(controller: UISearchDisplayController) {
-        searchBar.hidden = false
-        searchBar.becomeFirstResponder()
-    }
-    
-    func searchDisplayControllerWillEndSearch(controller: UISearchDisplayController) {
-        searchBar.hidden = true
-    }
-    
-    func searchDisplayController(controller: UISearchDisplayController, willShowSearchResultsTableView tableView: UITableView) {
-        self.tabBarController?.tabBar.alpha = 0.0
-        self.tableView.alpha = 0.0
-    }
-    
-    func searchDisplayController(controller: UISearchDisplayController, willHideSearchResultsTableView tableView: UITableView) {
-        self.tabBarController?.tabBar.alpha = 1.0
-        self.tableView.alpha = 1.0
-        self.tableView.reloadData()
     }
 }

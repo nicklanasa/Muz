@@ -4,11 +4,11 @@ PODS:
   - LastFm (1.15.0):
     - KissXML (~> 5.0)
   - Localytics-AMP (2.71.0)
-  - MBProgressHUD (0.9)
+  - MBProgressHUD (0.9.1)
   - NSString-HTML (0.0.1)
-  - SDWebImage (3.7.1):
-    - SDWebImage/Core (= 3.7.1)
-  - SDWebImage/Core (3.7.1)
+  - SDWebImage (3.7.2):
+    - SDWebImage/Core (= 3.7.2)
+  - SDWebImage/Core (3.7.2)
   - UIImage-Resize (1.0.1)
   - uservoice-iphone-sdk (3.2.3)
 
@@ -27,10 +27,10 @@ SPEC CHECKSUMS:
   KissXML: e537c38b18ede903ee6de45953a9bd86c131ebe9
   LastFm: 26cffa0ee5b39a4ad8c9451e882d75ce27036d3e
   Localytics-AMP: 4d158e216541912109b1ae7ca20b153d053d68c5
-  MBProgressHUD: 2038dbcf3dce73215abed6001657043d53aa79a8
+  MBProgressHUD: f3747dcbd45a9e855a6b0674550651e0b7ed250c
   NSString-HTML: 2ccaa6a9886d35f8176ee5e456442bd1524c151b
-  SDWebImage: 116e88633b5b416ea0ca4b334a4ac59cf72dd38d
+  SDWebImage: 71b7cdc1d1721d6a82ed62889030225f2c249e29
   UIImage-Resize: fc57263eed2cd98f74e5ba4848bedae979a0bdf0
   uservoice-iphone-sdk: 02d974352f04d8457ee39b8514d1c58ef0e2c860
 
-COCOAPODS: 0.35.0
+COCOAPODS: 0.36.0

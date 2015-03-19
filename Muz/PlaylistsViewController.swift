@@ -75,6 +75,15 @@ NSFetchedResultsControllerDelegate {
                 target: self,
                 action: "addPlaylist");
         }
+
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "search"),
+            style: .Plain,
+            target: self,
+            action: "showSearch")
+    }
+
+    func showSearch() {
+        self.presentModalOverlayController(SearchOverlayController(), blurredController: self)
     }
     
     /**

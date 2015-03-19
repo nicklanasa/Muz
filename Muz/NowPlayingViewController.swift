@@ -203,7 +203,12 @@ NowPlayingCollectionControllerDelegate {
             target: self,
             action: "addToPlaylist")
         
-        self.navigationItem.rightBarButtonItems = [nowPlayinglist, addToPlaylist]
+        var search = UIBarButtonItem(image: UIImage(named: "search"),
+            style: .Plain,
+            target: self,
+            action: "showSearch")
+        
+        self.navigationItem.rightBarButtonItems = [search, nowPlayinglist, addToPlaylist]
         
         progressSlider.setThumbImage(UIImage(named: "thumbImage"), forState: .Normal)
         progressSlider.setThumbImage(UIImage(named: "thumbImage"), forState: .Selected)
@@ -235,6 +240,10 @@ NowPlayingCollectionControllerDelegate {
                 }
             })
         }
+    }
+    
+    func showSearch() {
+        self.presentModalOverlayController(SearchOverlayController(), blurredController: self)
     }
     
     func addToPlaylist() {

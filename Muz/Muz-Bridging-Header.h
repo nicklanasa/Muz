@@ -12,6 +12,7 @@
 #import "LastFmTrack.h"
 #import "LastFmBuyLink.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "FFCircularProgressView.h"
 #import <LastFm/LastFm.h>
 #import "MBProgressHUD.h"
 #import "UIImage+Resize.h"

@@ -10,6 +10,7 @@
             <connections>
                 <outlet property="backgroundImageView" destination="Efw-Dy-G3p" id="JuW-P7-yhd"/>
                 <outlet property="cancelButton" destination="jjY-IL-auj" id="Ke3-OT-AR8"/>
+                <outlet property="recentArtistsLabel" destination="d0h-4y-lvN" id="LDc-uK-nB5"/>
                 <outlet property="searchBar" destination="UFE-Uk-J02" id="NLj-eB-YBn"/>
                 <outlet property="searchDisplayController" destination="vrU-vq-wHc" id="Liz-We-azQ"/>
                 <outlet property="tableView" destination="KYK-sg-BKi" id="M9i-cO-1Yu"/>
@@ -25,30 +26,38 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                 </imageView>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" style="plain" separatorStyle="none" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="40" sectionHeaderHeight="30" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="KYK-sg-BKi">
-                    <rect key="frame" x="0.0" y="63" width="320" height="447"/>
+                    <rect key="frame" x="0.0" y="125" width="320" height="385"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <color key="separatorColor" red="0.55676333109999998" green="0.55676333109999998" blue="0.55676333109999998" alpha="0.26000000000000001" colorSpace="calibratedRGB"/>
                     <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                    <searchBar key="tableHeaderView" contentMode="redraw" searchBarStyle="minimal" id="UFE-Uk-J02">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <textInputTraits key="textInputTraits"/>
-                        <connections>
-                            <outlet property="delegate" destination="-1" id="Mp5-ky-m5I"/>
-                        </connections>
-                    </searchBar>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="Avg-DN-5Gr"/>
                         <outlet property="delegate" destination="-1" id="9Nd-YH-Vxs"/>
                     </connections>
                 </tableView>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jjY-IL-auj">
-                    <rect key="frame" x="8" y="517" width="304" height="43"/>
+                <searchBar contentMode="redraw" searchBarStyle="minimal" showsScopeBar="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UFE-Uk-J02">
+                    <rect key="frame" x="0.0" y="22" width="320" height="88"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <textInputTraits key="textInputTraits"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="Mp5-ky-m5I"/>
+                    </connections>
+                </searchBar>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recent Artists" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d0h-4y-lvN">
+                    <rect key="frame" x="8" y="92" width="304" height="21"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="43" id="HZX-Xg-15s"/>
+                        <constraint firstAttribute="height" constant="21" id="GSe-cx-sja"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="19"/>
+                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jjY-IL-auj">
+                    <rect key="frame" x="8" y="507" width="304" height="43"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="43" id="PsI-og-yfV"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                     <state key="normal" title="Cancel">
@@ -63,20 +72,27 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="jjY-IL-auj" firstAttribute="top" secondItem="KYK-sg-BKi" secondAttribute="bottom" constant="7" id="9mA-o3-IwD"/>
-                <constraint firstItem="jjY-IL-auj" firstAttribute="bottom" secondItem="ZWR-ue-apE" secondAttribute="bottomMargin" id="Big-0M-abd"/>
-                <constraint firstAttribute="bottom" secondItem="Efw-Dy-G3p" secondAttribute="bottom" id="DID-pN-emi"/>
-                <constraint firstAttribute="trailing" secondItem="Efw-Dy-G3p" secondAttribute="trailing" id="Uze-vi-GXW"/>
-                <constraint firstItem="Efw-Dy-G3p" firstAttribute="leading" secondItem="ZWR-ue-apE" secondAttribute="leading" id="WGz-Rv-8VT"/>
-                <constraint firstItem="Efw-Dy-G3p" firstAttribute="top" secondItem="ZWR-ue-apE" secondAttribute="top" id="aP8-Ul-xiK"/>
-                <constraint firstItem="KYK-sg-BKi" firstAttribute="top" secondItem="ZWR-ue-apE" secondAttribute="top" constant="63" id="fT8-AX-UBu"/>
-                <constraint firstItem="jjY-IL-auj" firstAttribute="leading" secondItem="ZWR-ue-apE" secondAttribute="leadingMargin" id="irA-xH-C3m"/>
-                <constraint firstItem="KYK-sg-BKi" firstAttribute="trailing" secondItem="Efw-Dy-G3p" secondAttribute="trailing" id="ouj-2p-YyJ"/>
-                <constraint firstItem="KYK-sg-BKi" firstAttribute="leading" secondItem="Efw-Dy-G3p" secondAttribute="leading" id="wkg-AH-19z"/>
-                <constraint firstItem="jjY-IL-auj" firstAttribute="centerX" secondItem="KYK-sg-BKi" secondAttribute="centerX" id="y0Z-sG-Y97"/>
+                <constraint firstAttribute="bottom" secondItem="jjY-IL-auj" secondAttribute="bottom" constant="18" id="2Pd-Q7-r7Z"/>
+                <constraint firstAttribute="bottom" secondItem="KYK-sg-BKi" secondAttribute="bottom" constant="58" id="3bP-9Z-izI"/>
+                <constraint firstItem="KYK-sg-BKi" firstAttribute="leading" secondItem="UFE-Uk-J02" secondAttribute="leading" id="BKE-0t-lGQ"/>
+                <constraint firstItem="KYK-sg-BKi" firstAttribute="trailing" secondItem="UFE-Uk-J02" secondAttribute="trailing" id="Cx6-xg-VyJ"/>
+                <constraint firstItem="UFE-Uk-J02" firstAttribute="leading" secondItem="ZWR-ue-apE" secondAttribute="leading" id="JTk-EG-uMJ"/>
+                <constraint firstItem="UFE-Uk-J02" firstAttribute="trailing" secondItem="Efw-Dy-G3p" secondAttribute="trailing" id="RYR-iQ-ysX"/>
+                <constraint firstItem="UFE-Uk-J02" firstAttribute="centerX" secondItem="d0h-4y-lvN" secondAttribute="centerX" id="S8b-NU-OsA"/>
+                <constraint firstItem="KYK-sg-BKi" firstAttribute="top" secondItem="d0h-4y-lvN" secondAttribute="bottom" constant="12" id="SAS-gZ-Muw"/>
+                <constraint firstAttribute="trailing" secondItem="UFE-Uk-J02" secondAttribute="trailing" id="XZn-Hq-bq7"/>
+                <constraint firstItem="KYK-sg-BKi" firstAttribute="leading" secondItem="Efw-Dy-G3p" secondAttribute="leading" id="aG6-d1-ob1"/>
+                <constraint firstAttribute="bottom" secondItem="Efw-Dy-G3p" secondAttribute="bottom" id="dp3-tH-pd3"/>
+                <constraint firstItem="KYK-sg-BKi" firstAttribute="top" secondItem="UFE-Uk-J02" secondAttribute="bottom" constant="15" id="jfn-pW-9Y6"/>
+                <constraint firstItem="jjY-IL-auj" firstAttribute="leading" secondItem="d0h-4y-lvN" secondAttribute="leading" id="lag-mK-w2P"/>
+                <constraint firstItem="Efw-Dy-G3p" firstAttribute="top" secondItem="ZWR-ue-apE" secondAttribute="top" id="omv-Ew-9O1"/>
+                <constraint firstItem="d0h-4y-lvN" firstAttribute="leading" secondItem="ZWR-ue-apE" secondAttribute="leadingMargin" id="ot4-vF-6wt"/>
+                <constraint firstItem="UFE-Uk-J02" firstAttribute="top" secondItem="ZWR-ue-apE" secondAttribute="top" constant="22" id="uuM-7K-QQq"/>
+                <constraint firstItem="d0h-4y-lvN" firstAttribute="top" secondItem="ZWR-ue-apE" secondAttribute="top" constant="92" id="whp-6v-hKi"/>
+                <constraint firstItem="d0h-4y-lvN" firstAttribute="trailing" secondItem="jjY-IL-auj" secondAttribute="trailing" id="xM2-MG-Aya"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
-            <point key="canvasLocation" x="392" y="-107"/>
+            <point key="canvasLocation" x="420" y="-108"/>
         </view>
         <searchDisplayController id="vrU-vq-wHc">
             <connections>

@@ -17,7 +17,8 @@ enum SearchResultsSection: Int {
 }
 
 protocol SearchOverlayControllerDelegate {
-    func searchOverlayController(controller: SearchOverlayController, didTapArtist artist: String!)
+    func searchOverlayController(controller: SearchOverlayController, didTapArtist artist: Artist)
+    func searchOverlayController(controller: SearchOverlayController, didTapSong song: Song)
 }
 
 class SearchOverlayController: OverlayController,
@@ -30,6 +31,7 @@ RecommendedSearchCellDelegate {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var cancelButton: UIButton!
+    @IBOutlet weak var recentArtistsLabel: UILabel!
     
     var recentSongs: NSArray?
     
@@ -62,16 +64,15 @@ RecommendedSearchCellDelegate {
     }()
     
     lazy var albumsController: NSFetchedResultsController = {
-        var controller = DataManager.manager.datastore.artistsController(nil,
-            sortKey: "name",
+        var controller = DataManager.manager.datastore.albumsControllerWithSortKey("title",
             ascending: true,
             sectionNameKeyPath: nil)
         return controller
     }()
     
     lazy var songsController: NSFetchedResultsController = {
-        var controller = DataManager.manager.datastore.artistsController(nil,
-            sortKey: "name",
+        var controller = DataManager.manager.datastore.songsControllerWithSortKey("title",
+            limit: nil,
             ascending: true,
             sectionNameKeyPath: nil)
         return controller
@@ -86,7 +87,6 @@ RecommendedSearchCellDelegate {
     }
     
     override func viewWillAppear(animated: Bool) {
-        self.overlayScreenName = "Search"
         super.viewWillAppear(animated)
         
         self.searchDisplayController?.setActive(true, animated: true)
@@ -103,6 +103,8 @@ RecommendedSearchCellDelegate {
         
         searchDisplayController?.searchResultsTableView.registerNib(UINib(nibName: "ArtistCell", bundle: nil),
             forCellReuseIdentifier: "ArtistCell")
+        searchDisplayController?.searchResultsTableView.registerNib(UINib(nibName: "SongCell", bundle: nil),
+            forCellReuseIdentifier: "SongCell")
         searchDisplayController?.searchResultsTableView.registerNib(UINib(nibName: "TopAlbumCell", bundle: nil),
             forCellReuseIdentifier: "AblumCell")
         searchDisplayController?.searchResultsTableView.registerNib(UINib(nibName: "ArtistsHeader", bundle: nil),
@@ -114,6 +116,9 @@ RecommendedSearchCellDelegate {
         self.recentSongs = DataManager.manager.datastore.distinctArtistSongsWithSortKey("lastPlayedDate",
             limit: 10,
             ascending: false)
+        
+        self.searchBar.scopeButtonTitles = ["Library", "iTunes Store"]
+        self.searchBar.selectedScopeButtonIndex = 0
     }
     
     func dismiss() {
@@ -157,41 +162,52 @@ RecommendedSearchCellDelegate {
             let cell = searchDisplayController?.searchResultsTableView.dequeueReusableCellWithIdentifier("AblumCell",
                 forIndexPath: indexPath) as TopAlbumCell
 
+            let songCell = searchDisplayController?.searchResultsTableView.dequeueReusableCellWithIdentifier("SongCell") as SongCell
+            
+            songCell.buyButton.hidden = true
+            songCell.songLabel.text = ""
+            songCell.infoLabel.text = ""
+            
+            cell.buyButton.hidden = true
+            cell.songLabel.text = ""
+            cell.infoLabel.text = ""
+            cell.buyButton.removeTarget(self, action: "openTrackLink", forControlEvents: .TouchUpInside)
+            cell.buyButton.removeTarget(self, action: "openAlbumLink", forControlEvents: .TouchUpInside)
+            
             let searchSection = SearchResultsSection(rawValue: indexPath.section)!
             switch searchSection {
             case .Artists:
-                let artist = self.artists?[indexPath.row] as NSDictionary
-                cell.updateWithArtist(artist)
-                cell.buyButton.hidden = true
-                cell.accessoryType = .DisclosureIndicator
+                let artist: AnyObject = self.artists![indexPath.row]
                 
-                return cell
+                if let libraryArtist = artist as? Artist {
+                    songCell.updateWithArtist(libraryArtist)
+                    songCell.buyButton.hidden = true
+                    return songCell
+                } else {
+                    cell.updateWithArtist(artist)
+                    return cell
+                }
             case .Albums:
-                let album = self.albums?[indexPath.row] as NSDictionary
-                cell.updateWithAlbum(album)
-                cell.buyButton.hidden = false
-                cell.buyButton.tag = indexPath.row
-                if let albumPrice = album["collectionPrice"] as? NSNumber {
-                    if let albumLink = album["collectionViewUrl"] as? String {
-                        cell.buyButton.setTitle("$\(albumPrice.description)", forState: .Normal)
-                        cell.buyButton.addTarget(self, action: "openAlbumLink:", forControlEvents: .TouchUpInside)
-                    }
+                let album: AnyObject = self.albums![indexPath.row]
+                if let libraryAlbum = album as? Album {
+                    songCell.updateWithAlbum(libraryAlbum)
+                    songCell.buyButton.hidden = true
+                    return songCell
+                } else {
+                    cell.updateWithAlbum(album, indexPath: indexPath, target: self)
+                    return cell
                 }
-                
-                return cell
             default:
-                let topTrack = self.tracks?[indexPath.row] as NSDictionary
-                cell.updateWithSong(topTrack)
-                cell.buyButton.tag = indexPath.row
-                cell.buyButton.hidden = false
-                if let trackPrice = topTrack["trackPrice"] as? NSNumber {
-                    if let trackLink = topTrack["trackViewUrl"] as? String {
-                        cell.buyButton.setTitle("$\(trackPrice.description)", forState: .Normal)
-                        cell.buyButton.addTarget(self, action: "openTrackLink:", forControlEvents: .TouchUpInside)
-                    }
-                }
+                let topTrack: AnyObject = self.tracks![indexPath.row]
                 
-                return cell
+                if let librarySong = topTrack as? Song {
+                    songCell.updateWithSong(librarySong)
+                    songCell.buyButton.hidden = true
+                    return songCell
+                } else {
+                    cell.updateWithSong(topTrack, indexPath: indexPath, target: self)
+                    return cell
+                }
             }
 
         } else {
@@ -270,22 +286,48 @@ RecommendedSearchCellDelegate {
                 if let searchSection = SearchResultsSection(rawValue: indexPath.section) {
                     switch searchSection {
                     case .Artists:
-                        let artist = self.artists?[indexPath.row] as NSDictionary
-                        /*
-                        self.dismissViewControllerAnimated(true, completion: { () -> Void in
-                            self.delegate?.searchOverlayController(self, didTapArtist: artist["artistName"] as String)
-                        })
-                        */
-                        
-                        self.navigationController?.pushViewController(NowPlayingInfoViewController(artist: artist["artistName"] as String, isForSimiliarArtist: true), animated: true)
-                    case .Albums: break
-                        
-                    default: break
-                        
+                        if let artist = self.artists?[indexPath.row] as? NSDictionary {
+                            // Open in iTunes Store
+                            if let artistViewUrl = artist["artistViewUrl"] as? String {
+                                LocalyticsSession.shared().tagEvent("Search iTunes Artist tapped")
+                                UIApplication.sharedApplication().openURL(NSURL(string: artistViewUrl)!)
+                            }
+                        } else {
+                            self.dismissViewControllerAnimated(true, completion: { () -> Void in
+                                let artist = self.artists?[indexPath.row] as Artist
+                                self.delegate?.searchOverlayController(self, didTapArtist: artist)
+                            })
+                        }
+                    case .Albums:
+                        if let album = self.albums?[indexPath.row] as? NSDictionary {
+                            // Open in iTunes Store
+                            if let albumViewUrl = album["artistViewUrl"] as? String {
+                                LocalyticsSession.shared().tagEvent("Buy album button tapped")
+                                UIApplication.sharedApplication().openURL(NSURL(string: albumViewUrl)!)
+                            }
+                        } else {
+                            self.dismissViewControllerAnimated(true, completion: { () -> Void in
+                                let album = self.albums?[indexPath.row] as Album
+                                self.delegate?.searchOverlayController(self, didTapArtist: album.artist)
+                            })
+                        }
+                    default:
+                        if let song = self.tracks?[indexPath.row] as? NSDictionary {
+                            if let cell = self.searchDisplayController?.searchResultsTableView.cellForRowAtIndexPath(indexPath) as? TopAlbumCell {
+                                self.openTrackLink(cell.buyButton)
+                            }
+                        } else {
+                            self.dismissViewControllerAnimated(true, completion: { () -> Void in
+                                let song = self.tracks?[indexPath.row] as Song
+                                self.delegate?.searchOverlayController(self, didTapSong: song)
+                            })
+                        }
                     }
                 }
             }
         }
+        
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
@@ -293,31 +335,11 @@ RecommendedSearchCellDelegate {
     }
     
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
-        ItunesSearch.sharedInstance().getIdForArtist(searchText, successHandler: { (artists) -> Void in
-            if artists.count > 0 {
-                if let artistDict = artists.first as? NSDictionary {
-                    if let artistID = artistDict.objectForKey("artistId") as? NSNumber {
-                        ItunesSearch.sharedInstance().getAlbumsForArtist(artistID, limitOrNil: 1,
-                            successHandler: { (artistAlbums) -> Void in
-                                self.artists = artistAlbums
-                            }, failureHandler: { (error) -> Void in
-                                print(error)
-                        })
-                    }
-                }
-            }
-            
-            }, failureHandler: { (error) -> Void in
-                print(error)
-        })
-        
-        ItunesSearch.sharedInstance().getAlbums(searchText, limit: 10, completion: { (error, results) -> () in
-            self.albums = results
-        })
-        
-        ItunesSearch.sharedInstance().getTracks(searchText, limit: 10, completion: { (error, results) -> () in
-            self.tracks = results
-        })
+        if searchBar.selectedScopeButtonIndex == 0 {
+            self.searchLibrary(searchText)
+        } else {
+            self.searchItunes(searchText)
+        }
     }
     
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
@@ -332,12 +354,15 @@ RecommendedSearchCellDelegate {
         self.searchDisplayController?.searchBar.showsCancelButton = false
         self.tableView.alpha = 0.0
         self.cancelButton.alpha = 0.0
+        self.searchBar.scopeBarBackgroundImage = self.backgroundImageView.image?.crop(CGRectMake(0, 0, self.searchBar.frame.size.width, self.searchBar.frame.size.width))
+        self.recentArtistsLabel.hidden = true
     }
     
     func searchDisplayControllerWillEndSearch(controller: UISearchDisplayController) {
         self.searchDisplayController?.searchBar.showsCancelButton = true
         self.tableView.alpha = 1.0
         self.cancelButton.alpha = 1.0
+        self.recentArtistsLabel.hidden = false
     }
     
     func searchDisplayController(controller: UISearchDisplayController, willShowSearchResultsTableView tableView: UITableView) {
@@ -348,9 +373,16 @@ RecommendedSearchCellDelegate {
 
     }
     
+    func searchBar(searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+        if searchBar.selectedScopeButtonIndex == 0 {
+            self.searchLibrary(self.searchBar.text)
+        } else {
+            self.searchItunes(self.searchBar.text)
+        }
+    }
+    
     func openTrackLink(sender: AnyObject?) {
         if let button = sender as? UIButton {
-            print("Button tag: \(button.tag)\n")
             
             let track = self.tracks?[button.tag] as NSDictionary
             if let trackLink = track["trackViewUrl"] as? String {
@@ -383,6 +415,67 @@ RecommendedSearchCellDelegate {
                 self.searchDisplayController?.setActive(true, animated: true)
                 self.searchDisplayController?.searchBar.text = searchText
                 self.searchBar(self.searchDisplayController!.searchBar, textDidChange: searchText)
+            }
+        }
+    }
+    
+    func searchItunes(searchText: String) {
+        ItunesSearch.sharedInstance().getIdForArtist(searchText, successHandler: { (artists) -> Void in
+            if artists.count > 0 {
+                if let artistDict = artists.first as? NSDictionary {
+                    if let artistID = artistDict.objectForKey("artistId") as? NSNumber {
+                        ItunesSearch.sharedInstance().getAlbumsForArtist(artistID, limitOrNil: 1,
+                            successHandler: { (artistAlbums) -> Void in
+                                self.artists = artistAlbums
+                            }, failureHandler: { (error) -> Void in
+                                print(error)
+                        })
+                    }
+                }
+            }
+            
+            }, failureHandler: { (error) -> Void in
+                print(error)
+        })
+        
+        ItunesSearch.sharedInstance().getAlbums(searchText, limit: 10, completion: { (error, results) -> () in
+            self.albums = results
+        })
+        
+        ItunesSearch.sharedInstance().getTracks(searchText, limit: 10, completion: { (error, results) -> () in
+            self.tracks = results
+        })
+    }
+    
+    func searchLibrary(searchText: String) {
+        
+        var songsPredicate: NSPredicate?
+        var artistsPredicate: NSPredicate?
+        var albumsPredicate: NSPredicate?
+        
+        if countElements(searchText) > 0 {
+            songsPredicate = NSPredicate(format: "title contains[cd] %@", searchText)
+            artistsPredicate = NSPredicate(format: "name contains[cd] %@", searchText)
+            albumsPredicate = NSPredicate(format: "title contains[cd] %@", searchText)
+            
+            self.songsController.fetchRequest.predicate = songsPredicate
+            self.songsController.fetchRequest.fetchLimit = 5
+            self.artistsController.fetchRequest.predicate = artistsPredicate
+            self.artistsController.fetchRequest.fetchLimit = 5
+            self.albumsController.fetchRequest.predicate = albumsPredicate
+            self.albumsController.fetchRequest.fetchLimit = 5
+            
+            if self.songsController.performFetch(nil) {
+                self.tracks = self.songsController.fetchedObjects
+                self.searchDisplayController?.searchResultsTableView.reloadData()
+                if self.artistsController.performFetch(nil) {
+                    self.artists = self.artistsController.fetchedObjects
+                    self.searchDisplayController?.searchResultsTableView.reloadData()
+                    if self.albumsController.performFetch(nil) {
+                        self.albums = self.albumsController.fetchedObjects
+                        self.searchDisplayController?.searchResultsTableView.reloadData()
+                    }
+                }
             }
         }
     }

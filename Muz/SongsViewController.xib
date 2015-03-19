@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14D72i" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1510" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SongsViewController" customModule="Muz" customModuleProvider="target">
             <connections>
-                <outlet property="searchBar" destination="cgz-ba-8L1" id="EFM-dn-FNr"/>
                 <outlet property="searchDisplayController" destination="bA0-F8-zKu" id="7CH-Lm-PMe"/>
                 <outlet property="tableView" destination="LTZ-Jz-cQ7" id="2y2-Rn-tDq"/>
                 <outlet property="view" destination="ZPP-Pc-n5o" id="22o-Qh-Hed"/>
@@ -19,7 +18,7 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="55" sectionHeaderHeight="30" sectionFooterHeight="22" id="LTZ-Jz-cQ7">
-                    <rect key="frame" x="0.0" y="63.000002694231981" width="320" height="459"/>
+                    <rect key="frame" x="0.0" y="63" width="320" height="459"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -33,15 +32,6 @@
                         <outlet property="delegate" destination="-1" id="9mE-dd-ycc"/>
                     </connections>
                 </tableView>
-                <searchBar hidden="YES" contentMode="redraw" searchBarStyle="minimal" id="cgz-ba-8L1">
-                    <rect key="frame" x="0.0" y="16" width="320" height="44"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                    <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <textInputTraits key="textInputTraits"/>
-                    <connections>
-                        <outlet property="delegate" destination="-1" id="65w-fR-edd"/>
-                    </connections>
-                </searchBar>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -54,7 +44,6 @@
         <searchDisplayController id="bA0-F8-zKu">
             <connections>
                 <outlet property="delegate" destination="-1" id="PnO-fI-U1p"/>
-                <outlet property="searchBar" destination="cgz-ba-8L1" id="T0F-CO-lX4"/>
                 <outlet property="searchContentsController" destination="-1" id="wvZ-mf-sFV"/>
                 <outlet property="searchResultsDataSource" destination="-1" id="Uw7-Jk-WPl"/>
                 <outlet property="searchResultsDelegate" destination="-1" id="v3a-iZ-vfs"/>

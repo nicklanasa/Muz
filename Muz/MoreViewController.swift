@@ -169,7 +169,7 @@ class MoreViewController: RootViewController,
         case MoreSectionType.Settings.rawValue:
             if indexPath.row == 0 {
                 self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-                self.hud.mode = MBProgressHUDModeDeterminate
+                self.hud.mode = .DeterminateHorizontalBar
                 self.hud.labelText = "Syncing library..."
                 self.hud.labelFont = MuzTitleFont
                 DataManager.manager.syncArtists({ (addedItems, error) -> () in
@@ -246,7 +246,7 @@ class MoreViewController: RootViewController,
     
     func lastFmLoginCellDidTapLoginButton(cell: LastFmLoginCell) {
         var hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-        hud.mode = MBProgressHUDModeIndeterminate
+        hud.mode = MBProgressHUDMode.Indeterminate
         hud.labelText = "Please wait..."
         hud.labelFont = MuzTitleFont
         

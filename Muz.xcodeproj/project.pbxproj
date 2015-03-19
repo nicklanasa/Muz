@@ -11,6 +11,9 @@
 		011AF3BB1A880C5C00E298DD /* NowPlayingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 011AF3BA1A880C5C00E298DD /* NowPlayingTableViewCell.xib */; };
 		0158A37E1AB65B3100A31082 /* SearchSwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0158A37D1AB65B3100A31082 /* SearchSwitchCell.swift */; };
 		0158A3801AB65BA900A31082 /* SearchSwitchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0158A37F1AB65BA900A31082 /* SearchSwitchCell.xib */; };
+		0158A3821ABB219200A31082 /* UIImage+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0158A3811ABB219200A31082 /* UIImage+Helpers.swift */; };
+		0158A3881ABB5F1100A31082 /* FFCircularProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0158A3851ABB5F1100A31082 /* FFCircularProgressView.m */; };
+		0158A3891ABB5F1100A31082 /* UIColor+iOS7.m in Sources */ = {isa = PBXBuildFile; fileRef = 0158A3871ABB5F1100A31082 /* UIColor+iOS7.m */; };
 		017497E41AB5FA11003EFF28 /* RecommendedSearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017497E31AB5FA11003EFF28 /* RecommendedSearchCell.swift */; };
 		017497E61AB5FA18003EFF28 /* RecommendedSearchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 017497E51AB5FA18003EFF28 /* RecommendedSearchCell.xib */; };
 		01F9B1531AB5EB9C00D0513B /* Muz+ItunesSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F9B1521AB5EB9C00D0513B /* Muz+ItunesSearch.swift */; };
@@ -169,6 +172,11 @@
 		011AF3BA1A880C5C00E298DD /* NowPlayingTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NowPlayingTableViewCell.xib; sourceTree = "<group>"; };
 		0158A37D1AB65B3100A31082 /* SearchSwitchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchSwitchCell.swift; sourceTree = "<group>"; };
 		0158A37F1AB65BA900A31082 /* SearchSwitchCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchSwitchCell.xib; sourceTree = "<group>"; };
+		0158A3811ABB219200A31082 /* UIImage+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Helpers.swift"; sourceTree = "<group>"; };
+		0158A3841ABB5F1100A31082 /* FFCircularProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FFCircularProgressView.h; sourceTree = "<group>"; };
+		0158A3851ABB5F1100A31082 /* FFCircularProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FFCircularProgressView.m; sourceTree = "<group>"; };
+		0158A3861ABB5F1100A31082 /* UIColor+iOS7.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+iOS7.h"; sourceTree = "<group>"; };
+		0158A3871ABB5F1100A31082 /* UIColor+iOS7.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+iOS7.m"; sourceTree = "<group>"; };
 		017497E31AB5FA11003EFF28 /* RecommendedSearchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecommendedSearchCell.swift; sourceTree = "<group>"; };
 		017497E51AB5FA18003EFF28 /* RecommendedSearchCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RecommendedSearchCell.xib; sourceTree = "<group>"; };
 		01F9B1521AB5EB9C00D0513B /* Muz+ItunesSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Muz+ItunesSearch.swift"; sourceTree = "<group>"; };
@@ -358,6 +366,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0158A3831ABB5F1100A31082 /* FFCircularProgressView */ = {
+			isa = PBXGroup;
+			children = (
+				0158A3841ABB5F1100A31082 /* FFCircularProgressView.h */,
+				0158A3851ABB5F1100A31082 /* FFCircularProgressView.m */,
+				0158A3861ABB5F1100A31082 /* UIColor+iOS7.h */,
+				0158A3871ABB5F1100A31082 /* UIColor+iOS7.m */,
+			);
+			path = FFCircularProgressView;
+			sourceTree = "<group>";
+		};
 		017497E21AB5F9FC003EFF28 /* Search */ = {
 			isa = PBXGroup;
 			children = (
@@ -544,6 +563,7 @@
 				CECCC0D61A3FB65700799854 /* PlaylistSong+Helpers.swift */,
 				CE444BE01A36A28700153F77 /* Song+Helpers.swift */,
 				CE3038E21A3E0A9F00DCC5EB /* LastFm */,
+				0158A3811ABB219200A31082 /* UIImage+Helpers.swift */,
 			);
 			name = Data;
 			sourceTree = "<group>";
@@ -551,6 +571,7 @@
 		CE4931EA1A3A1B3700B3A4BE /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				0158A3831ABB5F1100A31082 /* FFCircularProgressView */,
 				CE9575891AA8BF0B002B444C /* iTunesSearch */,
 				CEE153511A3B5B4B00BB16EB /* HTMLNode.h */,
 				CEE153521A3B5B4B00BB16EB /* HTMLNode.m */,
@@ -944,6 +965,7 @@
 				CEC66D8C1A37EFA700560754 /* ArtistCell.swift in Sources */,
 				CECCC1191A4127D400799854 /* LastFmBuyLinksViewController.swift in Sources */,
 				CEF808291A8A94FF00B6D954 /* NSNumber+Helpers.swift in Sources */,
+				0158A3821ABB219200A31082 /* UIImage+Helpers.swift in Sources */,
 				CEDB618E1A37C40000B90B2D /* LovedViewController.swift in Sources */,
 				CEA4A13F1A867678003FDF0D /* HomeViewController.swift in Sources */,
 				CEE153551A3B5B4B00BB16EB /* HTMLNode.m in Sources */,
@@ -974,10 +996,12 @@
 				CEDB61941A37D21B00B90B2D /* SongsViewController.swift in Sources */,
 				CE9BCFD31A44E68300522F18 /* OverlayController.swift in Sources */,
 				CECCC0B91A3F8E4700799854 /* PlaylistsViewController.swift in Sources */,
+				0158A3881ABB5F1100A31082 /* FFCircularProgressView.m in Sources */,
 				CE444BDB1A36A27200153F77 /* ArtistsViewController.swift in Sources */,
 				CEAA2A9B1AA7D0DC00DDCD23 /* LastFmLoginCell.swift in Sources */,
 				CE5E31A81A86A3CC00969647 /* LastFmSimilarArtistTableCell.swift in Sources */,
 				017497E41AB5FA11003EFF28 /* RecommendedSearchCell.swift in Sources */,
+				0158A3891ABB5F1100A31082 /* UIColor+iOS7.m in Sources */,
 				CE3126171A50DA480071AD27 /* NoMusicOverlayController.swift in Sources */,
 				CE9BCFD61A44EB4C00522F18 /* CreatePlaylistCell.swift in Sources */,
 				CE3038DA1A3E037700DCC5EB /* SimiliarArtistCollectionViewCell.swift in Sources */,

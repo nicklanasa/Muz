@@ -18,7 +18,6 @@ UISearchBarDelegate,
 UISearchDisplayDelegate {
     
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var searchBar: UISearchBar!
     
     var artistsController: NSFetchedResultsController!
     
@@ -53,11 +52,7 @@ UISearchDisplayDelegate {
     }
     
     override func viewWillDisappear(animated: Bool) {
-        searchBar.resignFirstResponder()
-        
         self.tableView.setEditing(false, animated: false)
-        
-        self.searchDisplayController?.setActive(false, animated: false)
     }
 
     override func viewDidLoad() {
@@ -65,9 +60,6 @@ UISearchDisplayDelegate {
         
         tableView.registerNib(UINib(nibName: "ArtistCell", bundle: nil), forCellReuseIdentifier: "Cell")
         tableView.registerNib(UINib(nibName: "ArtistsHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "Header")
-        
-        searchDisplayController?.searchResultsTableView.registerNib(UINib(nibName: "ArtistCell", bundle: nil), forCellReuseIdentifier: "Cell")
-        searchDisplayController?.searchResultsTableView.registerNib(UINib(nibName: "ArtistsHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "Header")
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "search"),
             style: .Plain,
@@ -220,46 +212,5 @@ UISearchDisplayDelegate {
         })
         
         return [addToPlaylistAction]
-    }
-    
-    func scrollViewDidScroll(scrollView: UIScrollView) {
-        if scrollView.contentOffset.y < 0 {
-            self.searchDisplayController?.setActive(true, animated: true)
-        }
-    }
-    
-    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
-        if countElements(searchText) == 0 {
-            self.artistsController.fetchRequest.predicate = nil
-        } else {
-            // Change predicate and re-fetch.
-            self.artistsController.fetchRequest.predicate = NSPredicate(format: "name contains[cd] %@", searchText)
-        }
-        
-        fetchArtists()
-    }
-    
-    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
-        fetchArtists()
-    }
-    
-    func searchDisplayControllerWillBeginSearch(controller: UISearchDisplayController) {
-        searchBar.hidden = false
-        searchBar.becomeFirstResponder()
-    }
-    
-    func searchDisplayControllerWillEndSearch(controller: UISearchDisplayController) {
-        searchBar.hidden = true
-    }
-    
-    func searchDisplayController(controller: UISearchDisplayController, willShowSearchResultsTableView tableView: UITableView) {
-        self.tabBarController?.tabBar.alpha = 0.0
-        self.tableView.alpha = 0.0
-    }
-    
-    func searchDisplayController(controller: UISearchDisplayController, willHideSearchResultsTableView tableView: UITableView) {
-        self.tabBarController?.tabBar.alpha = 1.0
-        self.tableView.alpha = 1.0
-        self.tableView.reloadData()
     }
 }
