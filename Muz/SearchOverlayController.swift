@@ -39,19 +39,19 @@ RecommendedSearchCellDelegate {
     
     var artists: NSArray? {
         didSet {
-            self.searchDisplayController?.searchResultsTableView.reloadData()
+            self.reloadData()
         }
     }
     
     var albums: NSArray? {
         didSet {
-            self.searchDisplayController?.searchResultsTableView.reloadData()
+            self.reloadData()
         }
     }
     
     var tracks: NSArray? {
         didSet {
-            self.searchDisplayController?.searchResultsTableView.reloadData()
+            self.reloadData()
         }
     }
     
@@ -77,6 +77,18 @@ RecommendedSearchCellDelegate {
             sectionNameKeyPath: nil)
         return controller
     }()
+    
+    func reloadData() {
+        self.searchDisplayController?.searchResultsTableView.reloadData()
+    }
+    
+    func resetData() {
+
+        self.artists = nil
+        self.albums = nil
+        self.tracks = nil
+        self.searchDisplayController?.searchResultsTableView.reloadData()
+    }
     
     override init() {
         super.init(nibName: "SearchOverlayController", bundle: nil)
@@ -119,6 +131,8 @@ RecommendedSearchCellDelegate {
         
         self.searchBar.scopeButtonTitles = ["Library", "iTunes Store"]
         self.searchBar.selectedScopeButtonIndex = 0
+        
+        self.cancelButton.applyBuyStyle()
     }
     
     func dismiss() {
@@ -335,6 +349,7 @@ RecommendedSearchCellDelegate {
     }
     
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        self.resetData()
         if searchBar.selectedScopeButtonIndex == 0 {
             self.searchLibrary(searchText)
         } else {
@@ -374,6 +389,7 @@ RecommendedSearchCellDelegate {
     }
     
     func searchBar(searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+        self.resetData()
         if searchBar.selectedScopeButtonIndex == 0 {
             self.searchLibrary(self.searchBar.text)
         } else {

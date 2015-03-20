@@ -80,7 +80,7 @@ UISearchDisplayDelegate {
     }
 
     func showSearch() {
-        self.presentModalOverlayController(SearchOverlayController(), blurredController: self)
+        self.presentSearchOverlayController(SearchOverlayController(), blurredController: self)
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

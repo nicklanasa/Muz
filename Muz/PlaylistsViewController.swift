@@ -83,7 +83,7 @@ NSFetchedResultsControllerDelegate {
     }
 
     func showSearch() {
-        self.presentModalOverlayController(SearchOverlayController(), blurredController: self)
+        self.presentSearchOverlayController(SearchOverlayController(), blurredController: self)
     }
     
     /**

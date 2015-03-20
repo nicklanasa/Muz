@@ -39,6 +39,9 @@
                 <searchBar contentMode="redraw" searchBarStyle="minimal" showsScopeBar="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UFE-Uk-J02">
                     <rect key="frame" x="0.0" y="22" width="320" height="88"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="88" id="UDK-YH-aP4"/>
+                    </constraints>
                     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <textInputTraits key="textInputTraits"/>
                     <connections>
@@ -46,9 +49,9 @@
                     </connections>
                 </searchBar>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recent Artists" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d0h-4y-lvN">
-                    <rect key="frame" x="8" y="92" width="304" height="21"/>
+                    <rect key="frame" x="8" y="104" width="304" height="21"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="21" id="GSe-cx-sja"/>
+                        <constraint firstAttribute="height" constant="21" id="8uF-JQ-w1b"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="19"/>
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
@@ -57,7 +60,7 @@
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jjY-IL-auj">
                     <rect key="frame" x="8" y="507" width="304" height="43"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="43" id="PsI-og-yfV"/>
+                        <constraint firstAttribute="height" constant="43" id="QhS-Vx-OTE"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                     <state key="normal" title="Cancel">
@@ -72,24 +75,23 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="jjY-IL-auj" secondAttribute="bottom" constant="18" id="2Pd-Q7-r7Z"/>
-                <constraint firstAttribute="bottom" secondItem="KYK-sg-BKi" secondAttribute="bottom" constant="58" id="3bP-9Z-izI"/>
-                <constraint firstItem="KYK-sg-BKi" firstAttribute="leading" secondItem="UFE-Uk-J02" secondAttribute="leading" id="BKE-0t-lGQ"/>
-                <constraint firstItem="KYK-sg-BKi" firstAttribute="trailing" secondItem="UFE-Uk-J02" secondAttribute="trailing" id="Cx6-xg-VyJ"/>
-                <constraint firstItem="UFE-Uk-J02" firstAttribute="leading" secondItem="ZWR-ue-apE" secondAttribute="leading" id="JTk-EG-uMJ"/>
-                <constraint firstItem="UFE-Uk-J02" firstAttribute="trailing" secondItem="Efw-Dy-G3p" secondAttribute="trailing" id="RYR-iQ-ysX"/>
-                <constraint firstItem="UFE-Uk-J02" firstAttribute="centerX" secondItem="d0h-4y-lvN" secondAttribute="centerX" id="S8b-NU-OsA"/>
-                <constraint firstItem="KYK-sg-BKi" firstAttribute="top" secondItem="d0h-4y-lvN" secondAttribute="bottom" constant="12" id="SAS-gZ-Muw"/>
-                <constraint firstAttribute="trailing" secondItem="UFE-Uk-J02" secondAttribute="trailing" id="XZn-Hq-bq7"/>
-                <constraint firstItem="KYK-sg-BKi" firstAttribute="leading" secondItem="Efw-Dy-G3p" secondAttribute="leading" id="aG6-d1-ob1"/>
-                <constraint firstAttribute="bottom" secondItem="Efw-Dy-G3p" secondAttribute="bottom" id="dp3-tH-pd3"/>
-                <constraint firstItem="KYK-sg-BKi" firstAttribute="top" secondItem="UFE-Uk-J02" secondAttribute="bottom" constant="15" id="jfn-pW-9Y6"/>
-                <constraint firstItem="jjY-IL-auj" firstAttribute="leading" secondItem="d0h-4y-lvN" secondAttribute="leading" id="lag-mK-w2P"/>
-                <constraint firstItem="Efw-Dy-G3p" firstAttribute="top" secondItem="ZWR-ue-apE" secondAttribute="top" id="omv-Ew-9O1"/>
-                <constraint firstItem="d0h-4y-lvN" firstAttribute="leading" secondItem="ZWR-ue-apE" secondAttribute="leadingMargin" id="ot4-vF-6wt"/>
-                <constraint firstItem="UFE-Uk-J02" firstAttribute="top" secondItem="ZWR-ue-apE" secondAttribute="top" constant="22" id="uuM-7K-QQq"/>
-                <constraint firstItem="d0h-4y-lvN" firstAttribute="top" secondItem="ZWR-ue-apE" secondAttribute="top" constant="92" id="whp-6v-hKi"/>
-                <constraint firstItem="d0h-4y-lvN" firstAttribute="trailing" secondItem="jjY-IL-auj" secondAttribute="trailing" id="xM2-MG-Aya"/>
+                <constraint firstItem="d0h-4y-lvN" firstAttribute="leading" secondItem="jjY-IL-auj" secondAttribute="leading" id="0Rp-52-cE1"/>
+                <constraint firstItem="d0h-4y-lvN" firstAttribute="leading" secondItem="ZWR-ue-apE" secondAttribute="leadingMargin" id="0g8-OU-BkJ"/>
+                <constraint firstItem="KYK-sg-BKi" firstAttribute="leading" secondItem="ZWR-ue-apE" secondAttribute="leading" id="1eA-Hh-Fze"/>
+                <constraint firstItem="jjY-IL-auj" firstAttribute="trailing" secondItem="d0h-4y-lvN" secondAttribute="trailing" id="4gW-VN-Szq"/>
+                <constraint firstAttribute="trailing" secondItem="Efw-Dy-G3p" secondAttribute="trailing" id="71p-GE-wfd"/>
+                <constraint firstItem="KYK-sg-BKi" firstAttribute="top" secondItem="UFE-Uk-J02" secondAttribute="bottom" constant="15" id="7vM-h7-lJy"/>
+                <constraint firstAttribute="bottom" secondItem="jjY-IL-auj" secondAttribute="bottom" constant="18" id="Cuu-5c-lSU"/>
+                <constraint firstItem="UFE-Uk-J02" firstAttribute="leading" secondItem="Efw-Dy-G3p" secondAttribute="leading" id="FSw-IO-xjs"/>
+                <constraint firstItem="Efw-Dy-G3p" firstAttribute="trailing" secondItem="KYK-sg-BKi" secondAttribute="trailing" id="Fzi-Zu-EN0"/>
+                <constraint firstItem="UFE-Uk-J02" firstAttribute="top" secondItem="ZWR-ue-apE" secondAttribute="top" constant="22" id="Lhs-C0-NDS"/>
+                <constraint firstItem="KYK-sg-BKi" firstAttribute="top" secondItem="d0h-4y-lvN" secondAttribute="bottom" id="Tyi-Cd-uDS"/>
+                <constraint firstItem="UFE-Uk-J02" firstAttribute="trailing" secondItem="KYK-sg-BKi" secondAttribute="trailing" id="Yf9-jY-8A5"/>
+                <constraint firstAttribute="bottom" secondItem="Efw-Dy-G3p" secondAttribute="bottom" id="aOF-vE-GjH"/>
+                <constraint firstItem="Efw-Dy-G3p" firstAttribute="top" secondItem="ZWR-ue-apE" secondAttribute="top" id="c2u-Ck-yyc"/>
+                <constraint firstItem="UFE-Uk-J02" firstAttribute="centerX" secondItem="d0h-4y-lvN" secondAttribute="centerX" id="iz2-MG-Um5"/>
+                <constraint firstItem="KYK-sg-BKi" firstAttribute="leading" secondItem="UFE-Uk-J02" secondAttribute="leading" id="oRP-xN-7Zq"/>
+                <constraint firstAttribute="bottom" secondItem="KYK-sg-BKi" secondAttribute="bottom" constant="58" id="sxt-kv-EJ0"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
             <point key="canvasLocation" x="420" y="-108"/>
