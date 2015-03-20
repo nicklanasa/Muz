@@ -8,61 +8,95 @@
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
+		<key>Pods-Appirater-Appirater.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>13</integer>
 		</dict>
 		<key>Pods-Appirater.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>3</integer>
 		</dict>
 		<key>Pods-KissXML.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>4</integer>
 		</dict>
 		<key>Pods-LastFm.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>5</integer>
 		</dict>
 		<key>Pods-Localytics-AMP.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>6</integer>
 		</dict>
 		<key>Pods-MBProgressHUD.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>7</integer>
 		</dict>
 		<key>Pods-NSString-HTML.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>8</integer>
 		</dict>
 		<key>Pods-SDWebImage.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>9</integer>
 		</dict>
 		<key>Pods-UIImage-Resize.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>10</integer>
+		</dict>
+		<key>Pods-uservoice-iphone-sdk-UserVoice.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>14</integer>
 		</dict>
 		<key>Pods-uservoice-iphone-sdk.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>11</integer>
 		</dict>
 		<key>Pods.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>2</integer>
 		</dict>
 		<key>UserVoice.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>12</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
@@ -73,6 +107,11 @@
 			<true/>
 		</dict>
 		<key>221DB968DE601868CA86800D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>31B8019531CCAC522C9EBC79</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -92,6 +131,16 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>3F9313E58AEBD362C6CEC40B</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>531B39918D0B01D1EAA17290</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>545EE5A7EE903B2EB3B2985A</key>
 		<dict>
 			<key>primary</key>
@@ -107,7 +156,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>7A1C526918D1FEF52097459C</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>8839AE170F91E723C053819C</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>9405CE23BD78E4551A4A49D5</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>98ED8B0545BC455D77737EA6</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -122,7 +186,37 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>BC29B768B6030A4BD68471AE</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>CD63D18B725A0EBBC385A959</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>DF6EA707633189E411E3A06B</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>EAD376C07FE8E9163F6A21B3</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>ED91356D601CF3831117F20A</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F00122946F93C1A2F8932DF8</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FBF2928537C6FFDF377C1D44</key>
 		<dict>
 			<key>primary</key>
 			<true/>

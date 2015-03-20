@@ -27,7 +27,6 @@ var CurrentAppBackgroundImage = UIImage(named: "nowPlayingDefault")?.applyDarkEf
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    let noMusicOverlay = NoMusicOverlayController()
     
     let forumID = 279388
 
@@ -115,10 +114,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Appirater.setUsesUntilPrompt(5)
         Appirater.appLaunched(true)
         
-        if MediaSession.sharedSession.isMediaLibraryEmpty {
-            addNoMusicOverlay()
-        }
-        
         return true
     }
 
@@ -130,50 +125,48 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        
+        NSNotificationCenter.defaultCenter().removeObserver(self,
+            name: MPMediaLibraryDidChangeNotification,
+            object: nil)
     }
 
     func applicationWillEnterForeground(application: UIApplication) {
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
         Appirater.appEnteredForeground(true)
         
-        if !MediaSession.sharedSession.isMediaLibraryEmpty {
-            noMusicOverlay.view.removeFromSuperview()
-        } else {
-            if noMusicOverlay.view.superview == nil {
-                addNoMusicOverlay()
-            }
-        }
+        MPMediaLibrary.defaultMediaLibrary().beginGeneratingLibraryChangeNotifications()
+        NSNotificationCenter.defaultCenter().addObserver(self,
+            selector: "updateLibrary:",
+            name: MPMediaLibraryDidChangeNotification,
+            object: nil)
     }
 
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        
-//        if NSUserDefaults.standardUserDefaults().objectForKey("SyncLibrary") != nil {
-//            DataManager.manager.syncArtists({ (addedItems, error) -> () in
-//                DataManager.manager.syncPlaylists({ (addedItems, error) -> () in
-//                    
-//                })
-//            }, progress: { (addedItems) -> () in
-//                    
-//            })
-//        }
     }
 
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         MPMusicPlayerController.iPodMusicPlayer().stop()
     }
-    
-    private func addNoMusicOverlay() {
-        self.window!.rootViewController?.addChildViewController(noMusicOverlay)
-        noMusicOverlay.didMoveToParentViewController(self.window!.rootViewController)
-        self.window!.rootViewController?.view.addSubview(noMusicOverlay.view)
-    }
-    
+
     func application(application: UIApplication, openURL url: NSURL, sourceApplication: NSString?, annotation: AnyObject) -> Bool {
         var wasHandled:Bool = FBAppCall.handleOpenURL(url, sourceApplication: sourceApplication)
         return wasHandled
     }
 
+    func updateLibrary(obj: NSNotification) {
+        print(obj)
+        if let library = obj.object as? MPMediaLibrary {
+            DataManager.manager.datastore.resetLibrary({ (error) -> () in
+                DataManager.manager.syncArtists({ (addedItems, error) -> () in
+                    
+                    }, progress: { (addedItems, total) -> () in
+                        
+                })
+            })
+        }
+    }
 }
 

@@ -31,7 +31,6 @@ var CurrentQueueItems: MPMediaItemCollection!
     }
     
     init() {
-        
     }
     
     class var sharedSession : MediaSession {

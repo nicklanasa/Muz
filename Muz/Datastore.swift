@@ -129,11 +129,20 @@ class Datastore {
     func resetLibrary(completion: (error: NSErrorPointer) -> ()) {
         self.workerContext.performBlock { () -> Void in
             var error: NSError?
-            var request = NSFetchRequest(entityName: "Song")
+            var request = NSFetchRequest(entityName: "Artist")
             let results = self.workerContext.executeFetchRequest(request, error: &error)
             
-            for song in results as [Song] {
-                self.workerContext.deleteObject(song)
+            for artist in results as [Artist] {
+                
+                for album in artist.albums.allObjects as [Album] {
+                    for song in album.songs.allObjects as [Song] {
+                        self.workerContext.deleteObject(song)
+                    }
+                    
+                    self.workerContext.deleteObject(album)
+                }
+                
+                self.workerContext.deleteObject(artist)
             }
             
             completion(error: &error)
@@ -150,11 +159,6 @@ class Datastore {
         progress: (addedItems: [AnyObject], total: Int) -> ())
     {
         var context = self.workerContext
-        
-//        if NSUserDefaults.standardUserDefaults().objectForKey("SyncLibrary") == nil {
-//            context = self.workerContext
-//        }
-        
         context.performBlock { () -> Void in
            
             let startTime = NSDate()
@@ -342,24 +346,8 @@ class Datastore {
         var error: NSError?
         var request = NSFetchRequest(entityName: "Song")
         
-        var managedSong: Song!
-        
-        if NSUserDefaults.standardUserDefaults().objectForKey("SyncLibrary") != nil {
-            let predicate = NSPredicate(format: "title = %@ AND artist = %@", item.title, item.artist)
-            request.fetchLimit = 1
-            request.predicate = predicate
-            let results = context.executeFetchRequest(request, error: &error)
-            
-            if results?.count > 0 {
-                managedSong = results?[0] as Song
-            } else {
-                managedSong = NSEntityDescription.insertNewObjectForEntityForName("Song",
-                    inManagedObjectContext: context) as Song
-            }
-        } else {
-            managedSong = NSEntityDescription.insertNewObjectForEntityForName("Song",
-                inManagedObjectContext: context) as Song
-        }
+        var managedSong = NSEntityDescription.insertNewObjectForEntityForName("Song",
+            inManagedObjectContext: context) as Song
         
         managedSong.parseItem(item)
         managedSong.album = album
