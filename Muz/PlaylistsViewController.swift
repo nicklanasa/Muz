@@ -70,16 +70,18 @@ NSFetchedResultsControllerDelegate {
         self.tableView.registerNib(UINib(nibName: "SongsHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "Header")
     
         if !self.isForExistingPlaylist {
-            self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "add"),
+            var search = UIBarButtonItem(image: UIImage(named: "search"),
+                style: .Plain,
+                target: self,
+                action: "showSearch")
+            
+            var addPlaylist = UIBarButtonItem(image: UIImage(named: "add"),
                 style: .Plain,
                 target: self,
                 action: "addPlaylist");
+            
+            self.navigationItem.rightBarButtonItems = [addPlaylist, search]
         }
-
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "search"),
-            style: .Plain,
-            target: self,
-            action: "showSearch")
     }
 
     func showSearch() {
@@ -110,7 +112,12 @@ NSFetchedResultsControllerDelegate {
         
         var error: NSError?
         if self.playlistsController!.performFetch(&error) {
+            
             self.tableView.reloadData()
+            
+            DataManager.manager.syncPlaylists({ (addedItems, error) -> () in
+                
+            })
         }
     }
     

@@ -18,7 +18,8 @@ UIWebViewDelegate {
     @IBOutlet weak var webView: UIWebView!
     
     override func awakeFromNib() {
-        
+        webView.delegate = self
+        webView.hidden = true
     }
     
     func updateWithLyrics(lyrics: NSString?) {
@@ -39,7 +40,10 @@ UIWebViewDelegate {
     }
     
     func webViewDidFinishLoad(webView: UIWebView) {
-        activityIndicator.stopAnimating()
+        if !webView.loading {
+            activityIndicator.stopAnimating()
+            webView.hidden = false
+        }
     }
     
     func updateWithRequest(request: NSURLRequest) {

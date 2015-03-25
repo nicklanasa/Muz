@@ -162,21 +162,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIAlertViewDelegate {
             var alert = UIAlertController(title: "Sync Library?", message: "Your iPod library has changed. Would you like to sync it now? This might take about a minute or so.", preferredStyle: UIAlertControllerStyle.Alert)
             
             var syncLibraryAction = UIAlertAction(title: "Ok", style: .Default) { (action) -> Void in
+                JDStatusBarNotification.addStyleNamed("progress", prepare: { (barStyle) -> JDStatusBarStyle! in
+                    
+                    barStyle.barColor = UIColor.clearColor()
+                    barStyle.textColor = UIColor.whiteColor()
+                    barStyle.font = MuzFont
+                    
+                    barStyle.progressBarColor = MuzBlueColor
+                    barStyle.animationType = .Fade
+                    barStyle.progressBarPosition = .Bottom
+                    
+                    return barStyle
+                })
                 
-                var hud = MBProgressHUD.showHUDAddedTo(self.window?.rootViewController?.view, animated: true)
-                hud.mode = .DeterminateHorizontalBar
-                hud.labelText = "Syncing library..."
-                hud.labelFont = MuzTitleFont
-                
+                JDStatusBarNotification.showWithStatus("", styleName: "progress")
                 DataManager.manager.datastore.resetLibrary({ (error) -> () in
                     DataManager.manager.syncArtists({ (addedItems, error) -> () in
-                        
-                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                            hud.hide(true)
-                        })
-                        
                         }, progress: { (addedItems, total) -> () in
-                            hud.progress = Float(addedItems.count) / Float(total)
+                            var barProgress = CGFloat(addedItems.count) / CGFloat(total)
+                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                JDStatusBarNotification.showProgress(barProgress)
+                                if total == addedItems.count {
+                                    JDStatusBarNotification.dismiss()
+                                }
+                            })
                     })
                 })
             }

@@ -315,9 +315,8 @@ RecommendedSearchCellDelegate {
                     case .Albums:
                         if let album = self.albums?[indexPath.row] as? NSDictionary {
                             // Open in iTunes Store
-                            if let albumViewUrl = album["artistViewUrl"] as? String {
-                                LocalyticsSession.shared().tagEvent("Buy album button tapped")
-                                UIApplication.sharedApplication().openURL(NSURL(string: albumViewUrl)!)
+                            if let cell = self.searchDisplayController?.searchResultsTableView.cellForRowAtIndexPath(indexPath) as? TopAlbumCell {
+                                self.openAlbumLink(cell.buyButton)
                             }
                         } else {
                             self.dismissViewControllerAnimated(true, completion: { () -> Void in

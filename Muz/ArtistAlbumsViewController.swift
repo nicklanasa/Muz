@@ -28,7 +28,7 @@ ArtistAlbumHeaderDelegate {
             sortKey: "name",
             ascending: true,
             sectionNameKeyPath: nil)
-        controller.delegate = self
+        //controller.delegate = self
         return controller
     }()
     

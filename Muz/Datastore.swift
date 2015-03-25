@@ -357,7 +357,6 @@ class Datastore {
         song.lastPlayedDate = NSDate()
         
         self.saveDatastoreWithCompletion({ (error) -> () in
-            println("Updated song with new lastPlayedDate: \(song.lastPlayedDate)")
             completion()
         })
     }
@@ -373,26 +372,26 @@ class Datastore {
     
     func addPlaylists(playlists: [AnyObject], completion: (addedPlaylists: [AnyObject]?) -> ()) {
         
-        self.workerContext.performBlock { () -> Void in
+        self.mainQueueContext.performBlock { () -> Void in
             var error: NSError?
             
             var request = NSFetchRequest()
             request.entity = NSEntityDescription.entityForName("Playlist",
                 inManagedObjectContext: self.workerContext)
             
-            let results = self.workerContext.executeFetchRequest(request, error: nil)
+            let results = self.mainQueueContext.executeFetchRequest(request, error: nil)
             
             if results?.count > 0 {
                 for existingPlaylist in results as [Playlist] {
                     if existingPlaylist.persistentID != "" {
-                        self.workerContext.deleteObject(existingPlaylist)
+                        self.mainQueueContext.deleteObject(existingPlaylist)
                     }
                 }
             }
             
             
             for playlist in playlists as [MPMediaPlaylist] {
-                let addedPlaylist = self.createPlaylistWithPlaylist(playlist, context: self.workerContext)
+                let addedPlaylist = self.createPlaylistWithPlaylist(playlist, context: self.mainQueueContext)
             }
             
             self.saveDatastoreWithCompletion({ (error) -> () in

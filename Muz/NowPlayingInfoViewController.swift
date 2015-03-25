@@ -199,6 +199,7 @@ LastFmArtistInfoCellDelegate {
             request.sendURLRequest()
             */
             azLyricsRequest = NSURLRequest(URL: lyricsURL)
+            lyricsCell.updateWithRequest(azLyricsRequest)
         } else {
             lyricsCell.activityIndicator.stopAnimating()
             segmentedControl.selectedSegmentIndex = 0
@@ -370,7 +371,6 @@ LastFmArtistInfoCellDelegate {
                 }
             }
             */
-            lyricsCell.updateWithRequest(azLyricsRequest)
             return lyricsCell
         }
     }

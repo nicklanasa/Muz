@@ -62,7 +62,6 @@ class SongCell: UITableViewCell {
         self.songImageView.setImageForArtist(artist: libraryArtist)
         
         self.buyButton.hidden = true
-        self.accessoryType = .DisclosureIndicator
     }
     
     func updateWithAlbum(album: Album) {
@@ -72,7 +71,6 @@ class SongCell: UITableViewCell {
         self.songImageView.setImageForAlbum(album: artistAlbum)
         
         self.buyButton.hidden = true
-        self.accessoryType = .DisclosureIndicator
     }
     
     func updateWithSong(song: Song, forArtist: Bool) {

@@ -98,6 +98,7 @@ UICollectionViewDataSource {
         
         self.tableView.registerNib(UINib(nibName: "SongCell", bundle: nil), forCellReuseIdentifier: "SongCell")
         self.tableView.registerNib(UINib(nibName: "PlaylistCell", bundle: nil), forCellReuseIdentifier: "PlaylistCell")
+        self.tableView.registerNib(UINib(nibName: "AddPlaylistCell", bundle: nil), forCellReuseIdentifier: "AddPlaylistCell")
         self.tableView.registerNib(UINib(nibName: "ArtistsHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "Header")
         
         let similarArtistCellNib = UINib(nibName: "LastFmSimilarArtistTableCell", bundle: nil)
@@ -137,9 +138,9 @@ UICollectionViewDataSource {
                     controller = self.recentPlaylistsController
                     
                     if let numberOfRowsInSection = controller.sections?[0].numberOfObjects {
-                        return numberOfRowsInSection
+                        return numberOfRowsInSection + 1
                     } else {
-                        return 0
+                        return 1
                     }
                 default:
                     return 1
@@ -186,7 +187,11 @@ UICollectionViewDataSource {
             return similarArtistCell
         case .RecentPlaylists:
             
-            let playlist = self.recentPlaylistsController!.objectAtIndexPath(NSIndexPath(forRow: indexPath.row, inSection: 0)) as Playlist
+            if indexPath.row == 0 {
+                return tableView.dequeueReusableCellWithIdentifier("AddPlaylistCell") as AddPlaylistCell
+            }
+            
+            let playlist = self.recentPlaylistsController!.objectAtIndexPath(NSIndexPath(forRow: indexPath.row - 1, inSection: 0)) as Playlist
             
             var cell = tableView.dequeueReusableCellWithIdentifier("PlaylistCell") as PlaylistCell
             cell.updateWithPlaylist(playlist)
@@ -206,9 +211,7 @@ UICollectionViewDataSource {
             return recentArtistCell
         default:
             let song = self.recentSongs?[indexPath.row] as NSDictionary
-            songCell.updateWithSongData(song)
-            songCell.accessoryType = .DisclosureIndicator
-            
+            songCell.updateWithSongData(song)            
             return songCell
         }
     }
@@ -230,7 +233,7 @@ UICollectionViewDataSource {
                 return 0
             case .RelatedArtists: return 124
             case .RecentArtists: return 124
-            default: return 55
+            default: return 65
             }
         }
         
@@ -267,9 +270,13 @@ UICollectionViewDataSource {
         case .NowPlaying:
             self.presentNowPlayViewController()
         case .RecentPlaylists:
-            let playlist = self.recentPlaylistsController!.objectAtIndexPath(NSIndexPath(forRow: indexPath.row, inSection: 0)) as Playlist
-            let playlistsSongs = PlaylistSongsViewController(playlist: playlist)
-            self.navigationController?.pushViewController(playlistsSongs, animated: true)
+            if indexPath.row == 0 {
+                self.presentModalOverlayController(CreatePlaylistOverlay(), blurredController: self)
+            } else {
+                let playlist = self.recentPlaylistsController!.objectAtIndexPath(NSIndexPath(forRow: indexPath.row-1, inSection: 0)) as Playlist
+                let playlistsSongs = PlaylistSongsViewController(playlist: playlist)
+                self.navigationController?.pushViewController(playlistsSongs, animated: true)
+            }
         case .RecentSongs:
             let songData = self.recentSongs?[indexPath.row] as NSDictionary
             DataManager.manager.datastore.songForSongName(songData.objectForKey("title") as NSString, artist: songData.objectForKey("artist") as NSString, completion: { (song) -> () in

@@ -23,3 +23,4 @@
 #import <uservoice-iphone-sdk/UVStyleSheet.h>
 #import <Appirater/Appirater.h>
 #import <FacebookSDK/FacebookSDK.h>
+#import "JDStatusBarNotification.h"
