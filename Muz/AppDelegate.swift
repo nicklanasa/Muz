@@ -8,6 +8,7 @@
 
 import UIKit
 import MediaPlayer
+import AVFoundation
 
 let MuzFontName = "HelveticaNeue-Thin"
 let MuzFontNameMedium = "HelveticaNeue-Medium"

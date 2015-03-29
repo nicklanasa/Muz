@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import CoreData
 import MediaPlayer
+import CoreLocation
 
 enum HomeSectionType: NSInteger {
     case NowPlaying
@@ -24,7 +25,9 @@ UITableViewDataSource, UITableViewDelegate,
 NSFetchedResultsControllerDelegate,
 LastFmSimiliarArtistsRequestDelegate,
 UICollectionViewDelegate,
-UICollectionViewDataSource {
+UICollectionViewDataSource, CLLocationManagerDelegate {
+    
+    var locationManager: CLLocationManager = CLLocationManager()
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -54,6 +57,9 @@ UICollectionViewDataSource {
             selectedImage: UIImage(named: "headphones"))
         
         self.tabBarItem.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0)
+        
+        self.locationManager.delegate = self
+        self.locationManager.requestAlwaysAuthorization()
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -61,7 +67,7 @@ UICollectionViewDataSource {
     }
     
     override func viewWillAppear(animated: Bool) {
-        self.screenName = "Now Playing"
+        self.screenName = "Dashboard"
         super.viewWillAppear(animated)
         
         self.recentArtistSongs = DataManager.manager.datastore.distinctArtistSongsWithSortKey("lastPlayedDate", limit: 25, ascending: false)
@@ -77,6 +83,8 @@ UICollectionViewDataSource {
         nowPlayingCell = nowPlayingCellNib.instantiateWithOwner(self, options: nil)[0] as? NowPlayingTableViewCell
         
         self.fetchHomeData()
+        
+        
     }
     
     func fetchHomeData() {
@@ -330,5 +338,42 @@ UICollectionViewDataSource {
                 self.navigationController?.pushViewController(nowPlaying, animated: true)
             }
         }
+    }
+    
+    func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+        println("didChangeAuthorizationStatus")
+        
+        switch status {
+        case .NotDetermined:
+            println(".NotDetermined")
+            break
+            
+        case .AuthorizedAlways:
+            println(".Authorized")
+            self.locationManager.startUpdatingLocation()
+            break
+            
+        case .AuthorizedWhenInUse:
+            println(".Authorized")
+            self.locationManager.startUpdatingLocation()
+            break
+            
+        case .Denied:
+            println(".Denied")
+            break
+            
+        default:
+            println("Unhandled authorization status")
+            break
+            
+        }
+    }
+    
+    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
+        
+        let location = locations.last as CLLocation
+        
+        println("didUpdateLocations:  (location.coordinate.latitude), (location.coordinate.longitude)")
+        
     }
 }

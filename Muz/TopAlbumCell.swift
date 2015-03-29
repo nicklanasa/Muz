@@ -54,7 +54,6 @@ class TopAlbumCell: UITableViewCell {
             self.songImageView.setImageForAlbum(album: artistAlbum)
             
             self.buyButton.hidden = true
-            self.accessoryType = .DisclosureIndicator
         }
         
     }
@@ -91,7 +90,6 @@ class TopAlbumCell: UITableViewCell {
             self.songImageView.setImageForArtist(artist: libraryArtist)
             
             self.buyButton.hidden = true
-            self.accessoryType = .DisclosureIndicator
         }
         
     }
@@ -125,8 +123,6 @@ class TopAlbumCell: UITableViewCell {
             self.songImageView.setImageForSong(song: librarySong)
             
             self.buyButton.hidden = true
-            
-            self.accessoryType = .DisclosureIndicator
         }
     }
     

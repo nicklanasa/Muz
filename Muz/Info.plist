@@ -28,7 +28,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>3</string>
+	<string>6</string>
 	<key>FacebookAppID</key>
 	<string>1543368972618507</string>
 	<key>FacebookDisplayName</key>
@@ -54,6 +54,8 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Your location is used to check if there are any upcoming artist events in your area.</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 </dict>

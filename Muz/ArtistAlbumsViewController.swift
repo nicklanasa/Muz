@@ -225,12 +225,11 @@ ArtistAlbumHeaderDelegate {
     
     func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
         let addToPlaylistAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Add to Playlist", handler: { (action, indexPath) -> Void in
-            if let albumArtist = self.artistsController.objectAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? Artist {
-                if let album = albumArtist.albums.allObjects[indexPath.section] as? Album {
-                    if let song = album.songs.allObjects[indexPath.row] as? Song {
-                        let createPlaylistOverlay = CreatePlaylistOverlay(songs: [song])
-                        self.presentModalOverlayController(createPlaylistOverlay, blurredController: self)
-                    }
+            
+            if let songs = self.sortedSongs[indexPath.section] as? [AnyObject] {
+                if let song = songs[indexPath.row] as? Song {
+                    let createPlaylistOverlay = CreatePlaylistOverlay(songs: [song])
+                    self.presentModalOverlayController(createPlaylistOverlay, blurredController: self)
                 }
             }
         })
@@ -242,11 +241,9 @@ ArtistAlbumHeaderDelegate {
     
     func artistAlbumHeader(header: ArtistAlbumHeader, moreButtonTapped sender: AnyObject) {
         let header = tableView.headerViewForSection(header.section) as ArtistAlbumHeader
-        if let albumArtist = self.artistsController.objectAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? Artist {
-            if let album = albumArtist.albums.allObjects[header.section] as? Album {
-                let createPlaylistOverlay = CreatePlaylistOverlay(songs: album.songs.allObjects)
-                self.presentModalOverlayController(createPlaylistOverlay, blurredController: self)
-            }
+        if let songs = self.sortedSongs[header.section] as? [AnyObject] {
+            let createPlaylistOverlay = CreatePlaylistOverlay(songs: songs)
+            self.presentModalOverlayController(createPlaylistOverlay, blurredController: self)
         }
     }
 }
