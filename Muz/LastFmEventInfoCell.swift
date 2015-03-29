@@ -18,13 +18,23 @@ class LastFmEventInfoCell: UICollectionViewCell {
     }
     
     func updateWithEvent(event: LastFmEvent) {
-        artistImageView.sd_setImageWithURL(event.image)
+        artistImageView.sd_setImageWithURL(event.image, placeholderImage: UIImage(named: "nowPlayingDefault"))
         
-        let formatter = NSDateFormatter()
-        formatter.dateStyle = .ShortStyle
-        let date = formatter.stringFromDate(event.startDate)
+        if let startDate = event.startDate {
+            let formatter = NSDateFormatter()
+            formatter.dateStyle = .ShortStyle
+            let date = formatter.stringFromDate(event.startDate)
+            
+            infoLabel.text = NSString(format: "%@\n%@\n%@", event.city, event.country, date)
+        }
+    }
+    
+    func updateWithGeoEvent(event: LastFmEvent) {
+        artistImageView.sd_setImageWithURL(event.image, placeholderImage: UIImage(named: "nowPlayingDefault"))
         
-        infoLabel.text = NSString(format: "%@\n%@\n%@", event.city, event.country, date)
+        if let title = event.title {
+            infoLabel.text = NSString(format: "%@\n%@\n%@", event.title, event.city, event.country)
+        }
     }
     
     override func prepareForReuse() {

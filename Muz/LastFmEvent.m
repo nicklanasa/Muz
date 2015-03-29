@@ -67,8 +67,11 @@ static NSString * const LastFmEventKeyurl = @"url";
         self.headliner = json[ LastFmEventKeyheadliner];
     
     //  LastFmEventKeystartDate
-    if( [json[ LastFmEventKeystartDate] isKindOfClass:[NSDate class]])
+    if( [json[ LastFmEventKeystartDate] isKindOfClass:[NSDate class]]) {
         self.startDate = json[ LastFmEventKeystartDate];
+    } else {
+        self.startDate = [NSDate date];
+    }
     
     //  LastFmEventKeyimage
     if( [json[ LastFmEventKeyimage] isKindOfClass:[NSURL class]])

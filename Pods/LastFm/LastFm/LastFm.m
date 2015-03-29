@@ -1214,7 +1214,7 @@
 
     return [self performApiCallForMethod:@"geo.getEvents"
                                 useCache:[self useCache]
-                              withParams:@{ @"location": [self forceString:location] }
+                              withParams:@{ @"location": [self forceString:location]}
                                rootXpath:@"./events/event"
                         returnDictionary:NO
                            mappingObject:mappingObject

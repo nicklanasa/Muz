@@ -34,6 +34,7 @@ class LastFmEventCell: UITableViewCell {
             }
         }
     }
+    
 
     override func prepareForReuse() {
     }

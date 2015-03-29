@@ -8,25 +8,29 @@
 
 import Foundation
 
+let _sharedRequest = LastFmGeoEventsRequest()
+
 class LastFmGeoEventsRequest: LastFmRequest {
     
-    let location: NSString!
-    
-    init(location: NSString) {
-        self.location = location
+    class var sharedRequest: LastFmGeoEventsRequest {
+        return _sharedRequest
     }
     
-    func getEvents(completion: () -> (results: [AnyObject], error: NSError?)) {
-        super.sendURLRequest()
+    func getEvents(location: NSString!, completion: (events: [AnyObject]?, error: NSError?) -> ()) {
         var lastFm = LastFm.sharedInstance()
         lastFm.apiKey = self.apiKey
         lastFm.apiSecret = self.apiSecret
         lastFm.session = "geoEvents"
         
-        lastFm.getEventsForLocation(self.location, successHandler: { (results) -> Void in
-            print(results)
-        }) { (error) -> Void in
+        lastFm.getEventsForLocation(location, successHandler: { (results) -> Void in
+            var events = NSMutableArray()
+            for event in results as [NSDictionary] {
+                events.addObject(LastFmEvent(JSON: event))
+            }
             
+            completion(events: events, error: nil)
+        }) { (error) -> Void in
+            completion(events: nil, error: error)
         }
     }
 }

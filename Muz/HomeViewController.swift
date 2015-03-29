@@ -14,6 +14,7 @@ import CoreLocation
 
 enum HomeSectionType: NSInteger {
     case NowPlaying
+    case UpcomingEvents
     case RelatedArtists
     case RecentArtists
     case RecentPlaylists
@@ -46,6 +47,12 @@ UICollectionViewDataSource, CLLocationManagerDelegate {
     var similarArtistCell: LastFmSimilarArtistTableCell!
     var recentArtistCell: LastFmSimilarArtistTableCell!
     var nowPlayingCell: NowPlayingTableViewCell!
+    var lastFmEventCell: LastFmEventCell!
+    var events: [AnyObject]? {
+        didSet {
+            self.tableView.reloadData()
+        }
+    }
 
     private var recentPlaylistsController: NSFetchedResultsController?
     
@@ -82,9 +89,12 @@ UICollectionViewDataSource, CLLocationManagerDelegate {
         let nowPlayingCellNib = UINib(nibName: "NowPlayingTableViewCell", bundle: nil)
         nowPlayingCell = nowPlayingCellNib.instantiateWithOwner(self, options: nil)[0] as? NowPlayingTableViewCell
         
+        let lastFmEventCellNib = UINib(nibName: "LastFmEventCell", bundle: nil)
+        lastFmEventCell = lastFmEventCellNib.instantiateWithOwner(self, options: nil)[0] as? LastFmEventCell
+        
         self.fetchHomeData()
         
-        
+        self.locationManager.startUpdatingLocation()
     }
     
     func fetchHomeData() {
@@ -132,7 +142,7 @@ UICollectionViewDataSource, CLLocationManagerDelegate {
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 5
+        return 6
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -217,6 +227,16 @@ UICollectionViewDataSource, CLLocationManagerDelegate {
             recentArtistCell.collectionView.reloadData()
             
             return recentArtistCell
+        case .UpcomingEvents:
+            let nib = UINib(nibName: "LastFmEventInfoCell", bundle: nil)
+            lastFmEventCell.collectionView.registerNib(nib, forCellWithReuseIdentifier: "LastFmEventInfoCell")
+            
+            lastFmEventCell.collectionView.delegate = self
+            lastFmEventCell.collectionView.dataSource = self
+            
+            lastFmEventCell.updateWithEvents(self.events)
+            
+            return lastFmEventCell
         default:
             let song = self.recentSongs?[indexPath.row] as NSDictionary
             songCell.updateWithSongData(song)            
@@ -225,15 +245,21 @@ UICollectionViewDataSource, CLLocationManagerDelegate {
     }
     
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section == 0 {
+        if section == 0{
             return 0
         }
+    
         return 30
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if let sectionType = HomeSectionType(rawValue: indexPath.section) {
             switch sectionType {
+            case .UpcomingEvents:
+                if self.events?.count > 0 {
+                    return lastFmEventCell.cellHeight
+                }
+                return 0
             case .NowPlaying:
                 if let item = self.nowPlayingCell.playerController.nowPlayingItem {
                     return 81
@@ -253,6 +279,8 @@ UICollectionViewDataSource, CLLocationManagerDelegate {
             let header = tableView.dequeueReusableHeaderFooterViewWithIdentifier("Header") as ArtistsHeader
             
             switch sectionType {
+            case .UpcomingEvents:
+                header.infoLabel.text = "Upcoming Events in your area"
             case .NowPlaying:
                 header.infoLabel.text = ""
             case .RecentArtists:
@@ -305,24 +333,39 @@ UICollectionViewDataSource, CLLocationManagerDelegate {
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == self.recentArtistCell.collectionView {
             return self.recentArtistSongs?.count ?? 0
+        } else if collectionView == lastFmEventCell?.collectionView {
+            return self.events?.count ?? 0
         }
         return self.similiarArtists?.count ?? 0
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        var cell = collectionView.dequeueReusableCellWithReuseIdentifier("SimiliarArtistCell",
-            forIndexPath: indexPath) as SimiliarArtistCollectionViewCell
-        
+    
         if collectionView == self.recentArtistCell.collectionView {
+            var cell = collectionView.dequeueReusableCellWithReuseIdentifier("SimiliarArtistCell",
+                forIndexPath: indexPath) as SimiliarArtistCollectionViewCell
             let song = self.recentArtistSongs?[indexPath.row] as NSDictionary
             cell.updateWithSongData(song, forArtist: true)
+            
+            return cell
+        } else if collectionView == lastFmEventCell?.collectionView {
+            var cell = collectionView.dequeueReusableCellWithReuseIdentifier("LastFmEventInfoCell",
+                forIndexPath: indexPath) as LastFmEventInfoCell
+            
+            if let event = events?[indexPath.row] as? LastFmEvent {
+                cell.updateWithGeoEvent(event)
+            }
+            
+            return cell
         } else {
+            var cell = collectionView.dequeueReusableCellWithReuseIdentifier("SimiliarArtistCell",
+                forIndexPath: indexPath) as SimiliarArtistCollectionViewCell
             if let artist = similiarArtists?[indexPath.row] as? LastFmArtist {
                 cell.updateWithArtist(artist)
             }
+            
+            return cell
         }
-        
-        return cell
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
@@ -332,6 +375,8 @@ UICollectionViewDataSource, CLLocationManagerDelegate {
                 let artistAlbums = ArtistAlbumsViewController(artist: artist)
                 self.navigationController?.pushViewController(artistAlbums, animated: true)
             }
+        } else if collectionView == lastFmEventCell?.collectionView {
+            
         } else {
             if let artist = self.similiarArtists?[indexPath.row] as? LastFmArtist {
                 let nowPlaying = NowPlayingInfoViewController(artist: artist.name, isForSimiliarArtist: true)
@@ -372,8 +417,20 @@ UICollectionViewDataSource, CLLocationManagerDelegate {
     func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
         
         let location = locations.last as CLLocation
-        
-        println("didUpdateLocations:  (location.coordinate.latitude), (location.coordinate.longitude)")
+        CLGeocoder().reverseGeocodeLocation(location, completionHandler: { (placemarks, error) -> Void in
+            if error != nil {
+                print(error)
+            } else {
+                if placemarks.count > 0 {
+                    var placemark = placemarks.first as CLPlacemark
+                    var cityState: String = "\(placemark.locality), \(placemark.administrativeArea)"
+                    LastFmGeoEventsRequest.sharedRequest.getEvents(cityState, completion: { (events, error) -> () in
+                        self.events = events
+                        self.locationManager.stopUpdatingLocation()
+                    })
+                }
+            }
+        })
         
     }
 }
