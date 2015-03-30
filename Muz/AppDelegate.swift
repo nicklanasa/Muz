@@ -158,7 +158,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIAlertViewDelegate {
     }
 
     func updateLibrary(obj: NSNotification) {
-        print(obj)
         if let library = obj.object as? MPMediaLibrary {
             var alert = UIAlertController(title: "Sync Library?", message: "Your iPod library has changed. Would you like to sync it now? This might take about a minute or so.", preferredStyle: UIAlertControllerStyle.Alert)
             
@@ -185,6 +184,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIAlertViewDelegate {
                                 JDStatusBarNotification.showProgress(barProgress)
                                 if total == addedItems.count {
                                     JDStatusBarNotification.dismiss()
+                                    LocalyticsSession.shared().tagEvent("Sync Library")
                                 }
                             })
                     })

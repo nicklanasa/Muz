@@ -35,6 +35,13 @@ class LastFmEventCell: UITableViewCell {
         }
     }
     
+    override func layoutSubviews() {
+        if upcomingEventsLabel.hidden {
+            var collectionViewFrame = self.collectionView.frame
+            collectionViewFrame.origin.y = 13
+            self.collectionView.frame = collectionViewFrame
+        }
+    }
 
     override func prepareForReuse() {
     }

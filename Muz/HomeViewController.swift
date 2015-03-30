@@ -234,6 +234,9 @@ UICollectionViewDataSource, CLLocationManagerDelegate {
             lastFmEventCell.collectionView.delegate = self
             lastFmEventCell.collectionView.dataSource = self
             
+            lastFmEventCell.upcomingEventsLabel.hidden = true
+            lastFmEventCell.setNeedsDisplay()
+            
             lastFmEventCell.updateWithEvents(self.events)
             
             return lastFmEventCell
@@ -257,7 +260,7 @@ UICollectionViewDataSource, CLLocationManagerDelegate {
             switch sectionType {
             case .UpcomingEvents:
                 if self.events?.count > 0 {
-                    return lastFmEventCell.cellHeight
+                    return 145
                 }
                 return 0
             case .NowPlaying:
@@ -280,7 +283,7 @@ UICollectionViewDataSource, CLLocationManagerDelegate {
             
             switch sectionType {
             case .UpcomingEvents:
-                header.infoLabel.text = "Upcoming Events in your area"
+                header.infoLabel.text = "Local Upcoming Events"
             case .NowPlaying:
                 header.infoLabel.text = ""
             case .RecentArtists:
@@ -305,10 +308,13 @@ UICollectionViewDataSource, CLLocationManagerDelegate {
         case .RelatedArtists: break
         case .NowPlaying:
             self.presentNowPlayViewController()
+            LocalyticsSession.shared().tagEvent("Dashboard NowPlaying Cell Tapped.")
         case .RecentPlaylists:
             if indexPath.row == 0 {
+                LocalyticsSession.shared().tagEvent("Dashboard New Playlist tapped.")
                 self.presentModalOverlayController(CreatePlaylistOverlay(), blurredController: self)
             } else {
+                LocalyticsSession.shared().tagEvent("Recent Playing tapped.")
                 let playlist = self.recentPlaylistsController!.objectAtIndexPath(NSIndexPath(forRow: indexPath.row-1, inSection: 0)) as Playlist
                 let playlistsSongs = PlaylistSongsViewController(playlist: playlist)
                 self.navigationController?.pushViewController(playlistsSongs, animated: true)
@@ -318,6 +324,7 @@ UICollectionViewDataSource, CLLocationManagerDelegate {
             DataManager.manager.datastore.songForSongName(songData.objectForKey("title") as NSString, artist: songData.objectForKey("artist") as NSString, completion: { (song) -> () in
                 if let playingSong = song {
                     MediaSession.sharedSession.fetchSongsCollection({ (collection) -> () in
+                        LocalyticsSession.shared().tagEvent("Recent Song tapped.")
                         self.navigationController!.pushViewController(NowPlayingViewController(song: playingSong, collection: collection), animated: true)
                     })
                 }
@@ -372,13 +379,19 @@ UICollectionViewDataSource, CLLocationManagerDelegate {
         if collectionView == self.recentArtistCell.collectionView {
             let song = self.recentArtistSongs?[indexPath.row] as NSDictionary
             if let artist = DataManager.manager.datastore.artistForSongData(song: song) {
+                LocalyticsSession.shared().tagEvent("Recent Song tapped.")
                 let artistAlbums = ArtistAlbumsViewController(artist: artist)
                 self.navigationController?.pushViewController(artistAlbums, animated: true)
             }
         } else if collectionView == lastFmEventCell?.collectionView {
-            
+            if let event = self.events?[indexPath.row] as? LastFmEvent {
+                LocalyticsSession.shared().tagEvent("Event tapped.")
+                let eventController = LastFmEventInfoController(event: event)
+                self.navigationController?.pushViewController(eventController, animated: true)
+            }
         } else {
             if let artist = self.similiarArtists?[indexPath.row] as? LastFmArtist {
+                LocalyticsSession.shared().tagEvent("Recent Artist tapped.")
                 let nowPlaying = NowPlayingInfoViewController(artist: artist.name, isForSimiliarArtist: true)
                 self.navigationController?.pushViewController(nowPlaying, animated: true)
             }
@@ -391,20 +404,24 @@ UICollectionViewDataSource, CLLocationManagerDelegate {
         switch status {
         case .NotDetermined:
             println(".NotDetermined")
+            LocalyticsSession.shared().tagEvent("Denied Location")
             break
             
         case .AuthorizedAlways:
             println(".Authorized")
             self.locationManager.startUpdatingLocation()
+            LocalyticsSession.shared().tagEvent("Allowed Location")
             break
             
         case .AuthorizedWhenInUse:
             println(".Authorized")
             self.locationManager.startUpdatingLocation()
+            LocalyticsSession.shared().tagEvent("Allowed Location")
             break
             
         case .Denied:
             println(".Denied")
+            LocalyticsSession.shared().tagEvent("Denied Location")
             break
             
         default:

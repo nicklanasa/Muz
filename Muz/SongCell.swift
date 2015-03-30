@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import MediaPlayer
 
-class SongCell: UITableViewCell {
+class SongCell: SWTableViewCell {
     @IBOutlet weak var songLabel: UILabel!
     @IBOutlet weak var infoLabel: UILabel!
     @IBOutlet weak var songImageView: UIImageView!

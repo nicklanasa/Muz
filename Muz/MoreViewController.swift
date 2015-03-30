@@ -180,6 +180,8 @@ class MoreViewController: RootViewController,
                     DataManager.manager.syncPlaylists({ (addedItems, error) -> () in
                     
                     })
+                    
+                    LocalyticsSession.shared().tagEvent("Sync Library")
                 }, progress: { (addedItems, total) -> () in
                     self.hud.progress = Float(addedItems.count) / Float(total)
                 })

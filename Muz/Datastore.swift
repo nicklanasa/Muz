@@ -372,12 +372,12 @@ class Datastore {
     
     func addPlaylists(playlists: [AnyObject], completion: (addedPlaylists: [AnyObject]?) -> ()) {
         
-        self.mainQueueContext.performBlock { () -> Void in
+        self.workerContext.performBlock { () -> Void in
             var error: NSError?
             
             var request = NSFetchRequest()
             request.entity = NSEntityDescription.entityForName("Playlist",
-                inManagedObjectContext: self.workerContext)
+                inManagedObjectContext: self.mainQueueContext)
             
             let results = self.mainQueueContext.executeFetchRequest(request, error: nil)
             

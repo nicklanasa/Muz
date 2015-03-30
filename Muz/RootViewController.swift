@@ -48,7 +48,7 @@ class RootViewController: UIViewController, SearchOverlayControllerDelegate {
         if backgroundImageView == nil {
             self.backgroundImageView = UIImageView(frame: UIScreen.mainScreen().bounds)
             self.backgroundImageView.contentMode = UIViewContentMode.ScaleToFill
-            self.backgroundImageView.autoresizingMask = .FlexibleWidth
+            self.backgroundImageView.autoresizingMask = .FlexibleWidth | .FlexibleHeight
             self.view.insertSubview(self.backgroundImageView, atIndex: 0)
         }
         
@@ -102,7 +102,7 @@ class RootViewController: UIViewController, SearchOverlayControllerDelegate {
     }
     
     func presentSearchOverlayController(controller: SearchOverlayController, blurredController: UIViewController) {
-        
+        LocalyticsSession.shared().tagEvent("Global search tapped.")
         UIGraphicsBeginImageContext(blurredController.view.bounds.size)
         self.view.layer.renderInContext(UIGraphicsGetCurrentContext())
         var image = UIGraphicsGetImageFromCurrentImageContext()

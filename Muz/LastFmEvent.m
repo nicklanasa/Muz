@@ -51,20 +51,32 @@ static NSString * const LastFmEventKeyurl = @"url";
 - (void) parseJSON:(NSDictionary *)json
 {
     //  LastFmEventKeycity
-    if( [json[ LastFmEventKeycity] isKindOfClass:[NSString class]])
+    if( [json[ LastFmEventKeycity] isKindOfClass:[NSString class]]) {
         self.city = json[ LastFmEventKeycity];
+    } else {
+        self.city = @"";
+    }
     
     //  LastFmEventKeyattendance
-    if( [json[ LastFmEventKeyattendance] isKindOfClass:[NSNumber class]])
+    if( [json[ LastFmEventKeyattendance] isKindOfClass:[NSNumber class]]) {
         self.attendance = json[ LastFmEventKeyattendance];
+    } else {
+        self.attendance = [NSNumber numberWithInt:0];
+    }
     
     //  LastFmEventKeycountry
-    if( [json[ LastFmEventKeycountry] isKindOfClass:[NSString class]])
+    if( [json[ LastFmEventKeycountry] isKindOfClass:[NSString class]]) {
         self.country = json[ LastFmEventKeycountry];
+    } else {
+        self.country = @"";
+    }
     
     //  LastFmEventKeyheadliner
-    if( [json[ LastFmEventKeyheadliner] isKindOfClass:[NSString class]])
+    if( [json[ LastFmEventKeyheadliner] isKindOfClass:[NSString class]]) {
         self.headliner = json[ LastFmEventKeyheadliner];
+    } else {
+        self.headliner = @"Unknown";
+    }
     
     //  LastFmEventKeystartDate
     if( [json[ LastFmEventKeystartDate] isKindOfClass:[NSDate class]]) {
@@ -74,16 +86,28 @@ static NSString * const LastFmEventKeyurl = @"url";
     }
     
     //  LastFmEventKeyimage
-    if( [json[ LastFmEventKeyimage] isKindOfClass:[NSURL class]])
+    if( [json[ LastFmEventKeyimage] isKindOfClass:[NSURL class]]) {
         self.image = json[ LastFmEventKeyimage];
+    } else if ([json[ LastFmEventKeyimage] isKindOfClass:[NSArray class]]) {
+        NSArray *images = json[ LastFmEventKeyimage];
+        if ([images[images.count - 1] isKindOfClass:[NSString class]]) {
+            self.image = [NSURL URLWithString:images[images.count - 1]];
+        }
+    }
     
     //  LastFmEventKeytitle
-    if( [json[ LastFmEventKeytitle] isKindOfClass:[NSString class]])
+    if( [json[ LastFmEventKeytitle] isKindOfClass:[NSString class]]) {
         self.title = json[ LastFmEventKeytitle];
+    } else {
+        self.title = @"Unknown";
+    }
     
     //  LastFmEventKeyvenue
-    if( [json[ LastFmEventKeyvenue] isKindOfClass:[NSString class]])
+    if( [json[ LastFmEventKeyvenue] isKindOfClass:[NSString class]]) {
         self.venue = json[ LastFmEventKeyvenue];
+    } else {
+        self.venue = @"Unknown";
+    }
     
     //  LastFmEventKeydescription
     if( [json[ LastFmEventKeydescription] isKindOfClass:[NSString class]]) {

@@ -14,10 +14,10 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="610"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
             <subviews>
-                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="gFV-kl-ydE">
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="nowPlayingDefault" translatesAutoresizingMaskIntoConstraints="NO" id="gFV-kl-ydE">
                     <rect key="frame" x="19" y="14" width="81" height="81"/>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="ocg-cs-9y8">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.80000000000000027" translatesAutoresizingMaskIntoConstraints="NO" id="ocg-cs-9y8">
                     <rect key="frame" x="117" y="12" width="177" height="29"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="29" id="62o-Xu-Xfl"/>
@@ -141,6 +141,9 @@
             <point key="canvasLocation" x="302" y="-21"/>
         </view>
     </objects>
+    <resources>
+        <image name="nowPlayingDefault" width="1024" height="1024"/>
+    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

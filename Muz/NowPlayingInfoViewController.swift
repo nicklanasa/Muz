@@ -341,13 +341,8 @@ LastFmArtistInfoCellDelegate {
                 artistInfoCell.topTracks = topTracks
                 artistInfoCell.topAlbums = topAlbums
                 
-                if topTracks?.count > 0 {
-                    artistInfoCell.buySongButton.alpha = 1.0
-                }
-                
-                if topAlbums?.count > 0 {
-                    artistInfoCell.buyAlbumButton.alpha = 1.0
-                }
+                artistInfoCell.buySongButton.alpha = 1.0
+                artistInfoCell.buyAlbumButton.alpha = 1.0
                 
                 return artistInfoCell
             default:

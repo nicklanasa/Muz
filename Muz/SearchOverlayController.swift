@@ -126,13 +126,11 @@ RecommendedSearchCellDelegate {
         searchDisplayController?.searchResultsTableView.separatorStyle = .None
         
         self.recentSongs = DataManager.manager.datastore.distinctArtistSongsWithSortKey("lastPlayedDate",
-            limit: 10,
+            limit: 50,
             ascending: false)
         
         self.searchBar.scopeButtonTitles = ["Library", "iTunes Store"]
         self.searchBar.selectedScopeButtonIndex = 0
-        
-        self.cancelButton.applyBuyStyle()
     }
     
     func dismiss() {
@@ -474,11 +472,11 @@ RecommendedSearchCellDelegate {
             albumsPredicate = NSPredicate(format: "title contains[cd] %@", searchText)
             
             self.songsController.fetchRequest.predicate = songsPredicate
-            self.songsController.fetchRequest.fetchLimit = 5
+            self.songsController.fetchRequest.fetchLimit = 10
             self.artistsController.fetchRequest.predicate = artistsPredicate
-            self.artistsController.fetchRequest.fetchLimit = 5
+            self.artistsController.fetchRequest.fetchLimit = 10
             self.albumsController.fetchRequest.predicate = albumsPredicate
-            self.albumsController.fetchRequest.fetchLimit = 5
+            self.albumsController.fetchRequest.fetchLimit = 10
             
             if self.songsController.performFetch(nil) {
                 self.tracks = self.songsController.fetchedObjects

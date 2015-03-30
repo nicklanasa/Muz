@@ -75,6 +75,7 @@ NSFetchedResultsControllerDelegate {
     }
 
     func editPlaylist() {
+        LocalyticsSession.shared().tagEvent("Edit Playlist")
         self.tableView.setEditing(true, animated: true)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done",
             style: .Plain,
@@ -83,7 +84,7 @@ NSFetchedResultsControllerDelegate {
     }
     
     func finishEditing() {
-        
+        LocalyticsSession.shared().tagEvent("Finished editing Playlist")
         let selectedRows = self.tableView.indexPathsForSelectedRows()
         if selectedRows?.count > 0 {
             // Delete songs
@@ -166,6 +167,18 @@ NSFetchedResultsControllerDelegate {
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if tableView.editing == true {
+            if self.tableView.indexPathsForSelectedRows()?.count > 0 {
+                self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Delete",
+                    style: .Plain,
+                    target: self,
+                    action: "finishEditing")
+            } else {
+                self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done",
+                    style: .Plain,
+                    target: self,
+                    action: "editPlaylist")
+            }
+            
             return
         } else {
             tableView.deselectRowAtIndexPath(indexPath, animated: true)

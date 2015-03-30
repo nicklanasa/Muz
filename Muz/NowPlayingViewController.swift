@@ -291,6 +291,10 @@ NowPlayingCollectionControllerDelegate {
             alertViewController.addAction(addSongAction)
             alertViewController.addAction(cancelAction)
             
+            if let popoverController = alertViewController.popoverPresentationController {
+                popoverController.barButtonItem = self.navigationItem.rightBarButtonItem
+            }
+            
             self.presentViewController(alertViewController, animated: true, completion: nil)
             
         } else {

@@ -28,7 +28,7 @@ class LastFmEventInfoDetailsCell: UITableViewCell {
         self.event = event
         self.headLinerValueLabel.text = event.headliner
         self.attendenceValueLabel.text = event.attendance.integerValue.abbreviateNumber()
-        self.artistImageView.sd_setImageWithURL(event.image)
+        self.artistImageView.sd_setImageWithURL(event.image, placeholderImage: UIImage(named: "nowPlayingDefault"))
         self.descriptionTextView.text = event.eventDescription
         
         if countElements(event.eventDescription) == 0 {

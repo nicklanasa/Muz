@@ -62,8 +62,8 @@
 - (id)init {
     self = [super init];
     if (self) {
-        self.apiKey = @"d55a72556285ca314e7af8b0fb093e29";
-        self.apiSecret = @"affa81f90053b2114888298f3aeb27b9";
+        self.apiKey = @"";
+        self.apiSecret = @"";
         self.queue = [[NSOperationQueue alloc] init];
         self.maxConcurrentOperationCount = 4;
         self.timeoutInterval = 10;
@@ -1204,6 +1204,7 @@
 - (NSOperation *)getEventsForLocation:(NSString *)location successHandler:(LastFmReturnBlockWithArray)successHandler failureHandler:(LastFmReturnBlockWithError)failureHandler {
     NSDictionary *mappingObject = @{
         @"title": @[ @"./title", @"NSString" ],
+        @"image" : @[@"./image", @"NSArray" ],
         @"venue": @[ @"./venue/name", @"NSString" ],
         @"city": @[ @"./venue/location/city", @"NSString" ],
         @"country": @[ @"./venue/location/country", @"NSString" ],
@@ -1214,7 +1215,7 @@
 
     return [self performApiCallForMethod:@"geo.getEvents"
                                 useCache:[self useCache]
-                              withParams:@{ @"location": [self forceString:location]}
+                              withParams:@{ @"location": [self forceString:location] }
                                rootXpath:@"./events/event"
                         returnDictionary:NO
                            mappingObject:mappingObject

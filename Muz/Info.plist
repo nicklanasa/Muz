@@ -28,13 +28,15 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>6</string>
+	<string>11</string>
 	<key>FacebookAppID</key>
 	<string>1543368972618507</string>
 	<key>FacebookDisplayName</key>
 	<string>Muz</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Your location is used to check if there are any upcoming artist events in your area.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>ShadowsIntoLight.ttf</string>
@@ -53,9 +55,9 @@
 	<array>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Your location is used to check if there are any upcoming artist events in your area.</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 </dict>

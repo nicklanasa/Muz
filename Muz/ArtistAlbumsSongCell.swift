@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class ArtistAlbumsSongCell: UITableViewCell {
+class ArtistAlbumsSongCell: SWTableViewCell {
     @IBOutlet weak var songLabel: UILabel!
     @IBOutlet weak var infoLabel: UILabel!
     override func awakeFromNib() {

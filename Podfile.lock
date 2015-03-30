@@ -23,14 +23,14 @@ DEPENDENCIES:
   - uservoice-iphone-sdk
 
 SPEC CHECKSUMS:
-  Appirater: cbdb7f305562cfde585300bfff86da01ae559deb
-  KissXML: e537c38b18ede903ee6de45953a9bd86c131ebe9
-  LastFm: 26cffa0ee5b39a4ad8c9451e882d75ce27036d3e
-  Localytics-AMP: 4d158e216541912109b1ae7ca20b153d053d68c5
-  MBProgressHUD: f3747dcbd45a9e855a6b0674550651e0b7ed250c
-  NSString-HTML: 2ccaa6a9886d35f8176ee5e456442bd1524c151b
+  Appirater: 8783318c36414e8de3ea023443028df94c1b784b
+  KissXML: ce643413d618ad69886d0d43c3792b7dedfe476e
+  LastFm: 28c752f8e8646531524a123ce7f6722bbfc9d3c5
+  Localytics-AMP: 8cc9eba1d63fa50c5ec780451dfe00b4fbad4fb9
+  MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
+  NSString-HTML: 0dc0ae9d430d20a96dda961a346fa842fffa8c1f
   SDWebImage: 71b7cdc1d1721d6a82ed62889030225f2c249e29
-  UIImage-Resize: fc57263eed2cd98f74e5ba4848bedae979a0bdf0
-  uservoice-iphone-sdk: 02d974352f04d8457ee39b8514d1c58ef0e2c860
+  UIImage-Resize: fa776860f10e6900bbaf53a73e494bdceaaccc77
+  uservoice-iphone-sdk: 349d9ef36d3c43939d28390b9e86bb32b65fe983
 
-COCOAPODS: 0.36.0
+COCOAPODS: 0.35.0
