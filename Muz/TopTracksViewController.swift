@@ -67,7 +67,8 @@ class TopTracksViewController: RootViewController, LastFmTrackBuyLinksRequestDel
         
         self.navigationItem.title = self.artist
         
-        ItunesSearch.sharedInstance().affiliateToken = "10lSyo";
+        ItunesSearch.sharedInstance().affiliateToken = "10lSyo"
+        
         ItunesSearch.sharedInstance().getIdForArtist(self.artist, successHandler: { (artists) -> Void in
             if artists.count > 0 {
                 if let artistDict = artists.first as? NSDictionary {

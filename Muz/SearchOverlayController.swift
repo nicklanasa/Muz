@@ -91,6 +91,9 @@ RecommendedSearchCellDelegate {
     }
     
     override init() {
+        
+        ItunesSearch.sharedInstance().affiliateToken = "10lSyo"
+        
         super.init(nibName: "SearchOverlayController", bundle: nil)
     }
     

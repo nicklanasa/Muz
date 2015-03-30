@@ -31,7 +31,7 @@ class TopAlbumsViewController: RootViewController, LastFmAlbumBuyLinksRequestDel
     init(topAlbums: [AnyObject]) {
         super.init(nibName: "TopAlbumsViewController", bundle: nil)
         
-        ItunesSearch.sharedInstance().affiliateToken = "10lSyo";
+        ItunesSearch.sharedInstance().affiliateToken = "10lSyo"
         
         self.topAlbums = topAlbums
     }
