@@ -35,7 +35,7 @@ class SongCell: SWTableViewCell {
     
     func updateWithSong(song: Song) {
         self.songLabel.text = song.title
-        self.infoLabel.text = NSString(format: "%@ %@", self.infoLabel.text!, song.albumTitle)
+        self.infoLabel.text = NSString(format: "%@ %@", song.artist, song.albumTitle)
         self.songImageView.setImageForSong(song: song)
         self.songImageView.applyRoundedStyle()
     }
