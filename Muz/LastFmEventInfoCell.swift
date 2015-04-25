@@ -25,7 +25,7 @@ class LastFmEventInfoCell: UICollectionViewCell {
             formatter.dateStyle = .ShortStyle
             let date = formatter.stringFromDate(event.startDate)
             
-            infoLabel.text = NSString(format: "%@\n%@\n%@", event.city, event.country, date)
+            infoLabel.text = String(format: "%@\n%@\n%@", event.city, event.country, date)
         }
     }
     
@@ -33,7 +33,7 @@ class LastFmEventInfoCell: UICollectionViewCell {
         artistImageView.sd_setImageWithURL(event.image, placeholderImage: UIImage(named: "nowPlayingDefault"))
         
         if let title = event.title {
-            infoLabel.text = NSString(format: "%@\n%@\n%@", event.title, event.city, event.country)
+            infoLabel.text = String(format: "%@\n%@\n%@", event.title, event.city, event.country)
         }
     }
     

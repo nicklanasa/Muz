@@ -84,9 +84,9 @@ class TopAlbumsViewController: RootViewController, LastFmAlbumBuyLinksRequestDel
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("TopAlbumCell",
-            forIndexPath: indexPath) as TopAlbumCell
+            forIndexPath: indexPath) as! TopAlbumCell
         
-        let album = self.albums[indexPath.row] as NSDictionary
+        let album = self.albums[indexPath.row] as! NSDictionary
         cell.infoLabel.text = album["artistName"] as? String
         if let albumName = album["collectionName"] as? String {
             if let rating = album["contentAdvisoryRating"] as? String {
@@ -120,7 +120,7 @@ class TopAlbumsViewController: RootViewController, LastFmAlbumBuyLinksRequestDel
         if let button = sender as? UIButton {
             print("Button tag: \(button.tag)\n")
             
-            let album = self.albums[button.tag] as NSDictionary
+            let album = self.albums[button.tag] as! NSDictionary
             if let albumLink = album["collectionViewUrl"] as? String {
                 LocalyticsSession.shared().tagEvent("Buy album button tapped")
                 UIApplication.sharedApplication().openURL(NSURL(string: albumLink)!)
@@ -133,7 +133,7 @@ class TopAlbumsViewController: RootViewController, LastFmAlbumBuyLinksRequestDel
             print("Button tag: \(button.tag)\n")
             print("fetching buy links for top albums...")
             
-            let topAlbum = self.topAlbums[button.tag] as LastFmAlbum
+            let topAlbum = self.topAlbums[button.tag] as! LastFmAlbum
             
             var lastFmAlbumBuyLinksRequest = LastFmAlbumBuyLinksRequest(artist: topAlbum.artist, album: topAlbum.title)
             lastFmAlbumBuyLinksRequest.delegate = self

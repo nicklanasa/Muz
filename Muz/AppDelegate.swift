@@ -28,6 +28,7 @@ var CurrentAppBackgroundImage = UIImage(named: "nowPlayingDefault")?.applyDarkEf
 class AppDelegate: UIResponder, UIApplicationDelegate, UIAlertViewDelegate {
 
     var window: UIWindow?
+    var hud: MBProgressHUD!
     
     let forumID = 279388
 
@@ -151,44 +152,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIAlertViewDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         MPMusicPlayerController.iPodMusicPlayer().stop()
     }
-
-    func application(application: UIApplication, openURL url: NSURL, sourceApplication: NSString?, annotation: AnyObject) -> Bool {
-        var wasHandled:Bool = FBAppCall.handleOpenURL(url, sourceApplication: sourceApplication)
-        return wasHandled
-    }
-
+    
     func updateLibrary(obj: NSNotification) {
+        print(obj.userInfo)
         if let library = obj.object as? MPMediaLibrary {
             var alert = UIAlertController(title: "Sync Library?", message: "Your iPod library has changed. Would you like to sync it now? This might take about a minute or so.", preferredStyle: UIAlertControllerStyle.Alert)
             
             var syncLibraryAction = UIAlertAction(title: "Ok", style: .Default) { (action) -> Void in
-                JDStatusBarNotification.addStyleNamed("progress", prepare: { (barStyle) -> JDStatusBarStyle! in
-                    
-                    barStyle.barColor = UIColor.clearColor()
-                    barStyle.textColor = UIColor.whiteColor()
-                    barStyle.font = MuzFont
-                    
-                    barStyle.progressBarColor = MuzBlueColor
-                    barStyle.animationType = .Fade
-                    barStyle.progressBarPosition = .Bottom
-                    
-                    return barStyle
-                })
-                
-                JDStatusBarNotification.showWithStatus("", styleName: "progress")
+                self.hud = MBProgressHUD.showHUDAddedTo(self.window?.rootViewController?.view, animated: true)
+                self.hud.mode = .DeterminateHorizontalBar
+                self.hud.labelText = "Syncing library..."
+                self.hud.labelFont = MuzTitleFont
                 DataManager.manager.datastore.resetLibrary({ (error) -> () in
                     DataManager.manager.syncArtists({ (addedItems, error) -> () in
+                        DataManager.manager.syncPlaylists({ (addedItems, error) -> () in
+                            
+                        })
+                        
+                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            self.hud.hide(true)
+                        })
+                        
+                        LocalyticsSession.shared().tagEvent("Sync Library")
                         }, progress: { (addedItems, total) -> () in
-                            var barProgress = CGFloat(addedItems.count) / CGFloat(total)
-                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                JDStatusBarNotification.showProgress(barProgress)
-                                if total == addedItems.count {
-                                    JDStatusBarNotification.dismiss()
-                                    LocalyticsSession.shared().tagEvent("Sync Library")
-                                }
-                            })
+                            self.hud.progress = Float(addedItems.count) / Float(total)
                     })
                 })
+                
             }
             
             var cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)

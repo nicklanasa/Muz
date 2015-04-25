@@ -90,14 +90,14 @@ RecommendedSearchCellDelegate {
         self.searchDisplayController?.searchResultsTableView.reloadData()
     }
     
-    override init() {
+    init() {
         
         ItunesSearch.sharedInstance().affiliateToken = "10lSyo"
         
         super.init(nibName: "SearchOverlayController", bundle: nil)
     }
     
-    required override init(coder aDecoder: NSCoder) {
+    required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -175,9 +175,9 @@ RecommendedSearchCellDelegate {
         if tableView == self.searchDisplayController?.searchResultsTableView {
             
             let cell = searchDisplayController?.searchResultsTableView.dequeueReusableCellWithIdentifier("AblumCell",
-                forIndexPath: indexPath) as TopAlbumCell
+                forIndexPath: indexPath) as! TopAlbumCell
 
-            let songCell = searchDisplayController?.searchResultsTableView.dequeueReusableCellWithIdentifier("SongCell") as SongCell
+            let songCell = searchDisplayController?.searchResultsTableView.dequeueReusableCellWithIdentifier("SongCell") as! SongCell
             
             songCell.buyButton.hidden = true
             songCell.songLabel.text = ""
@@ -227,9 +227,9 @@ RecommendedSearchCellDelegate {
 
         } else {
             let cell = tableView.dequeueReusableCellWithIdentifier("RecommendedSearchCell",
-                forIndexPath: indexPath) as RecommendedSearchCell
+                forIndexPath: indexPath) as! RecommendedSearchCell
             
-            let song = self.recentSongs?[indexPath.row] as NSDictionary
+            let song = self.recentSongs?[indexPath.row] as! NSDictionary
             cell.updateWithSong(song: song)
             
             cell.delegate = self
@@ -240,7 +240,7 @@ RecommendedSearchCellDelegate {
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if tableView == self.searchDisplayController?.searchResultsTableView {
-            let header = self.searchDisplayController?.searchResultsTableView.dequeueReusableHeaderFooterViewWithIdentifier("Header") as ArtistsHeader
+            let header = self.searchDisplayController?.searchResultsTableView.dequeueReusableHeaderFooterViewWithIdentifier("Header") as! ArtistsHeader
             
             if tableView == self.searchDisplayController?.searchResultsTableView {
                 if let searchSection = SearchResultsSection(rawValue: section) {
@@ -309,7 +309,7 @@ RecommendedSearchCellDelegate {
                             }
                         } else {
                             self.dismissViewControllerAnimated(true, completion: { () -> Void in
-                                let artist = self.artists?[indexPath.row] as Artist
+                                let artist = self.artists?[indexPath.row] as! Artist
                                 self.delegate?.searchOverlayController(self, didTapArtist: artist)
                             })
                         }
@@ -321,7 +321,7 @@ RecommendedSearchCellDelegate {
                             }
                         } else {
                             self.dismissViewControllerAnimated(true, completion: { () -> Void in
-                                let album = self.albums?[indexPath.row] as Album
+                                let album = self.albums?[indexPath.row] as! Album
                                 self.delegate?.searchOverlayController(self, didTapArtist: album.artist)
                             })
                         }
@@ -332,7 +332,7 @@ RecommendedSearchCellDelegate {
                             }
                         } else {
                             self.dismissViewControllerAnimated(true, completion: { () -> Void in
-                                let song = self.tracks?[indexPath.row] as Song
+                                let song = self.tracks?[indexPath.row] as! Song
                                 self.delegate?.searchOverlayController(self, didTapSong: song)
                             })
                         }
@@ -400,7 +400,7 @@ RecommendedSearchCellDelegate {
     func openTrackLink(sender: AnyObject?) {
         if let button = sender as? UIButton {
             
-            let track = self.tracks?[button.tag] as NSDictionary
+            let track = self.tracks?[button.tag] as! NSDictionary
             if let trackLink = track["trackViewUrl"] as? String {
                 LocalyticsSession.shared().tagEvent("Buy track button tapped")
                 UIApplication.sharedApplication().openURL(NSURL(string: trackLink)!)
@@ -412,7 +412,7 @@ RecommendedSearchCellDelegate {
         if let button = sender as? UIButton {
             print("Button tag: \(button.tag)\n")
             
-            let album = self.albums?[button.tag] as NSDictionary
+            let album = self.albums?[button.tag] as! NSDictionary
             if let albumLink = album["collectionViewUrl"] as? String {
                 LocalyticsSession.shared().tagEvent("Buy album button tapped")
                 UIApplication.sharedApplication().openURL(NSURL(string: albumLink)!)
@@ -469,7 +469,7 @@ RecommendedSearchCellDelegate {
         var artistsPredicate: NSPredicate?
         var albumsPredicate: NSPredicate?
         
-        if countElements(searchText) > 0 {
+        if count(searchText) > 0 {
             songsPredicate = NSPredicate(format: "title contains[cd] %@", searchText)
             artistsPredicate = NSPredicate(format: "name contains[cd] %@", searchText)
             albumsPredicate = NSPredicate(format: "title contains[cd] %@", searchText)

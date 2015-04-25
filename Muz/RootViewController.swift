@@ -14,14 +14,10 @@ class RootViewController: UIViewController, SearchOverlayControllerDelegate {
     
     var backgroundImageView: UIImageView!
     
-    var screenName: NSString! {
+    var screenName: String! {
         didSet {
             self.navigationItem.title = screenName
         }
-    }
-    
-    override init() {
-        super.init()
     }
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {

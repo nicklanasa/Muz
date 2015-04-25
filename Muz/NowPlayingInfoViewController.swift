@@ -70,7 +70,7 @@ LastFmArtistInfoCellDelegate {
         segmentedControl.addTarget(self, action: "handleSegmentedControlChange", forControlEvents: .ValueChanged)
         
         let lyricsCellNib = UINib(nibName: "NowPlayingInfoLyricsCell", bundle: nil)
-        lyricsCell = lyricsCellNib.instantiateWithOwner(self, options: nil)[0] as NowPlayingInfoLyricsCell
+        lyricsCell = lyricsCellNib.instantiateWithOwner(self, options: nil)[0] as! NowPlayingInfoLyricsCell
         
         let lastFmEventCellNib = UINib(nibName: "LastFmEventCell", bundle: nil)
         lastFmEventCell = lastFmEventCellNib.instantiateWithOwner(self, options: nil)[0] as? LastFmEventCell
@@ -114,7 +114,7 @@ LastFmArtistInfoCellDelegate {
     }
     
     func artistAlbums() {
-        let artist = artistsController.fetchedObjects?[0] as Artist
+        let artist = artistsController.fetchedObjects?[0] as! Artist
         let artistAlbumsViewController = ArtistAlbumsViewController(artist: artist)
         navigationController?.pushViewController(artistAlbumsViewController, animated: true)
     }
@@ -141,7 +141,7 @@ LastFmArtistInfoCellDelegate {
         segmentedControl?.center = CGPointMake(UIScreen.mainScreen().bounds.size.width / 2, 40)
     }
     
-    override init() {
+    init() {
         super.init(nibName: "NowPlayingInfoViewController", bundle: nil)
     }
     
@@ -217,7 +217,7 @@ LastFmArtistInfoCellDelegate {
     }
     
     func requestLastFmDataWithArtist(artistName: NSString?) {
-        var artistLastFmRequest = LastFmArtistInfoRequest(artist: artistName!)
+        var artistLastFmRequest = LastFmArtistInfoRequest(artist: artistName! as String)
         artistLastFmRequest.delegate = self
         artistLastFmRequest.sendURLRequest()
         
@@ -225,28 +225,17 @@ LastFmArtistInfoCellDelegate {
         similiarArtistLastFmRequest.delegate = self
         similiarArtistLastFmRequest.sendURLRequest()
         
-        var artistEventsLastFmRequest = LastFmArtistEventsRequest(artist: artistName!)
+        var artistEventsLastFmRequest = LastFmArtistEventsRequest(artist: artistName! as String)
         artistEventsLastFmRequest.delegate = self
         artistEventsLastFmRequest.sendURLRequest()
         
-        var topAlbumsLastFmRequest = LastFmTopAlbumsRequest(artist: artistName!)
+        var topAlbumsLastFmRequest = LastFmTopAlbumsRequest(artist: artistName! as String)
         topAlbumsLastFmRequest.delegate = self
         topAlbumsLastFmRequest.sendURLRequest()
         
-        var topTracksLastFmRequest = LastFmTopTracksRequest(artist: artistName!)
+        var topTracksLastFmRequest = LastFmTopTracksRequest(artist: artistName! as String)
         topTracksLastFmRequest.delegate = self
         topTracksLastFmRequest.sendURLRequest()
-
-        
-        if !isForSimiliarArtist && self.item != nil {
-//            var lastFmAlbumBuyLinksRequest = LastFmAlbumBuyLinksRequest(artist: self.item!.artist, album: self.item!.albumTitle)
-//            lastFmAlbumBuyLinksRequest.delegate = self
-//            lastFmAlbumBuyLinksRequest.sendURLRequest()
-//            
-//            var lastFmTrackBuyLinksRequest = LastFmTrackBuyLinksRequest(artist: self.item!.artist, title: self.item!.title)
-//            lastFmTrackBuyLinksRequest.delegate = self
-//            lastFmTrackBuyLinksRequest.sendURLRequest()
-        }
     }
     
     func lastFmArtistInfoRequestDidComplete(request: LastFmArtistInfoRequest, didCompleteWithLastFmArtist artist: LastFmArtist?) {
@@ -385,7 +374,7 @@ LastFmArtistInfoCellDelegate {
         
         if collectionView == lastFmEventCell?.collectionView {
             var cell = collectionView.dequeueReusableCellWithReuseIdentifier("LastFmEventInfoCell",
-                forIndexPath: indexPath) as LastFmEventInfoCell
+                forIndexPath: indexPath) as! LastFmEventInfoCell
             
             if let event = events?[indexPath.row] as? LastFmEvent {
                 cell.updateWithEvent(event)
@@ -394,7 +383,7 @@ LastFmArtistInfoCellDelegate {
             return cell
         } else {
             var cell = collectionView.dequeueReusableCellWithReuseIdentifier("SimiliarArtistCell",
-                forIndexPath: indexPath) as SimiliarArtistCollectionViewCell
+                forIndexPath: indexPath) as! SimiliarArtistCollectionViewCell
             
             if let artist = similiarArtists?[indexPath.row] as? LastFmArtist {
                 cell.updateWithArtist(artist)
@@ -428,7 +417,7 @@ LastFmArtistInfoCellDelegate {
     func lastFmArtistInfoCell(cell: LastFmArtistInfoCell, didTapTopTracksButton tracks: [AnyObject]?) {
         if let topTracks = tracks {
             if let artist = similiarArtists?[self.tableView.indexPathForCell(cell)!.row] as? LastFmArtist {
-                let topTracksViewController = TopTracksViewController(topTracks: topTracks, artist: self.artist)
+                let topTracksViewController = TopTracksViewController(topTracks: topTracks, artist: artist.name)
                 self.navigationController?.pushViewController(topTracksViewController, animated: true)
             }
         }

@@ -19,11 +19,11 @@ class SyncOverlayController: OverlayController {
     
     var syncedItems: [AnyObject]?
         
-    override init() {
+    init() {
         super.init(nibName: "SyncOverlayController", bundle: nil)
     }
     
-    required override init(coder aDecoder: NSCoder) {
+    required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -51,11 +51,15 @@ class SyncOverlayController: OverlayController {
             let executionTime = endTime.timeIntervalSinceDate(startTime)
             NSLog("syncLibrary() - executionTime = %f\n", (executionTime * 1000));
             
-            LocalyticsSession.shared().tagEvent("Sync Library")
-            
             NSUserDefaults.standardUserDefaults().setObject(NSNumber(bool: true),
                 forKey: "SyncLibrary")
-            self.dismissViewControllerAnimated(true, completion: nil)
+            
+            self.dismissViewControllerAnimated(true, completion: { () -> Void in
+                DataManager.manager.syncPlaylists({ (addedItems, error) -> () in
+                    LocalyticsSession.shared().tagEvent("Sync Library")
+                })
+            })
+
             }, progress: { (addedItems, total) -> () in
                 self.syncedItems = addedItems
                 if self.syncedItems?.count > 0 {

@@ -22,7 +22,7 @@ SWTableViewCellDelegate {
     
     var artistsController: NSFetchedResultsController!
     
-    override init() {
+    init() {
         super.init(nibName: "ArtistsViewController", bundle: nil)
         
         self.tabBarItem = UITabBarItem(title: nil,

@@ -14,10 +14,10 @@ protocol LastFmArtistEventsRequestDelegate {
 
 class LastFmArtistEventsRequest: LastFmRequest {
     
-    let artist: NSString!
+    let artist: String!
     var delegate: LastFmArtistEventsRequestDelegate?
     
-    init(artist: NSString) {
+    init(artist: String) {
         self.artist = artist
     }
     
@@ -35,12 +35,12 @@ class LastFmArtistEventsRequest: LastFmRequest {
                 
                 for eventsJSON in eventsArray {
                     if let JSON = eventsJSON as? NSDictionary {
-                        events.addObject(LastFmEvent(JSON: JSON))
+                        events.addObject(LastFmEvent(JSON: JSON as [NSObject : AnyObject]))
                     }
                 }
                 
                 self.connectionDidFinishLoading(NSURLConnection())
-                self.delegate!.lastFmArtistEventsRequestDidComplete(self, didCompleteWithEvents: events)
+                self.delegate!.lastFmArtistEventsRequestDidComplete(self, didCompleteWithEvents: events as [AnyObject])
             }
         }) { (error) -> Void in
             self.connectionDidFinishLoading(NSURLConnection())

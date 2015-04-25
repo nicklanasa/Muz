@@ -55,14 +55,6 @@ SWTableViewCellDelegate  {
         super.init(nibName: "ArtistAlbumsViewController", bundle: nil)
     }
     
-    override init() {
-        super.init(nibName: "ArtistAlbumsViewController", bundle: nil)
-    }
-    
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-    }
-    
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -131,7 +123,7 @@ SWTableViewCellDelegate  {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell",
-            forIndexPath: indexPath) as ArtistAlbumsSongCell
+            forIndexPath: indexPath) as! ArtistAlbumsSongCell
         if let songs = self.sortedSongs[indexPath.section] as? [AnyObject] {
             if let song = songs[indexPath.row] as? Song {
                 cell.configure(song: song)
@@ -139,7 +131,7 @@ SWTableViewCellDelegate  {
         }
         
         cell.delegate = self
-        cell.leftUtilityButtons = self.leftSwipeButtons
+        cell.leftUtilityButtons = self.leftSwipeButtons as [AnyObject]
         
         return cell
     }
@@ -155,7 +147,7 @@ SWTableViewCellDelegate  {
         
         if let albumArtist = self.artistsController.objectAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? Artist {
             if let album = albumArtist.albums.allObjects[section] as? Album {
-                let header = tableView.dequeueReusableHeaderFooterViewWithIdentifier("Header") as ArtistAlbumHeader
+                let header = tableView.dequeueReusableHeaderFooterViewWithIdentifier("Header") as! ArtistAlbumHeader
                 header.updateWithAlbum(album: album)
                 header.section = section
                 header.delegate = self
@@ -192,7 +184,7 @@ SWTableViewCellDelegate  {
     // MARK: ArtistAlbumHeaderDelegate
     
     func artistAlbumHeader(header: ArtistAlbumHeader, moreButtonTapped sender: AnyObject) {
-        let header = tableView.headerViewForSection(header.section) as ArtistAlbumHeader
+        let header = tableView.headerViewForSection(header.section) as! ArtistAlbumHeader
         if let songs = self.sortedSongs[header.section] as? [AnyObject] {
             let createPlaylistOverlay = CreatePlaylistOverlay(songs: songs)
             self.presentModalOverlayController(createPlaylistOverlay, blurredController: self)

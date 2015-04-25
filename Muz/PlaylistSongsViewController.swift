@@ -30,7 +30,7 @@ NSFetchedResultsControllerDelegate {
         super.init(nibName: "PlaylistSongsViewController", bundle: nil)
     }
     
-    override init() {
+    init() {
         super.init(nibName: "PlaylistSongsViewController", bundle: nil)
     }
     
@@ -90,8 +90,8 @@ NSFetchedResultsControllerDelegate {
             // Delete songs
             var playlistSongs = NSMutableSet(set: self.playlist.playlistSongs)
             
-            for indexPath in selectedRows as [NSIndexPath] {
-                let playlistSong = self.sortedPlaylistSongs[indexPath.row] as PlaylistSong
+            for indexPath in selectedRows as! [NSIndexPath] {
+                let playlistSong = self.sortedPlaylistSongs[indexPath.row] as! PlaylistSong
                 playlistSongs.removeObject(playlistSong)
                 self.sortedPlaylistSongs.removeAtIndex(indexPath.row)
             }
@@ -147,15 +147,15 @@ NSFetchedResultsControllerDelegate {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell",
-            forIndexPath: indexPath) as SongCell
+            forIndexPath: indexPath) as! SongCell
                 
         if self.isReadOnly {
-            let readOnlyPlaylist = self.readOnlyPlaylistSongsQuery?.collections?[indexPath.section] as MPMediaPlaylist
+            let readOnlyPlaylist = self.readOnlyPlaylistSongsQuery?.collections?[indexPath.section] as! MPMediaPlaylist
             if let item = readOnlyPlaylist.items[indexPath.row] as? MPMediaItem {
                 cell.updateWithItem(item)
             }
         } else {
-            let playlistSong = self.sortedPlaylistSongs[indexPath.row] as PlaylistSong
+            let playlistSong = self.sortedPlaylistSongs[indexPath.row] as! PlaylistSong
             let song = playlistSong.song
             cell.updateWithSong(song)
         }
@@ -184,7 +184,7 @@ NSFetchedResultsControllerDelegate {
             tableView.deselectRowAtIndexPath(indexPath, animated: true)
             
             if self.isReadOnly {
-                let readOnlyPlaylist = self.readOnlyPlaylistSongsQuery?.collections?[indexPath.section] as MPMediaPlaylist
+                let readOnlyPlaylist = self.readOnlyPlaylistSongsQuery?.collections?[indexPath.section] as! MPMediaPlaylist
                 if let item = readOnlyPlaylist.items[indexPath.row] as? MPMediaItem {
                     DataManager.manager.datastore.songForSongName(item.title, artist: item.artist, completion: { (song) -> () in
                         if let songToPlay = song {
@@ -194,7 +194,7 @@ NSFetchedResultsControllerDelegate {
                 }
             } else {
                 // Create collection of playlist songs.
-                let playlistSong = self.sortedPlaylistSongs[indexPath.row] as PlaylistSong
+                let playlistSong = self.sortedPlaylistSongs[indexPath.row] as! PlaylistSong
                 let song = playlistSong.song
                 let collection = MediaSession.sharedSession.collectionWithPlaylistSongs(sortedPlaylistSongs)
                 self.presentNowPlayViewController(song, collection: collection)
@@ -215,8 +215,8 @@ NSFetchedResultsControllerDelegate {
     }
     
     func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
-        var playlistSongSource = self.sortedPlaylistSongs[sourceIndexPath.row] as PlaylistSong
-        var playlistSongTo = self.sortedPlaylistSongs[destinationIndexPath.row] as PlaylistSong
+        var playlistSongSource = self.sortedPlaylistSongs[sourceIndexPath.row] as! PlaylistSong
+        var playlistSongTo = self.sortedPlaylistSongs[destinationIndexPath.row] as! PlaylistSong
         playlistSongSource.order = destinationIndexPath.row + 1
         playlistSongTo.order = sourceIndexPath.row + 1
         

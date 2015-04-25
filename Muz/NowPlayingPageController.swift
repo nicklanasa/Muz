@@ -52,12 +52,12 @@ class NowPlayingPageController: UIViewController, UIPageViewControllerDelegate, 
     }
     
     func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
-        var previousVC = viewController as RootViewController
+        var previousVC = viewController as! RootViewController
         return previousVC
     }
     
     func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
-        var nextVC = viewController as RootViewController
+        var nextVC = viewController as! RootViewController
         return nextVC
     }
     

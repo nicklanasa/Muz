@@ -22,7 +22,7 @@ UITableViewDataSource {
     private var lovedQuery: MPMediaQuery!
     private var sortedResults = NSMutableArray()
     
-    override init() {
+    init() {
         super.init(nibName: "LovedViewController", bundle: nil)
         
         self.tabBarItem = UITabBarItem(title: nil,
@@ -81,8 +81,8 @@ UITableViewDataSource {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell",
-            forIndexPath: indexPath) as ArtistCell
-        let song = self.sortedResults[indexPath.row] as MPMediaItem
+            forIndexPath: indexPath) as! ArtistCell
+        let song = self.sortedResults[indexPath.row] as! MPMediaItem
         
         cell.artistLabel.text = song.title
         cell.infoLabel.text = song.artist
@@ -97,7 +97,7 @@ UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let song = self.sortedResults[indexPath.row] as MPMediaItem
+        let song = self.sortedResults[indexPath.row] as! MPMediaItem
         //presentNowPlayViewControllerWithItem(song)
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }

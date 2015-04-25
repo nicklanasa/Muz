@@ -36,7 +36,7 @@ NowPlayingCollectionControllerDelegate {
     @IBOutlet weak var progressOverlayView: UIView!
     @IBOutlet weak var progressOverlayViewLabel: UILabel!
     
-    override init() {
+    init() {
         super.init(nibName: "NowPlayingViewController", bundle: nil)
         
         self.tabBarItem = UITabBarItem(title: "",
@@ -101,7 +101,7 @@ NowPlayingCollectionControllerDelegate {
                 
                 let min = floor(self.playerController.currentPlaybackTime/60)
                 let sec = round(self.playerController.currentPlaybackTime - min * 60)
-                self.progressOverlayViewLabel.text = NSString(format: "%2.f:%02.f", min, sec)
+                self.progressOverlayViewLabel.text = String(format: "%2.f:%02.f", min, sec)
             }, completion: { (success) -> Void in
                 
             })
@@ -504,16 +504,16 @@ NowPlayingCollectionControllerDelegate {
             self.backgroundImageView.image = CurrentAppBackgroundImage
             
             let songInfo = NSString(format: "%@\n%@\n%@", self.item.title, self.item.artist, self.item.albumTitle)
-            let attributedSongInfo = NSMutableAttributedString(string: songInfo)
+            let attributedSongInfo = NSMutableAttributedString(string: songInfo as String)
             let songFont = UIFont(name: MuzFontName, size: 35)!
             let artistFont = UIFont(name: MuzFontNameRegular, size: 18)!
             attributedSongInfo.addAttribute(NSFontAttributeName,
                 value: songFont,
-                range: NSMakeRange(0, countElements(self.item.title)))
+                range: NSMakeRange(0, count(self.item.title)))
             attributedSongInfo.addAttribute(NSFontAttributeName,
                 value: artistFont,
-                range: NSMakeRange(countElements(self.item.title),
-                    countElements(self.item.artist) + 1))
+                range: NSMakeRange(count(self.item.title),
+                    count(self.item.artist) + 1))
             self.songLabel.attributedText = attributedSongInfo
         })
         

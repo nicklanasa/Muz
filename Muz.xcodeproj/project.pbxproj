@@ -161,6 +161,7 @@
 		CEE153501A3B568400BB16EB /* NowPlayingInfoLyricsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEE1534F1A3B568400BB16EB /* NowPlayingInfoLyricsCell.xib */; };
 		CEE153551A3B5B4B00BB16EB /* HTMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE153521A3B5B4B00BB16EB /* HTMLNode.m */; };
 		CEE153561A3B5B4B00BB16EB /* HTMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE153541A3B5B4B00BB16EB /* HTMLParser.m */; };
+		CEF68A0C1AEACD87003B2582 /* MuzWatch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CEF68A0B1AEACD87003B2582 /* MuzWatch.storyboard */; };
 		CEF808291A8A94FF00B6D954 /* NSNumber+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF808281A8A94FF00B6D954 /* NSNumber+Helpers.swift */; };
 		CEF8082B1A8AAEB600B6D954 /* TopAlbumCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF8082A1A8AAEB600B6D954 /* TopAlbumCell.swift */; };
 		CEF8082D1A8AAEC100B6D954 /* TopAlbumCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEF8082C1A8AAEC100B6D954 /* TopAlbumCell.xib */; };
@@ -371,6 +372,8 @@
 		CEE153521A3B5B4B00BB16EB /* HTMLNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTMLNode.m; sourceTree = "<group>"; };
 		CEE153531A3B5B4B00BB16EB /* HTMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTMLParser.h; sourceTree = "<group>"; };
 		CEE153541A3B5B4B00BB16EB /* HTMLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTMLParser.m; sourceTree = "<group>"; };
+		CEF68A081AEACCAA003B2582 /* Muz.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Muz.entitlements; sourceTree = "<group>"; };
+		CEF68A0B1AEACD87003B2582 /* MuzWatch.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MuzWatch.storyboard; sourceTree = SOURCE_ROOT; };
 		CEF808281A8A94FF00B6D954 /* NSNumber+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSNumber+Helpers.swift"; sourceTree = "<group>"; };
 		CEF8082A1A8AAEB600B6D954 /* TopAlbumCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopAlbumCell.swift; sourceTree = "<group>"; };
 		CEF8082C1A8AAEC100B6D954 /* TopAlbumCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TopAlbumCell.xib; sourceTree = "<group>"; };
@@ -541,6 +544,8 @@
 		CE444BB21A36A25500153F77 /* Muz */ = {
 			isa = PBXGroup;
 			children = (
+				CEF68A0B1AEACD87003B2582 /* MuzWatch.storyboard */,
+				CEF68A081AEACCAA003B2582 /* Muz.entitlements */,
 				CE444BB51A36A25500153F77 /* AppDelegate.swift */,
 				CEB200CF1A378B6300E857D8 /* Muz-Bridging-Header.h */,
 				CE4931EB1A3A1B4400B3A4BE /* Application */,
@@ -855,6 +860,9 @@
 						CreatedOnToolsVersion = 6.1.1;
 						DevelopmentTeam = 6Q4UNB2LAJ;
 						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
 							com.apple.BackgroundModes = {
 								enabled = 0;
 							};
@@ -938,6 +946,7 @@
 				CE9BCFED1A45E2D700522F18 /* LastFmEventInfoDetailsCell.xib in Resources */,
 				CEDB618F1A37C40000B90B2D /* LovedViewController.xib in Resources */,
 				CE9BCFDE1A45D18F00522F18 /* LastFmEventCell.xib in Resources */,
+				CEF68A0C1AEACD87003B2582 /* MuzWatch.storyboard in Resources */,
 				CE9BCFD81A44EB5700522F18 /* CreatePlaylistCell.xib in Resources */,
 				CE9BCFE21A45D2CD00522F18 /* LastFmEventInfoCell.xib in Resources */,
 			);
@@ -1240,6 +1249,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Muz/Muz.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1301,6 +1311,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Muz/Muz.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (

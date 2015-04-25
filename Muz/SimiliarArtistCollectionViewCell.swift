@@ -34,9 +34,9 @@ class SimiliarArtistCollectionViewCell: UICollectionViewCell {
     
     func updateWithSongData(song: NSDictionary, forArtist: Bool) {
         if forArtist {
-            artistLabel.text = song.objectForKey("artist") as NSString
+            artistLabel.text = song.objectForKey("artist") as? String
         } else {
-            artistLabel.text = song.objectForKey("title") as NSString
+            artistLabel.text = song.objectForKey("title") as? String
         }
         artistImageView.setImageWithSongData(song: song)
     }

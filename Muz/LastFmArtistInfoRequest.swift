@@ -14,12 +14,12 @@ protocol LastFmArtistInfoRequestDelegate {
 
 class LastFmArtistInfoRequest: LastFmRequest {
     
-    let artist: NSString!
+    let artist: String!
     var delegate: LastFmArtistInfoRequestDelegate?
     
     var responseData = NSMutableData()
     
-    init(artist: NSString) {
+    init(artist: String) {
         self.artist = artist
     }
     

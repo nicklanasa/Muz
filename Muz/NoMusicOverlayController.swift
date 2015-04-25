@@ -12,7 +12,7 @@ import UIKit
 class NoMusicOverlayController: UIViewController {
     
     @IBOutlet weak var noMusicLabel: UILabel!
-    override init() {
+    init() {
         super.init(nibName: "NoMusicOverlayController", bundle: nil)
     }
 

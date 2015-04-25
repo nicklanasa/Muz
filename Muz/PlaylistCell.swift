@@ -49,7 +49,7 @@ class PlaylistCell: UITableViewCell {
         var playlistDuration = 0.0
         
         if let persistentID = playlist.persistentID {
-            if countElements(persistentID) > 0 {
+            if count(persistentID) > 0 {
                 let predicate = MPMediaPropertyPredicate(value: persistentID.toInt(),
                     forProperty: MPMediaPlaylistPropertyPersistentID,
                     comparisonType: .EqualTo)
@@ -61,7 +61,7 @@ class PlaylistCell: UITableViewCell {
                     playlistDuration = playlistDuration + item.playbackDuration
                 }
             } else {
-                for playlistSong in songs as [PlaylistSong] {
+                for playlistSong in songs as! [PlaylistSong] {
                     playlistDuration = playlistDuration + playlistSong.song.playbackDuration.doubleValue
                 }
             }
@@ -79,15 +79,15 @@ class PlaylistCell: UITableViewCell {
         }
         
         if hours > 0 {
-            self.infoLabel.text = self.infoLabel.text! + NSString(format: " %.0fh", hours)
+            self.infoLabel.text = self.infoLabel.text! + String(format: " %.0fh", hours)
         }
         
         if min > 0 {
-            self.infoLabel.text = self.infoLabel.text! + NSString(format: " %.0fm", min)
+            self.infoLabel.text = self.infoLabel.text! + String(format: " %.0fm", min)
         }
         
         if sec > 0 {
-            self.infoLabel.text = self.infoLabel.text! + NSString(format: " %.0fs", sec)
+            self.infoLabel.text = self.infoLabel.text! + String(format: " %.0fs", sec)
         }
     }
 }

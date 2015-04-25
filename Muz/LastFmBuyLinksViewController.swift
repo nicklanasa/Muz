@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class LastFmBuyLinksViewController: UIView,
+class LastFmBuyLinksViewController: UIViewController,
 UIActionSheetDelegate {
     private var buyLinks = [AnyObject]()
     
@@ -25,13 +25,13 @@ UIActionSheetDelegate {
     :returns: void
     */
     init(buyLinks: [AnyObject]) {
-        super.init()
+        super.init(nibName: "LastFmBuyLinksViewController", bundle: nil)
         self.buyLinks = buyLinks
         configureActionSheet()
     }
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(frame: CGRect) {
+        super.init(nibName: "LastFmBuyLinksViewController", bundle: nil)
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -47,10 +47,10 @@ UIActionSheetDelegate {
             cancelButtonTitle: "Cancel",
             destructiveButtonTitle: nil)
         
-        for buyLink in self.buyLinks as [LastFmBuyLink] {
-            if countElements(buyLink.name) > 0 && buyLink.price.integerValue > 0 {
+        for buyLink in self.buyLinks as! [LastFmBuyLink] {
+            if count(buyLink.name) > 0 && buyLink.price.integerValue > 0 {
                 let buttonTitle = NSString(format: "%@", buyLink.name, buyLink.price)
-                self.buyLinksActionSheet.addButtonWithTitle(buttonTitle)
+                self.buyLinksActionSheet.addButtonWithTitle(buttonTitle as String)
                 self.numberOfValidBuyLinks++
             }
         }

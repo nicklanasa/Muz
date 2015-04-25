@@ -65,7 +65,7 @@ var CurrentQueueItems: MPMediaItemCollection!
         
         var image: UIImage?
         if artistsQuery.items.count > 0 {
-            for item in artistsQuery.items as [MPMediaItem] {
+            for item in artistsQuery.items as! [MPMediaItem] {
                 if let artwork = item.artwork {
                     if let artistImage = artwork.imageWithSize(CGSizeMake(200, 200)) {
                         image = artistImage
@@ -116,7 +116,7 @@ var CurrentQueueItems: MPMediaItemCollection!
         
         var image: UIImage?
         if albumsQuery.items.count > 0 {
-            for item in albumsQuery.items as [MPMediaItem] {
+            for item in albumsQuery.items as! [MPMediaItem] {
                 if let artwork = item.artwork {
                     if let albumImage = artwork.imageWithSize(CGSizeMake(200, 200)) {
                         image = albumImage
@@ -162,7 +162,7 @@ var CurrentQueueItems: MPMediaItemCollection!
         
         var image: UIImage?
         if songsQuery.items.count > 0 {
-            let item = songsQuery.items[0] as MPMediaItem
+            let item = songsQuery.items[0] as! MPMediaItem
             if let artwork = item.artwork {
                 if let songImage = artwork.imageWithSize(CGSizeMake(50, 50)) {
                     image = songImage
@@ -177,7 +177,7 @@ var CurrentQueueItems: MPMediaItemCollection!
         
         self.removeAllPredicatesFromQuery(songsQuery)
         
-        let persistentID = song.objectForKey("persistentID") as NSNumber
+        let persistentID = song.objectForKey("persistentID") as! NSNumber
         
         songsQuery.addFilterPredicate(MPMediaPropertyPredicate(value: persistentID,
             forProperty: MPMediaItemPropertyPersistentID,
@@ -185,7 +185,7 @@ var CurrentQueueItems: MPMediaItemCollection!
         
         var image: UIImage?
         if songsQuery.items.count > 0 {
-            let item = songsQuery.items[0] as MPMediaItem
+            let item = songsQuery.items[0] as! MPMediaItem
             if let artwork = item.artwork {
                 if let songImage = artwork.imageWithSize(CGSizeMake(50, 50)) {
                     image = songImage
@@ -204,11 +204,11 @@ var CurrentQueueItems: MPMediaItemCollection!
     // Helpers
     
     func removeAllPredicatesFromQuery(query: MPMediaQuery) {
-        if query.filterPredicates != nil {
-            for predicate in query.filterPredicates.allObjects as [MPMediaPropertyPredicate] {
-                query.removeFilterPredicate(predicate)
-            }
-        }
+//        if query.filterPredicates != nil {
+//            for predicate in query.filterPredicates as! [MPMediaPropertyPredicate] {
+//                query.removeFilterPredicate(predicate)
+//            }
+//        }
     }
     
     
@@ -234,14 +234,14 @@ var CurrentQueueItems: MPMediaItemCollection!
         
         var artistsArr = NSMutableArray()
         let query = MPMediaQuery.albumsQuery()
-        let results = query.collections as NSArray
+        let results = query.collections as! NSArray
         return results
     }
     
     func artworkForSongs() -> NSArray {
         var artistsArr = NSMutableArray()
         let query = MPMediaQuery.songsQuery()
-        let results = query.items as NSArray
+        let results = query.items as! NSArray
         return results
     }
     
@@ -265,7 +265,7 @@ var CurrentQueueItems: MPMediaItemCollection!
             }
         }
         
-        return artistsSections
+        return artistsSections as [AnyObject]
     }
     
     func playlistSongsForPlaylist(playlist: Playlist) -> MPMediaQuery {
@@ -284,7 +284,7 @@ var CurrentQueueItems: MPMediaItemCollection!
     func collectionWithPlaylistSongs(songs: [AnyObject]) -> MPMediaItemCollection {
         var items = NSMutableArray()
         
-        for playlistSong in songs as [PlaylistSong] {
+        for playlistSong in songs as! [PlaylistSong] {
             var query = MPMediaQuery.songsQuery()
             println(playlistSong.song.persistentID)
             let predicate = MPMediaPropertyPredicate(value: playlistSong.song.persistentID,
@@ -296,6 +296,6 @@ var CurrentQueueItems: MPMediaItemCollection!
         
         println(items)
         
-        return MPMediaItemCollection(items: items)
+        return MPMediaItemCollection(items: items as [AnyObject])
     }
 }

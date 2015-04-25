@@ -14,10 +14,10 @@ protocol LastFmTopTracksRequestDelegate {
 
 class LastFmTopTracksRequest: LastFmRequest {
     
-    let artist: NSString!
+    let artist: String!
     var delegate: LastFmTopTracksRequestDelegate?
     
-    init(artist: NSString) {
+    init(artist: String) {
         self.artist = artist
     }
     
@@ -33,12 +33,12 @@ class LastFmTopTracksRequest: LastFmRequest {
             
             for track in results {
                 if let JSON = track as? NSDictionary {
-                    tracks.addObject(LastFmTrack(JSON: JSON))
+                    tracks.addObject(LastFmTrack(JSON: JSON as [NSObject : AnyObject]))
                 }
             }
             
             self.connectionDidFinishLoading(NSURLConnection())
-            self.delegate!.lastFmTopTracksRequestDidComplete(self, didCompleteWithTracks: tracks)
+            self.delegate!.lastFmTopTracksRequestDidComplete(self, didCompleteWithTracks: tracks as [AnyObject])
             }) { (error) -> Void in
                 self.connectionDidFinishLoading(NSURLConnection())
                 self.delegate!.lastFmTopTracksRequestDidComplete(self, didCompleteWithTracks: [])

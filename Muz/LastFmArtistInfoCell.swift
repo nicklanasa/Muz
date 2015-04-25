@@ -82,11 +82,11 @@ class LastFmArtistInfoCell: LastFmCell {
                             let plays = artist.plays ?? 0
                             let listeners = artist.listeners ?? 0
                             
-                            self.artistLabel.text = countElements(artist.name) > 0 ? artist.name : "Unknown name."
-                            self.listenersLabel.text = listeners == 0 ? "" :  NSString(format: "%@", numberFormatter.stringFromNumber(listeners)!)
-                            self.playsLabel.text = plays == 0 ? "" : NSString(format: "%@", numberFormatter.stringFromNumber(plays)!)
+                            self.artistLabel.text = count(artist.name) > 0 ? artist.name : "Unknown name."
+                            self.listenersLabel.text = listeners == 0 ? "" :  String(format: "%@", numberFormatter.stringFromNumber(listeners)!)
+                            self.playsLabel.text = plays == 0 ? "" : String(format: "%@", numberFormatter.stringFromNumber(plays)!)
                             
-                            if countElements(artist.bio) > 0 {
+                            if count(artist.bio) > 0 {
                                 self.bioActivityIndicator.stopAnimating()
                             }
                             

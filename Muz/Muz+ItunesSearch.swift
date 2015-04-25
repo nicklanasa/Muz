@@ -20,8 +20,8 @@ extension ItunesSearch {
         }
         
         
-        self.performApiCallForMethod("search", withParams: params, andFilters: [:], successHandler: { (albums) -> Void in
-            completion(error: nil, results: albums as NSArray)
+        self.performApiCallForMethod("search", withParams: params as [NSObject : AnyObject], andFilters: [:], successHandler: { (albums) -> Void in
+            completion(error: nil, results: albums as! NSArray)
         }) { (error) -> Void in
             completion(error: error, results: [])
         }
@@ -35,8 +35,8 @@ extension ItunesSearch {
         }
         
         
-        self.performApiCallForMethod("search", withParams: params, andFilters: [:], successHandler: { (tracks) -> Void in
-            completion(error: nil, results: tracks as NSArray)
+        self.performApiCallForMethod("search", withParams: params as [NSObject : AnyObject], andFilters: [:], successHandler: { (tracks) -> Void in
+            completion(error: nil, results: tracks as! NSArray)
             }) { (error) -> Void in
                 completion(error: error, results: [])
         }

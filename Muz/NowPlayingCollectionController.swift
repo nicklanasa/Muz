@@ -30,7 +30,7 @@ UITableViewDataSource {
         self.currentlyPlayingCollection = collection
     }
 
-    required override init(coder aDecoder: NSCoder) {
+    required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -68,7 +68,7 @@ UITableViewDataSource {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell",
-            forIndexPath: indexPath) as SongCell
+            forIndexPath: indexPath) as! SongCell
         
         if let item = currentlyPlayingCollection?.items[indexPath.row] as? MPMediaItem {
             cell.updateWithItem(item)

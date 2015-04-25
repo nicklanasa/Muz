@@ -36,7 +36,7 @@ extension Int {
                     num = num/size
                     var numStr: String = floatToString(num)
                     if numStr.hasSuffix(".0") {
-                        numStr = numStr.substringToIndex(advance(numStr.startIndex,countElements(numStr)-2))
+                        numStr = numStr.substringToIndex(advance(numStr.startIndex, count(numStr)-2))
                     }
                     
                     var suffix = abbrev[i]
@@ -46,7 +46,7 @@ extension Int {
         } else {
             abbrevNum = "\(num)"
             if abbrevNum.hasSuffix(".0") {
-                abbrevNum = abbrevNum.substringToIndex(advance(abbrevNum.startIndex, countElements(abbrevNum)-2))
+                abbrevNum = abbrevNum.substringToIndex(advance(abbrevNum.startIndex, count(abbrevNum)-2))
             }
         }
         

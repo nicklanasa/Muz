@@ -19,11 +19,11 @@ FBLoginViewDelegate {
     
     var fbLoginView = FBLoginView(frame: CGRectZero)
     
-    override init() {
+    init() {
         super.init(nibName: "LastFmLoginOverlayController", bundle: nil)
     }
     
-    required override init(coder aDecoder: NSCoder) {
+    required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -56,7 +56,7 @@ FBLoginViewDelegate {
         println("User: \(user)")
         //println("User ID: \(user.objectID)")
         println("User Name: \(user.name)")
-        var userEmail = user.objectForKey("email") as String
+        var userEmail = user.objectForKey("email") as! String
         println("User Email: \(userEmail)")
     }
     
@@ -117,7 +117,7 @@ FBLoginViewDelegate {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell",
-            forIndexPath: indexPath) as LastFmLoginCell
+            forIndexPath: indexPath) as! LastFmLoginCell
         
         return cell
     }

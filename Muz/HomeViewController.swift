@@ -56,7 +56,7 @@ UICollectionViewDataSource, CLLocationManagerDelegate {
 
     private var recentPlaylistsController: NSFetchedResultsController?
     
-    override init() {
+    init() {
         super.init(nibName: "HomeViewController", bundle: nil)
         
         self.tabBarItem = UITabBarItem(title: nil,
@@ -103,7 +103,7 @@ UICollectionViewDataSource, CLLocationManagerDelegate {
         if self.recentPlaylistsController!.performFetch(&recentPlaylistsError) {
             if self.recentArtistSongs?.count > 0 {
                 if let song = self.recentArtistSongs?[0] as? NSDictionary {
-                    var similiarArtistLastFmRequest = LastFmSimiliarArtistsRequest(artist: song.objectForKey("artist") as NSString)
+                    var similiarArtistLastFmRequest = LastFmSimiliarArtistsRequest(artist: song.objectForKey("artist") as! NSString)
                     similiarArtistLastFmRequest.delegate = self
                     similiarArtistLastFmRequest.sendURLRequest()
                 }
@@ -173,7 +173,7 @@ UICollectionViewDataSource, CLLocationManagerDelegate {
         
         let sectionType = HomeSectionType(rawValue: indexPath.section)!
         
-        var songCell = tableView.dequeueReusableCellWithIdentifier("SongCell") as SongCell
+        var songCell = tableView.dequeueReusableCellWithIdentifier("SongCell") as! SongCell
         
         switch sectionType {
         case .NowPlaying:
@@ -206,12 +206,12 @@ UICollectionViewDataSource, CLLocationManagerDelegate {
         case .RecentPlaylists:
             
             if indexPath.row == 0 {
-                return tableView.dequeueReusableCellWithIdentifier("AddPlaylistCell") as AddPlaylistCell
+                return tableView.dequeueReusableCellWithIdentifier("AddPlaylistCell") as! AddPlaylistCell
             }
             
-            let playlist = self.recentPlaylistsController!.objectAtIndexPath(NSIndexPath(forRow: indexPath.row - 1, inSection: 0)) as Playlist
+            let playlist = self.recentPlaylistsController!.objectAtIndexPath(NSIndexPath(forRow: indexPath.row - 1, inSection: 0)) as! Playlist
             
-            var cell = tableView.dequeueReusableCellWithIdentifier("PlaylistCell") as PlaylistCell
+            var cell = tableView.dequeueReusableCellWithIdentifier("PlaylistCell") as! PlaylistCell
             cell.updateWithPlaylist(playlist)
             
             return cell
@@ -241,7 +241,7 @@ UICollectionViewDataSource, CLLocationManagerDelegate {
             
             return lastFmEventCell
         default:
-            let song = self.recentSongs?[indexPath.row] as NSDictionary
+            let song = self.recentSongs?[indexPath.row] as! NSDictionary
             songCell.updateWithSongData(song)            
             return songCell
         }
@@ -279,7 +279,7 @@ UICollectionViewDataSource, CLLocationManagerDelegate {
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if let sectionType = HomeSectionType(rawValue: section) {
-            let header = tableView.dequeueReusableHeaderFooterViewWithIdentifier("Header") as ArtistsHeader
+            let header = tableView.dequeueReusableHeaderFooterViewWithIdentifier("Header") as! ArtistsHeader
             
             switch sectionType {
             case .UpcomingEvents:
@@ -315,13 +315,13 @@ UICollectionViewDataSource, CLLocationManagerDelegate {
                 self.presentModalOverlayController(CreatePlaylistOverlay(), blurredController: self)
             } else {
                 LocalyticsSession.shared().tagEvent("Recent Playing tapped.")
-                let playlist = self.recentPlaylistsController!.objectAtIndexPath(NSIndexPath(forRow: indexPath.row-1, inSection: 0)) as Playlist
+                let playlist = self.recentPlaylistsController!.objectAtIndexPath(NSIndexPath(forRow: indexPath.row-1, inSection: 0)) as! Playlist
                 let playlistsSongs = PlaylistSongsViewController(playlist: playlist)
                 self.navigationController?.pushViewController(playlistsSongs, animated: true)
             }
         case .RecentSongs:
-            let songData = self.recentSongs?[indexPath.row] as NSDictionary
-            DataManager.manager.datastore.songForSongName(songData.objectForKey("title") as NSString, artist: songData.objectForKey("artist") as NSString, completion: { (song) -> () in
+            let songData = self.recentSongs?[indexPath.row] as! NSDictionary
+            DataManager.manager.datastore.songForSongName(songData.objectForKey("title") as! String, artist: songData.objectForKey("artist") as! String, completion: { (song) -> () in
                 if let playingSong = song {
                     MediaSession.sharedSession.fetchSongsCollection({ (collection) -> () in
                         LocalyticsSession.shared().tagEvent("Recent Song tapped.")
@@ -350,14 +350,14 @@ UICollectionViewDataSource, CLLocationManagerDelegate {
     
         if collectionView == self.recentArtistCell.collectionView {
             var cell = collectionView.dequeueReusableCellWithReuseIdentifier("SimiliarArtistCell",
-                forIndexPath: indexPath) as SimiliarArtistCollectionViewCell
-            let song = self.recentArtistSongs?[indexPath.row] as NSDictionary
+                forIndexPath: indexPath) as! SimiliarArtistCollectionViewCell
+            let song = self.recentArtistSongs?[indexPath.row] as! NSDictionary
             cell.updateWithSongData(song, forArtist: true)
             
             return cell
         } else if collectionView == lastFmEventCell?.collectionView {
             var cell = collectionView.dequeueReusableCellWithReuseIdentifier("LastFmEventInfoCell",
-                forIndexPath: indexPath) as LastFmEventInfoCell
+                forIndexPath: indexPath) as! LastFmEventInfoCell
             
             if let event = events?[indexPath.row] as? LastFmEvent {
                 cell.updateWithGeoEvent(event)
@@ -366,7 +366,7 @@ UICollectionViewDataSource, CLLocationManagerDelegate {
             return cell
         } else {
             var cell = collectionView.dequeueReusableCellWithReuseIdentifier("SimiliarArtistCell",
-                forIndexPath: indexPath) as SimiliarArtistCollectionViewCell
+                forIndexPath: indexPath) as! SimiliarArtistCollectionViewCell
             if let artist = similiarArtists?[indexPath.row] as? LastFmArtist {
                 cell.updateWithArtist(artist)
             }
@@ -377,7 +377,7 @@ UICollectionViewDataSource, CLLocationManagerDelegate {
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         if collectionView == self.recentArtistCell.collectionView {
-            let song = self.recentArtistSongs?[indexPath.row] as NSDictionary
+            let song = self.recentArtistSongs?[indexPath.row] as! NSDictionary
             if let artist = DataManager.manager.datastore.artistForSongData(song: song) {
                 LocalyticsSession.shared().tagEvent("Recent Song tapped.")
                 let artistAlbums = ArtistAlbumsViewController(artist: artist)
@@ -433,13 +433,13 @@ UICollectionViewDataSource, CLLocationManagerDelegate {
     
     func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
         
-        let location = locations.last as CLLocation
+        let location = locations.last as! CLLocation
         CLGeocoder().reverseGeocodeLocation(location, completionHandler: { (placemarks, error) -> Void in
             if error != nil {
                 print(error)
             } else {
                 if placemarks.count > 0 {
-                    var placemark = placemarks.first as CLPlacemark
+                    var placemark = placemarks.first as! CLPlacemark
                     var cityState: String = "\(placemark.locality), \(placemark.administrativeArea)"
                     LastFmGeoEventsRequest.sharedRequest.getEvents(cityState, completion: { (events, error) -> () in
                         self.events = events

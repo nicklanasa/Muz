@@ -41,11 +41,11 @@ class ArtistCell: SWTableViewCell {
         if artist.albums.count > 0 {
             var songs = 0
             
-            for album in artist.albums.allObjects as [Album] {
+            for album in artist.albums.allObjects as! [Album] {
                 songs += album.songs.count
             }
             
-            infoLabel.text = NSString(format: "%d %@, %d %@", artist.albums.allObjects.count,
+            infoLabel.text = String(format: "%d %@, %d %@", artist.albums.allObjects.count,
                 artist.albums.allObjects.count == 1 ? "album" : "albums", songs, songs == 1 ? "song" : "songs")
             infoLabel.hidden = false
             

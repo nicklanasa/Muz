@@ -33,4 +33,4 @@ SPEC CHECKSUMS:
   UIImage-Resize: fa776860f10e6900bbaf53a73e494bdceaaccc77
   uservoice-iphone-sdk: 349d9ef36d3c43939d28390b9e86bb32b65fe983
 
-COCOAPODS: 0.35.0
+COCOAPODS: 0.36.3

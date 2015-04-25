@@ -38,7 +38,7 @@ SWTableViewCellDelegate {
         }
     }
     
-    override init() {
+    init() {
         super.init(nibName: "SongsViewController", bundle: nil)
         
         self.tabBarItem = UITabBarItem(title: nil,
@@ -107,20 +107,20 @@ SWTableViewCellDelegate {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell",
-            forIndexPath: indexPath) as SongCell
+            forIndexPath: indexPath) as! SongCell
         
-        let song = self.songsController.objectAtIndexPath(indexPath) as Song
+        let song = self.songsController.objectAtIndexPath(indexPath) as! Song
         cell.updateWithSong(song)
         
         cell.delegate = self
-        cell.leftUtilityButtons = self.leftSwipeButtons
+        cell.leftUtilityButtons = self.leftSwipeButtons as [AnyObject]
         
         return cell
     }
 
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if let sectionInfo = self.songsController.sections?[section] as? NSFetchedResultsSectionInfo {
-            let header = tableView.dequeueReusableHeaderFooterViewWithIdentifier("Header") as SongsHeader
+            let header = tableView.dequeueReusableHeaderFooterViewWithIdentifier("Header") as! SongsHeader
             header.infoLabel.text = sectionInfo.name
             return header
         } else {
@@ -146,7 +146,7 @@ SWTableViewCellDelegate {
         self.searchDisplayController?.setActive(false, animated: false)
         
         // Get song.
-        let song = self.songsController.objectAtIndexPath(indexPath) as Song
+        let song = self.songsController.objectAtIndexPath(indexPath) as! Song
         
         DataManager.manager.fetchSongsCollection { (collection, error) -> () in
             self.presentNowPlayViewController(song, collection: collection)
@@ -157,7 +157,7 @@ SWTableViewCellDelegate {
 
     func swipeableTableViewCell(cell: SWTableViewCell!, didTriggerLeftUtilityButtonWithIndex index: Int) {
         var indexPath = self.tableView.indexPathForCell(cell)!
-        let song = self.songsController.objectAtIndexPath(indexPath) as Song
+        let song = self.songsController.objectAtIndexPath(indexPath) as! Song
         let createPlaylistOverlay = CreatePlaylistOverlay(song: song)
         self.presentModalOverlayController(createPlaylistOverlay, blurredController: self)
     }

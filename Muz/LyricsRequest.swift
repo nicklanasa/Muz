@@ -55,22 +55,22 @@ class LyricsRequest: WebRequest {
     
     private func parseHTML(html: NSString) {
         var error: NSError?
-        let parser = HTMLParser(string: html, error: &error)
+        let parser = HTMLParser(string: html as String, error: &error)
         
         for inputNode in parser.body().findChildTags("div") {
             if let attribute = inputNode.getAttributeNamed("class") {
                 if attribute == "sen" {
-                    for aNodes in inputNode.findChildTags("a") {
-                        if let contents = aNodes.contents as? NSString {
-                            let range = contents.rangeOfString(item!.title, options: .CaseInsensitiveSearch)
-                            
-                            if range.location != NSNotFound {
-                                let url = aNodes.getAttributeNamed("href") as String
-                                self.requestSongLyrics(url)
-                                return
-                            }
-                        }
-                    }
+//                    for aNodes in inputNode.findChildTags("a") as! [HTMLNode] {
+//                        if let contents = aNodes.contents {
+//                            let range = contents.rangeOfString(item!.title, options: .CaseInsensitiveSearch)
+//                            
+//                            if range.location != NSNotFound {
+//                                let url = aNodes.getAttributeNamed("href") as String
+//                                self.requestSongLyrics(url)
+//                                return
+//                            }
+//                        }
+//                    }
                 }
             }
         }
@@ -82,7 +82,7 @@ class LyricsRequest: WebRequest {
     
     private func requestSongLyrics(url: NSString) {
         
-        var lyrics: NSString? = nil
+        var lyrics: String? = nil
         if let stringURL = url.stringByAddingPercentEscapesUsingEncoding(NSASCIIStringEncoding) {
             let url = NSURL(string: stringURL)!
             let request = NSURLRequest(URL: url)
@@ -90,34 +90,34 @@ class LyricsRequest: WebRequest {
             var response: NSURLResponse?
             var error: NSError?
             
-            NSURLConnection.sendAsynchronousRequest(request, queue: queue, completionHandler: { (response, data, error) -> Void in
-                if let html = NSString(data: data, encoding: NSUTF8StringEncoding) {
-                    var parserError: NSError?
-                    let parser = HTMLParser(string: html, error: &parserError)
-                    var body = parser.body().findChildTags("div")
-                    for divNodes in body {
-                        for dNodes in divNodes.findChildTags("div") {
-                            let contents: NSString = dNodes.rawContents()
-                            if contents.rangeOfString("<!-- start of lyrics -->", options: .CaseInsensitiveSearch).location != NSNotFound {
-                                lyrics = contents.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
-                                lyrics = lyrics!.stringByStrippingHTML()
-                                lyrics = lyrics!.stringByReplacingOccurrencesOfString("<!-- start of lyrics -->", withString: "")
-                                lyrics = lyrics!.stringByReplacingOccurrencesOfString("<!-- end of lyrics -->", withString: "")
-                                
-                                self.delegate?.lyricsRequestDidComplete(self, didCompleteWithLyrics: lyrics)
-                                
-                                LocalyticsSession.shared().tagEvent("Lyrics found.")
-                                
-                                return
-                            }
-                        }
-                    }
-                }
-                
-                LocalyticsSession.shared().tagEvent("Lyrics not found.")
-                
-                self.delegate?.lyricsRequestDidComplete(self, didCompleteWithLyrics: lyrics)
-            })
+//            NSURLConnection.sendAsynchronousRequest(request, queue: queue, completionHandler: { (response, data, error) -> Void in
+//                if let html = NSString(data: data, encoding: NSUTF8StringEncoding) {
+//                    var parserError: NSError?
+//                    let parser = HTMLParser(string: html as String, error: &parserError)
+//                    var body = parser.body().findChildTags("div")
+//                    for divNodes in body {
+//                        for dNodes in divNodes.findChildTags("div") {
+//                            let contents: String = dNodes.rawContents()
+//                            if contents.rangeOfString("<!-- start of lyrics -->", options: .CaseInsensitiveSearch).location != NSNotFound {
+//                                lyrics = contents.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+//                                lyrics = lyrics!.stringByStrippingHTML()
+//                                lyrics = lyrics!.stringByReplacingOccurrencesOfString("<!-- start of lyrics -->", withString: "")
+//                                lyrics = lyrics!.stringByReplacingOccurrencesOfString("<!-- end of lyrics -->", withString: "")
+//                                
+//                                self.delegate?.lyricsRequestDidComplete(self, didCompleteWithLyrics: lyrics)
+//                                
+//                                LocalyticsSession.shared().tagEvent("Lyrics found.")
+//                                
+//                                return
+//                            }
+//                        }
+//                    }
+//                }
+//                
+//                LocalyticsSession.shared().tagEvent("Lyrics not found.")
+//                
+//                self.delegate?.lyricsRequestDidComplete(self, didCompleteWithLyrics: lyrics)
+//            })
         }
     }
 }

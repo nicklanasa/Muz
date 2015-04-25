@@ -16,7 +16,7 @@ class LastFmGeoEventsRequest: LastFmRequest {
         return _sharedRequest
     }
     
-    func getEvents(location: NSString!, completion: (events: [AnyObject]?, error: NSError?) -> ()) {
+    func getEvents(location: String!, completion: (events: [AnyObject]?, error: NSError?) -> ()) {
         var lastFm = LastFm.sharedInstance()
         lastFm.apiKey = self.apiKey
         lastFm.apiSecret = self.apiSecret
@@ -24,11 +24,11 @@ class LastFmGeoEventsRequest: LastFmRequest {
         
         lastFm.getEventsForLocation(location, successHandler: { (results) -> Void in
             var events = NSMutableArray()
-            for event in results as [NSDictionary] {
-                events.addObject(LastFmEvent(JSON: event))
+            for event in results as! [NSDictionary] {
+                events.addObject(LastFmEvent(JSON: event as [NSObject : AnyObject]))
             }
             
-            completion(events: events, error: nil)
+            completion(events: events as [AnyObject], error: nil)
         }) { (error) -> Void in
             completion(events: nil, error: error)
         }

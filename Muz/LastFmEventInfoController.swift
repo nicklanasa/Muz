@@ -47,7 +47,7 @@ UIActionSheetDelegate {
         self.presentViewController(actionSheet, animated: true, completion: nil)
     }
     
-    override init() {
+   init() {
         super.init(nibName: "LastFmEventInfoController", bundle: nil)
     }
     
@@ -73,7 +73,7 @@ UIActionSheetDelegate {
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier("LastFmEventInfoDetailsCell") as LastFmEventInfoDetailsCell
+        var cell = tableView.dequeueReusableCellWithIdentifier("LastFmEventInfoDetailsCell") as! LastFmEventInfoDetailsCell
         cell.updateWithEvent(event)
         return cell
     }

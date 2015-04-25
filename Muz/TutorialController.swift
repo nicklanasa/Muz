@@ -11,7 +11,7 @@ import UIKit
 
 class TutorialController: UIViewController {
     
-    override init() {
+    init() {
         super.init(nibName: "TutorialController", bundle: nil)
     }
     

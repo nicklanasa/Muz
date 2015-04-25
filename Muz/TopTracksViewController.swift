@@ -14,7 +14,7 @@ class TopTracksViewController: RootViewController, LastFmTrackBuyLinksRequestDel
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
-    let artist: NSString!
+    let artist: String!
     
     var tracks: [AnyObject] = [AnyObject]() {
         didSet {
@@ -28,21 +28,21 @@ class TopTracksViewController: RootViewController, LastFmTrackBuyLinksRequestDel
     var albums: [AnyObject]! {
         didSet {
             var albumsIds = NSMutableArray()
-            for album in albums as [NSDictionary] {
+            for album in albums as! [NSDictionary] {
                 if let albumID = album.objectForKey("collectionId") as? NSNumber {
                     albumsIds.addObject(albumID.integerValue)
                 }
             }
             
-            ItunesSearch.sharedInstance().getTracksForAlbums(albumsIds, limitOrNil: NSNumber(int: 30), sucessHandler: { (tracks) -> Void in
+            ItunesSearch.sharedInstance().getTracksForAlbums(albumsIds as [AnyObject], limitOrNil: NSNumber(int: 30), sucessHandler: { (tracks) -> Void in
                 var topTracks = NSMutableArray()
-                for track in tracks as [NSDictionary] {
+                for track in tracks as! [NSDictionary] {
                     if let trackID = track.objectForKey("trackId") as? NSNumber {
                         topTracks.addObject(track)
                     }
                 }
                 
-                self.tracks = topTracks
+                self.tracks = topTracks as [AnyObject]
             }) { (error) -> Void in
                 
             }
@@ -52,9 +52,9 @@ class TopTracksViewController: RootViewController, LastFmTrackBuyLinksRequestDel
     var actionSheet: LastFmBuyLinksViewController!
     var songBuyLinks: [AnyObject]!
     
-    init(topTracks: [AnyObject], artist: NSString!) {
-        super.init(nibName: "TopTracksViewController", bundle: nil)
+    init(topTracks: [AnyObject], artist: String!) {
         self.artist = artist
+        super.init(nibName: "TopTracksViewController", bundle: nil)
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -104,9 +104,9 @@ class TopTracksViewController: RootViewController, LastFmTrackBuyLinksRequestDel
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("TopAlbumCell",
-            forIndexPath: indexPath) as TopAlbumCell
+            forIndexPath: indexPath) as! TopAlbumCell
         
-        let topTrack = self.tracks[indexPath.row] as NSDictionary
+        let topTrack = self.tracks[indexPath.row] as! NSDictionary
         cell.songLabel.text = topTrack.objectForKey("trackName") as? String
         cell.infoLabel.text = topTrack.objectForKey("collectionName") as? String
         if let image = topTrack.objectForKey("artworkUrl100") as? String {
@@ -136,7 +136,7 @@ class TopTracksViewController: RootViewController, LastFmTrackBuyLinksRequestDel
         if let button = sender as? UIButton {
             print("Button tag: \(button.tag)\n")
             
-            let track = self.tracks[button.tag] as NSDictionary
+            let track = self.tracks[button.tag] as! NSDictionary
             if let trackLink = track["trackViewUrl"] as? String {
                 LocalyticsSession.shared().tagEvent("Buy track button tapped")
                 UIApplication.sharedApplication().openURL(NSURL(string: trackLink)!)

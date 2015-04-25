@@ -4,7 +4,7 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>Appirater.xcscheme</key>
+		<key>Pods-Appirater-Appirater.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -49,6 +49,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pods-uservoice-iphone-sdk-UserVoice.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-uservoice-iphone-sdk.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -59,70 +64,65 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>UserVoice.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>35EFDD5B6D7E0F0DE7E322B9</key>
+		<key>005CA71091D29533EAF55E38</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>4EE0E4A19AA750D3922DDF98</key>
+		<key>04093B882793623A272E9FD1</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>58F8D322E1D287AFC97BBB5D</key>
+		<key>0930925024E85D42B0C9AB02</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>617A1A9145C0BD4AAE3A9483</key>
+		<key>6EF5C115A43395861BECBE32</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>702D41E73D4DF9CEF7ED6029</key>
+		<key>79C518D5ED974C6CB6C50CDA</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>82213F30514770614E02E101</key>
+		<key>8366F16D322B8B9224C7BF5B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A11A9BA9B915A0F357AFB5BA</key>
+		<key>9101FD9EB8E0D27BA86C0656</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>CA9C7BC719A4F50B797DEABC</key>
+		<key>C9365DF9CBE486F2ABD2A56B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>D87D7A9E72D79A8C02B4F843</key>
+		<key>C9E8DB9795E560A8A5C0E9C8</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>DAB6FF6BC64EFCBEF1AC3233</key>
+		<key>CD041CFABD575BD39D59E129</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E9C3398D6412DCF25CB4F03D</key>
+		<key>D42739F8D73745C6B52E8259</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>F12E5A0F5DB699F6C89F9487</key>
+		<key>E77A103EA679F701ECE46F4C</key>
 		<dict>
 			<key>primary</key>
 			<true/>

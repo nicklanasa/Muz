@@ -23,7 +23,7 @@ class SongCell: SWTableViewCell {
     func updateWithItem(item: MPMediaItem) {
         self.songLabel.text = item.title
         self.infoLabel.text = item.artist
-        self.infoLabel.text = NSString(format: "%@ %@", self.infoLabel.text!, item.albumTitle)
+        self.infoLabel.text = String(format: "%@ %@", self.infoLabel.text!, item.albumTitle)
         
         if let artwork = item.artwork {
             self.songImageView?.image = item.artwork.imageWithSize(self.songImageView.frame.size)
@@ -35,23 +35,23 @@ class SongCell: SWTableViewCell {
     
     func updateWithSong(song: Song) {
         self.songLabel.text = song.title
-        self.infoLabel.text = NSString(format: "%@ %@", song.artist, song.albumTitle)
+        self.infoLabel.text = String(format: "%@ %@", song.artist, song.albumTitle)
         self.songImageView.setImageForSong(song: song)
         self.songImageView.applyRoundedStyle()
     }
     
     func updateWithArtist(artist: AnyObject) {
-        let libraryArtist = artist as Artist
+        let libraryArtist = artist as! Artist
         self.songLabel.text = libraryArtist.name
         
         if libraryArtist.albums.count > 0 {
             var songs = 0
             
-            for album in libraryArtist.albums.allObjects as [Album] {
+            for album in libraryArtist.albums.allObjects as! [Album] {
                 songs += album.songs.count
             }
             
-            infoLabel.text = NSString(format: "%d %@, %d %@", songs,
+            infoLabel.text = String(format: "%d %@, %d %@", songs,
                 songs == 1 ? "album" : "albums", songs, songs == 1 ? "song" : "songs")
             infoLabel.hidden = false
             
@@ -76,7 +76,7 @@ class SongCell: SWTableViewCell {
     func updateWithSong(song: Song, forArtist: Bool) {
         if forArtist {
             self.songLabel.text = song.artist
-            self.infoLabel.text = NSString(format: "%@ %@", song.artist, song.albumTitle)
+            self.infoLabel.text = String(format: "%@ %@", song.artist, song.albumTitle)
             self.songImageView.setImageForSong(song: song)
             self.songImageView.applyRoundedStyle()
         } else {
@@ -85,8 +85,8 @@ class SongCell: SWTableViewCell {
     }
     
     func updateWithSongData(song: NSDictionary) {
-        self.songLabel.text = song.objectForKey("title") as NSString
-        self.infoLabel.text = song.objectForKey("artist") as NSString
+        self.songLabel.text = song.objectForKey("title") as? String
+        self.infoLabel.text = song.objectForKey("artist") as? String
         self.songImageView.setImageWithSongData(song: song)
         self.songImageView.applyRoundedStyle()
     }

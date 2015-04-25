@@ -31,7 +31,7 @@ class LastFmEventInfoDetailsCell: UITableViewCell {
         self.artistImageView.sd_setImageWithURL(event.image, placeholderImage: UIImage(named: "nowPlayingDefault"))
         self.descriptionTextView.text = event.eventDescription
         
-        if countElements(event.eventDescription) == 0 {
+        if count(event.eventDescription) == 0 {
             self.descriptionTextView.text = "Description unavailable"
         }
         
@@ -42,7 +42,7 @@ class LastFmEventInfoDetailsCell: UITableViewCell {
         self.titleLabel.text = event.title
         self.dateLabel.text = date
         
-        self.locationLabel.text = NSString(format: "%@, %@", event.city, event.country)
+        self.locationLabel.text = String(format: "%@, %@", event.city, event.country)
         
     }
 }

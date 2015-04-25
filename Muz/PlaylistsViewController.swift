@@ -22,14 +22,14 @@ NSFetchedResultsControllerDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
-    let isForExistingPlaylist = false
+    var isForExistingPlaylist = false
     
     // The NSFetchedResultsController used to pull tasks for the selected date.
     var playlistsController: NSFetchedResultsController?
     
     var delegate: PlaylistsViewControllerDelegate?
     
-    override init() {
+    init() {
         super.init(nibName: "PlaylistsViewController", bundle: nil)
         
         self.tabBarItem = UITabBarItem(title: nil,

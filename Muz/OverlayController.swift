@@ -7,14 +7,14 @@
 //
 
 import Foundation
-import UIkit
+import UIKit
 
 class OverlayController: UIViewController {
     @IBOutlet weak var backgroundImageView: UIImageView!
     
     var screenShot: UIImage!
     
-    var overlayScreenName: NSString! {
+    var overlayScreenName: String! {
         didSet {
             self.navigationItem.title = self.overlayScreenName
         }

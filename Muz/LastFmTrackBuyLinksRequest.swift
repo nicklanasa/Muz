@@ -14,11 +14,11 @@ protocol LastFmTrackBuyLinksRequestDelegate {
 
 class LastFmTrackBuyLinksRequest: LastFmRequest {
     
-    let artist: NSString!
-    let title: NSString!
+    let artist: String!
+    let title: String!
     var delegate: LastFmTrackBuyLinksRequestDelegate?
     
-    init(artist: NSString, title: NSString) {
+    init(artist: String, title: String) {
         self.artist = artist
         self.title = title
     }
@@ -36,12 +36,12 @@ class LastFmTrackBuyLinksRequest: LastFmRequest {
                 
                 for buyLinksJSON in buyLinks {
                     if let JSON = buyLinksJSON as? NSDictionary {
-                        links.addObject(LastFmBuyLink(JSON: JSON))
+                        links.addObject(LastFmBuyLink(JSON: JSON as [NSObject : AnyObject]))
                     }
                 }
                 
                 self.connectionDidFinishLoading(NSURLConnection())
-                self.delegate!.lastFmTrackBuyLinksRequestDidComplete(self, didCompleteWithBuyLinks: links)
+                self.delegate!.lastFmTrackBuyLinksRequestDidComplete(self, didCompleteWithBuyLinks: links as [AnyObject])
             }
         }) { (error) -> Void in
             self.connectionDidFinishLoading(NSURLConnection())

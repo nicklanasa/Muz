@@ -26,7 +26,8 @@ PlaylistsViewControllerDelegate {
     @IBOutlet weak var tableView: UITableView!
     
     private var createPlaylistCell: CreatePlaylistCell!
-    var artist: NSString!
+    
+    var artist: String!
     var items: [MPMediaItem]!
     
     var song: Song!
@@ -36,7 +37,7 @@ PlaylistsViewControllerDelegate {
     
     var existingPlaylist: Playlist?
     
-    override init() {
+    init() {
         super.init(nibName: "CreatePlaylistOverlay", bundle: nil)
     }
     
@@ -49,21 +50,16 @@ PlaylistsViewControllerDelegate {
     init(songs: [AnyObject]) {
         self.songs = songs
         if songs.count > 0 {
-            let song: Song = songs[0] as Song
+            let song: Song = songs[0] as! Song
             self.song = song
             self.artist = song.artist
         }
         super.init(nibName: "CreatePlaylistOverlay", bundle: nil)
     }
     
-    init(artist: NSString!) {
+    init(artist: String!) {
         self.artist = artist
         
-        super.init(nibName: "CreatePlaylistOverlay", bundle: nil)
-    }
-    
-    init(artist: Artist!) {
-        self.artist = artist.name
         super.init(nibName: "CreatePlaylistOverlay", bundle: nil)
     }
     
@@ -75,7 +71,11 @@ PlaylistsViewControllerDelegate {
         }
         super.init(nibName: "CreatePlaylistOverlay", bundle: nil)
     }
-    
+ 
+    required init(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+   
     override func viewWillAppear(animated: Bool) {
         self.createPlaylistCell.nameTextField.becomeFirstResponder()
         
@@ -101,7 +101,7 @@ PlaylistsViewControllerDelegate {
         
         var nib = UINib(nibName: "CreatePlaylistCell",
             bundle: nil)
-        self.createPlaylistCell = nib.instantiateWithOwner(self, options: nil)[0] as CreatePlaylistCell
+        self.createPlaylistCell = nib.instantiateWithOwner(self, options: nil)[0] as! CreatePlaylistCell
         self.createPlaylistCell.delegate = self
         
         if let artist = self.artist {
@@ -225,7 +225,7 @@ PlaylistsViewControllerDelegate {
                         })
                     }
                 } else {
-                    if countElements(self.createPlaylistCell.nameTextField.text) > 0 {
+                    if count(self.createPlaylistCell.nameTextField.text) > 0 {
                         if let songs = self.songs {
                             MediaSession.sharedSession.dataManager.datastore.createPlaylistWithSongs(self.createPlaylistCell.nameTextField.text,
                                 songs: songs,
@@ -246,7 +246,7 @@ PlaylistsViewControllerDelegate {
                     }
                 }
             } else {
-                if countElements(self.createPlaylistCell.nameTextField.text) > 0 {
+                if count(self.createPlaylistCell.nameTextField.text) > 0 {
                     MediaSession.sharedSession.dataManager.datastore.createEmptyPlaylistWithName(self.createPlaylistCell.nameTextField.text,
                         playlistType: .None) { () -> () in
                             LocalyticsSession.shared().tagEvent("Playlist created.")

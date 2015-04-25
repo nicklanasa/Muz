@@ -54,7 +54,7 @@ class LastFmEventMapController: RootViewController {
     
     private func loadMap() {
         var request = MKLocalSearchRequest()
-        request.naturalLanguageQuery = NSString(format: "%@ %@, %@", event.venue, event.city, event.country)
+        request.naturalLanguageQuery = String(format: "%@ %@, %@", event.venue, event.city, event.country)
         
         let search = MKLocalSearch(request: request)
         var annotations = NSMutableArray()
@@ -64,7 +64,7 @@ class LastFmEventMapController: RootViewController {
                 if response.mapItems.count == 0 {
                     
                 } else {
-                    for item in response.mapItems as [MKMapItem] {
+                    for item in response.mapItems as! [MKMapItem] {
                         self.matchedItems.addObject(item)
                         
                         var point = MKPointAnnotation()
@@ -75,7 +75,7 @@ class LastFmEventMapController: RootViewController {
                         annotations.addObject(point)
                     }
                     
-                    self.mapView.showAnnotations(annotations, animated: true)
+                    self.mapView.showAnnotations(annotations as [AnyObject], animated: true)
                 }
             }
         }
