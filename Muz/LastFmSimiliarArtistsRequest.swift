@@ -14,12 +14,12 @@ protocol LastFmSimiliarArtistsRequestDelegate {
 
 class LastFmSimiliarArtistsRequest: LastFmRequest {
     
-    let artist: NSString!
+    let artist: String!
     var delegate: LastFmSimiliarArtistsRequestDelegate?
     
     var responseData = NSMutableData()
     
-    init(artist: NSString) {
+    init(artist: String) {
         self.artist = artist
     }
     
@@ -36,12 +36,12 @@ class LastFmSimiliarArtistsRequest: LastFmRequest {
             
             for similiarArtistJSON in data {
                 if let JSON = similiarArtistJSON as? NSDictionary {
-                    artists.addObject(LastFmArtist(JSON: JSON))
+                    artists.addObject(LastFmArtist(JSON: JSON as [NSObject : AnyObject]))
                 }
             }
             
             self.connectionDidFinishLoading(NSURLConnection())
-            self.delegate?.lastFmSimiliarArtistsRequestDidComplete(self, didCompleteWithLastFmArtists: artists)
+            self.delegate?.lastFmSimiliarArtistsRequestDidComplete(self, didCompleteWithLastFmArtists: artists as [AnyObject])
         }) { (error) -> Void in
             self.connectionDidFinishLoading(NSURLConnection())
             self.delegate!.lastFmSimiliarArtistsRequestDidComplete(self, didCompleteWithLastFmArtists: [])

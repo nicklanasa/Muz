@@ -103,7 +103,7 @@ UICollectionViewDataSource, CLLocationManagerDelegate {
         if self.recentPlaylistsController!.performFetch(&recentPlaylistsError) {
             if self.recentArtistSongs?.count > 0 {
                 if let song = self.recentArtistSongs?[0] as? NSDictionary {
-                    var similiarArtistLastFmRequest = LastFmSimiliarArtistsRequest(artist: song.objectForKey("artist") as! NSString)
+                    var similiarArtistLastFmRequest = LastFmSimiliarArtistsRequest(artist: song.objectForKey("artist") as! String)
                     similiarArtistLastFmRequest.delegate = self
                     similiarArtistLastFmRequest.sendURLRequest()
                 }

@@ -221,7 +221,7 @@ LastFmArtistInfoCellDelegate {
         artistLastFmRequest.delegate = self
         artistLastFmRequest.sendURLRequest()
         
-        var similiarArtistLastFmRequest = LastFmSimiliarArtistsRequest(artist: artistName!)
+        var similiarArtistLastFmRequest = LastFmSimiliarArtistsRequest(artist: artistName! as String)
         similiarArtistLastFmRequest.delegate = self
         similiarArtistLastFmRequest.sendURLRequest()
         

@@ -48,7 +48,7 @@ class TopAlbumCell: UITableViewCell {
                 }
             }
         } else {
-            let artistAlbum = album as Album
+            let artistAlbum = album as! Album
             self.songLabel.text = artistAlbum.title
             self.infoLabel.text = artistAlbum.songs.count == 1 ? "\(artistAlbum.songs.count) song" : "\(artistAlbum.songs.count) songs"
             self.songImageView.setImageForAlbum(album: artistAlbum)
@@ -69,17 +69,17 @@ class TopAlbumCell: UITableViewCell {
                 self.songImageView.image = UIImage(named: "nowPlayingDefault")
             }
         } else {
-            let libraryArtist = artist as Artist
+            let libraryArtist = artist as! Artist
             self.songLabel.text = libraryArtist.name
             
             if libraryArtist.albums.count > 0 {
                 var songs = 0
                 
-                for album in libraryArtist.albums.allObjects as [Album] {
+                for album in libraryArtist.albums.allObjects as! [Album] {
                     songs += album.songs.count
                 }
                 
-                infoLabel.text = NSString(format: "%d %@, %d %@", songs,
+                infoLabel.text = String(format: "%d %@, %d %@", songs,
                     songs == 1 ? "album" : "albums", songs, songs == 1 ? "song" : "songs")
                 infoLabel.hidden = false
                 
@@ -115,11 +115,11 @@ class TopAlbumCell: UITableViewCell {
             }
 
         } else {
-            let librarySong = song as Song
+            let librarySong = song as! Song
             print(librarySong.artist)
             print(librarySong.albumTitle)
             self.songLabel.text = librarySong.title
-            self.infoLabel.text = NSString(format: "%@ %@", librarySong.artist, librarySong.albumTitle)
+            self.infoLabel.text = String(format: "%@ %@", librarySong.artist, librarySong.albumTitle)
             self.songImageView.setImageForSong(song: librarySong)
             
             self.buyButton.hidden = true

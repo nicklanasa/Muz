@@ -193,8 +193,8 @@ NSFetchedResultsControllerDelegate {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell",
-            forIndexPath: indexPath) as PlaylistCell
-        let playlist = self.playlistsController?.objectAtIndexPath(indexPath) as Playlist
+            forIndexPath: indexPath) as! PlaylistCell
+        let playlist = self.playlistsController?.objectAtIndexPath(indexPath) as! Playlist
         cell.updateWithPlaylist(playlist)
         return cell
     }
@@ -202,7 +202,7 @@ NSFetchedResultsControllerDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if !self.isForExistingPlaylist {
             tableView.deselectRowAtIndexPath(indexPath, animated: true)
-            var playlist = self.playlistsController?.objectAtIndexPath(indexPath) as Playlist
+            var playlist = self.playlistsController?.objectAtIndexPath(indexPath) as! Playlist
             DataManager.manager.datastore.updatePlaylist(playlist: playlist, completion: { () -> () in
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     let playlistSongsViewController = PlaylistSongsViewController(playlist: playlist)
@@ -210,7 +210,7 @@ NSFetchedResultsControllerDelegate {
                 })
             })
         } else {
-            var playlist = self.playlistsController?.objectAtIndexPath(indexPath) as Playlist
+            var playlist = self.playlistsController?.objectAtIndexPath(indexPath) as! Playlist
             self.navigationController?.popViewControllerAnimated(true)
             self.dismissWithPlaylist(playlist)
         }
@@ -221,8 +221,8 @@ NSFetchedResultsControllerDelegate {
     }
     
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        let playlist = self.playlistsController?.objectAtIndexPath(indexPath) as Playlist
-        return countElements(playlist.persistentID!) == 0
+        let playlist = self.playlistsController?.objectAtIndexPath(indexPath) as! Playlist
+        return count(playlist.persistentID!) == 0
     }
     
     func tableView(tableView: UITableView,
@@ -233,7 +233,7 @@ NSFetchedResultsControllerDelegate {
     
     func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
         let deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete", handler: { (action, indexPath) -> Void in
-            let playlist = self.playlistsController?.objectAtIndexPath(indexPath) as Playlist
+            let playlist = self.playlistsController?.objectAtIndexPath(indexPath) as! Playlist
             MediaSession.sharedSession.dataManager.datastore.deletePlaylistWithPlaylist(playlist, completion: { (error) -> () in
                 if error == nil {
                     

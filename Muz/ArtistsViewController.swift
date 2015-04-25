@@ -169,13 +169,13 @@ SWTableViewCellDelegate {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell",
-            forIndexPath: indexPath) as ArtistCell
+            forIndexPath: indexPath) as! ArtistCell
         
-        let artist = self.artistsController.objectAtIndexPath(indexPath) as Artist
+        let artist = self.artistsController.objectAtIndexPath(indexPath) as! Artist
         cell.updateWithArtist(artist)
         
         cell.delegate = self
-        cell.leftUtilityButtons = self.leftSwipeButtons
+        cell.leftUtilityButtons = self.leftSwipeButtons as [AnyObject]
     
         return cell
     }
@@ -186,7 +186,7 @@ SWTableViewCellDelegate {
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if let sectionInfo = self.artistsController.sections?[section] as? NSFetchedResultsSectionInfo {
-            let header = tableView.dequeueReusableHeaderFooterViewWithIdentifier("Header") as ArtistsHeader
+            let header = tableView.dequeueReusableHeaderFooterViewWithIdentifier("Header") as! ArtistsHeader
             header.infoLabel.text = sectionInfo.name
             return header
         } else {
@@ -198,7 +198,7 @@ SWTableViewCellDelegate {
         self.artistsController.fetchRequest.predicate = nil
         self.searchDisplayController?.setActive(false, animated: false)
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        let artist = self.artistsController.objectAtIndexPath(indexPath) as Artist
+        let artist = self.artistsController.objectAtIndexPath(indexPath) as! Artist
         let artistAlbumsViewController = ArtistAlbumsViewController(artist: artist)
         navigationController?.pushViewController(artistAlbumsViewController, animated: true)
     }
@@ -213,8 +213,8 @@ SWTableViewCellDelegate {
     
     func swipeableTableViewCell(cell: SWTableViewCell!, didTriggerLeftUtilityButtonWithIndex index: Int) {
         var indexPath = self.tableView.indexPathForCell(cell)!
-        let artist = self.artistsController.objectAtIndexPath(indexPath) as Artist
-        let createPlaylistOverlay = CreatePlaylistOverlay(artist: artist)
+        let artist = self.artistsController.objectAtIndexPath(indexPath) as! Artist
+        let createPlaylistOverlay = CreatePlaylistOverlay(artist: artist.name)
         self.presentModalOverlayController(createPlaylistOverlay, blurredController: self)
     }
 }
