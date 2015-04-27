@@ -12,11 +12,18 @@ static NSString * const RootKeyimage = @"image";
 static NSString * const RootKeyname = @"name";
 static NSString * const RootKeyplaycount = @"playcount";
 
+static NSString * const RootKeyplayDate = @"date";
+static NSString * const RootKeyplayArtist = @"artist";
+static NSString * const RootKeyplayAlbum = @"album";
+
 @interface LastFmTrack()
 
 @property (nonatomic, readwrite, strong) NSString *image;
 @property (nonatomic, readwrite, strong) NSString *name;
 @property (nonatomic, readwrite, strong) NSNumber *playcount;
+@property (nonatomic, readwrite, strong) NSDate *date;
+@property (nonatomic, readwrite, strong) NSString *artist;
+@property (nonatomic, readwrite, strong) NSString *album;
 
 @end
 
@@ -43,6 +50,18 @@ static NSString * const RootKeyplaycount = @"playcount";
     //  RootKeyplaycount
     if( [json[ RootKeyplaycount] isKindOfClass:[NSNumber class]])
         self.playcount = json[ RootKeyplaycount];
+    
+    //  RootKeyplaycount
+    if( [json[ RootKeyplayDate] isKindOfClass:[NSDate class]])
+        self.date = json[ RootKeyplayDate];
+    
+    //  RootKeyplaycount
+    if( [json[ RootKeyplayArtist] isKindOfClass:[NSString class]])
+        self.artist = json[ RootKeyplayArtist];
+    
+    //  RootKeyplaycount
+    if( [json[ RootKeyplayAlbum] isKindOfClass:[NSString class]])
+        self.album = json[ RootKeyplayAlbum];
     
 }
 

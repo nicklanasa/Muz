@@ -559,6 +559,9 @@ NowPlayingCollectionControllerDelegate {
         } else {
             tutorialView.alpha = 0.0
         }
+        
+        WKNotificationCenter.defaultCenterWithGroupIndentifier("group.muz").postNotificationObject(["nowPlayingArtwork": self.artwork.image!],
+            identifier: "nowPlayingArtwork")
     }
     
     func dismissTutorial() {

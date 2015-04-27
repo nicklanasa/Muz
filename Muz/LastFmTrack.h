@@ -13,6 +13,9 @@
 @property (nonatomic, readonly, strong) NSString *image;
 @property (nonatomic, readonly, strong) NSString *name;
 @property (nonatomic, readonly, strong) NSNumber *playcount;
+@property (nonatomic, readonly, strong) NSDate *date;
+@property (nonatomic, readonly, strong) NSString *artist;
+@property (nonatomic, readonly, strong) NSString *album;
 
 - (id) initWithJSON:(NSDictionary *)json;
 - (void) parseJSON:(NSDictionary *)json;

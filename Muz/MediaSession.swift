@@ -37,6 +37,44 @@ var CurrentQueueItems: MPMediaItemCollection!
         return _sharedSession
     }
     
+    // Sync unscrobbled songs
+    
+    func syncUnscrobbledSongs() {
+        LastFm.sharedInstance().apiKey = "d55a72556285ca314e7af8b0fb093e29"
+        LastFm.sharedInstance().apiSecret = "affa81f90053b2114888298f3aeb27b9"
+        
+        if let username = NSUserDefaults.standardUserDefaults().objectForKey("LastFMUsername") as? String {
+            if let password = NSUserDefaults.standardUserDefaults().objectForKey("LastFMPassword") as? String {
+                LastFm.sharedInstance().getSessionForUser(username, password: password, successHandler: { (userData) -> Void in
+                    LocalyticsSession.shared().tagEvent("Lastfm Login")
+                    
+                    let session = userData["key"] as! String
+                    LastFm.sharedInstance().session = session
+                    
+                    LastFm.sharedInstance().getRecentTracksForUserOrNil(username, limit: 1, successHandler: { (tracks) -> Void in
+                        if let lastFMTrack = tracks.first as? [NSObject : AnyObject] {
+                            var track = LastFmTrack(JSON: lastFMTrack)
+                            var unscrobbledItems = MediaSession.sharedSession.playedSongsAfterDate(track.date)
+                            for item in unscrobbledItems as! [MPMediaItem] {
+                                LastFm.sharedInstance().sendScrobbledTrack(item.title, byArtist: item.artist, onAlbum: item.albumTitle, withDuration: item.playbackDuration, atTimestamp: item.lastPlayedDate.timeIntervalSince1970, successHandler: { (results) -> Void in
+                                    print(results)
+                                    }, failureHandler: { (error) -> Void in
+                                        print(error)
+                                })
+                            }
+                        }
+                        
+                        }, failureHandler: { (error) -> Void in
+                            print(error)
+                    })
+                    
+                    }, failureHandler: { (error) -> Void in
+                        LocalyticsSession.shared().tagEvent("Failed Lastfm Login")
+                })
+            }
+        }
+    }
+    
     // Playlists
     
     func fetchPlaylists(completion: (playlists: [AnyObject]) -> ()) {
@@ -204,13 +242,8 @@ var CurrentQueueItems: MPMediaItemCollection!
     // Helpers
     
     func removeAllPredicatesFromQuery(query: MPMediaQuery) {
-//        if query.filterPredicates != nil {
-//            for predicate in query.filterPredicates as! [MPMediaPropertyPredicate] {
-//                query.removeFilterPredicate(predicate)
-//            }
-//        }
+        query.filterPredicates = nil
     }
-    
     
     // MARK: OLD
     
@@ -234,14 +267,14 @@ var CurrentQueueItems: MPMediaItemCollection!
         
         var artistsArr = NSMutableArray()
         let query = MPMediaQuery.albumsQuery()
-        let results = query.collections as! NSArray
+        let results = query.collections as NSArray
         return results
     }
     
     func artworkForSongs() -> NSArray {
         var artistsArr = NSMutableArray()
         let query = MPMediaQuery.songsQuery()
-        let results = query.items as! NSArray
+        let results = query.items as NSArray
         return results
     }
     
@@ -253,6 +286,21 @@ var CurrentQueueItems: MPMediaItemCollection!
         }
         
         return songsQuery
+    }
+    
+    func playedSongsAfterDate(date: NSDate) -> [AnyObject] {
+        var songsQuery = MPMediaQuery.songsQuery()
+        var items = songsQuery.items.filter { (item) -> Bool in
+            if let playedDate = item.lastPlayedDate {
+                if playedDate != nil {
+                    return date.compare(playedDate) == .OrderedAscending
+                }
+            }
+            
+            return false
+        }
+        
+        return items
     }
     
     func artistsSectionIndexTitles(artistsQuery: MPMediaQuery) -> [AnyObject] {

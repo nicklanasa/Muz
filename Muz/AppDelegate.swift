@@ -8,7 +8,6 @@
 
 import UIKit
 import MediaPlayer
-import AVFoundation
 
 let MuzFontName = "HelveticaNeue-Thin"
 let MuzFontNameMedium = "HelveticaNeue-Medium"
@@ -146,10 +145,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIAlertViewDelegate {
 
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        MediaSession.sharedSession.syncUnscrobbledSongs()
     }
 
     func applicationWillTerminate(application: UIApplication) {
-        // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         MPMusicPlayerController.iPodMusicPlayer().stop()
     }
     
@@ -187,6 +186,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIAlertViewDelegate {
             alert.addAction(cancelAction)
             
             self.window?.rootViewController?.presentViewController(alert, animated: true, completion: nil)
+        }
+    }
+    
+    func application(application: UIApplication, handleWatchKitExtensionRequest userInfo: [NSObject : AnyObject]?, reply: (([NSObject : AnyObject]!) -> Void)!) {
+        if let action = userInfo?["action"] as? String {
+            
+            var result = Dictionary<String, AnyObject>()
+            
+            if action == "pausePlay" {
+                if MPMusicPlayerController.iPodMusicPlayer().playbackState == .Playing {
+                    MPMusicPlayerController.iPodMusicPlayer().pause()
+                } else {
+                    MPMusicPlayerController.iPodMusicPlayer().play()
+                }
+            }
+            
+            reply(result)
         }
     }
 }
