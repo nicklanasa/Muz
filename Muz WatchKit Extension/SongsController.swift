@@ -19,8 +19,8 @@ class SongsController: WKInterfaceController {
         
         var songQuery = MPMediaQuery.songsQuery()
         
-        self.table.setNumberOfRows(songQuery.items.count, withRowType: "DateRow")
-        
+        self.table.setNumberOfRows(songQuery.items.count, withRowType: "LabelCell")
+        var i = 0
         for i in 0..<songQuery.items.count {
             if let row = self.table.rowControllerAtIndex(i) as? LabelCell {
                 row.textLabel.setText("Current Date")

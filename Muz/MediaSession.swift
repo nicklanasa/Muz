@@ -51,9 +51,19 @@ var CurrentQueueItems: MPMediaItemCollection!
                     let session = userData["key"] as! String
                     LastFm.sharedInstance().session = session
                     
-                    LastFm.sharedInstance().getRecentTracksForUserOrNil(username, limit: 1, successHandler: { (tracks) -> Void in
-                        if let lastFMTrack = tracks.first as? [NSObject : AnyObject] {
+                    LastFm.sharedInstance().getRecentTracksForUserOrNil(username, limit: 2, successHandler: { (tracks) -> Void in
+                        
+                        var t: LastFmTrack?
+                        
+                        for lastFMTrack in tracks as! [[NSObject : AnyObject]] {
                             var track = LastFmTrack(JSON: lastFMTrack)
+                            if let date = track.date {
+                                t = track
+                                break
+                            }
+                        }
+                        
+                        if let track = t {
                             var unscrobbledItems = MediaSession.sharedSession.playedSongsAfterDate(track.date)
                             for item in unscrobbledItems as! [MPMediaItem] {
                                 LastFm.sharedInstance().sendScrobbledTrack(item.title, byArtist: item.artist, onAlbum: item.albumTitle, withDuration: item.playbackDuration, atTimestamp: item.lastPlayedDate.timeIntervalSince1970, successHandler: { (results) -> Void in
@@ -63,6 +73,7 @@ var CurrentQueueItems: MPMediaItemCollection!
                                 })
                             }
                         }
+                        
                         
                         }, failureHandler: { (error) -> Void in
                             print(error)
@@ -290,6 +301,7 @@ var CurrentQueueItems: MPMediaItemCollection!
     
     func playedSongsAfterDate(date: NSDate) -> [AnyObject] {
         var songsQuery = MPMediaQuery.songsQuery()
+        songsQuery.filterPredicates = nil
         var items = songsQuery.items.filter { (item) -> Bool in
             if let playedDate = item.lastPlayedDate {
                 if playedDate != nil {

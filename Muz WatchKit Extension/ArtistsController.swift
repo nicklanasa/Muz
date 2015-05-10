@@ -18,13 +18,11 @@ class AristsController: WKInterfaceController {
         super.awakeWithContext(context)
         
         var artistQuery = MPMediaQuery.artistsQuery()
+        print(artistQuery.items.count)
+        self.table.setNumberOfRows(artistQuery.items.count, withRowType: "LabelCell")
         
-        self.table.setNumberOfRows(artistQuery.items.count, withRowType: "DateRow")
-        
-        for i in 0..<artistQuery.items.count {
+        for (i, item) in enumerate(artistQuery.items) {
             if let row = self.table.rowControllerAtIndex(i) as? LabelCell {
-                row.textLabel.setText("Current Date")
-                var item = artistQuery.items[i] as! MPMediaItem
                 row.textLabel.setText(item.artist)
             }
         }
