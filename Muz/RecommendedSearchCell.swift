@@ -23,7 +23,7 @@ class RecommendedSearchCell: UITableViewCell {
         self.delegate?.recommendedSearchCell(self, didTapRecommendedButton: sender)
     }
     
-    func updateWithSong(#song: NSDictionary) {
+    func updateWithSong(song song: NSDictionary) {
         if let artist = song["artist"] as? String {
             self.recommendedButton.setTitle(artist, forState: .Normal)
         }

@@ -23,13 +23,13 @@ class LastFmTopAlbumsRequest: LastFmRequest {
     
     override func sendURLRequest() {
         super.sendURLRequest()
-        var lastFm = LastFm.sharedInstance()
+        let lastFm = LastFm.sharedInstance()
         lastFm.apiKey = self.apiKey
         lastFm.apiSecret = self.apiSecret
         lastFm.session = "topAlbumsSession"
         
         lastFm.getTopAlbumsForArtist(self.artist, successHandler: { (results) -> Void in
-            var albums = NSMutableArray()
+            let albums = NSMutableArray()
             
             for album in results {
                 if let JSON = album as? NSDictionary {

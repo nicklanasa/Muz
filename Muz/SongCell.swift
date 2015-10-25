@@ -23,10 +23,10 @@ class SongCell: SWTableViewCell {
     func updateWithItem(item: MPMediaItem) {
         self.songLabel.text = item.title
         self.infoLabel.text = item.artist
-        self.infoLabel.text = String(format: "%@ %@", self.infoLabel.text!, item.albumTitle)
+        self.infoLabel.text = String(format: "%@ %@", self.infoLabel.text!, item.albumTitle ?? "")
         
         if let artwork = item.artwork {
-            self.songImageView?.image = item.artwork.imageWithSize(self.songImageView.frame.size)
+            self.songImageView?.image = artwork.imageWithSize(self.songImageView.frame.size)
         } else {
             self.songImageView?.image = UIImage(named: "noArtwork")
         }

@@ -49,17 +49,20 @@ class PlaylistCell: UITableViewCell {
         var playlistDuration = 0.0
         
         if let persistentID = playlist.persistentID {
-            if count(persistentID) > 0 {
-                let predicate = MPMediaPropertyPredicate(value: persistentID.toInt(),
+            if persistentID.characters.count > 0 {
+                let predicate = MPMediaPropertyPredicate(value: Int(persistentID),
                     forProperty: MPMediaPlaylistPropertyPersistentID,
                     comparisonType: .EqualTo)
                 self.playlistQuery.addFilterPredicate(predicate)
                 
-                songs = playlistQuery.items
+                songs = playlistQuery.items ?? []
                 
-                for item in self.playlistQuery.items {
-                    playlistDuration = playlistDuration + item.playbackDuration
+                if let items = self.playlistQuery.items {
+                    for item in items {
+                        playlistDuration = playlistDuration + item.playbackDuration
+                    }
                 }
+                
             } else {
                 for playlistSong in songs as! [PlaylistSong] {
                     playlistDuration = playlistDuration + playlistSong.song.playbackDuration.doubleValue

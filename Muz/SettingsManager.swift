@@ -46,13 +46,10 @@ class SettingsManager {
         switch setting {
         case .Lyrics:
             NSUserDefaults.standardUserDefaults().setObject(value, forKey: "lyrics")
-            LocalyticsSession.shared().tagEvent("Lyrics switch value updated.")
         case .ArtistInfo:
             NSUserDefaults.standardUserDefaults().setObject(value, forKey: "artistInfo")
-            LocalyticsSession.shared().tagEvent("Artist info switch value updated.")
         case .LastFM:
             NSUserDefaults.standardUserDefaults().setObject(value, forKey: "lastFM")
-            LocalyticsSession.shared().tagEvent("LastFM info switch value updated.")
         default: break
             
         }

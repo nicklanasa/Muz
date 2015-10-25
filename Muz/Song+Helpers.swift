@@ -10,7 +10,7 @@ import Foundation
 import CoreData
 import MediaPlayer
 
-extension Song: Printable {
+extension Song {
     func parseItem(item: MPMediaItem) {
         
         self.persistentID = NSNumber(unsignedLongLong: item.persistentID)
@@ -74,9 +74,7 @@ extension Song: Printable {
         
         if item.respondsToSelector("assetURL") {
             if let assetURL = item.assetURL {
-                if let url = assetURL.absoluteString {
-                    self.assetURL = url
-                }
+                self.assetURL = assetURL.absoluteString
             }
         }
         

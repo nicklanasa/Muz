@@ -29,7 +29,7 @@ UIActionSheetDelegate {
     }
     
     func eventActions() {
-        var actionSheet = UIAlertController(title: "Select action", message: nil, preferredStyle: .ActionSheet)
+        let actionSheet = UIAlertController(title: "Select action", message: nil, preferredStyle: .ActionSheet)
         actionSheet.addAction(UIAlertAction(title: "Open in Safari", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
             self.openInBrowser()
         }))
@@ -60,7 +60,7 @@ UIActionSheetDelegate {
         self.event = event
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -73,7 +73,7 @@ UIActionSheetDelegate {
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier("LastFmEventInfoDetailsCell") as! LastFmEventInfoDetailsCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("LastFmEventInfoDetailsCell") as! LastFmEventInfoDetailsCell
         cell.updateWithEvent(event)
         return cell
     }

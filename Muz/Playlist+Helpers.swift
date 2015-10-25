@@ -18,14 +18,14 @@ enum PlaylistType: UInt {
 extension Playlist {
     func parsePlaylist(playlist: MPMediaPlaylist) {
         self.persistentID = String(playlist.persistentID)
-        self.name = playlist.name
+        self.name = playlist.name ?? ""
         self.playlistType = NSNumber(unsignedLong: playlistTypeForPlaylist(playlist).rawValue)
         
     }
     
     func playlistTypeForPlaylist(playlist: MPMediaPlaylist) -> PlaylistType {
-        println(playlist.name)
-        var playlistAttribute = playlist.playlistAttributes
+        print(playlist.name)
+        let playlistAttribute = playlist.playlistAttributes
         switch playlistAttribute.rawValue {
         case PlaylistType.Genius.rawValue:
             return PlaylistType.Genius

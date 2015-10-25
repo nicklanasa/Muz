@@ -29,8 +29,8 @@ class ArtistCell: SWTableViewCell {
         artistLabel.text = song.artist
         infoLabel.text = song.artist
         
-        if let artwork = song.artwork {
-            artistImageView?.image = song.artwork.imageWithSize(artistImageView.frame.size)
+        if let _ = song.artwork {
+            artistImageView?.image = song.artwork?.imageWithSize(artistImageView.frame.size)
         } else {
             artistImageView?.image = UIImage(named: "noArtwork")
         }

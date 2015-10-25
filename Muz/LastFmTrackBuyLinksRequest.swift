@@ -24,7 +24,7 @@ class LastFmTrackBuyLinksRequest: LastFmRequest {
     }
     
     override func sendURLRequest() {
-        var lastFm = LastFm.sharedInstance()
+        let lastFm = LastFm.sharedInstance()
         lastFm.apiKey = self.apiKey
         lastFm.apiSecret = self.apiSecret
         lastFm.session = "trackBuyLinksSession"
@@ -32,7 +32,7 @@ class LastFmTrackBuyLinksRequest: LastFmRequest {
         lastFm.getBuyLinksForTrack(self.title, artist: self.artist, country: "USA", successHandler: { (buyLinks) -> Void in
             if self.delegate != nil {
                 
-                var links = NSMutableArray()
+                let links = NSMutableArray()
                 
                 for buyLinksJSON in buyLinks {
                     if let JSON = buyLinksJSON as? NSDictionary {

@@ -64,9 +64,9 @@ NowPlayingCollectionControllerDelegate {
     private func configureWithSong() {
         if let song = self.song {
             DataManager.manager.fetchItemForSong(song: song, completion: { (item) -> () in
-                if let songItem = item {
+                if let songItem = item, let collection = self.collection {
                     self.item = songItem
-                    self.playerController.setQueueWithItemCollection(self.collection)
+                    self.playerController.setQueueWithItemCollection(collection)
                     self.playerController.nowPlayingItem = self.item
                     self.play()
                 }
@@ -96,7 +96,7 @@ NowPlayingCollectionControllerDelegate {
                 self.progressOverlayView.alpha = 0.8
                 
                 
-                var currentPlaybackTime = Double(self.progressSlider.value) * currentlyPlayingItem.playbackDuration
+                let currentPlaybackTime = Double(self.progressSlider.value) * currentlyPlayingItem.playbackDuration
                 self.playerController.currentPlaybackTime = currentPlaybackTime
                 
                 let min = floor(self.playerController.currentPlaybackTime/60)
@@ -140,10 +140,9 @@ NowPlayingCollectionControllerDelegate {
                     if !self.sentScrobble {
                         self.sentScrobble = true
                         LastFm.sharedInstance().sendScrobbledTrack(self.item.title, byArtist: self.item.artist, onAlbum: self.item.albumTitle, withDuration: self.item.playbackDuration, atTimestamp: NSDate().timeIntervalSince1970 - self.playerController.currentPlaybackTime, successHandler: { (responseData) -> Void in
-                            LocalyticsSession.shared().tagEvent("Sent Scrobble")
-                            print(responseData)
+                            print(responseData, terminator: "")
                             }, failureHandler: { (error) -> Void in
-                                print(error)
+                                print(error, terminator: "")
                                 //LocalyticsSession.shared().tagEvent("Failed Sent Scrobble")
                         })
                     }
@@ -157,22 +156,22 @@ NowPlayingCollectionControllerDelegate {
         songTimer?.invalidate()
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        var swipeLeftGesture = UISwipeGestureRecognizer(target: self, action: "nextSong")
+        let swipeLeftGesture = UISwipeGestureRecognizer(target: self, action: "nextSong")
         swipeLeftGesture.direction = .Left
         view.addGestureRecognizer(swipeLeftGesture)
         
-        var swipeRightGesture = UISwipeGestureRecognizer(target: self, action: "previousSong")
+        let swipeRightGesture = UISwipeGestureRecognizer(target: self, action: "previousSong")
         swipeRightGesture.direction = .Right
         view.addGestureRecognizer(swipeRightGesture)
         
-        var tapGesture = UITapGestureRecognizer(target: self, action: "playPause")
+        let tapGesture = UITapGestureRecognizer(target: self, action: "playPause")
         tapGesture.numberOfTapsRequired = 1
         artwork.addGestureRecognizer(tapGesture)
         
@@ -193,17 +192,17 @@ NowPlayingCollectionControllerDelegate {
         
         playerController.beginGeneratingPlaybackNotifications()
         
-        var nowPlayinglist = UIBarButtonItem(image: UIImage(named: "list"),
+        let nowPlayinglist = UIBarButtonItem(image: UIImage(named: "list"),
             style: .Plain,
             target: self,
             action: "showNowPlayingCollectionController")
         
-        var addToPlaylist = UIBarButtonItem(image: UIImage(named: "add"),
+        let addToPlaylist = UIBarButtonItem(image: UIImage(named: "add"),
             style: .Plain,
             target: self,
             action: "addToPlaylist")
         
-        var search = UIBarButtonItem(image: UIImage(named: "search"),
+        let search = UIBarButtonItem(image: UIImage(named: "search"),
             style: .Plain,
             target: self,
             action: "showSearch")
@@ -230,12 +229,15 @@ NowPlayingCollectionControllerDelegate {
                 self.updateNowPlaying()
                 self.sendNowPlaying()
                 
-                var manager = DataManager.manager
-                manager.datastore.songForSongName(self.item.title, artist: self.item.artist) { (song) -> () in
-                    if let playingSong = song {
-                        manager.datastore.updateSong(song: playingSong, completion: { () -> () in
-                            
-                        })
+                let manager = DataManager.manager
+                
+                if let title = self.item.title, let artist = self.item.artist {
+                    manager.datastore.songForSongName(title, artist: artist) { (song) -> () in
+                        if let playingSong = song {
+                            manager.datastore.updateSong(song: playingSong, completion: { () -> () in
+                                
+                            })
+                        }
                     }
                 }
             })
@@ -253,34 +255,40 @@ NowPlayingCollectionControllerDelegate {
             let alertViewController = UIAlertController(title: "Create Playlist", message: "Please select what you want to create a playlist from.", preferredStyle: UIAlertControllerStyle.ActionSheet)
             
             let addAllArtistSongsAction = UIAlertAction(title: "All songs from Artist", style: .Default) { (action) -> Void in
-                DataManager.manager.datastore.songForSongName(nowPlayingItem.title, artist: nowPlayingItem.artist, completion: { (song) -> () in
-                    if let playingSong = song {
-                        
-                        let songsController = DataManager.manager.datastore.songsControllerWithSortKey("title", limit: nil, ascending: true, sectionNameKeyPath: nil)
-                        songsController.fetchRequest.predicate = NSPredicate(format: "artist = %@", playingSong.artist)
-                        
-                        if songsController.performFetch(nil) {
-                            if let songs = songsController.fetchedObjects {
-                                let createPlaylistOverlay = CreatePlaylistOverlay(songs: songs)
-                                self.presentModalOverlayController(createPlaylistOverlay, blurredController: self)
-                            } else {
-                                UIAlertView(title: "Error!",
-                                    message: "Unable to find songs from that Artist.",
-                                    delegate: self,
-                                    cancelButtonTitle: "Ok").show()
+                if let title = self.item.title, let artist = self.item.artist {
+                    DataManager.manager.datastore.songForSongName(title, artist: artist, completion: { (song) -> () in
+                        if let playingSong = song {
+                            
+                            let songsController = DataManager.manager.datastore.songsControllerWithSortKey("title", limit: nil, ascending: true, sectionNameKeyPath: nil)
+                            songsController.fetchRequest.predicate = NSPredicate(format: "artist = %@", playingSong.artist)
+                            
+                            do {
+                                try songsController.performFetch()
+                                if let songs = songsController.fetchedObjects {
+                                    let createPlaylistOverlay = CreatePlaylistOverlay(songs: songs)
+                                    self.presentModalOverlayController(createPlaylistOverlay, blurredController: self)
+                                } else {
+                                    UIAlertView(title: "Error!",
+                                        message: "Unable to find songs from that Artist.",
+                                        delegate: self,
+                                        cancelButtonTitle: "Ok").show()
+                                }
+                            } catch _ {
                             }
                         }
-                    }
-                })
+                    })
+                }
             }
             
             let addSongAction = UIAlertAction(title: "Currently playing song", style: .Default) { (action) -> Void in
-                DataManager.manager.datastore.songForSongName(nowPlayingItem.title, artist: nowPlayingItem.artist, completion: { (song) -> () in
-                    if let playingSong = song {
-                        let createPlaylistOverlay = CreatePlaylistOverlay(songs: [playingSong])
-                        self.presentModalOverlayController(createPlaylistOverlay, blurredController: self)
-                    }
-                })
+                if let title = nowPlayingItem.title, let artist = nowPlayingItem.artist {
+                    DataManager.manager.datastore.songForSongName(title, artist: artist, completion: { (song) -> () in
+                        if let playingSong = song {
+                            let createPlaylistOverlay = CreatePlaylistOverlay(songs: [playingSong])
+                            self.presentModalOverlayController(createPlaylistOverlay, blurredController: self)
+                        }
+                    })
+                }
             }
             
             let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (action) -> Void in
@@ -330,35 +338,7 @@ NowPlayingCollectionControllerDelegate {
         if let item = self.playerController.nowPlayingItem {
             sentScrobble = false
             self.item = item
-            var manager = DataManager.manager
-            
             self.updateView()
-            
-            self.sendNowPlaying()
-        }
-        
-        LocalyticsSession.shared().tagEvent("Played Song")
-    }
-    
-    func sendNowPlaying() {
-        
-        if let username = NSUserDefaults.standardUserDefaults().objectForKey("LastFMUsername") as? String {
-            if let password = NSUserDefaults.standardUserDefaults().objectForKey("LastFMPassword") as? String {
-                LastFm.sharedInstance().getSessionForUser(username, password: password, successHandler: { (userData) -> Void in
-                    LocalyticsSession.shared().tagEvent("Lastfm Login")
-                    
-                    LastFm.sharedInstance().sendNowPlayingTrack(self.item.title, byArtist: self.item.artist, onAlbum: self.item.albumTitle, withDuration: self.item.playbackDuration, successHandler: { (responseData) -> Void in
-                        LocalyticsSession.shared().tagEvent("Sent NowPlaying Song")
-                        print(responseData)
-                        }, failureHandler: { (error) -> Void in
-                            //LocalyticsSession.shared().tagEvent("Failed Sent NowPlaying Song")
-                    })
-                    
-                    
-                    }, failureHandler: { (error) -> Void in
-                        LocalyticsSession.shared().tagEvent("Failed Lastfm Login")
-                })
-            }
         }
     }
     
@@ -503,18 +483,20 @@ NowPlayingCollectionControllerDelegate {
             
             self.backgroundImageView.image = CurrentAppBackgroundImage
             
-            let songInfo = NSString(format: "%@\n%@\n%@", self.item.title, self.item.artist, self.item.albumTitle)
-            let attributedSongInfo = NSMutableAttributedString(string: songInfo as String)
-            let songFont = UIFont(name: MuzFontName, size: 35)!
-            let artistFont = UIFont(name: MuzFontNameRegular, size: 18)!
-            attributedSongInfo.addAttribute(NSFontAttributeName,
-                value: songFont,
-                range: NSMakeRange(0, count(self.item.title)))
-            attributedSongInfo.addAttribute(NSFontAttributeName,
-                value: artistFont,
-                range: NSMakeRange(count(self.item.title),
-                    count(self.item.artist) + 1))
-            self.songLabel.attributedText = attributedSongInfo
+            if let title = self.item.title, let artist = self.item.artist, albumTitle = self.item.albumTitle {
+                let songInfo = NSString(format: "%@\n%@\n%@", title, artist, albumTitle)
+                let attributedSongInfo = NSMutableAttributedString(string: songInfo as String)
+                let songFont = UIFont(name: MuzFontName, size: 35)!
+                let artistFont = UIFont(name: MuzFontNameRegular, size: 18)!
+                attributedSongInfo.addAttribute(NSFontAttributeName,
+                    value: songFont,
+                    range: NSMakeRange(0, title.characters.count))
+                attributedSongInfo.addAttribute(NSFontAttributeName,
+                    value: artistFont,
+                    range: NSMakeRange(title.characters.count,
+                        artist.characters.count + 1))
+                self.songLabel.attributedText = attributedSongInfo
+            }
         })
         
         if let timer = songTimer {
@@ -574,9 +556,9 @@ NowPlayingCollectionControllerDelegate {
     // MARK: IBAction
     
     @IBAction func infoButtonPressed(sender: AnyObject) {
-        if let item = self.item {
+        if let _ = self.item {
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                var controller = NowPlayingInfoViewController(item: self.item)
+                let controller = NowPlayingInfoViewController(item: self.item)
                 self.navigationController?.pushViewController(controller, animated: true)
             })
         } else {

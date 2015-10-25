@@ -97,7 +97,7 @@ RecommendedSearchCellDelegate {
         super.init(nibName: "SearchOverlayController", bundle: nil)
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -267,7 +267,7 @@ RecommendedSearchCellDelegate {
             return header
         }
         
-        var header = UIView(frame: CGRectMake(0, 0, self.tableView.frame.size.width, 30))
+        let header = UIView(frame: CGRectMake(0, 0, self.tableView.frame.size.width, 30))
         header.backgroundColor = UIColor.clearColor()
         return header
     }
@@ -304,7 +304,6 @@ RecommendedSearchCellDelegate {
                         if let artist = self.artists?[indexPath.row] as? NSDictionary {
                             // Open in iTunes Store
                             if let artistViewUrl = artist["artistViewUrl"] as? String {
-                                LocalyticsSession.shared().tagEvent("Search iTunes Artist tapped")
                                 UIApplication.sharedApplication().openURL(NSURL(string: artistViewUrl)!)
                             }
                         } else {
@@ -390,10 +389,13 @@ RecommendedSearchCellDelegate {
     
     func searchBar(searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
         self.resetData()
-        if searchBar.selectedScopeButtonIndex == 0 {
-            self.searchLibrary(self.searchBar.text)
-        } else {
-            self.searchItunes(self.searchBar.text)
+        
+        if let searchText = self.searchBar.text {
+            if searchBar.selectedScopeButtonIndex == 0 {
+                self.searchLibrary(searchText)
+            } else {
+                self.searchItunes(searchText)
+            }
         }
     }
     
@@ -402,7 +404,6 @@ RecommendedSearchCellDelegate {
             
             let track = self.tracks?[button.tag] as! NSDictionary
             if let trackLink = track["trackViewUrl"] as? String {
-                LocalyticsSession.shared().tagEvent("Buy track button tapped")
                 UIApplication.sharedApplication().openURL(NSURL(string: trackLink)!)
             }
         }
@@ -410,11 +411,10 @@ RecommendedSearchCellDelegate {
     
     func openAlbumLink(sender: AnyObject?) {
         if let button = sender as? UIButton {
-            print("Button tag: \(button.tag)\n")
+            print("Button tag: \(button.tag)\n", terminator: "")
             
             let album = self.albums?[button.tag] as! NSDictionary
             if let albumLink = album["collectionViewUrl"] as? String {
-                LocalyticsSession.shared().tagEvent("Buy album button tapped")
                 UIApplication.sharedApplication().openURL(NSURL(string: albumLink)!)
             }
         }
@@ -444,14 +444,14 @@ RecommendedSearchCellDelegate {
                             successHandler: { (artistAlbums) -> Void in
                                 self.artists = artistAlbums
                             }, failureHandler: { (error) -> Void in
-                                print(error)
+                                print(error, terminator: "")
                         })
                     }
                 }
             }
             
             }, failureHandler: { (error) -> Void in
-                print(error)
+                print(error, terminator: "")
         })
         
         ItunesSearch.sharedInstance().getAlbums(searchText, limit: 10, completion: { (error, results) -> () in
@@ -469,7 +469,7 @@ RecommendedSearchCellDelegate {
         var artistsPredicate: NSPredicate?
         var albumsPredicate: NSPredicate?
         
-        if count(searchText) > 0 {
+        if searchText.characters.count > 0 {
             songsPredicate = NSPredicate(format: "title contains[cd] %@", searchText)
             artistsPredicate = NSPredicate(format: "name contains[cd] %@", searchText)
             albumsPredicate = NSPredicate(format: "title contains[cd] %@", searchText)
@@ -481,17 +481,23 @@ RecommendedSearchCellDelegate {
             self.albumsController.fetchRequest.predicate = albumsPredicate
             self.albumsController.fetchRequest.fetchLimit = 10
             
-            if self.songsController.performFetch(nil) {
+            do {
+                try self.songsController.performFetch()
                 self.tracks = self.songsController.fetchedObjects
                 self.searchDisplayController?.searchResultsTableView.reloadData()
-                if self.artistsController.performFetch(nil) {
+                do {
+                    try self.artistsController.performFetch()
                     self.artists = self.artistsController.fetchedObjects
                     self.searchDisplayController?.searchResultsTableView.reloadData()
-                    if self.albumsController.performFetch(nil) {
+                    do {
+                        try self.albumsController.performFetch()
                         self.albums = self.albumsController.fetchedObjects
                         self.searchDisplayController?.searchResultsTableView.reloadData()
+                    } catch _ {
                     }
+                } catch _ {
                 }
+            } catch _ {
             }
         }
     }

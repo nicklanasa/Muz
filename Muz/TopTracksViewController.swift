@@ -27,7 +27,7 @@ class TopTracksViewController: RootViewController, LastFmTrackBuyLinksRequestDel
     
     var albums: [AnyObject]! {
         didSet {
-            var albumsIds = NSMutableArray()
+            let albumsIds = NSMutableArray()
             for album in albums as! [NSDictionary] {
                 if let albumID = album.objectForKey("collectionId") as? NSNumber {
                     albumsIds.addObject(albumID.integerValue)
@@ -35,9 +35,9 @@ class TopTracksViewController: RootViewController, LastFmTrackBuyLinksRequestDel
             }
             
             ItunesSearch.sharedInstance().getTracksForAlbums(albumsIds as [AnyObject], limitOrNil: NSNumber(int: 30), sucessHandler: { (tracks) -> Void in
-                var topTracks = NSMutableArray()
+                let topTracks = NSMutableArray()
                 for track in tracks as! [NSDictionary] {
-                    if let trackID = track.objectForKey("trackId") as? NSNumber {
+                    if let _ = track.objectForKey("trackId") as? NSNumber {
                         topTracks.addObject(track)
                     }
                 }
@@ -57,7 +57,7 @@ class TopTracksViewController: RootViewController, LastFmTrackBuyLinksRequestDel
         super.init(nibName: "TopTracksViewController", bundle: nil)
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -76,7 +76,7 @@ class TopTracksViewController: RootViewController, LastFmTrackBuyLinksRequestDel
                         ItunesSearch.sharedInstance().getAlbumsForArtist(artistID, limitOrNil: 100, successHandler: { (albums) -> Void in
                                 self.albums = albums
                             }, failureHandler: { (error) -> Void in
-                                print(error)
+                                print(error, terminator: "")
                                 self.activityIndicator.stopAnimating()
                         })
                     }
@@ -122,7 +122,7 @@ class TopTracksViewController: RootViewController, LastFmTrackBuyLinksRequestDel
         cell.buyButton.tag = indexPath.row
         
         if let trackPrice = topTrack["trackPrice"] as? NSNumber {
-            if let trackLink = topTrack["trackViewUrl"] as? String {
+            if let _ = topTrack["trackViewUrl"] as? String {
                 cell.buyButton.setTitle("$\(trackPrice.description)", forState: .Normal)
                 cell.buyButton.addTarget(self, action: "openTrackLink:", forControlEvents: .TouchUpInside)
                 cell.buyButton.hidden = false
@@ -134,11 +134,10 @@ class TopTracksViewController: RootViewController, LastFmTrackBuyLinksRequestDel
     
     func openTrackLink(sender: AnyObject?) {
         if let button = sender as? UIButton {
-            print("Button tag: \(button.tag)\n")
+            print("Button tag: \(button.tag)\n", terminator: "")
             
             let track = self.tracks[button.tag] as! NSDictionary
             if let trackLink = track["trackViewUrl"] as? String {
-                LocalyticsSession.shared().tagEvent("Buy track button tapped")
                 UIApplication.sharedApplication().openURL(NSURL(string: trackLink)!)
             }
             
@@ -146,7 +145,7 @@ class TopTracksViewController: RootViewController, LastFmTrackBuyLinksRequestDel
     }
     
     func fetchBuyLinks(sender: AnyObject?) {
-        if let button = sender as? UIButton {
+        if let _ = sender as? UIButton {
 //            print("Button tag: \(button.tag)\n")
 //            print("fetching buy links for top tracks...")
 //            

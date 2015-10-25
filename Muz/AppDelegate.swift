@@ -76,20 +76,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIAlertViewDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
         // Preloads keyboard so there's no lag on initial keyboard appearance.
-        var lagFreeField: UITextField = UITextField()
+        let lagFreeField: UITextField = UITextField()
         self.window?.addSubview(lagFreeField)
         lagFreeField.becomeFirstResponder()
         lagFreeField.resignFirstResponder()
         lagFreeField.removeFromSuperview()
         
-        
-        LocalyticsSession.shared().integrateLocalytics("b25e652e274c5d45d413bc3-89bdf3a6-8e1f-11e4-a94d-009c5fda0a25",
-            launchOptions: launchOptions)
-        
-        FBLoginView.self
-        FBProfilePictureView.self
-        
-        let types: UIUserNotificationType = (.Alert | .Badge | .Sound)
+    
+        let types: UIUserNotificationType = ([.Alert, .Badge, .Sound])
         let settings = UIUserNotificationSettings(forTypes: types, categories: nil)
         application.registerUserNotificationSettings(settings)
         application.registerForRemoteNotifications()
@@ -102,7 +96,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIAlertViewDelegate {
         
         self.window = muzWindow()
         
-        var config = UVConfig(site: "nytekproductions.uservoice.com")
+        let config = UVConfig(site: "nytekproductions.uservoice.com")
         config.forumId = forumID
         
         UserVoice.initialize(config)
@@ -153,46 +147,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIAlertViewDelegate {
     }
     
     func updateLibrary(obj: NSNotification) {
-        print(obj.userInfo)
-        if let library = obj.object as? MPMediaLibrary {
-            var alert = UIAlertController(title: "Sync Library?", message: "Your iPod library has changed. Would you like to sync it now? This might take about a minute or so.", preferredStyle: UIAlertControllerStyle.Alert)
-            
-            var syncLibraryAction = UIAlertAction(title: "Ok", style: .Default) { (action) -> Void in
-                self.hud = MBProgressHUD.showHUDAddedTo(self.window?.rootViewController?.view, animated: true)
-                self.hud.mode = .DeterminateHorizontalBar
-                self.hud.labelText = "Syncing library..."
-                self.hud.labelFont = MuzTitleFont
-                DataManager.manager.datastore.resetLibrary({ (error) -> () in
-                    DataManager.manager.syncArtists({ (addedItems, error) -> () in
-                        DataManager.manager.syncPlaylists({ (addedItems, error) -> () in
-                            
-                        })
+        print(obj.userInfo, terminator: "")
+        if let _ = obj.object as? MPMediaLibrary {
+            DataManager.manager.datastore.resetLibrary({ (error) -> () in
+                DataManager.manager.syncArtists({ (addedItems, error) -> () in
+                    DataManager.manager.syncPlaylists({ (addedItems, error) -> () in
                         
-                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                            self.hud.hide(true)
-                        })
-                        
-                        LocalyticsSession.shared().tagEvent("Sync Library")
-                        }, progress: { (addedItems, total) -> () in
-                            self.hud.progress = Float(addedItems.count) / Float(total)
                     })
+                    
+                    }, progress: { (addedItems, total) -> () in
                 })
-                
-            }
-            
-            var cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
-            
-            alert.addAction(syncLibraryAction)
-            alert.addAction(cancelAction)
-            
-            self.window?.rootViewController?.presentViewController(alert, animated: true, completion: nil)
+            })
         }
     }
     
-    func application(application: UIApplication, handleWatchKitExtensionRequest userInfo: [NSObject : AnyObject]?, reply: (([NSObject : AnyObject]!) -> Void)!) {
+    func application(application: UIApplication, handleWatchKitExtensionRequest userInfo: [NSObject : AnyObject]?, reply: (([NSObject : AnyObject]?) -> Void)) {
         if let action = userInfo?["action"] as? String {
             
-            var result = Dictionary<String, AnyObject>()
+            let result = Dictionary<String, AnyObject>()
             
             if action == "pausePlay" {
                 if MPMusicPlayerController.iPodMusicPlayer().playbackState == .Playing {

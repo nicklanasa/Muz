@@ -23,7 +23,7 @@ class LastFmEventCell: UITableViewCell {
     
     func updateWithEvents(lastFmEvents: [AnyObject]?) {
         
-        if let events = lastFmEvents {
+        if let _ = lastFmEvents {
             UIView.animateWithDuration(0.3, animations: { () -> Void in
                 self.upcomingEventsLabel.alpha = 1.0
                 

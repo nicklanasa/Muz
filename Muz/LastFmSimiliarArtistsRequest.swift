@@ -25,14 +25,14 @@ class LastFmSimiliarArtistsRequest: LastFmRequest {
     
     override func sendURLRequest() {
         super.sendURLRequest()
-        var lastFm = LastFm.sharedInstance()
+        let lastFm = LastFm.sharedInstance()
         lastFm.apiKey = self.apiKey
         lastFm.apiSecret = self.apiSecret
         lastFm.session = "similiarArtistsSession"
         
         lastFm.getSimilarArtistsTo(self.artist, successHandler: { (data) -> Void in
             
-            var artists = NSMutableArray()
+            let artists = NSMutableArray()
             
             for similiarArtistJSON in data {
                 if let JSON = similiarArtistJSON as? NSDictionary {

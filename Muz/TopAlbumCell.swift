@@ -60,7 +60,7 @@ class TopAlbumCell: UITableViewCell {
     
     func updateWithArtist(artist: AnyObject) {
         if let itunesArtist = artist as? NSDictionary {
-            print(artist)
+            print(artist, terminator: "")
             self.songLabel.text = artist["artistName"] as? String
             self.infoLabel.text = artist["primaryGenreName"] as? String
             if let image = artist["artworkUrl100"] as? String {
@@ -116,8 +116,8 @@ class TopAlbumCell: UITableViewCell {
 
         } else {
             let librarySong = song as! Song
-            print(librarySong.artist)
-            print(librarySong.albumTitle)
+            print(librarySong.artist, terminator: "")
+            print(librarySong.albumTitle, terminator: "")
             self.songLabel.text = librarySong.title
             self.infoLabel.text = String(format: "%@ %@", librarySong.artist, librarySong.albumTitle)
             self.songImageView.setImageForSong(song: librarySong)

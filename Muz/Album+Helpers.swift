@@ -37,7 +37,7 @@ extension Album {
             }
             
             if !found {
-                var albumSongs = NSMutableSet(set: self.songs)
+                let albumSongs = NSMutableSet(set: self.songs)
                 albumSongs.addObject(managedSong)
                 self.songs = NSSet(set: albumSongs)
             }

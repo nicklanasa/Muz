@@ -35,7 +35,7 @@ SWTableViewCellDelegate {
     var leftSwipeButtons: NSArray {
         get {
             
-            var buttons = NSMutableArray()
+            let buttons = NSMutableArray()
             
             buttons.sw_addUtilityButtonWithColor(UIColor.clearColor(), icon: UIImage(named: "addWhite"))
             
@@ -47,7 +47,7 @@ SWTableViewCellDelegate {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -87,8 +87,11 @@ SWTableViewCellDelegate {
     
     func fetchArtists() {
         var error: NSError?
-        if self.artistsController.performFetch(&error) {
+        do {
+            try self.artistsController.performFetch()
             self.tableView.reloadData()
+        } catch let error1 as NSError {
+            error = error1
         }
     }
     
@@ -105,7 +108,7 @@ SWTableViewCellDelegate {
         forChangeType type: NSFetchedResultsChangeType,
         newIndexPath: NSIndexPath?)
     {
-        var tableView = self.tableView
+        let tableView = self.tableView
         var indexPaths:[NSIndexPath] = [NSIndexPath]()
         switch type {
             
@@ -145,7 +148,7 @@ SWTableViewCellDelegate {
             self.tableView.deleteSections(NSIndexSet(index: sectionIndex),
                 withRowAnimation: .Fade)
             
-        case .Update, .Move: println("Move or delete called in didChangeSection")
+        case .Update, .Move: print("Move or delete called in didChangeSection")
         }
     }
     
@@ -185,7 +188,7 @@ SWTableViewCellDelegate {
     }
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if let sectionInfo = self.artistsController.sections?[section] as? NSFetchedResultsSectionInfo {
+        if let sectionInfo = self.artistsController.sections?[section] {
             let header = tableView.dequeueReusableHeaderFooterViewWithIdentifier("Header") as! ArtistsHeader
             header.infoLabel.text = sectionInfo.name
             return header
@@ -203,7 +206,7 @@ SWTableViewCellDelegate {
         navigationController?.pushViewController(artistAlbumsViewController, animated: true)
     }
     
-    func sectionIndexTitlesForTableView(tableView: UITableView) -> [AnyObject]! {
+    func sectionIndexTitlesForTableView(tableView: UITableView) -> [String]! {
         return self.artistsController.sectionIndexTitles
     }
     
@@ -212,7 +215,7 @@ SWTableViewCellDelegate {
     }
     
     func swipeableTableViewCell(cell: SWTableViewCell!, didTriggerLeftUtilityButtonWithIndex index: Int) {
-        var indexPath = self.tableView.indexPathForCell(cell)!
+        let indexPath = self.tableView.indexPathForCell(cell)!
         let artist = self.artistsController.objectAtIndexPath(indexPath) as! Artist
         let createPlaylistOverlay = CreatePlaylistOverlay(artist: artist.name)
         self.presentModalOverlayController(createPlaylistOverlay, blurredController: self)

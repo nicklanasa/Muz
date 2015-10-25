@@ -47,17 +47,17 @@ class NowPlayingPageController: UIViewController, UIPageViewControllerDelegate, 
         self.view.addSubview(pageController.view)
     }   
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
-        var previousVC = viewController as! RootViewController
+        let previousVC = viewController as! RootViewController
         return previousVC
     }
     
     func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
-        var nextVC = viewController as! RootViewController
+        let nextVC = viewController as! RootViewController
         return nextVC
     }
     

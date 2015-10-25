@@ -13,7 +13,7 @@ extension Int {
         func floatToString(val: Float) -> String {
             var ret: NSString = NSString(format: "%.1f", val)
             
-            var c = ret.characterAtIndex(ret.length - 1)
+            let c = ret.characterAtIndex(ret.length - 1)
             
             if c == 46 {
                 ret = ret.substringToIndex(ret.length - 1)
@@ -29,24 +29,24 @@ extension Int {
             var abbrev = ["K","M","B"]
             
             for var i = abbrev.count-1; i >= 0; i-- {
-                var sizeInt = pow(10.0, Double(((i+1)*3)))
-                var size = Float(sizeInt)
+                let sizeInt = pow(10.0, Double(((i+1)*3)))
+                let size = Float(sizeInt)
                 
                 if size <= num {
                     num = num/size
                     var numStr: String = floatToString(num)
                     if numStr.hasSuffix(".0") {
-                        numStr = numStr.substringToIndex(advance(numStr.startIndex, count(numStr)-2))
+                        numStr = numStr.substringToIndex(numStr.startIndex.advancedBy(numStr.characters.count-2))
                     }
                     
-                    var suffix = abbrev[i]
+                    let suffix = abbrev[i]
                     abbrevNum = numStr+suffix
                 }
             }
         } else {
             abbrevNum = "\(num)"
             if abbrevNum.hasSuffix(".0") {
-                abbrevNum = abbrevNum.substringToIndex(advance(abbrevNum.startIndex, count(abbrevNum)-2))
+                abbrevNum = abbrevNum.substringToIndex(abbrevNum.startIndex.advancedBy(abbrevNum.characters.count-2))
             }
         }
         

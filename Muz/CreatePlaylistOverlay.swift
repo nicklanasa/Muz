@@ -72,7 +72,7 @@ PlaylistsViewControllerDelegate {
         super.init(nibName: "CreatePlaylistOverlay", bundle: nil)
     }
  
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
    
@@ -99,12 +99,12 @@ PlaylistsViewControllerDelegate {
             target: self,
             action: "createPlaylist")
         
-        var nib = UINib(nibName: "CreatePlaylistCell",
+        let nib = UINib(nibName: "CreatePlaylistCell",
             bundle: nil)
         self.createPlaylistCell = nib.instantiateWithOwner(self, options: nil)[0] as! CreatePlaylistCell
         self.createPlaylistCell.delegate = self
         
-        if let artist = self.artist {
+        if let _ = self.artist {
             self.createPlaylistCell.smartSwitch.enabled = true
         } else {
             self.createPlaylistCell.smartSwitch.enabled = false
@@ -112,7 +112,7 @@ PlaylistsViewControllerDelegate {
     }
     
     private func requestSimiliarArtists() {
-        var similiarArtistLastFmRequest = LastFmSimiliarArtistsRequest(artist: self.artist)
+        let similiarArtistLastFmRequest = LastFmSimiliarArtistsRequest(artist: self.artist)
         similiarArtistLastFmRequest.delegate = self
         similiarArtistLastFmRequest.sendURLRequest()
     }
@@ -120,7 +120,7 @@ PlaylistsViewControllerDelegate {
     func lastFmSimiliarArtistsRequestDidComplete(request: LastFmSimiliarArtistsRequest,
         didCompleteWithLastFmArtists artists: [AnyObject]?) {
         let index = self.createPlaylistCell.amountSegmentedControl.selectedSegmentIndex
-        let amount = self.createPlaylistCell.amountSegmentedControl.titleForSegmentAtIndex(index)!.toInt()!
+        let amount = Int(self.createPlaylistCell.amountSegmentedControl.titleForSegmentAtIndex(index)!)!
         let name = self.createPlaylistCell.nameTextField.text
         let playlistType = PlaylistType.Smart
         MediaSession.sharedSession.dataManager.datastore.createPlaylistWithSimiliarArtists(self.artist,
@@ -149,7 +149,7 @@ PlaylistsViewControllerDelegate {
             self.createPlaylistCell.selectionStyle = .None
             return self.createPlaylistCell
         } else {
-            var cell = UITableViewCell(style: .Default, reuseIdentifier: "Cell")
+            let cell = UITableViewCell(style: .Default, reuseIdentifier: "Cell")
             if let playlist = self.existingPlaylist {
                 cell.textLabel?.text = playlist.name
             } else {
@@ -181,7 +181,7 @@ PlaylistsViewControllerDelegate {
                     delegate: self,
                     cancelButtonTitle: "Ok").show()
             } else {
-                var playlistsViewController = PlaylistsViewController(existingPlaylist: true)
+                let playlistsViewController = PlaylistsViewController(existingPlaylist: true)
                 playlistsViewController.delegate = self
                 self.navigationController?.pushViewController(playlistsViewController, animated: true)
             }
@@ -225,19 +225,17 @@ PlaylistsViewControllerDelegate {
                         })
                     }
                 } else {
-                    if count(self.createPlaylistCell.nameTextField.text) > 0 {
+                    if self.createPlaylistCell.nameTextField.text?.characters.count > 0 {
                         if let songs = self.songs {
-                            MediaSession.sharedSession.dataManager.datastore.createPlaylistWithSongs(self.createPlaylistCell.nameTextField.text,
+                            MediaSession.sharedSession.dataManager.datastore.createPlaylistWithSongs(self.createPlaylistCell.nameTextField.text!,
                                 songs: songs,
                                 completion: { (addedSongs) -> () in
-                                LocalyticsSession.shared().tagEvent("Playlist created.")
                                 self.dismiss()
                             })
                         } else {
                             MediaSession.sharedSession.dataManager.datastore.createPlaylistWithArtist(self.artist,
                                 name: self.createPlaylistCell.nameTextField.text,
                                 playlistType: .None) { (addedSongs) -> () in
-                                    LocalyticsSession.shared().tagEvent("Playlist created.")
                                     self.dismiss()
                             }
                         }
@@ -246,10 +244,9 @@ PlaylistsViewControllerDelegate {
                     }
                 }
             } else {
-                if count(self.createPlaylistCell.nameTextField.text) > 0 {
-                    MediaSession.sharedSession.dataManager.datastore.createEmptyPlaylistWithName(self.createPlaylistCell.nameTextField.text,
+                if self.createPlaylistCell.nameTextField.text?.characters.count > 0 {
+                    MediaSession.sharedSession.dataManager.datastore.createEmptyPlaylistWithName(self.createPlaylistCell.nameTextField.text!,
                         playlistType: .None) { () -> () in
-                            LocalyticsSession.shared().tagEvent("Playlist created.")
                             self.dismiss()
                     }
                 } else {
@@ -268,11 +265,9 @@ PlaylistsViewControllerDelegate {
     }
     
     private func handleCreatePlaylistFinishWithAddedSongs(addedSongs: [AnyObject]?) {
-        if let songsAdded = addedSongs {
-            LocalyticsSession.shared().tagEvent("Successful smart playlist created.")
+        if let _ = addedSongs {
             self.dismiss()
         } else {
-            LocalyticsSession.shared().tagEvent("Create smart playlist failed.")
             let errorMessage = "Unable to find any songs based on \(self.artist)"
             UIAlertView(title: "Error!",
                 message: errorMessage,

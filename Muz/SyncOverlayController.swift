@@ -23,7 +23,7 @@ class SyncOverlayController: OverlayController {
         super.init(nibName: "SyncOverlayController", bundle: nil)
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -34,7 +34,6 @@ class SyncOverlayController: OverlayController {
     }
     
     @IBAction func syncButtonPressed(sender: AnyObject) {
-        var error: NSError?
         
         self.syncButton.hidden = true
         self.syncLibraryLabel.hidden = true
@@ -56,7 +55,6 @@ class SyncOverlayController: OverlayController {
             
             self.dismissViewControllerAnimated(true, completion: { () -> Void in
                 DataManager.manager.syncPlaylists({ (addedItems, error) -> () in
-                    LocalyticsSession.shared().tagEvent("Sync Library")
                 })
             })
 

@@ -57,7 +57,7 @@ class CreatePlaylistCell: UITableViewCell, UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(textField: UITextField) {
-        if count(textField.text) == 0 {
+        if textField.text?.characters.count == 0 {
             textField.text = "Enter playlist name..."
             textField.textColor = UIColor.lightGrayColor()
         }

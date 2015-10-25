@@ -76,17 +76,17 @@ class LastFmArtistInfoCell: LastFmCell {
                     self.artistImageView.sd_setImageWithURL(artist.imageURL)
                     }) { (success) -> Void in
                         if success {
-                            var numberFormatter = NSNumberFormatter()
+                            let numberFormatter = NSNumberFormatter()
                             numberFormatter.numberStyle = .DecimalStyle
                             
                             let plays = artist.plays ?? 0
                             let listeners = artist.listeners ?? 0
                             
-                            self.artistLabel.text = count(artist.name) > 0 ? artist.name : "Unknown name."
+                            self.artistLabel.text = artist.name.characters.count > 0 ? artist.name : "Unknown name."
                             self.listenersLabel.text = listeners == 0 ? "" :  String(format: "%@", numberFormatter.stringFromNumber(listeners)!)
                             self.playsLabel.text = plays == 0 ? "" : String(format: "%@", numberFormatter.stringFromNumber(plays)!)
                             
-                            if count(artist.bio) > 0 {
+                            if artist.bio.characters.count > 0 {
                                 self.bioActivityIndicator.stopAnimating()
                             }
                             
@@ -95,6 +95,9 @@ class LastFmArtistInfoCell: LastFmCell {
                             self.artistImageView.sd_setImageWithURL(artist.imageURL)
                             
                             self.collectionView.reloadData()
+                            
+                            self.buyAlbumButton.hidden = false
+                            self.buySongButton.hidden = false
                         }
                 }
             }

@@ -31,7 +31,7 @@ class LastFmEventInfoDetailsCell: UITableViewCell {
         self.artistImageView.sd_setImageWithURL(event.image, placeholderImage: UIImage(named: "nowPlayingDefault"))
         self.descriptionTextView.text = event.eventDescription
         
-        if count(event.eventDescription) == 0 {
+        if event.eventDescription.characters.count == 0 {
             self.descriptionTextView.text = "Description unavailable"
         }
         

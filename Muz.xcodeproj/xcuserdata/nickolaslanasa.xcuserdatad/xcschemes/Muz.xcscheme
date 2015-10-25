@@ -20,6 +20,20 @@
                ReferencedContainer = "container:Muz.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "CE444BC41A36A25500153F77"
+               BuildableName = "MuzTests.xctest"
+               BlueprintName = "MuzTests"
+               ReferencedContainer = "container:Muz.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction

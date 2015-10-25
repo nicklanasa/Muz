@@ -26,6 +26,5 @@ class OverlayController: UIViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        LocalyticsSession.shared().tagScreen(self.overlayScreenName)
     }
 }

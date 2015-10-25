@@ -17,13 +17,13 @@ class LastFmGeoEventsRequest: LastFmRequest {
     }
     
     func getEvents(location: String!, completion: (events: [AnyObject]?, error: NSError?) -> ()) {
-        var lastFm = LastFm.sharedInstance()
+        let lastFm = LastFm.sharedInstance()
         lastFm.apiKey = self.apiKey
         lastFm.apiSecret = self.apiSecret
         lastFm.session = "geoEvents"
         
         lastFm.getEventsForLocation(location, successHandler: { (results) -> Void in
-            var events = NSMutableArray()
+            let events = NSMutableArray()
             for event in results as! [NSDictionary] {
                 events.addObject(LastFmEvent(JSON: event as [NSObject : AnyObject]))
             }

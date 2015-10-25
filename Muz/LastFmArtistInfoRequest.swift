@@ -25,7 +25,7 @@ class LastFmArtistInfoRequest: LastFmRequest {
     
     override func sendURLRequest() {
         super.sendURLRequest()
-        var lastFm = LastFm.sharedInstance()
+        let lastFm = LastFm.sharedInstance()
         lastFm.apiKey = "d55a72556285ca314e7af8b0fb093e29"
         lastFm.apiSecret = "affa81f90053b2114888298f3aeb27b9"
         lastFm.session = "artistInfoSession"

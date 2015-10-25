@@ -52,7 +52,7 @@ class ArtistAlbumHeader: UITableViewHeaderFooterView {
         }
         
         if let date = item.releaseDate {
-            let components = NSCalendar.currentCalendar().components(.CalendarUnitYear, fromDate: item.releaseDate)
+            let components = NSCalendar.currentCalendar().components(.Year, fromDate: date)
             yearLabel.text = "\(components.year)"
         } else {
             yearLabel.text = ""
@@ -60,14 +60,14 @@ class ArtistAlbumHeader: UITableViewHeaderFooterView {
         
     }
     
-    func updateWithAlbum(#album: Album) {
+    func updateWithAlbum(album album: Album) {
         self.albumImageView.setImageForAlbum(album: album)
         self.albumImageView.applyRoundedStyle()
         
         albumLabel.text = album.title
         infoLabel.text = album.songs.count == 1 ? "\(album.songs.count) song" : "\(album.songs.count) songs"
         if let releaseDate = album.releaseDate {
-            let components = NSCalendar.currentCalendar().components(.CalendarUnitYear, fromDate: releaseDate)
+            let components = NSCalendar.currentCalendar().components(.Year, fromDate: releaseDate)
             yearLabel.text = "\(components.year)"
         } else {
             yearLabel.hidden = true

@@ -20,7 +20,7 @@ class LastFmEventInfoCell: UICollectionViewCell {
     func updateWithEvent(event: LastFmEvent) {
         artistImageView.sd_setImageWithURL(event.image, placeholderImage: UIImage(named: "nowPlayingDefault"))
         
-        if let startDate = event.startDate {
+        if let _ = event.startDate {
             let formatter = NSDateFormatter()
             formatter.dateStyle = .ShortStyle
             let date = formatter.stringFromDate(event.startDate)
@@ -32,7 +32,7 @@ class LastFmEventInfoCell: UICollectionViewCell {
     func updateWithGeoEvent(event: LastFmEvent) {
         artistImageView.sd_setImageWithURL(event.image, placeholderImage: UIImage(named: "nowPlayingDefault"))
         
-        if let title = event.title {
+        if let _ = event.title {
             infoLabel.text = String(format: "%@\n%@\n%@", event.title, event.city, event.country)
         }
     }

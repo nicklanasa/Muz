@@ -11,6 +11,7 @@ import UIKit
 import MapKit
 
 class LastFmEventMapController: RootViewController {
+    
     @IBOutlet weak var mapView: MKMapView!
     
     let event: LastFmEvent!
@@ -22,7 +23,7 @@ class LastFmEventMapController: RootViewController {
         super.init(nibName: "LastFmEventMapController", bundle: nil)
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -53,40 +54,35 @@ class LastFmEventMapController: RootViewController {
     }
     
     private func loadMap() {
-        var request = MKLocalSearchRequest()
+        let request = MKLocalSearchRequest()
         request.naturalLanguageQuery = String(format: "%@ %@, %@", event.venue, event.city, event.country)
         
         let search = MKLocalSearch(request: request)
-        var annotations = NSMutableArray()
+        var annotations = [AnyObject]()
         
         search.startWithCompletionHandler { (response, error) -> Void in
             if error == nil {
-                if response.mapItems.count == 0 {
+                if response?.mapItems.count == 0 {
                     
                 } else {
-                    for item in response.mapItems as! [MKMapItem] {
+                    for item in response!.mapItems {
                         self.matchedItems.addObject(item)
                         
-                        var point = MKPointAnnotation()
+                        let point = MKPointAnnotation()
                         point.coordinate = item.placemark.coordinate
                         point.title = item.name
                         self.mapView.addAnnotation(point)
                         
-                        annotations.addObject(point)
+                        annotations.append(point)
                     }
                     
-                    self.mapView.showAnnotations(annotations as [AnyObject], animated: true)
+                    self.mapView.showAnnotations(annotations as! [MKAnnotation], animated: true)
                 }
             }
         }
-
-        
-        
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
     }
-    
-    
 }

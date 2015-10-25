@@ -23,7 +23,7 @@ class LastFmArtistEventsRequest: LastFmRequest {
     
     override func sendURLRequest() {
         super.sendURLRequest()
-        var lastFm = LastFm.sharedInstance()
+        let lastFm = LastFm.sharedInstance()
         lastFm.apiKey = self.apiKey
         lastFm.apiSecret = self.apiSecret
         lastFm.session = "artistsEventsSession"
@@ -31,7 +31,7 @@ class LastFmArtistEventsRequest: LastFmRequest {
         lastFm.getEventsForArtist(self.artist, successHandler: { (eventsArray) -> Void in
             if self.delegate != nil {
                 
-                var events = NSMutableArray()
+                let events = NSMutableArray()
                 
                 for eventsJSON in eventsArray {
                     if let JSON = eventsJSON as? NSDictionary {

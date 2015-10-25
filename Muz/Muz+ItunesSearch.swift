@@ -13,7 +13,7 @@ extension ItunesSearch {
     typealias SearchCompletion = (error: NSError?, results: NSArray) -> ()
     
     func getAlbums(album: String, limit: Int, completion: SearchCompletion) {
-        var params = NSMutableDictionary(dictionary: ["term" : album, "media" : "music", "entity" : "album"])
+        let params = NSMutableDictionary(dictionary: ["term" : album, "media" : "music", "entity" : "album"])
         
         if limit > 0 {
            params["limit"] = limit
@@ -28,7 +28,7 @@ extension ItunesSearch {
     }
     
     func getTracks(track: String, limit: Int, completion: SearchCompletion) {
-        var params = NSMutableDictionary(dictionary: ["term" : track, "media" : "music", "entity" : "musicTrack"])
+        let params = NSMutableDictionary(dictionary: ["term" : track, "media" : "music", "entity" : "musicTrack"])
         
         if limit > 0 {
             params["limit"] = limit

@@ -5,12 +5,10 @@
 #import "WKNotificationCenter.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <LastFm/LastFm.h>
-#import <Localytics-AMP/LocalyticsSession.h>
 #import <uservoice-iphone-sdk/UVConfig.h>
 #import <uservoice-iphone-sdk/UserVoice.h>
 #import <uservoice-iphone-sdk/UVStyleSheet.h>
 #import <Appirater/Appirater.h>
-#import <FacebookSDK/FacebookSDK.h>
 
 #import "UIImage+ImageEffects.h"
 #import "HTMLParser.h"

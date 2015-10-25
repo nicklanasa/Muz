@@ -16,7 +16,7 @@ class NoMusicOverlayController: UIViewController {
         super.init(nibName: "NoMusicOverlayController", bundle: nil)
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -25,7 +25,7 @@ class NoMusicOverlayController: UIViewController {
     }
     
     override func viewDidLoad() {
-        self.view.autoresizingMask = .FlexibleWidth | .FlexibleHeight
+        self.view.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
         self.view.frame = UIScreen.mainScreen().bounds
         
         if UIDevice.currentDevice().userInterfaceIdiom == .Pad {

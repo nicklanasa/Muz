@@ -1204,7 +1204,6 @@
 - (NSOperation *)getEventsForLocation:(NSString *)location successHandler:(LastFmReturnBlockWithArray)successHandler failureHandler:(LastFmReturnBlockWithError)failureHandler {
     NSDictionary *mappingObject = @{
         @"title": @[ @"./title", @"NSString" ],
-        @"image" : @[@"./image", @"NSArray" ],
         @"venue": @[ @"./venue/name", @"NSString" ],
         @"city": @[ @"./venue/location/city", @"NSString" ],
         @"country": @[ @"./venue/location/country", @"NSString" ],

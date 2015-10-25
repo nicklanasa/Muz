@@ -4,25 +4,10 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>Glance - Muz WatchKit App.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>15</integer>
-		</dict>
-		<key>Muz WatchKit App.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>13</integer>
-		</dict>
 		<key>Muz.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
-		</dict>
-		<key>Notification - Muz WatchKit App.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>14</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>

@@ -22,7 +22,7 @@ class NowPlayingTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         updateTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "updateProgress", userInfo: nil, repeats: true)
         
-        var tapGesture = UITapGestureRecognizer(target: self, action: "pausePlay")
+        let tapGesture = UITapGestureRecognizer(target: self, action: "pausePlay")
         tapGesture.numberOfTapsRequired = 1
         self.songImageView.gestureRecognizers = [tapGesture]
         
@@ -42,7 +42,7 @@ class NowPlayingTableViewCell: UITableViewCell {
     }
     
     func playerControllerDidNowPlayingItemDidChange() {
-        if let item = self.playerController.nowPlayingItem {
+        if let _ = self.playerController.nowPlayingItem {
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 self.updateNowPlaying()
             })
@@ -57,17 +57,23 @@ class NowPlayingTableViewCell: UITableViewCell {
     
     func updateNowPlaying() {
         if let item = playerController.nowPlayingItem {
-            var manager = DataManager.manager
-            DataManager.manager.datastore.songForSongName(item.title, artist: item.artist, completion: { (song) -> () in
-                if let newSong = song {
-                    self.songImageView.alpha = 1.0
-                    self.artistLabel.alpha = 1.0
-                    self.titleLabel.alpha = 1.0
-                    self.songImageView.setImageForSong(song: newSong)
-                    self.artistLabel.text = newSong.artist
-                    self.titleLabel.text = newSong.title
-                }
-            })
+            if let title = item.title, let artist = item.artist {
+                DataManager.manager.datastore.songForSongName(title, artist: artist, completion: { (song) -> () in
+                    if let newSong = song {
+                        self.songImageView.alpha = 1.0
+                        self.artistLabel.alpha = 1.0
+                        self.titleLabel.alpha = 1.0
+                        self.songImageView.setImageForSong(song: newSong)
+                        self.artistLabel.text = newSong.artist
+                        self.titleLabel.text = newSong.title
+                    }
+                })
+            } else {
+                UIAlertView(title: "Error!",
+                    message: "Unable to find song!",
+                    delegate: self,
+                    cancelButtonTitle: "Ok").show()
+            }
         }
     }
     

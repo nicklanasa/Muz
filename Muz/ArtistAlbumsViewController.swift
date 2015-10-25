@@ -34,7 +34,7 @@ SWTableViewCellDelegate  {
     var leftSwipeButtons: NSArray {
         get {
             
-            var buttons = NSMutableArray()
+            let buttons = NSMutableArray()
             
             buttons.sw_addUtilityButtonWithColor(UIColor.clearColor(), icon: UIImage(named: "addWhite"))
             
@@ -55,7 +55,7 @@ SWTableViewCellDelegate  {
         super.init(nibName: "ArtistAlbumsViewController", bundle: nil)
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -74,7 +74,7 @@ SWTableViewCellDelegate  {
     }
     
     func artistInfo() {
-        var controller = NowPlayingInfoViewController(artist: self.artist.name, isForSimiliarArtist: true)
+        let controller = NowPlayingInfoViewController(artist: self.artist.name, isForSimiliarArtist: true)
         self.navigationController?.pushViewController(controller, animated: true)
     }
     
@@ -88,20 +88,20 @@ SWTableViewCellDelegate  {
     Fetch albums for artist.
     */
     private func fetchArtistAlbums() {
-        var error: NSError?
-        if self.artistsController.performFetch(&error) {
+        do {
+            try self.artistsController.performFetch()
             if let albumArtist = self.artistsController.objectAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? Artist {
-                var albums = NSArray(array: albumArtist.albums.allObjects)
-                var sort = NSSortDescriptor(key: "albumTrackNumber", ascending: true)
+                let albums = NSArray(array: albumArtist.albums.allObjects)
+                let sort = NSSortDescriptor(key: "albumTrackNumber", ascending: true)
                 
                 for album in albums {
                     if let artistAlbum = album as? Album {
-                        var songs = NSMutableArray(array: artistAlbum.songs.allObjects)
+                        let songs = NSMutableArray(array: artistAlbum.songs.allObjects)
                         self.sortedSongs.addObject(songs.sortedArrayUsingDescriptors([sort]))
                     }
                 }
             }
-        }
+        } catch { }
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -163,7 +163,16 @@ SWTableViewCellDelegate  {
         if let songs = self.sortedSongs[indexPath.section] as? [AnyObject] {
             if let song = songs[indexPath.row] as? Song {
                 DataManager.manager.fetchCollectionForArtist(artist: song.artist, completion: { (collection, error) -> () in
-                    self.presentNowPlayViewController(song, collection: collection)
+                    if collection != nil {
+                        self.presentNowPlayViewController(song, collection: collection!)
+                    } else {
+                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            UIAlertView(title: "Error!",
+                                message: "Unable to get collection!",
+                                delegate: self,
+                                cancelButtonTitle: "Ok").show()
+                        })
+                    }
                 })
             }
         }
@@ -172,7 +181,7 @@ SWTableViewCellDelegate  {
     }
     
     func swipeableTableViewCell(cell: SWTableViewCell!, didTriggerLeftUtilityButtonWithIndex index: Int) {
-        var indexPath = self.tableView.indexPathForCell(cell)!
+        let indexPath = self.tableView.indexPathForCell(cell)!
         if let songs = self.sortedSongs[indexPath.section] as? [AnyObject] {
             if let song = songs[indexPath.row] as? Song {
                 let createPlaylistOverlay = CreatePlaylistOverlay(songs: [song])

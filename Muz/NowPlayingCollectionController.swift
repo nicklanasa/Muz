@@ -30,7 +30,7 @@ UITableViewDataSource {
         self.currentlyPlayingCollection = collection
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -70,7 +70,7 @@ UITableViewDataSource {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell",
             forIndexPath: indexPath) as! SongCell
         
-        if let item = currentlyPlayingCollection?.items[indexPath.row] as? MPMediaItem {
+        if let item = currentlyPlayingCollection?.items[indexPath.row] {
             cell.updateWithItem(item)
             cell.accessoryType = .DetailDisclosureButton
         }
@@ -81,7 +81,7 @@ UITableViewDataSource {
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         // Get song.
-        if let song = currentlyPlayingCollection?.items[indexPath.row] as? MPMediaItem {
+        if let song = currentlyPlayingCollection?.items[indexPath.row]{
             delegate?.nowPlayingCollectionController(self, didSelectItem: song)
             dismissViewControllerAnimated(true, completion: nil)
         }

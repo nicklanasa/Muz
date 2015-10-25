@@ -32,7 +32,7 @@ SWTableViewCellDelegate {
     
     var leftSwipeButtons: NSArray {
         get {
-            var buttons = NSMutableArray()
+            let buttons = NSMutableArray()
             buttons.sw_addUtilityButtonWithColor(UIColor.clearColor(), icon: UIImage(named: "addWhite"))
             return buttons
         }
@@ -52,7 +52,7 @@ SWTableViewCellDelegate {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -65,8 +65,11 @@ SWTableViewCellDelegate {
     
     func fetchSongs() {
         var error: NSError?
-        if self.songsController.performFetch(&error) {
+        do {
+            try self.songsController.performFetch()
             self.tableView.reloadData()
+        } catch let error1 as NSError {
+            error = error1
         }
     }
     
@@ -119,7 +122,7 @@ SWTableViewCellDelegate {
     }
 
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if let sectionInfo = self.songsController.sections?[section] as? NSFetchedResultsSectionInfo {
+        if let sectionInfo = self.songsController.sections?[section] {
             let header = tableView.dequeueReusableHeaderFooterViewWithIdentifier("Header") as! SongsHeader
             header.infoLabel.text = sectionInfo.name
             return header
@@ -136,7 +139,7 @@ SWTableViewCellDelegate {
         return 55
     }
 
-    func sectionIndexTitlesForTableView(tableView: UITableView) -> [AnyObject]! {
+    func sectionIndexTitlesForTableView(tableView: UITableView) -> [String]! {
         return self.songsController.sectionIndexTitles
     }
     
@@ -149,14 +152,23 @@ SWTableViewCellDelegate {
         let song = self.songsController.objectAtIndexPath(indexPath) as! Song
         
         DataManager.manager.fetchSongsCollection { (collection, error) -> () in
-            self.presentNowPlayViewController(song, collection: collection)
+            if collection != nil {
+                self.presentNowPlayViewController(song, collection: collection!)
+            } else {
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    UIAlertView(title: "Error!",
+                        message: "Unable to get collection!",
+                        delegate: self,
+                        cancelButtonTitle: "Ok").show()
+                })
+            }
         }
 
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
 
     func swipeableTableViewCell(cell: SWTableViewCell!, didTriggerLeftUtilityButtonWithIndex index: Int) {
-        var indexPath = self.tableView.indexPathForCell(cell)!
+        let indexPath = self.tableView.indexPathForCell(cell)!
         let song = self.songsController.objectAtIndexPath(indexPath) as! Song
         let createPlaylistOverlay = CreatePlaylistOverlay(song: song)
         self.presentModalOverlayController(createPlaylistOverlay, blurredController: self)

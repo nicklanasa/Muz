@@ -36,7 +36,7 @@ class TopAlbumsViewController: RootViewController, LastFmAlbumBuyLinksRequestDel
         self.topAlbums = topAlbums
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -55,7 +55,7 @@ class TopAlbumsViewController: RootViewController, LastFmAlbumBuyLinksRequestDel
                                 successHandler: { (albums) -> Void in
                                 self.albums = albums
                             }, failureHandler: { (error) -> Void in
-                                print(error)
+                                print(error, terminator: "")
                                 self.activityIndicator.stopAnimating()
                             })
                         }
@@ -106,7 +106,7 @@ class TopAlbumsViewController: RootViewController, LastFmAlbumBuyLinksRequestDel
         cell.buyButton.hidden = true
         
         if let albumPrice = album["collectionPrice"] as? NSNumber {
-            if let albumLink = album["collectionViewUrl"] as? String {
+            if let _ = album["collectionViewUrl"] as? String {
                 cell.buyButton.setTitle("$\(albumPrice.description)", forState: .Normal)
                 cell.buyButton.addTarget(self, action: "openAlbumLink:", forControlEvents: .TouchUpInside)
                 cell.buyButton.hidden = false
@@ -118,11 +118,10 @@ class TopAlbumsViewController: RootViewController, LastFmAlbumBuyLinksRequestDel
     
     func openAlbumLink(sender: AnyObject?) {
         if let button = sender as? UIButton {
-            print("Button tag: \(button.tag)\n")
+            print("Button tag: \(button.tag)\n", terminator: "")
             
             let album = self.albums[button.tag] as! NSDictionary
             if let albumLink = album["collectionViewUrl"] as? String {
-                LocalyticsSession.shared().tagEvent("Buy album button tapped")
                 UIApplication.sharedApplication().openURL(NSURL(string: albumLink)!)
             }
         }
@@ -130,12 +129,12 @@ class TopAlbumsViewController: RootViewController, LastFmAlbumBuyLinksRequestDel
     
     func fetchBuyLinks(sender: AnyObject?) {
         if let button = sender as? UIButton {
-            print("Button tag: \(button.tag)\n")
-            print("fetching buy links for top albums...")
+            print("Button tag: \(button.tag)\n", terminator: "")
+            print("fetching buy links for top albums...", terminator: "")
             
             let topAlbum = self.topAlbums[button.tag] as! LastFmAlbum
             
-            var lastFmAlbumBuyLinksRequest = LastFmAlbumBuyLinksRequest(artist: topAlbum.artist, album: topAlbum.title)
+            let lastFmAlbumBuyLinksRequest = LastFmAlbumBuyLinksRequest(artist: topAlbum.artist, album: topAlbum.title)
             lastFmAlbumBuyLinksRequest.delegate = self
             lastFmAlbumBuyLinksRequest.sendURLRequest()
         }

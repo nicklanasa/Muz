@@ -55,7 +55,7 @@ class MoreViewController: RootViewController,
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -101,8 +101,8 @@ class MoreViewController: RootViewController,
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        var cell = tableView.dequeueReusableCellWithIdentifier("Cell",
-            forIndexPath: indexPath) as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("Cell",
+            forIndexPath: indexPath) 
         
         cell.textLabel?.font = MuzSettingFont
         cell.textLabel?.text = ""
@@ -112,7 +112,7 @@ class MoreViewController: RootViewController,
         case MoreSectionType.Settings.rawValue:
             switch indexPath.row {
             case MoreSetting.ArtistInfo.rawValue:
-                var lastFmCell = tableView.dequeueReusableCellWithIdentifier("LastFmCell") as! MoreLastFmSettingCell
+                let lastFmCell = tableView.dequeueReusableCellWithIdentifier("LastFmCell") as! MoreLastFmSettingCell
                 lastFmCell.artistInfoSwitch.on = SettingsManager.defaultManager.valueForMoreSetting(.ArtistInfo)
                 lastFmCell.artistInfoSwitch.addTarget(self, action: "updatedSetting:", forControlEvents: .ValueChanged)
                 return lastFmCell
@@ -181,7 +181,6 @@ class MoreViewController: RootViewController,
                     
                     })
                     
-                    LocalyticsSession.shared().tagEvent("Sync Library")
                 }, progress: { (addedItems, total) -> () in
                     self.syncingHud.progress = Float(addedItems.count) / Float(total)
                 })
@@ -247,7 +246,7 @@ class MoreViewController: RootViewController,
     }
     
     func lastFmLoginCellDidTapLoginButton(cell: LastFmLoginCell) {
-        var hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        let hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         hud.mode = MBProgressHUDMode.Indeterminate
         hud.labelText = "Please wait..."
         hud.labelFont = MuzTitleFont
@@ -255,7 +254,7 @@ class MoreViewController: RootViewController,
         LastFm.sharedInstance().getSessionForUser(cell.usernameTextfield.text, password: cell.passwordTextfield.text, successHandler: { (userData) -> Void in
             hud.hide(true)
             SettingsManager.defaultManager.updateValueForMoreSetting(.LastFM, value: NSNumber(bool: true))
-            print(userData)
+            print(userData, terminator: "")
             
             let session = userData["key"] as! String
             NSUserDefaults.standardUserDefaults().setObject(cell.usernameTextfield.text, forKey: "LastFMUsername")
@@ -270,12 +269,9 @@ class MoreViewController: RootViewController,
             self.tableView.endUpdates()
             
             self.tableView.scrollEnabled = true
-            
-            LocalyticsSession.shared().tagEvent("Lastfm Login")
         }) { (error) -> Void in
             hud.hide(true)
             self.tableView.scrollEnabled = true
-            LocalyticsSession.shared().tagEvent("Failed Lastfm Login")
             UIAlertView(title: "Error!",
                 message: "Unable to login to Last.fm, please check your username and password.",
                 delegate: self,

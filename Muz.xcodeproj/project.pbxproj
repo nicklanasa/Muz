@@ -76,6 +76,7 @@
 		CE49F3601A3A83C8008DE25E /* NowPlayingPageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE49F35F1A3A83C8008DE25E /* NowPlayingPageController.swift */; };
 		CE5E31A81A86A3CC00969647 /* LastFmSimilarArtistTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5E31A71A86A3CC00969647 /* LastFmSimilarArtistTableCell.swift */; };
 		CE5E31AA1A86A40100969647 /* LastFmSimilarArtistTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE5E31A91A86A40100969647 /* LastFmSimilarArtistTableCell.xib */; };
+		CE5F0CD81B0007490036E763 /* LastFm+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5F0CD71B0007490036E763 /* LastFm+Helpers.swift */; };
 		CE6EF5001A38F07D001FE858 /* ArtistAlbumsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6EF4FF1A38F07D001FE858 /* ArtistAlbumsViewController.swift */; };
 		CE6EF5021A38F08C001FE858 /* ArtistAlbumsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE6EF5011A38F08C001FE858 /* ArtistAlbumsViewController.xib */; };
 		CE9211291A8926DF00758227 /* TopTracksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9211281A8926DF00758227 /* TopTracksViewController.swift */; };
@@ -86,26 +87,12 @@
 		CE9211331A89280700758227 /* LastFmTopAlbumsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9211321A89280700758227 /* LastFmTopAlbumsRequest.swift */; };
 		CE9211361A8929CC00758227 /* LastFmAlbum.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9211351A8929CC00758227 /* LastFmAlbum.m */; };
 		CE9211391A892FBE00758227 /* LastFmTrack.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9211381A892FBE00758227 /* LastFmTrack.m */; };
-		CE9575881AA8B642002B444C /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE9575871AA8B642002B444C /* FacebookSDK.framework */; };
 		CE95758C1AA8BF0B002B444C /* ItunesSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = CE95758B1AA8BF0B002B444C /* ItunesSearch.m */; };
 		CE95D9BD1A3DFB730060752A /* LastFmArtistInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE95D9BC1A3DFB730060752A /* LastFmArtistInfoCell.swift */; };
 		CE95D9BF1A3DFB860060752A /* LastFmArtistInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE95D9BE1A3DFB860060752A /* LastFmArtistInfoCell.xib */; };
 		CE9745411A3E548F00A65633 /* LastFmSimiliarArtistsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9745401A3E548F00A65633 /* LastFmSimiliarArtistsRequest.swift */; };
 		CE9745431A3E556900A65633 /* LastFmRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9745421A3E556900A65633 /* LastFmRequest.swift */; };
-		CE97F49A1AED9043003FBC88 /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE97F4991AED9043003FBC88 /* NotificationController.swift */; };
-		CE97F49C1AED9043003FBC88 /* GlanceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE97F49B1AED9043003FBC88 /* GlanceController.swift */; };
-		CE97F49E1AED9043003FBC88 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE97F49D1AED9043003FBC88 /* Images.xcassets */; };
-		CE97F4A21AED9044003FBC88 /* Muz WatchKit App.app in Resources */ = {isa = PBXBuildFile; fileRef = CE97F4A11AED9044003FBC88 /* Muz WatchKit App.app */; };
-		CE97F4AA1AED9044003FBC88 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE97F4A81AED9044003FBC88 /* Interface.storyboard */; };
-		CE97F4AC1AED9044003FBC88 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE97F4AB1AED9044003FBC88 /* Images.xcassets */; };
-		CE97F4AF1AED9044003FBC88 /* Muz WatchKit Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = CE97F4921AED9043003FBC88 /* Muz WatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		CE97F4B81AED93E0003FBC88 /* NowPlayingInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE97F48C1AED8D0F003FBC88 /* NowPlayingInterfaceController.swift */; };
 		CE97F4C81AEDB5F6003FBC88 /* WKNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = CE97F4C71AEDB5F6003FBC88 /* WKNotificationCenter.m */; };
-		CE97F4C91AEDB5F6003FBC88 /* WKNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = CE97F4C71AEDB5F6003FBC88 /* WKNotificationCenter.m */; };
-		CE97F4CB1AEDBCE6003FBC88 /* ArtistsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE97F4CA1AEDBCE6003FBC88 /* ArtistsController.swift */; };
-		CE97F4CD1AEDBCEF003FBC88 /* SongsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE97F4CC1AEDBCEF003FBC88 /* SongsController.swift */; };
-		CE97F4CF1AEDBCFE003FBC88 /* PlaylistsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE97F4CE1AEDBCFE003FBC88 /* PlaylistsController.swift */; };
-		CE97F4D11AEDBE40003FBC88 /* LabelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE97F4D01AEDBE40003FBC88 /* LabelCell.swift */; };
 		CE9BBDBB1A36A87B00878C09 /* Muz.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CE9BBDB91A36A87B00878C09 /* Muz.xcdatamodeld */; };
 		CE9BCFAE1A43C77300522F18 /* NowPlayingCollectionController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE9BCFAD1A43C77300522F18 /* NowPlayingCollectionController.xib */; };
 		CE9BCFB01A43C77D00522F18 /* NowPlayingCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9BCFAF1A43C77D00522F18 /* NowPlayingCollectionController.swift */; };
@@ -191,35 +178,7 @@
 			remoteGlobalIDString = CE444BAF1A36A25500153F77;
 			remoteInfo = Muz;
 		};
-		CE97F4A31AED9044003FBC88 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = CE444BA81A36A25500153F77 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = CE97F4A01AED9044003FBC88;
-			remoteInfo = "Muz WatchKit App";
-		};
-		CE97F4AD1AED9044003FBC88 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = CE444BA81A36A25500153F77 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = CE97F4911AED9043003FBC88;
-			remoteInfo = "Muz WatchKit Extension";
-		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		CE97F4B61AED9044003FBC88 /* Embed App Extensions */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 13;
-			files = (
-				CE97F4AF1AED9044003FBC88 /* Muz WatchKit Extension.appex in Embed App Extensions */,
-			);
-			name = "Embed App Extensions";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		011AF3B81A880C5300E298DD /* NowPlayingTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NowPlayingTableViewCell.swift; sourceTree = "<group>"; };
@@ -312,6 +271,7 @@
 		CE49F35F1A3A83C8008DE25E /* NowPlayingPageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NowPlayingPageController.swift; sourceTree = "<group>"; };
 		CE5E31A71A86A3CC00969647 /* LastFmSimilarArtistTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastFmSimilarArtistTableCell.swift; sourceTree = "<group>"; };
 		CE5E31A91A86A40100969647 /* LastFmSimilarArtistTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LastFmSimilarArtistTableCell.xib; sourceTree = "<group>"; };
+		CE5F0CD71B0007490036E763 /* LastFm+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LastFm+Helpers.swift"; sourceTree = "<group>"; };
 		CE6EF4FF1A38F07D001FE858 /* ArtistAlbumsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArtistAlbumsViewController.swift; sourceTree = "<group>"; };
 		CE6EF5011A38F08C001FE858 /* ArtistAlbumsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ArtistAlbumsViewController.xib; sourceTree = "<group>"; };
 		CE7D81211A51C6D4001C1035 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -331,33 +291,16 @@
 		CE9211351A8929CC00758227 /* LastFmAlbum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LastFmAlbum.m; sourceTree = "<group>"; };
 		CE9211371A892FBE00758227 /* LastFmTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LastFmTrack.h; sourceTree = "<group>"; };
 		CE9211381A892FBE00758227 /* LastFmTrack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LastFmTrack.m; sourceTree = "<group>"; };
-		CE9575871AA8B642002B444C /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
 		CE95758A1AA8BF0B002B444C /* ItunesSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItunesSearch.h; sourceTree = "<group>"; };
 		CE95758B1AA8BF0B002B444C /* ItunesSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItunesSearch.m; sourceTree = "<group>"; };
 		CE95D9BC1A3DFB730060752A /* LastFmArtistInfoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastFmArtistInfoCell.swift; sourceTree = "<group>"; };
 		CE95D9BE1A3DFB860060752A /* LastFmArtistInfoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LastFmArtistInfoCell.xib; sourceTree = "<group>"; };
 		CE9745401A3E548F00A65633 /* LastFmSimiliarArtistsRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastFmSimiliarArtistsRequest.swift; sourceTree = "<group>"; };
 		CE9745421A3E556900A65633 /* LastFmRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastFmRequest.swift; sourceTree = "<group>"; };
-		CE97F48C1AED8D0F003FBC88 /* NowPlayingInterfaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NowPlayingInterfaceController.swift; path = ../Muz/NowPlayingInterfaceController.swift; sourceTree = "<group>"; };
-		CE97F4921AED9043003FBC88 /* Muz WatchKit Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Muz WatchKit Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
-		CE97F4951AED9043003FBC88 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CE97F4961AED9043003FBC88 /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
-		CE97F4991AED9043003FBC88 /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
-		CE97F49B1AED9043003FBC88 /* GlanceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlanceController.swift; sourceTree = "<group>"; };
-		CE97F49D1AED9043003FBC88 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		CE97F4A11AED9044003FBC88 /* Muz WatchKit App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Muz WatchKit App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		CE97F4A71AED9044003FBC88 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CE97F4A91AED9044003FBC88 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
-		CE97F4AB1AED9044003FBC88 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		CE97F4B91AEDAE8A003FBC88 /* Muz WatchKit Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Muz WatchKit Extension.entitlements"; sourceTree = "<group>"; };
 		CE97F4C31AEDB5C6003FBC88 /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/../build/Debug-iphoneos/libPods.a"; sourceTree = "<group>"; };
 		CE97F4C51AEDB5F5003FBC88 /* Muz WatchKit Extension-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Muz WatchKit Extension-Bridging-Header.h"; sourceTree = "<group>"; };
 		CE97F4C61AEDB5F6003FBC88 /* WKNotificationCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WKNotificationCenter.h; sourceTree = "<group>"; };
 		CE97F4C71AEDB5F6003FBC88 /* WKNotificationCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WKNotificationCenter.m; sourceTree = "<group>"; };
-		CE97F4CA1AEDBCE6003FBC88 /* ArtistsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArtistsController.swift; sourceTree = "<group>"; };
-		CE97F4CC1AEDBCEF003FBC88 /* SongsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SongsController.swift; sourceTree = "<group>"; };
-		CE97F4CE1AEDBCFE003FBC88 /* PlaylistsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaylistsController.swift; sourceTree = "<group>"; };
-		CE97F4D01AEDBE40003FBC88 /* LabelCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelCell.swift; sourceTree = "<group>"; };
 		CE9BBDBA1A36A87B00878C09 /* Muz.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Muz.xcdatamodel; sourceTree = "<group>"; };
 		CE9BCFAD1A43C77300522F18 /* NowPlayingCollectionController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NowPlayingCollectionController.xib; sourceTree = "<group>"; };
 		CE9BCFAF1A43C77D00522F18 /* NowPlayingCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NowPlayingCollectionController.swift; sourceTree = "<group>"; };
@@ -433,7 +376,6 @@
 		CEE153521A3B5B4B00BB16EB /* HTMLNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTMLNode.m; sourceTree = "<group>"; };
 		CEE153531A3B5B4B00BB16EB /* HTMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTMLParser.h; sourceTree = "<group>"; };
 		CEE153541A3B5B4B00BB16EB /* HTMLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTMLParser.m; sourceTree = "<group>"; };
-		CEF68A081AEACCAA003B2582 /* Muz.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Muz.entitlements; sourceTree = "<group>"; };
 		CEF808281A8A94FF00B6D954 /* NSNumber+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSNumber+Helpers.swift"; sourceTree = "<group>"; };
 		CEF8082A1A8AAEB600B6D954 /* TopAlbumCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopAlbumCell.swift; sourceTree = "<group>"; };
 		CEF8082C1A8AAEC100B6D954 /* TopAlbumCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TopAlbumCell.xib; sourceTree = "<group>"; };
@@ -449,18 +391,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				18FE78E2938CE235720BDF0D /* libPods.a in Frameworks */,
-				CE9575881AA8B642002B444C /* FacebookSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		CE444BC21A36A25500153F77 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		CE97F48F1AED9043003FBC88 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -507,6 +441,38 @@
 			name = Search;
 			sourceTree = "<group>";
 		};
+		01BF2C841BDD1899002B3042 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				CEBC1EF51A816D7B000AF2F1 /* UIImageView+Helpers.swift */,
+				CEFEB1C71A843DA00070A28D /* UIButton+Helpers.swift */,
+			);
+			name = Extensions;
+			sourceTree = "<group>";
+		};
+		01BF2C851BDD18A6002B3042 /* Misc */ = {
+			isa = PBXGroup;
+			children = (
+				CEDB618C1A37C40000B90B2D /* LovedViewController.swift */,
+				CEDB618D1A37C40000B90B2D /* LovedViewController.xib */,
+				CE9211281A8926DF00758227 /* TopTracksViewController.swift */,
+				CE92112C1A89270800758227 /* TopTracksViewController.xib */,
+				CE92112A1A8926E900758227 /* TopAlbumsViewController.swift */,
+				CE92112E1A89271000758227 /* TopAlbumsViewController.xib */,
+				CEF8082A1A8AAEB600B6D954 /* TopAlbumCell.swift */,
+				CEF8082C1A8AAEC100B6D954 /* TopAlbumCell.xib */,
+				CE3126161A50DA480071AD27 /* NoMusicOverlayController.swift */,
+				CE3126181A50DA500071AD27 /* NoMusicOverlayController.xib */,
+				CE31261C1A50E77A0071AD27 /* TutorialController.xib */,
+				CE31261E1A50E7870071AD27 /* TutorialController.swift */,
+				CEDB61E61A37DCE300B90B2D /* MoreViewController.swift */,
+				CEDB61E81A37DCEE00B90B2D /* MoreViewController.xib */,
+				CEFEB1C31A843A270070A28D /* SyncOverlayController.swift */,
+				CEFEB1C51A843A5B0070A28D /* SyncOverlayController.xib */,
+			);
+			name = Misc;
+			sourceTree = "<group>";
+		};
 		645DC876E38F9CCAA9D7D1A6 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -520,7 +486,6 @@
 			isa = PBXGroup;
 			children = (
 				CE97F4C31AEDB5C6003FBC88 /* libPods.a */,
-				CE9575871AA8B642002B444C /* FacebookSDK.framework */,
 				CE7D812D1A51C71A001C1035 /* libsqlite3.dylib */,
 				CE7D812B1A51C712001C1035 /* libz.dylib */,
 				CE7D81291A51C70B001C1035 /* StoreKit.framework */,
@@ -594,8 +559,6 @@
 			children = (
 				CE444BB21A36A25500153F77 /* Muz */,
 				CE444BC81A36A25500153F77 /* MuzTests */,
-				CE97F4931AED9043003FBC88 /* Muz WatchKit Extension */,
-				CE97F4A51AED9044003FBC88 /* Muz WatchKit App */,
 				CE444BB11A36A25500153F77 /* Products */,
 				645DC876E38F9CCAA9D7D1A6 /* Pods */,
 				B66FEEBAE05911F3D2B14F8A /* Frameworks */,
@@ -607,8 +570,6 @@
 			children = (
 				CE444BB01A36A25500153F77 /* Muz.app */,
 				CE444BC51A36A25500153F77 /* MuzTests.xctest */,
-				CE97F4921AED9043003FBC88 /* Muz WatchKit Extension.appex */,
-				CE97F4A11AED9044003FBC88 /* Muz WatchKit App.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -616,7 +577,6 @@
 		CE444BB21A36A25500153F77 /* Muz */ = {
 			isa = PBXGroup;
 			children = (
-				CEF68A081AEACCAA003B2582 /* Muz.entitlements */,
 				CE444BB51A36A25500153F77 /* AppDelegate.swift */,
 				CEB200CF1A378B6300E857D8 /* Muz-Bridging-Header.h */,
 				CE4931EB1A3A1B4400B3A4BE /* Application */,
@@ -683,6 +643,7 @@
 		CE4931E91A3A1B2100B3A4BE /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				CE9BBDB91A36A87B00878C09 /* Muz.xcdatamodeld */,
 				CEF808281A8A94FF00B6D954 /* NSNumber+Helpers.swift */,
 				01F9B1521AB5EB9C00D0513B /* Muz+ItunesSearch.swift */,
 				CE4184D71A49E8330011C0DA /* SettingsManager.swift */,
@@ -692,7 +653,6 @@
 				CE444BE11A36A28700153F77 /* DataManager.swift */,
 				CE444BE21A36A28700153F77 /* Datastore.swift */,
 				CE444BE31A36A28700153F77 /* MediaSession.swift */,
-				CE9BBDB91A36A87B00878C09 /* Muz.xcdatamodeld */,
 				CED89F781A8D770400D40DB4 /* PlaylistSong.swift */,
 				CED89F721A8D765700D40DB4 /* Playlist.swift */,
 				CE167DA41A855E6900A9EC1A /* Song.swift */,
@@ -707,6 +667,7 @@
 				CE444BE01A36A28700153F77 /* Song+Helpers.swift */,
 				CE3038E21A3E0A9F00DCC5EB /* LastFm */,
 				0158A3811ABB219200A31082 /* UIImage+Helpers.swift */,
+				CE5F0CD71B0007490036E763 /* LastFm+Helpers.swift */,
 			);
 			name = Data;
 			sourceTree = "<group>";
@@ -738,26 +699,8 @@
 				CE59C2771AB720D900415E5B /* Root */,
 				017497E21AB5F9FC003EFF28 /* Search */,
 				CE9BCFE91A45E22400522F18 /* LastFm */,
-				CE3126161A50DA480071AD27 /* NoMusicOverlayController.swift */,
-				CE3126181A50DA500071AD27 /* NoMusicOverlayController.xib */,
-				CEDB618C1A37C40000B90B2D /* LovedViewController.swift */,
-				CEDB618D1A37C40000B90B2D /* LovedViewController.xib */,
-				CE31261C1A50E77A0071AD27 /* TutorialController.xib */,
-				CE31261E1A50E7870071AD27 /* TutorialController.swift */,
-				CEDB61E61A37DCE300B90B2D /* MoreViewController.swift */,
-				CEDB61E81A37DCEE00B90B2D /* MoreViewController.xib */,
-				CEBC1EF51A816D7B000AF2F1 /* UIImageView+Helpers.swift */,
-				CEFEB1C71A843DA00070A28D /* UIButton+Helpers.swift */,
-				CEFEB1C31A843A270070A28D /* SyncOverlayController.swift */,
-				CEFEB1C51A843A5B0070A28D /* SyncOverlayController.xib */,
-				CE9211281A8926DF00758227 /* TopTracksViewController.swift */,
-				CE92112C1A89270800758227 /* TopTracksViewController.xib */,
-				CE92112A1A8926E900758227 /* TopAlbumsViewController.swift */,
-				CE92112E1A89271000758227 /* TopAlbumsViewController.xib */,
-				CEF8082A1A8AAEB600B6D954 /* TopAlbumCell.swift */,
-				CEF8082C1A8AAEC100B6D954 /* TopAlbumCell.xib */,
-				CEA4A13E1A867678003FDF0D /* HomeViewController.swift */,
-				CEA4A1401A8676B0003FDF0D /* HomeViewController.xib */,
+				01BF2C851BDD18A6002B3042 /* Misc */,
+				01BF2C841BDD1899002B3042 /* Extensions */,
 				CE9BCFD41A44E98100522F18 /* Playlists */,
 				CE4931ED1A3A1B8700B3A4BE /* NowPlaying */,
 				CE4931EC1A3A1B7A00B3A4BE /* ArtistAlbums */,
@@ -799,6 +742,8 @@
 		CE59C2771AB720D900415E5B /* Root */ = {
 			isa = PBXGroup;
 			children = (
+				CEA4A13E1A867678003FDF0D /* HomeViewController.swift */,
+				CEA4A1401A8676B0003FDF0D /* HomeViewController.xib */,
 				CEDB61861A37BA2B00B90B2D /* NavBarController.swift */,
 				CEDB61821A37B85D00B90B2D /* TabBarController.swift */,
 				CEDB617D1A37AF9700B90B2D /* RootViewController.swift */,
@@ -814,50 +759,6 @@
 				CE95758B1AA8BF0B002B444C /* ItunesSearch.m */,
 			);
 			path = iTunesSearch;
-			sourceTree = "<group>";
-		};
-		CE97F4931AED9043003FBC88 /* Muz WatchKit Extension */ = {
-			isa = PBXGroup;
-			children = (
-				CE97F4B91AEDAE8A003FBC88 /* Muz WatchKit Extension.entitlements */,
-				CE97F48C1AED8D0F003FBC88 /* NowPlayingInterfaceController.swift */,
-				CE97F4991AED9043003FBC88 /* NotificationController.swift */,
-				CE97F49B1AED9043003FBC88 /* GlanceController.swift */,
-				CE97F49D1AED9043003FBC88 /* Images.xcassets */,
-				CE97F4941AED9043003FBC88 /* Supporting Files */,
-				CE97F4CA1AEDBCE6003FBC88 /* ArtistsController.swift */,
-				CE97F4CE1AEDBCFE003FBC88 /* PlaylistsController.swift */,
-				CE97F4CC1AEDBCEF003FBC88 /* SongsController.swift */,
-				CE97F4D01AEDBE40003FBC88 /* LabelCell.swift */,
-			);
-			path = "Muz WatchKit Extension";
-			sourceTree = "<group>";
-		};
-		CE97F4941AED9043003FBC88 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				CE97F4951AED9043003FBC88 /* Info.plist */,
-				CE97F4961AED9043003FBC88 /* PushNotificationPayload.apns */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		CE97F4A51AED9044003FBC88 /* Muz WatchKit App */ = {
-			isa = PBXGroup;
-			children = (
-				CE97F4A81AED9044003FBC88 /* Interface.storyboard */,
-				CE97F4AB1AED9044003FBC88 /* Images.xcassets */,
-				CE97F4A61AED9044003FBC88 /* Supporting Files */,
-			);
-			path = "Muz WatchKit App";
-			sourceTree = "<group>";
-		};
-		CE97F4A61AED9044003FBC88 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				CE97F4A71AED9044003FBC88 /* Info.plist */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		CE9BCFD41A44E98100522F18 /* Playlists */ = {
@@ -937,12 +838,10 @@
 				CE444BAD1A36A25500153F77 /* Frameworks */,
 				CE444BAE1A36A25500153F77 /* Resources */,
 				94664FFDA55135CA7F84611A /* Copy Pods Resources */,
-				CE97F4B61AED9044003FBC88 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				CE97F4AE1AED9044003FBC88 /* PBXTargetDependency */,
 			);
 			name = Muz;
 			productName = Muz;
@@ -967,46 +866,15 @@
 			productReference = CE444BC51A36A25500153F77 /* MuzTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		CE97F4911AED9043003FBC88 /* Muz WatchKit Extension */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = CE97F4B31AED9044003FBC88 /* Build configuration list for PBXNativeTarget "Muz WatchKit Extension" */;
-			buildPhases = (
-				CE97F48E1AED9043003FBC88 /* Sources */,
-				CE97F48F1AED9043003FBC88 /* Frameworks */,
-				CE97F4901AED9043003FBC88 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				CE97F4A41AED9044003FBC88 /* PBXTargetDependency */,
-			);
-			name = "Muz WatchKit Extension";
-			productName = "Muz WatchKit Extension";
-			productReference = CE97F4921AED9043003FBC88 /* Muz WatchKit Extension.appex */;
-			productType = "com.apple.product-type.watchkit-extension";
-		};
-		CE97F4A01AED9044003FBC88 /* Muz WatchKit App */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = CE97F4B01AED9044003FBC88 /* Build configuration list for PBXNativeTarget "Muz WatchKit App" */;
-			buildPhases = (
-				CE97F49F1AED9044003FBC88 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "Muz WatchKit App";
-			productName = "Muz WatchKit App";
-			productReference = CE97F4A11AED9044003FBC88 /* Muz WatchKit App.app */;
-			productType = "com.apple.product-type.application.watchapp";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		CE444BA81A36A25500153F77 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0610;
+				LastSwiftMigration = 0700;
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = "Nytek Productions";
 				TargetAttributes = {
 					CE444BAF1A36A25500153F77 = {
@@ -1014,7 +882,7 @@
 						DevelopmentTeam = 6Q4UNB2LAJ;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
-								enabled = 1;
+								enabled = 0;
 							};
 							com.apple.BackgroundModes = {
 								enabled = 0;
@@ -1024,19 +892,6 @@
 					CE444BC41A36A25500153F77 = {
 						CreatedOnToolsVersion = 6.1.1;
 						TestTargetID = CE444BAF1A36A25500153F77;
-					};
-					CE97F4911AED9043003FBC88 = {
-						CreatedOnToolsVersion = 6.3.1;
-						DevelopmentTeam = 6Q4UNB2LAJ;
-						SystemCapabilities = {
-							com.apple.ApplicationGroups.iOS = {
-								enabled = 1;
-							};
-						};
-					};
-					CE97F4A01AED9044003FBC88 = {
-						CreatedOnToolsVersion = 6.3.1;
-						DevelopmentTeam = 6Q4UNB2LAJ;
 					};
 				};
 			};
@@ -1055,8 +910,6 @@
 			targets = (
 				CE444BAF1A36A25500153F77 /* Muz */,
 				CE444BC41A36A25500153F77 /* MuzTests */,
-				CE97F4911AED9043003FBC88 /* Muz WatchKit Extension */,
-				CE97F4A01AED9044003FBC88 /* Muz WatchKit App */,
 			);
 		};
 /* End PBXProject section */
@@ -1123,24 +976,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		CE97F4901AED9043003FBC88 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				CE97F49E1AED9043003FBC88 /* Images.xcassets in Resources */,
-				CE97F4A21AED9044003FBC88 /* Muz WatchKit App.app in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		CE97F49F1AED9044003FBC88 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				CE97F4AA1AED9044003FBC88 /* Interface.storyboard in Resources */,
-				CE97F4AC1AED9044003FBC88 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1262,6 +1097,7 @@
 				CE31261F1A50E7870071AD27 /* TutorialController.swift in Sources */,
 				CE444BB61A36A25500153F77 /* AppDelegate.swift in Sources */,
 				CE167DA51A855E6900A9EC1A /* Song.swift in Sources */,
+				CE5F0CD81B0007490036E763 /* LastFm+Helpers.swift in Sources */,
 				CECCC0D71A3FB65700799854 /* PlaylistSong+Helpers.swift in Sources */,
 				CEC66D9E1A38DA2400560754 /* SongCell.swift in Sources */,
 				CEBC1EF01A813BB4000AF2F1 /* Artist+Helpers.swift in Sources */,
@@ -1303,21 +1139,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		CE97F48E1AED9043003FBC88 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				CE97F49A1AED9043003FBC88 /* NotificationController.swift in Sources */,
-				CE97F4CB1AEDBCE6003FBC88 /* ArtistsController.swift in Sources */,
-				CE97F4D11AEDBE40003FBC88 /* LabelCell.swift in Sources */,
-				CE97F49C1AED9043003FBC88 /* GlanceController.swift in Sources */,
-				CE97F4B81AED93E0003FBC88 /* NowPlayingInterfaceController.swift in Sources */,
-				CE97F4CD1AEDBCEF003FBC88 /* SongsController.swift in Sources */,
-				CE97F4C91AEDB5F6003FBC88 /* WKNotificationCenter.m in Sources */,
-				CE97F4CF1AEDBCFE003FBC88 /* PlaylistsController.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -1325,16 +1146,6 @@
 			isa = PBXTargetDependency;
 			target = CE444BAF1A36A25500153F77 /* Muz */;
 			targetProxy = CE444BC61A36A25500153F77 /* PBXContainerItemProxy */;
-		};
-		CE97F4A41AED9044003FBC88 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = CE97F4A01AED9044003FBC88 /* Muz WatchKit App */;
-			targetProxy = CE97F4A31AED9044003FBC88 /* PBXContainerItemProxy */;
-		};
-		CE97F4AE1AED9044003FBC88 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = CE97F4911AED9043003FBC88 /* Muz WatchKit Extension */;
-			targetProxy = CE97F4AD1AED9044003FBC88 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1371,14 +1182,6 @@
 			name = LaunchScreen.xib;
 			sourceTree = "<group>";
 		};
-		CE97F4A81AED9044003FBC88 /* Interface.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				CE97F4A91AED9044003FBC88 /* Base */,
-			);
-			name = Interface.storyboard;
-			sourceTree = "<group>";
-		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -1402,6 +1205,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1468,29 +1272,17 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = Muz/Muz.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Muz/parse",
-					/Users/nick/Documents/FacebookSDK,
-					"$(PROJECT_DIR)",
-				);
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					/usr/include/libxml2,
-				);
 				INFOPLIST_FILE = Muz/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
-					"-l\"LocalyticsAMP_x64\"",
 					"-l\"Pods-Appirater\"",
 					"-l\"Pods-KissXML\"",
 					"-l\"Pods-LastFm\"",
-					"-l\"Pods-Localytics-AMP\"",
 					"-l\"Pods-MBProgressHUD\"",
 					"-l\"Pods-NSString-HTML\"",
 					"-l\"Pods-SDWebImage\"",
@@ -1515,6 +1307,7 @@
 					"\"StoreKit\"",
 					"-ObjC",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Muz/Muz-Bridging-Header.h";
@@ -1530,29 +1323,17 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = Muz/Muz.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Muz/parse",
-					/Users/nick/Documents/FacebookSDK,
-					"$(PROJECT_DIR)",
-				);
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					/usr/include/libxml2,
-				);
 				INFOPLIST_FILE = Muz/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
-					"-l\"LocalyticsAMP_x64\"",
 					"-l\"Pods-Appirater\"",
 					"-l\"Pods-KissXML\"",
 					"-l\"Pods-LastFm\"",
-					"-l\"Pods-Localytics-AMP\"",
 					"-l\"Pods-MBProgressHUD\"",
 					"-l\"Pods-NSString-HTML\"",
 					"-l\"Pods-SDWebImage\"",
@@ -1577,6 +1358,7 @@
 					"\"StoreKit\"",
 					"-ObjC",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Muz/Muz-Bridging-Header.h";
@@ -1598,6 +1380,7 @@
 				);
 				INFOPLIST_FILE = MuzTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "Nytek-Productions.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Muz.app/Muz";
 			};
@@ -1613,105 +1396,9 @@
 				);
 				INFOPLIST_FILE = MuzTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "Nytek-Productions.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Muz.app/Muz";
-			};
-			name = Release;
-		};
-		CE97F4B11AED9044003FBC88 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				IBSC_MODULE = Muz_WatchKit_Extension;
-				INFOPLIST_FILE = "Muz WatchKit App/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = 4;
-				"TARGETED_DEVICE_FAMILY[sdk=iphonesimulator*]" = "1,4";
-			};
-			name = Debug;
-		};
-		CE97F4B21AED9044003FBC88 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_NO_COMMON_BLOCKS = YES;
-				IBSC_MODULE = Muz_WatchKit_Extension;
-				INFOPLIST_FILE = "Muz WatchKit App/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = 4;
-				"TARGETED_DEVICE_FAMILY[sdk=iphonesimulator*]" = "1,4";
-			};
-			name = Release;
-		};
-		CE97F4B41AED9044003FBC88 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = "Muz WatchKit Extension/Muz WatchKit Extension.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = "Muz WatchKit Extension/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/build/Debug-iphoneos",
-				);
-				PRODUCT_NAME = "${TARGET_NAME}";
-				PROVISIONING_PROFILE = "";
-				SKIP_INSTALL = YES;
-				SWIFT_INSTALL_OBJC_HEADER = NO;
-				SWIFT_OBJC_BRIDGING_HEADER = "Muz/Muz WatchKit Extension-Bridging-Header.h";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-			};
-			name = Debug;
-		};
-		CE97F4B51AED9044003FBC88 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = "Muz WatchKit Extension/Muz WatchKit Extension.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "Muz WatchKit Extension/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/build/Debug-iphoneos",
-				);
-				PRODUCT_NAME = "${TARGET_NAME}";
-				PROVISIONING_PROFILE = "";
-				SKIP_INSTALL = YES;
-				SWIFT_INSTALL_OBJC_HEADER = NO;
-				SWIFT_OBJC_BRIDGING_HEADER = "Muz/Muz WatchKit Extension-Bridging-Header.h";
 			};
 			name = Release;
 		};
@@ -1744,22 +1431,6 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
-		};
-		CE97F4B01AED9044003FBC88 /* Build configuration list for PBXNativeTarget "Muz WatchKit App" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				CE97F4B11AED9044003FBC88 /* Debug */,
-				CE97F4B21AED9044003FBC88 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-		};
-		CE97F4B31AED9044003FBC88 /* Build configuration list for PBXNativeTarget "Muz WatchKit Extension" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				CE97F4B41AED9044003FBC88 /* Debug */,
-				CE97F4B51AED9044003FBC88 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 

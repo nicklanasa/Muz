@@ -48,7 +48,7 @@ NSFetchedResultsControllerDelegate {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -70,12 +70,12 @@ NSFetchedResultsControllerDelegate {
         self.tableView.registerNib(UINib(nibName: "SongsHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "Header")
     
         if !self.isForExistingPlaylist {
-            var search = UIBarButtonItem(image: UIImage(named: "search"),
+            let search = UIBarButtonItem(image: UIImage(named: "search"),
                 style: .Plain,
                 target: self,
                 action: "showSearch")
             
-            var addPlaylist = UIBarButtonItem(image: UIImage(named: "add"),
+            let addPlaylist = UIBarButtonItem(image: UIImage(named: "add"),
                 style: .Plain,
                 target: self,
                 action: "addPlaylist");
@@ -110,10 +110,10 @@ NSFetchedResultsControllerDelegate {
         
         self.playlistsController?.delegate = self
         
-        var error: NSError?
-        if self.playlistsController!.performFetch(&error) {
+        do {
+            try self.playlistsController!.performFetch()
             self.tableView.reloadData()
-        }
+        } catch {}
     }
     
     // MARK: Sectors NSFetchedResultsControllerDelegate
@@ -129,7 +129,7 @@ NSFetchedResultsControllerDelegate {
         forChangeType type: NSFetchedResultsChangeType,
         newIndexPath: NSIndexPath?)
     {
-        var tableView = self.tableView
+        let tableView = self.tableView
         var indexPaths:[NSIndexPath] = [NSIndexPath]()
         switch type {
             
@@ -169,7 +169,7 @@ NSFetchedResultsControllerDelegate {
             self.tableView.deleteSections(NSIndexSet(index: sectionIndex),
                 withRowAnimation: .Fade)
             
-        case .Update, .Move: println("Move or delete called in didChangeSection")
+        case .Update, .Move: print("Move or delete called in didChangeSection")
         }
     }
     
@@ -202,7 +202,7 @@ NSFetchedResultsControllerDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if !self.isForExistingPlaylist {
             tableView.deselectRowAtIndexPath(indexPath, animated: true)
-            var playlist = self.playlistsController?.objectAtIndexPath(indexPath) as! Playlist
+            let playlist = self.playlistsController?.objectAtIndexPath(indexPath) as! Playlist
             DataManager.manager.datastore.updatePlaylist(playlist: playlist, completion: { () -> () in
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     let playlistSongsViewController = PlaylistSongsViewController(playlist: playlist)
@@ -210,7 +210,7 @@ NSFetchedResultsControllerDelegate {
                 })
             })
         } else {
-            var playlist = self.playlistsController?.objectAtIndexPath(indexPath) as! Playlist
+            let playlist = self.playlistsController?.objectAtIndexPath(indexPath) as! Playlist
             self.navigationController?.popViewControllerAnimated(true)
             self.dismissWithPlaylist(playlist)
         }
@@ -222,7 +222,7 @@ NSFetchedResultsControllerDelegate {
     
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         let playlist = self.playlistsController?.objectAtIndexPath(indexPath) as! Playlist
-        return count(playlist.persistentID!) == 0
+        return (playlist.persistentID!).characters.count == 0
     }
     
     func tableView(tableView: UITableView,
@@ -231,7 +231,7 @@ NSFetchedResultsControllerDelegate {
         
     }
     
-    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
+    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         let deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete", handler: { (action, indexPath) -> Void in
             let playlist = self.playlistsController?.objectAtIndexPath(indexPath) as! Playlist
             MediaSession.sharedSession.dataManager.datastore.deletePlaylistWithPlaylist(playlist, completion: { (error) -> () in

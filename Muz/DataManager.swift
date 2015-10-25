@@ -24,42 +24,43 @@ class DataManager {
         datastore = Datastore(storeName: "Muz 2")
     }
     
-    func fetchImageForArtist(#artist: Artist, completion: (image: UIImage?, error: NSError?) -> ()) {
+    func fetchImageForArtist(artist artist: Artist, completion: (image: UIImage?, error: NSError?) -> ()) {
         MediaSession.sharedSession.fetchImageForArtist(artist: artist) { (image) -> () in
             completion(image: image, error: nil)
         }
     }
     
-    func syncArtists(completion: (addedItems: [AnyObject], error: NSErrorPointer) -> (),
-        progress: (addedItems: [AnyObject], total: Int) -> ()) {
-        MediaSession.sharedSession.fetchArtists { (results) -> () in
-            self.datastore.addArtists(results, completion: { (addedItems, error) -> () in
-                completion(addedItems: addedItems, error: error)
-            }, progress: { (addedItems, total) -> () in
-                progress(addedItems: addedItems, total: total)
-            })
+    func syncArtists(completion: (addedItems: [AnyObject], error: NSErrorPointer) -> (), progress: (addedItems: [AnyObject], total: Int) -> ()) {
+        self.datastore.resetLibrary { (error) -> () in
+            MediaSession.sharedSession.fetchArtists { (results) -> () in
+                self.datastore.addArtists(results, completion: { (addedItems, error) -> () in
+                    completion(addedItems: addedItems, error: error)
+                    }, progress: { (addedItems, total) -> () in
+                        progress(addedItems: addedItems, total: total)
+                })
+            }
         }
     }
     
-    func fetchImageForAlbum(#album: Album, completion: (image: UIImage?, error: NSError?) -> ()) {
+    func fetchImageForAlbum(album album: Album, completion: (image: UIImage?, error: NSError?) -> ()) {
         MediaSession.sharedSession.fetchImageForAlbum(album: album) { (image) -> () in
             completion(image: image, error: nil)
         }
     }
     
-    func fetchCollectionForAlbum(#album: Album, completion: (collection: MPMediaItemCollection, error: NSErrorPointer) -> ()) {
+    func fetchCollectionForAlbum(album album: Album, completion: (collection: MPMediaItemCollection?, error: NSErrorPointer) -> ()) {
         MediaSession.sharedSession.fetchAlbumCollectionForAlbum(album: album) { (collection) -> () in
             completion(collection: collection, error: nil)
         }
     }
     
-    func fetchCollectionForArtist(#artist: String, completion: (collection: MPMediaItemCollection, error: NSErrorPointer) -> ()) {
+    func fetchCollectionForArtist(artist artist: String, completion: (collection: MPMediaItemCollection?, error: NSErrorPointer) -> ()) {
         MediaSession.sharedSession.fetchArtistCollectionForArtist(artist: artist) { (collection) -> () in
             completion(collection: collection, error: nil)
         }
     }
     
-    func syncAlbumsForArtist(#artist: Artist, completion: (addedItems: [AnyObject], error: NSErrorPointer) -> ()) {
+    func syncAlbumsForArtist(artist artist: Artist, completion: (addedItems: [AnyObject], error: NSErrorPointer) -> ()) {
         MediaSession.sharedSession.fetchAlbumsForArtist(artist: artist) { (results) -> () in
             self.datastore.addAlbumsForArtist(artist: artist, albums: results, completion: { (addedItems, error) -> () in
                 completion(addedItems: addedItems, error: error)
@@ -67,19 +68,19 @@ class DataManager {
         }
     }
     
-    func fetchImageForSong(#song: Song, completion: (image: UIImage?, error: NSError?) -> ()) {
+    func fetchImageForSong(song song: Song, completion: (image: UIImage?, error: NSError?) -> ()) {
         MediaSession.sharedSession.fetchImageForSong(song: song) { (image) -> () in
             completion(image: image, error: nil)
         }
     }
     
-    func fetchImageWithSongData(#song: NSDictionary, completion: (image: UIImage?, error: NSError?) -> ()) {
+    func fetchImageWithSongData(song song: NSDictionary, completion: (image: UIImage?, error: NSError?) -> ()) {
         MediaSession.sharedSession.fetchImageWithSongData(song: song) { (image) -> () in
             completion(image: image, error: nil)
         }
     }
     
-    func fetchItemForSong(#song: Song, completion: (item: MPMediaItem?) -> ())  {
+    func fetchItemForSong(song song: Song, completion: (item: MPMediaItem?) -> ())  {
         return MediaSession.sharedSession.fetchItemForSong(song, completion: { (item) -> () in
             completion(item: item)
         })
@@ -93,7 +94,7 @@ class DataManager {
         }
     }
     
-    func fetchSongsCollection(completion: (collection: MPMediaItemCollection, error: NSErrorPointer) -> ()) {
+    func fetchSongsCollection(completion: (collection: MPMediaItemCollection?, error: NSErrorPointer) -> ()) {
         MediaSession.sharedSession.fetchSongsCollection { (collection) -> () in
             completion(collection: collection, error: nil)
         }

@@ -24,7 +24,7 @@ class RootViewController: UIViewController, SearchOverlayControllerDelegate {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -34,17 +34,38 @@ class RootViewController: UIViewController, SearchOverlayControllerDelegate {
         if NSUserDefaults.standardUserDefaults().objectForKey("SyncLibrary") == nil {
             self.presentModalOverlayController(SyncOverlayController(), blurredController: self)
         }
+        
+        NSNotificationCenter.defaultCenter().addObserver(self,
+            selector: "sendNowPlaying",
+            name: MPMusicPlayerControllerNowPlayingItemDidChangeNotification,
+            object: nil)
     }
     
-    override func viewDidAppear(animated: Bool) {
-        LocalyticsSession.shared().tagScreen(screenName)
+    func sendNowPlaying() {
+        if let item = MPMusicPlayerController.iPodMusicPlayer().nowPlayingItem {
+            if let username = NSUserDefaults.standardUserDefaults().objectForKey("LastFMUsername") as? String {
+                if let password = NSUserDefaults.standardUserDefaults().objectForKey("LastFMPassword") as? String {
+                    LastFm.sharedInstance().getSessionForUser(username, password: password, successHandler: { (userData) -> Void in
+                        
+                        LastFm.sharedInstance().sendNowPlayingTrack(item.title, byArtist: item.artist, onAlbum: item.albumTitle, withDuration: item.playbackDuration, successHandler: { (responseData) -> Void in
+                            print(responseData, terminator: "")
+                            }, failureHandler: { (error) -> Void in
+                                //LocalyticsSession.shared().tagEvent("Failed Sent NowPlaying Song")
+                        })
+                        
+                        
+                        }, failureHandler: { (error) -> Void in
+                    })
+                }
+            }
+        }
     }
     
     override func viewDidLoad() {
         if backgroundImageView == nil {
             self.backgroundImageView = UIImageView(frame: UIScreen.mainScreen().bounds)
             self.backgroundImageView.contentMode = UIViewContentMode.ScaleToFill
-            self.backgroundImageView.autoresizingMask = .FlexibleWidth | .FlexibleHeight
+            self.backgroundImageView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
             self.view.insertSubview(self.backgroundImageView, atIndex: 0)
         }
         
@@ -53,7 +74,7 @@ class RootViewController: UIViewController, SearchOverlayControllerDelegate {
         self.searchDisplayController?.searchResultsTableView.backgroundColor = UIColor.clearColor()
         self.searchDisplayController?.searchResultsTableView.separatorStyle = .None
         
-        self.searchDisplayController?.searchResultsTableView.autoresizingMask = .FlexibleWidth | .FlexibleHeight
+        self.searchDisplayController?.searchResultsTableView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
     }
     
     func configureBackgroundImage() {
@@ -64,7 +85,7 @@ class RootViewController: UIViewController, SearchOverlayControllerDelegate {
     TODO: Change this to use Song.
     Presents the NowPlaying ViewController with the selected item.
     
-    :param: item The MPMediaItem you want to play.
+    - parameter item: The MPMediaItem you want to play.
     */
     func presentNowPlayViewController() {
         let nowPlayingViewController = NowPlayingViewController()
@@ -81,14 +102,14 @@ class RootViewController: UIViewController, SearchOverlayControllerDelegate {
     /**
     Presents a model overlay ViewController with the given controller and blurredController to blur in the background.
     
-    :param: controller        The controller you wish you present.
-    :param: blurredController The controller you wish to blur in the background.
+    - parameter controller:        The controller you wish you present.
+    - parameter blurredController: The controller you wish to blur in the background.
     */
     func presentModalOverlayController(controller: OverlayController, blurredController: UIViewController) {
 
         UIGraphicsBeginImageContext(blurredController.view.bounds.size)
-        self.view.layer.renderInContext(UIGraphicsGetCurrentContext())
-        var image = UIGraphicsGetImageFromCurrentImageContext()
+        self.view.layer.renderInContext(UIGraphicsGetCurrentContext()!)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
         controller.screenShot = image
@@ -98,10 +119,9 @@ class RootViewController: UIViewController, SearchOverlayControllerDelegate {
     }
     
     func presentSearchOverlayController(controller: SearchOverlayController, blurredController: UIViewController) {
-        LocalyticsSession.shared().tagEvent("Global search tapped.")
         UIGraphicsBeginImageContext(blurredController.view.bounds.size)
-        self.view.layer.renderInContext(UIGraphicsGetCurrentContext())
-        var image = UIGraphicsGetImageFromCurrentImageContext()
+        self.view.layer.renderInContext(UIGraphicsGetCurrentContext()!)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
         controller.screenShot = image
@@ -116,13 +136,13 @@ class RootViewController: UIViewController, SearchOverlayControllerDelegate {
     /**
     Present the CreatePlaylist Controller with the given controller.
     
-    :param: controller The controller you wish to blur in the background.
+    - parameter controller: The controller you wish to blur in the background.
     */
     func presentCreatePlaylistFromController(controller: OverlayController) {
         
         UIGraphicsBeginImageContext(self.view.bounds.size)
-        self.view.layer.renderInContext(UIGraphicsGetCurrentContext())
-        var image = UIGraphicsGetImageFromCurrentImageContext()
+        self.view.layer.renderInContext(UIGraphicsGetCurrentContext()!)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
         self.addChildViewController(controller)
@@ -150,7 +170,14 @@ class RootViewController: UIViewController, SearchOverlayControllerDelegate {
     
     func searchOverlayController(controller: SearchOverlayController, didTapSong song: Song) {
         MediaSession.sharedSession.fetchArtistCollectionForArtist(artist: song.artist) { (collection) -> () in
-            self.presentNowPlayViewController(song, collection: collection)
+            if collection != nil {
+                self.presentNowPlayViewController(song, collection: collection!)
+            } else {
+                UIAlertView(title: "Error!",
+                    message: "Unable to get collection!",
+                    delegate: self,
+                    cancelButtonTitle: "Ok").show()
+            }
         }
     }
 }

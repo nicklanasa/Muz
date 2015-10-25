@@ -38,7 +38,7 @@ NSFetchedResultsControllerDelegate {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -54,9 +54,9 @@ NSFetchedResultsControllerDelegate {
         
         self.tableView.registerNib(UINib(nibName: "SongCell", bundle: nil), forCellReuseIdentifier: "Cell")
         
-        if let playlist = self.playlist {
+        if let _ = self.playlist {
             self.navigationItem.title = self.playlist?.name
-            var songs = NSSet(set: self.playlist.playlistSongs)
+            let songs = NSSet(set: self.playlist.playlistSongs)
             let sort = NSSortDescriptor(key: "order", ascending: true)
             self.sortedPlaylistSongs = songs.sortedArrayUsingDescriptors([sort])
             
@@ -75,7 +75,6 @@ NSFetchedResultsControllerDelegate {
     }
 
     func editPlaylist() {
-        LocalyticsSession.shared().tagEvent("Edit Playlist")
         self.tableView.setEditing(true, animated: true)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done",
             style: .Plain,
@@ -84,13 +83,12 @@ NSFetchedResultsControllerDelegate {
     }
     
     func finishEditing() {
-        LocalyticsSession.shared().tagEvent("Finished editing Playlist")
-        let selectedRows = self.tableView.indexPathsForSelectedRows()
+        let selectedRows = self.tableView.indexPathsForSelectedRows
         if selectedRows?.count > 0 {
             // Delete songs
-            var playlistSongs = NSMutableSet(set: self.playlist.playlistSongs)
+            let playlistSongs = NSMutableSet(set: self.playlist.playlistSongs)
             
-            for indexPath in selectedRows as! [NSIndexPath] {
+            for indexPath in selectedRows! {
                 let playlistSong = self.sortedPlaylistSongs[indexPath.row] as! PlaylistSong
                 playlistSongs.removeObject(playlistSong)
                 self.sortedPlaylistSongs.removeAtIndex(indexPath.row)
@@ -100,9 +98,9 @@ NSFetchedResultsControllerDelegate {
             
             MediaSession.sharedSession.dataManager.datastore.saveDatastoreWithCompletion({ (error) -> () in
                 if error != nil {
-                    println("Unabled to updated playlist.")
+                    print("Unabled to updated playlist.")
                 } else {
-                    println("Updated playlist!")
+                    print("Updated playlist!")
                 }
             })
             
@@ -139,7 +137,7 @@ NSFetchedResultsControllerDelegate {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if self.isReadOnly {
-            return self.readOnlyPlaylistSongsQuery?.items.count ?? 0
+            return self.readOnlyPlaylistSongsQuery?.items?.count ?? 0
         }
         
         return self.sortedPlaylistSongs.count
@@ -151,9 +149,8 @@ NSFetchedResultsControllerDelegate {
                 
         if self.isReadOnly {
             let readOnlyPlaylist = self.readOnlyPlaylistSongsQuery?.collections?[indexPath.section] as! MPMediaPlaylist
-            if let item = readOnlyPlaylist.items[indexPath.row] as? MPMediaItem {
-                cell.updateWithItem(item)
-            }
+            let item = readOnlyPlaylist.items[indexPath.row]
+            cell.updateWithItem(item)
         } else {
             let playlistSong = self.sortedPlaylistSongs[indexPath.row] as! PlaylistSong
             let song = playlistSong.song
@@ -167,7 +164,7 @@ NSFetchedResultsControllerDelegate {
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if tableView.editing == true {
-            if self.tableView.indexPathsForSelectedRows()?.count > 0 {
+            if self.tableView.indexPathsForSelectedRows?.count > 0 {
                 self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Delete",
                     style: .Plain,
                     target: self,
@@ -185,19 +182,31 @@ NSFetchedResultsControllerDelegate {
             
             if self.isReadOnly {
                 let readOnlyPlaylist = self.readOnlyPlaylistSongsQuery?.collections?[indexPath.section] as! MPMediaPlaylist
-                if let item = readOnlyPlaylist.items[indexPath.row] as? MPMediaItem {
-                    DataManager.manager.datastore.songForSongName(item.title, artist: item.artist, completion: { (song) -> () in
+                let item = readOnlyPlaylist.items[indexPath.row]
+                if let title = item.title, let artist = item.artist {
+                    DataManager.manager.datastore.songForSongName(title, artist: artist, completion: { (song) -> () in
                         if let songToPlay = song {
                             self.presentNowPlayViewController(songToPlay, collection: MPMediaItemCollection(items: readOnlyPlaylist.items))
                         }
                     })
+                } else {
+                    UIAlertView(title: "Error!",
+                        message: "Unable to find song!",
+                        delegate: self,
+                        cancelButtonTitle: "Ok").show()
                 }
             } else {
                 // Create collection of playlist songs.
                 let playlistSong = self.sortedPlaylistSongs[indexPath.row] as! PlaylistSong
                 let song = playlistSong.song
-                let collection = MediaSession.sharedSession.collectionWithPlaylistSongs(sortedPlaylistSongs)
-                self.presentNowPlayViewController(song, collection: collection)
+                if let collection = MediaSession.sharedSession.collectionWithPlaylistSongs(sortedPlaylistSongs) {
+                    self.presentNowPlayViewController(song, collection: collection)
+                } else {
+                    UIAlertView(title: "Error!",
+                        message: "Unable to get collection!",
+                        delegate: self,
+                        cancelButtonTitle: "Ok").show()
+                }
             }
         }
     }
@@ -215,15 +224,19 @@ NSFetchedResultsControllerDelegate {
     }
     
     func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
-        var playlistSongSource = self.sortedPlaylistSongs[sourceIndexPath.row] as! PlaylistSong
-        var playlistSongTo = self.sortedPlaylistSongs[destinationIndexPath.row] as! PlaylistSong
+        let playlistSongSource = self.sortedPlaylistSongs[sourceIndexPath.row] as! PlaylistSong
+        let playlistSongTo = self.sortedPlaylistSongs[destinationIndexPath.row] as! PlaylistSong
         playlistSongSource.order = destinationIndexPath.row + 1
         playlistSongTo.order = sourceIndexPath.row + 1
         
-        MediaSession.sharedSession.dataManager.datastore.mainQueueContext.save(NSErrorPointer())
+        do {
+            try MediaSession.sharedSession.dataManager.datastore.mainQueueContext.save()
+        } catch let error as NSError {
+            NSErrorPointer().memory = error
+        }
     }
     
-    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
+    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         let deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default,
             title: "Delete",
             handler: { (action, indexPath) -> Void in

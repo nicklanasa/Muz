@@ -69,7 +69,7 @@ UICollectionViewDataSource, CLLocationManagerDelegate {
         self.locationManager.requestAlwaysAuthorization()
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -98,17 +98,16 @@ UICollectionViewDataSource, CLLocationManagerDelegate {
     }
     
     func fetchHomeData() {
-        var recentPlaylistsError: NSError?
-        var recentSongsError: NSError?
-        if self.recentPlaylistsController!.performFetch(&recentPlaylistsError) {
+        do {
+            try self.recentPlaylistsController!.performFetch()
             if self.recentArtistSongs?.count > 0 {
                 if let song = self.recentArtistSongs?[0] as? NSDictionary {
-                    var similiarArtistLastFmRequest = LastFmSimiliarArtistsRequest(artist: song.objectForKey("artist") as! String)
+                    let similiarArtistLastFmRequest = LastFmSimiliarArtistsRequest(artist: song.objectForKey("artist") as! String)
                     similiarArtistLastFmRequest.delegate = self
                     similiarArtistLastFmRequest.sendURLRequest()
                 }
             }
-        }
+        } catch {}
     }
     
     override func viewDidLoad() {
@@ -173,7 +172,7 @@ UICollectionViewDataSource, CLLocationManagerDelegate {
         
         let sectionType = HomeSectionType(rawValue: indexPath.section)!
         
-        var songCell = tableView.dequeueReusableCellWithIdentifier("SongCell") as! SongCell
+        let songCell = tableView.dequeueReusableCellWithIdentifier("SongCell") as! SongCell
         
         switch sectionType {
         case .NowPlaying:
@@ -195,13 +194,6 @@ UICollectionViewDataSource, CLLocationManagerDelegate {
                 similarArtistCell.noContentLabel.hidden = true
             }
             
-            if self.similiarArtists?.count > 0 {
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    self.similarArtistCell.collectionView.scrollToItemAtIndexPath(NSIndexPath(forRow: 0, inSection: 0),
-                        atScrollPosition: .Left, animated: true)
-                })
-            }
-            
             return similarArtistCell
         case .RecentPlaylists:
             
@@ -211,7 +203,7 @@ UICollectionViewDataSource, CLLocationManagerDelegate {
             
             let playlist = self.recentPlaylistsController!.objectAtIndexPath(NSIndexPath(forRow: indexPath.row - 1, inSection: 0)) as! Playlist
             
-            var cell = tableView.dequeueReusableCellWithIdentifier("PlaylistCell") as! PlaylistCell
+            let cell = tableView.dequeueReusableCellWithIdentifier("PlaylistCell") as! PlaylistCell
             cell.updateWithPlaylist(playlist)
             
             return cell
@@ -248,10 +240,9 @@ UICollectionViewDataSource, CLLocationManagerDelegate {
     }
     
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section == 0{
+        if section == 0 {
             return 0
         }
-    
         return 30
     }
     
@@ -264,7 +255,7 @@ UICollectionViewDataSource, CLLocationManagerDelegate {
                 }
                 return 0
             case .NowPlaying:
-                if let item = self.nowPlayingCell.playerController.nowPlayingItem {
+                if let _ = self.nowPlayingCell.playerController.nowPlayingItem {
                     return 81
                 }
                 return 0
@@ -308,13 +299,10 @@ UICollectionViewDataSource, CLLocationManagerDelegate {
         case .RelatedArtists: break
         case .NowPlaying:
             self.presentNowPlayViewController()
-            LocalyticsSession.shared().tagEvent("Dashboard NowPlaying Cell Tapped.")
         case .RecentPlaylists:
             if indexPath.row == 0 {
-                LocalyticsSession.shared().tagEvent("Dashboard New Playlist tapped.")
                 self.presentModalOverlayController(CreatePlaylistOverlay(), blurredController: self)
             } else {
-                LocalyticsSession.shared().tagEvent("Recent Playing tapped.")
                 let playlist = self.recentPlaylistsController!.objectAtIndexPath(NSIndexPath(forRow: indexPath.row-1, inSection: 0)) as! Playlist
                 let playlistsSongs = PlaylistSongsViewController(playlist: playlist)
                 self.navigationController?.pushViewController(playlistsSongs, animated: true)
@@ -324,8 +312,16 @@ UICollectionViewDataSource, CLLocationManagerDelegate {
             DataManager.manager.datastore.songForSongName(songData.objectForKey("title") as! String, artist: songData.objectForKey("artist") as! String, completion: { (song) -> () in
                 if let playingSong = song {
                     MediaSession.sharedSession.fetchSongsCollection({ (collection) -> () in
-                        LocalyticsSession.shared().tagEvent("Recent Song tapped.")
-                        self.navigationController!.pushViewController(NowPlayingViewController(song: playingSong, collection: collection), animated: true)
+                        if collection != nil {
+                            self.navigationController!.pushViewController(NowPlayingViewController(song: playingSong, collection: collection!), animated: true)
+                        } else {
+                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                UIAlertView(title: "Error!",
+                                    message: "Unable to get collection!",
+                                    delegate: self,
+                                    cancelButtonTitle: "Ok").show()
+                            })
+                        }
                     })
                 }
             })
@@ -349,14 +345,14 @@ UICollectionViewDataSource, CLLocationManagerDelegate {
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
     
         if collectionView == self.recentArtistCell.collectionView {
-            var cell = collectionView.dequeueReusableCellWithReuseIdentifier("SimiliarArtistCell",
+            let cell = collectionView.dequeueReusableCellWithReuseIdentifier("SimiliarArtistCell",
                 forIndexPath: indexPath) as! SimiliarArtistCollectionViewCell
             let song = self.recentArtistSongs?[indexPath.row] as! NSDictionary
             cell.updateWithSongData(song, forArtist: true)
             
             return cell
         } else if collectionView == lastFmEventCell?.collectionView {
-            var cell = collectionView.dequeueReusableCellWithReuseIdentifier("LastFmEventInfoCell",
+            let cell = collectionView.dequeueReusableCellWithReuseIdentifier("LastFmEventInfoCell",
                 forIndexPath: indexPath) as! LastFmEventInfoCell
             
             if let event = events?[indexPath.row] as? LastFmEvent {
@@ -365,7 +361,7 @@ UICollectionViewDataSource, CLLocationManagerDelegate {
             
             return cell
         } else {
-            var cell = collectionView.dequeueReusableCellWithReuseIdentifier("SimiliarArtistCell",
+            let cell = collectionView.dequeueReusableCellWithReuseIdentifier("SimiliarArtistCell",
                 forIndexPath: indexPath) as! SimiliarArtistCollectionViewCell
             if let artist = similiarArtists?[indexPath.row] as? LastFmArtist {
                 cell.updateWithArtist(artist)
@@ -379,75 +375,68 @@ UICollectionViewDataSource, CLLocationManagerDelegate {
         if collectionView == self.recentArtistCell.collectionView {
             let song = self.recentArtistSongs?[indexPath.row] as! NSDictionary
             if let artist = DataManager.manager.datastore.artistForSongData(song: song) {
-                LocalyticsSession.shared().tagEvent("Recent Song tapped.")
                 let artistAlbums = ArtistAlbumsViewController(artist: artist)
                 self.navigationController?.pushViewController(artistAlbums, animated: true)
             }
         } else if collectionView == lastFmEventCell?.collectionView {
             if let event = self.events?[indexPath.row] as? LastFmEvent {
-                LocalyticsSession.shared().tagEvent("Event tapped.")
                 let eventController = LastFmEventInfoController(event: event)
                 self.navigationController?.pushViewController(eventController, animated: true)
             }
         } else {
             if let artist = self.similiarArtists?[indexPath.row] as? LastFmArtist {
-                LocalyticsSession.shared().tagEvent("Recent Artist tapped.")
                 let nowPlaying = NowPlayingInfoViewController(artist: artist.name, isForSimiliarArtist: true)
                 self.navigationController?.pushViewController(nowPlaying, animated: true)
             }
         }
     }
     
-    func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
-        println("didChangeAuthorizationStatus")
+    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+        print("didChangeAuthorizationStatus")
         
         switch status {
         case .NotDetermined:
-            println(".NotDetermined")
-            LocalyticsSession.shared().tagEvent("Denied Location")
+            print(".NotDetermined")
             break
             
         case .AuthorizedAlways:
-            println(".Authorized")
+            print(".Authorized")
             self.locationManager.startUpdatingLocation()
-            LocalyticsSession.shared().tagEvent("Allowed Location")
             break
             
         case .AuthorizedWhenInUse:
-            println(".Authorized")
+            print(".Authorized")
             self.locationManager.startUpdatingLocation()
-            LocalyticsSession.shared().tagEvent("Allowed Location")
             break
             
         case .Denied:
-            println(".Denied")
-            LocalyticsSession.shared().tagEvent("Denied Location")
+            print(".Denied")
             break
             
         default:
-            println("Unhandled authorization status")
+            print("Unhandled authorization status")
             break
             
         }
     }
     
-    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
-        
-        let location = locations.last as! CLLocation
-        CLGeocoder().reverseGeocodeLocation(location, completionHandler: { (placemarks, error) -> Void in
-            if error != nil {
-                print(error)
-            } else {
-                if placemarks.count > 0 {
-                    var placemark = placemarks.first as! CLPlacemark
-                    var cityState: String = "\(placemark.locality), \(placemark.administrativeArea)"
-                    LastFmGeoEventsRequest.sharedRequest.getEvents(cityState, completion: { (events, error) -> () in
-                        self.events = events
-                        self.locationManager.stopUpdatingLocation()
-                    })
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let location = locations.last {
+            CLGeocoder().reverseGeocodeLocation(location, completionHandler: { (placemarks, error) -> Void in
+                if error != nil {
+                    print(error, terminator: "")
+                } else {
+                    if placemarks?.count > 0 {
+                        if let placemark = placemarks?.first {
+                            let cityState: String = "\(placemark.locality), \(placemark.administrativeArea)"
+                            LastFmGeoEventsRequest.sharedRequest.getEvents(cityState, completion: { (events, error) -> () in
+                                self.events = events
+                                self.locationManager.stopUpdatingLocation()
+                            })
+                        }
+                    }
                 }
-            }
-        })
-        
+            })
+        }
     }
 }

@@ -20,9 +20,9 @@ UIActionSheetDelegate {
     /**
     Creates a new LastFmBuyLinksActionSheet with the given array of buy links.
     
-    :param: buyLinks The buylinks you want to display.
+    - parameter buyLinks: The buylinks you want to display.
     
-    :returns: void
+    - returns: void
     */
     init(buyLinks: [AnyObject]) {
         super.init(nibName: "LastFmBuyLinksViewController", bundle: nil)
@@ -34,7 +34,7 @@ UIActionSheetDelegate {
         super.init(nibName: "LastFmBuyLinksViewController", bundle: nil)
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -48,7 +48,7 @@ UIActionSheetDelegate {
             destructiveButtonTitle: nil)
         
         for buyLink in self.buyLinks as! [LastFmBuyLink] {
-            if count(buyLink.name) > 0 && buyLink.price.integerValue > 0 {
+            if buyLink.name.characters.count > 0 && buyLink.price.integerValue > 0 {
                 let buttonTitle = NSString(format: "%@", buyLink.name, buyLink.price)
                 self.buyLinksActionSheet.addButtonWithTitle(buttonTitle as String)
                 self.numberOfValidBuyLinks++
@@ -63,7 +63,6 @@ UIActionSheetDelegate {
         }
         
         if let buyLink = self.buyLinks[buttonIndex - 1] as? LastFmBuyLink {
-            LocalyticsSession.shared().tagEvent("Buy album button tapped")
             UIApplication.sharedApplication().openURL(buyLink.url)
         }
     }
@@ -71,7 +70,7 @@ UIActionSheetDelegate {
     /**
     Shows the action view in the given view.
     
-    :param: view The view you want the show the action sheet in.
+    - parameter view: The view you want the show the action sheet in.
     */
     func showInView(view: UIView) {
         self.buyLinksActionSheet.showInView(view)

@@ -34,7 +34,7 @@ UITableViewDataSource {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -55,20 +55,22 @@ UITableViewDataSource {
         
         self.lovedQuery = MPMediaQuery.songsQuery()
         
-        var results = self.lovedQuery.items as NSArray
-        
-        let sort = NSSortDescriptor(key: "playCount", ascending: false)
-        results = results.sortedArrayUsingDescriptors([sort])
-        
-        for item in results {
-            if let song = item as? MPMediaItem {
-                if song.rating > 3 {
-                    self.sortedResults.addObject(song)
+        if let items = self.lovedQuery.items {
+            var results = NSArray(objects: items)
+            
+            let sort = NSSortDescriptor(key: "playCount", ascending: false)
+            results = results.sortedArrayUsingDescriptors([sort])
+            
+            for item in results {
+                if let song = item as? MPMediaItem {
+                    if song.rating > 3 {
+                        self.sortedResults.addObject(song)
+                    }
                 }
             }
+            
+            self.tableView.reloadData()
         }
-        
-        self.tableView.reloadData()
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {

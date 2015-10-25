@@ -18,10 +18,10 @@ class ArtistAlbumsSongCell: SWTableViewCell {
     override func prepareForReuse() {
     }
     
-    func configure(#song: Song) {
+    func configure(song song: Song) {
         self.songLabel.text = song.title
         
-        print(song.albumTrackNumber)
+        print(song.albumTrackNumber, terminator: "")
         
         let min = floor(song.playbackDuration.doubleValue / 60)
         let sec = floor(song.playbackDuration.doubleValue - (min * 60))
