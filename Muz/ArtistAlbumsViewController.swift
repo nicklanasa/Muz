@@ -67,10 +67,12 @@ SWTableViewCellDelegate  {
     
         fetchArtistAlbums()
         
+        /*
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "info"),
             style: .Plain,
             target: self,
             action: "artistInfo")
+        */
     }
     
     func artistInfo() {

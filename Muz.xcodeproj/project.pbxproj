@@ -12,13 +12,8 @@
 		0158A37E1AB65B3100A31082 /* SearchSwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0158A37D1AB65B3100A31082 /* SearchSwitchCell.swift */; };
 		0158A3801AB65BA900A31082 /* SearchSwitchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0158A37F1AB65BA900A31082 /* SearchSwitchCell.xib */; };
 		0158A3821ABB219200A31082 /* UIImage+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0158A3811ABB219200A31082 /* UIImage+Helpers.swift */; };
-		0158A3881ABB5F1100A31082 /* FFCircularProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0158A3851ABB5F1100A31082 /* FFCircularProgressView.m */; };
-		0158A3891ABB5F1100A31082 /* UIColor+iOS7.m in Sources */ = {isa = PBXBuildFile; fileRef = 0158A3871ABB5F1100A31082 /* UIColor+iOS7.m */; };
 		0158A38B1ABCE70300A31082 /* AddPlaylistCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0158A38A1ABCE70300A31082 /* AddPlaylistCell.swift */; };
 		0158A38D1ABCE93F00A31082 /* AddPlaylistCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0158A38C1ABCE93F00A31082 /* AddPlaylistCell.xib */; };
-		0158A3951ABCF01D00A31082 /* JDStatusBarNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 0158A3901ABCF01D00A31082 /* JDStatusBarNotification.m */; };
-		0158A3961ABCF01D00A31082 /* JDStatusBarStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 0158A3921ABCF01D00A31082 /* JDStatusBarStyle.m */; };
-		0158A3971ABCF01D00A31082 /* JDStatusBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0158A3941ABCF01D00A31082 /* JDStatusBarView.m */; };
 		0167BDC21AC7169900199F59 /* LastFmGeoEventsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0167BDC11AC7169900199F59 /* LastFmGeoEventsRequest.swift */; };
 		017497E41AB5FA11003EFF28 /* RecommendedSearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017497E31AB5FA11003EFF28 /* RecommendedSearchCell.swift */; };
 		017497E61AB5FA18003EFF28 /* RecommendedSearchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 017497E51AB5FA18003EFF28 /* RecommendedSearchCell.xib */; };
@@ -186,18 +181,8 @@
 		0158A37D1AB65B3100A31082 /* SearchSwitchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchSwitchCell.swift; sourceTree = "<group>"; };
 		0158A37F1AB65BA900A31082 /* SearchSwitchCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchSwitchCell.xib; sourceTree = "<group>"; };
 		0158A3811ABB219200A31082 /* UIImage+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Helpers.swift"; sourceTree = "<group>"; };
-		0158A3841ABB5F1100A31082 /* FFCircularProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FFCircularProgressView.h; sourceTree = "<group>"; };
-		0158A3851ABB5F1100A31082 /* FFCircularProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FFCircularProgressView.m; sourceTree = "<group>"; };
-		0158A3861ABB5F1100A31082 /* UIColor+iOS7.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+iOS7.h"; sourceTree = "<group>"; };
-		0158A3871ABB5F1100A31082 /* UIColor+iOS7.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+iOS7.m"; sourceTree = "<group>"; };
 		0158A38A1ABCE70300A31082 /* AddPlaylistCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddPlaylistCell.swift; sourceTree = "<group>"; };
 		0158A38C1ABCE93F00A31082 /* AddPlaylistCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddPlaylistCell.xib; sourceTree = "<group>"; };
-		0158A38F1ABCF01D00A31082 /* JDStatusBarNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDStatusBarNotification.h; sourceTree = "<group>"; };
-		0158A3901ABCF01D00A31082 /* JDStatusBarNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDStatusBarNotification.m; sourceTree = "<group>"; };
-		0158A3911ABCF01D00A31082 /* JDStatusBarStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDStatusBarStyle.h; sourceTree = "<group>"; };
-		0158A3921ABCF01D00A31082 /* JDStatusBarStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDStatusBarStyle.m; sourceTree = "<group>"; };
-		0158A3931ABCF01D00A31082 /* JDStatusBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDStatusBarView.h; sourceTree = "<group>"; };
-		0158A3941ABCF01D00A31082 /* JDStatusBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDStatusBarView.m; sourceTree = "<group>"; };
 		0167BDC11AC7169900199F59 /* LastFmGeoEventsRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastFmGeoEventsRequest.swift; sourceTree = "<group>"; };
 		017497E31AB5FA11003EFF28 /* RecommendedSearchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecommendedSearchCell.swift; sourceTree = "<group>"; };
 		017497E51AB5FA18003EFF28 /* RecommendedSearchCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RecommendedSearchCell.xib; sourceTree = "<group>"; };
@@ -404,30 +389,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0158A3831ABB5F1100A31082 /* FFCircularProgressView */ = {
-			isa = PBXGroup;
-			children = (
-				0158A3841ABB5F1100A31082 /* FFCircularProgressView.h */,
-				0158A3851ABB5F1100A31082 /* FFCircularProgressView.m */,
-				0158A3861ABB5F1100A31082 /* UIColor+iOS7.h */,
-				0158A3871ABB5F1100A31082 /* UIColor+iOS7.m */,
-			);
-			path = FFCircularProgressView;
-			sourceTree = "<group>";
-		};
-		0158A38E1ABCF01D00A31082 /* JDStatusBarNotification */ = {
-			isa = PBXGroup;
-			children = (
-				0158A38F1ABCF01D00A31082 /* JDStatusBarNotification.h */,
-				0158A3901ABCF01D00A31082 /* JDStatusBarNotification.m */,
-				0158A3911ABCF01D00A31082 /* JDStatusBarStyle.h */,
-				0158A3921ABCF01D00A31082 /* JDStatusBarStyle.m */,
-				0158A3931ABCF01D00A31082 /* JDStatusBarView.h */,
-				0158A3941ABCF01D00A31082 /* JDStatusBarView.m */,
-			);
-			path = JDStatusBarNotification;
-			sourceTree = "<group>";
-		};
 		017497E21AB5F9FC003EFF28 /* Search */ = {
 			isa = PBXGroup;
 			children = (
@@ -579,11 +540,11 @@
 			children = (
 				CE444BB51A36A25500153F77 /* AppDelegate.swift */,
 				CEB200CF1A378B6300E857D8 /* Muz-Bridging-Header.h */,
+				CE444BBE1A36A25500153F77 /* LaunchScreen.xib */,
 				CE4931EB1A3A1B4400B3A4BE /* Application */,
 				CEDB61811A37B1D300B90B2D /* Resources */,
 				CE4931E91A3A1B2100B3A4BE /* Data */,
 				CE4931EA1A3A1B3700B3A4BE /* Library */,
-				CE444BBE1A36A25500153F77 /* LaunchScreen.xib */,
 				CE444BB31A36A25500153F77 /* Supporting Files */,
 			);
 			path = Muz;
@@ -678,8 +639,6 @@
 				CE97F4C61AEDB5F6003FBC88 /* WKNotificationCenter.h */,
 				CE97F4C71AEDB5F6003FBC88 /* WKNotificationCenter.m */,
 				CE41E6441AC9A68400D963BE /* SWTableViewCell */,
-				0158A38E1ABCF01D00A31082 /* JDStatusBarNotification */,
-				0158A3831ABB5F1100A31082 /* FFCircularProgressView */,
 				CE9575891AA8BF0B002B444C /* iTunesSearch */,
 				CEE153511A3B5B4B00BB16EB /* HTMLNode.h */,
 				CEE153521A3B5B4B00BB16EB /* HTMLNode.m */,
@@ -697,15 +656,15 @@
 			isa = PBXGroup;
 			children = (
 				CE59C2771AB720D900415E5B /* Root */,
-				017497E21AB5F9FC003EFF28 /* Search */,
-				CE9BCFE91A45E22400522F18 /* LastFm */,
-				01BF2C851BDD18A6002B3042 /* Misc */,
-				01BF2C841BDD1899002B3042 /* Extensions */,
-				CE9BCFD41A44E98100522F18 /* Playlists */,
 				CE4931ED1A3A1B8700B3A4BE /* NowPlaying */,
+				CE4931E71A3A1B0300B3A4BE /* Artists */,
 				CE4931EC1A3A1B7A00B3A4BE /* ArtistAlbums */,
 				CE4931E81A3A1B1A00B3A4BE /* Songs */,
-				CE4931E71A3A1B0300B3A4BE /* Artists */,
+				CE9BCFD41A44E98100522F18 /* Playlists */,
+				017497E21AB5F9FC003EFF28 /* Search */,
+				CE9BCFE91A45E22400522F18 /* LastFm */,
+				01BF2C841BDD1899002B3042 /* Extensions */,
+				01BF2C851BDD18A6002B3042 /* Misc */,
 			);
 			name = Application;
 			sourceTree = "<group>";
@@ -1027,7 +986,6 @@
 				CE4184DA1A4A3CC30011C0DA /* LastFmEventMapController.swift in Sources */,
 				CEBC1EF21A813C19000AF2F1 /* Album+Helpers.swift in Sources */,
 				CECCC10A1A40CC2700799854 /* PlaylistSongsViewController.swift in Sources */,
-				0158A3951ABCF01D00A31082 /* JDStatusBarNotification.m in Sources */,
 				CE9BCFDD1A45D18F00522F18 /* LastFmEventCell.swift in Sources */,
 				011AF3B91A880C5300E298DD /* NowPlayingTableViewCell.swift in Sources */,
 				CE41E6411AC9A67E00D963BE /* SWTableViewCell.m in Sources */,
@@ -1064,7 +1022,6 @@
 				0158A38B1ABCE70300A31082 /* AddPlaylistCell.swift in Sources */,
 				CEB200D21A378B6400E857D8 /* UIImage+ImageEffects.m in Sources */,
 				CE9211291A8926DF00758227 /* TopTracksViewController.swift in Sources */,
-				0158A3961ABCF01D00A31082 /* JDStatusBarStyle.m in Sources */,
 				CE41E63E1AC9A67E00D963BE /* NSMutableArray+SWUtilityButtons.m in Sources */,
 				CE9211311A8927FC00758227 /* LastFmTopTracksRequest.swift in Sources */,
 				CE33385D1A3A0A7D00281146 /* SongsHeader.swift in Sources */,
@@ -1093,7 +1050,6 @@
 				CECCC0EC1A40941400799854 /* PlaylistCell.swift in Sources */,
 				CE9BCFB01A43C77D00522F18 /* NowPlayingCollectionController.swift in Sources */,
 				CE4184DE1A4A49630011C0DA /* WebRequest.swift in Sources */,
-				0158A3971ABCF01D00A31082 /* JDStatusBarView.m in Sources */,
 				CE31261F1A50E7870071AD27 /* TutorialController.swift in Sources */,
 				CE444BB61A36A25500153F77 /* AppDelegate.swift in Sources */,
 				CE167DA51A855E6900A9EC1A /* Song.swift in Sources */,
@@ -1110,12 +1066,10 @@
 				CEDB61941A37D21B00B90B2D /* SongsViewController.swift in Sources */,
 				CE9BCFD31A44E68300522F18 /* OverlayController.swift in Sources */,
 				CECCC0B91A3F8E4700799854 /* PlaylistsViewController.swift in Sources */,
-				0158A3881ABB5F1100A31082 /* FFCircularProgressView.m in Sources */,
 				CE444BDB1A36A27200153F77 /* ArtistsViewController.swift in Sources */,
 				CEAA2A9B1AA7D0DC00DDCD23 /* LastFmLoginCell.swift in Sources */,
 				CE5E31A81A86A3CC00969647 /* LastFmSimilarArtistTableCell.swift in Sources */,
 				017497E41AB5FA11003EFF28 /* RecommendedSearchCell.swift in Sources */,
-				0158A3891ABB5F1100A31082 /* UIColor+iOS7.m in Sources */,
 				CE3126171A50DA480071AD27 /* NoMusicOverlayController.swift in Sources */,
 				CE9BCFD61A44EB4C00522F18 /* CreatePlaylistCell.swift in Sources */,
 				CE3038DA1A3E037700DCC5EB /* SimiliarArtistCollectionViewCell.swift in Sources */,

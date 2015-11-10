@@ -19,12 +19,7 @@
 #import "LastFmAlbum.h"
 #import "LastFmTrack.h"
 #import "LastFmBuyLink.h"
-
-#import "FFCircularProgressView.h"
-
 #import "MBProgressHUD.h"
 #import "UIImage+Resize.h"
 #import "ItunesSearch.h"
-
-#import "JDStatusBarNotification.h"
 #import "SWTableViewCell.h"

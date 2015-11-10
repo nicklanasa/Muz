@@ -89,7 +89,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIAlertViewDelegate {
         application.registerForRemoteNotifications()
         
         if NSUserDefaults.standardUserDefaults().objectForKey("FirstTimer") == nil {
-            SettingsManager.defaultManager.updateValueForMoreSetting(.ArtistInfo, value: NSNumber(bool: true))
             SettingsManager.defaultManager.updateValueForMoreSetting(.Lyrics, value: NSNumber(bool: true))
             NSUserDefaults.standardUserDefaults().setObject(NSNumber(bool: false), forKey: "FirstTimer")
         }
