@@ -15,8 +15,7 @@ UITableViewDelegate,
 UITableViewDataSource,
 NSFetchedResultsControllerDelegate,
 UISearchBarDelegate,
-UISearchDisplayDelegate,
-SWTableViewCellDelegate {
+UISearchDisplayDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -30,17 +29,6 @@ SWTableViewCellDelegate {
             selectedImage: UIImage(named: "artists"))
         
         self.tabBarItem.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0)
-    }
-    
-    var leftSwipeButtons: NSArray {
-        get {
-            
-            let buttons = NSMutableArray()
-            
-            buttons.sw_addUtilityButtonWithColor(UIColor.clearColor(), icon: UIImage(named: "addWhite"))
-            
-            return buttons
-        }
     }
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
@@ -86,13 +74,10 @@ SWTableViewCellDelegate {
     }
     
     func fetchArtists() {
-        var error: NSError?
         do {
             try self.artistsController.performFetch()
             self.tableView.reloadData()
-        } catch let error1 as NSError {
-            error = error1
-        }
+        } catch {}
     }
     
     // MARK: Sectors NSFetchedResultsControllerDelegate
@@ -176,9 +161,6 @@ SWTableViewCellDelegate {
         
         let artist = self.artistsController.objectAtIndexPath(indexPath) as! Artist
         cell.updateWithArtist(artist)
-        
-        cell.delegate = self
-        cell.leftUtilityButtons = self.leftSwipeButtons as [AnyObject]
     
         return cell
     }
@@ -214,10 +196,17 @@ SWTableViewCellDelegate {
         return ArtistCellHeight
     }
     
-    func swipeableTableViewCell(cell: SWTableViewCell!, didTriggerLeftUtilityButtonWithIndex index: Int) {
-        let indexPath = self.tableView.indexPathForCell(cell)!
-        let artist = self.artistsController.objectAtIndexPath(indexPath) as! Artist
-        let createPlaylistOverlay = CreatePlaylistOverlay(artist: artist.name)
-        self.presentModalOverlayController(createPlaylistOverlay, blurredController: self)
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+        let addAction = UITableViewRowAction(style: .Normal, title: "Add to playlist") { (action, indexPath) -> Void in
+            let artist = self.artistsController.objectAtIndexPath(indexPath) as! Artist
+            let createPlaylistOverlay = CreatePlaylistOverlay(artist: artist.name)
+            self.presentModalOverlayController(createPlaylistOverlay, blurredController: self)
+        }
+        
+        return [addAction]
     }
 }

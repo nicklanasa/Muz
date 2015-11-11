@@ -16,8 +16,7 @@ UITableViewDelegate,
 UITableViewDataSource,
 NSFetchedResultsControllerDelegate,
 UISearchBarDelegate,
-UISearchDisplayDelegate,
-SWTableViewCellDelegate {
+UISearchDisplayDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -29,14 +28,6 @@ SWTableViewCellDelegate {
         controller.delegate = self
         return controller
     }()
-    
-    var leftSwipeButtons: NSArray {
-        get {
-            let buttons = NSMutableArray()
-            buttons.sw_addUtilityButtonWithColor(UIColor.clearColor(), icon: UIImage(named: "addWhite"))
-            return buttons
-        }
-    }
     
     init() {
         super.init(nibName: "SongsViewController", bundle: nil)
@@ -114,10 +105,6 @@ SWTableViewCellDelegate {
         
         let song = self.songsController.objectAtIndexPath(indexPath) as! Song
         cell.updateWithSong(song)
-        
-        cell.delegate = self
-        cell.leftUtilityButtons = self.leftSwipeButtons as [AnyObject]
-        
         return cell
     }
 
@@ -166,11 +153,18 @@ SWTableViewCellDelegate {
 
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
-
-    func swipeableTableViewCell(cell: SWTableViewCell!, didTriggerLeftUtilityButtonWithIndex index: Int) {
-        let indexPath = self.tableView.indexPathForCell(cell)!
-        let song = self.songsController.objectAtIndexPath(indexPath) as! Song
-        let createPlaylistOverlay = CreatePlaylistOverlay(song: song)
-        self.presentModalOverlayController(createPlaylistOverlay, blurredController: self)
+    
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+        let addAction = UITableViewRowAction(style: .Normal, title: "Add to playlist") { (action, indexPath) -> Void in
+            let song = self.songsController.objectAtIndexPath(indexPath) as! Song
+            let createPlaylistOverlay = CreatePlaylistOverlay(songs: [song])
+            self.presentModalOverlayController(createPlaylistOverlay, blurredController: self)
+        }
+        
+        return [addAction]
     }
 }

@@ -12,7 +12,7 @@ import MediaPlayer
 
 let ArtistCellHeight: CGFloat = 65.0
 
-class ArtistCell: SWTableViewCell {
+class ArtistCell: UITableViewCell {
     @IBOutlet weak var artistLabel: UILabel!
     @IBOutlet weak var infoLabel: UILabel!
     @IBOutlet weak var artistImageView: UIImageView!

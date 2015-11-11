@@ -212,16 +212,6 @@ NowPlayingCollectionControllerDelegate {
         progressSlider.setThumbImage(UIImage(named: "thumbImage"), forState: .Normal)
         progressSlider.setThumbImage(UIImage(named: "thumbImage"), forState: .Selected)
         
-        LastFm.sharedInstance().apiKey = "d55a72556285ca314e7af8b0fb093e29"
-        LastFm.sharedInstance().apiSecret = "affa81f90053b2114888298f3aeb27b9"
-
-        if let session = NSUserDefaults.standardUserDefaults().objectForKey("LastFMSession") as? String {
-            LastFm.sharedInstance().session = session
-            if let username = NSUserDefaults.standardUserDefaults().objectForKey("LastFMUsername") as? String {
-                LastFm.sharedInstance().username = username
-            }
-        }
-        
         if let item = self.playerController.nowPlayingItem {
             self.item = item
             

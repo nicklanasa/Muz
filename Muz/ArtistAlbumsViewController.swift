@@ -14,8 +14,7 @@ import MediaPlayer
 class ArtistAlbumsViewController: RootViewController,
     UITableViewDelegate,
     UITableViewDataSource,
-    ArtistAlbumHeaderDelegate,
-SWTableViewCellDelegate  {
+    ArtistAlbumHeaderDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
@@ -30,17 +29,6 @@ SWTableViewCellDelegate  {
             sectionNameKeyPath: nil)
         return controller
     }()
-    
-    var leftSwipeButtons: NSArray {
-        get {
-            
-            let buttons = NSMutableArray()
-            
-            buttons.sw_addUtilityButtonWithColor(UIColor.clearColor(), icon: UIImage(named: "addWhite"))
-            
-            return buttons
-        }
-    }
     
     lazy var formatter: NSDateFormatter = {
         var formatter = NSDateFormatter()
@@ -66,13 +54,6 @@ SWTableViewCellDelegate  {
         tableView.registerNib(UINib(nibName: "ArtistAlbumHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "Header")
     
         fetchArtistAlbums()
-        
-        /*
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "info"),
-            style: .Plain,
-            target: self,
-            action: "artistInfo")
-        */
     }
     
     func artistInfo() {
@@ -81,7 +62,7 @@ SWTableViewCellDelegate  {
     }
     
     override func viewDidAppear(animated: Bool) {
-        self.screenName = "Albums"
+        self.title = self.artist.name
         super.viewWillAppear(animated)
         self.tableView.setEditing(false, animated: true)
     }
@@ -132,9 +113,6 @@ SWTableViewCellDelegate  {
             }
         }
         
-        cell.delegate = self
-        cell.leftUtilityButtons = self.leftSwipeButtons as [AnyObject]
-        
         return cell
     }
     
@@ -181,15 +159,22 @@ SWTableViewCellDelegate  {
         
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
+
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
+    }
     
-    func swipeableTableViewCell(cell: SWTableViewCell!, didTriggerLeftUtilityButtonWithIndex index: Int) {
-        let indexPath = self.tableView.indexPathForCell(cell)!
-        if let songs = self.sortedSongs[indexPath.section] as? [AnyObject] {
-            if let song = songs[indexPath.row] as? Song {
-                let createPlaylistOverlay = CreatePlaylistOverlay(songs: [song])
-                self.presentModalOverlayController(createPlaylistOverlay, blurredController: self)
+    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+        let addAction = UITableViewRowAction(style: .Normal, title: "Add to playlist") { (action, indexPath) -> Void in
+            if let songs = self.sortedSongs[indexPath.section] as? [AnyObject] {
+                if let song = songs[indexPath.row] as? Song {
+                    let createPlaylistOverlay = CreatePlaylistOverlay(songs: [song])
+                    self.presentModalOverlayController(createPlaylistOverlay, blurredController: self)
+                }
             }
         }
+        
+        return [addAction]
     }
     
     // MARK: ArtistAlbumHeaderDelegate
