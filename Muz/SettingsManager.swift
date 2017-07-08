@@ -16,23 +16,23 @@ class SettingsManager {
         return _defaultManager
     }
     
-    func valueForMoreSetting(setting: MoreSetting) -> Bool {
+    func valueForMoreSetting(_ setting: MoreSetting) -> Bool {
         switch setting {
-        case .Lyrics:
-            if let lyrics = NSUserDefaults.standardUserDefaults().objectForKey("lyrics") as? NSNumber {
+        case .lyrics:
+            if let lyrics = UserDefaults.standard.object(forKey: "lyrics") as? NSNumber {
                 return lyrics.boolValue
             }
             
             return false
-        case .ArtistInfo:
-            if let artistInfo = NSUserDefaults.standardUserDefaults().objectForKey("artistInfo") as? NSNumber {
+        case .artistInfo:
+            if let artistInfo = UserDefaults.standard.object(forKey: "artistInfo") as? NSNumber {
                 return artistInfo.boolValue
             }
             
             return false
             
-        case .LastFM:
-            if let lastFM = NSUserDefaults.standardUserDefaults().objectForKey("lastFM") as? NSNumber {
+        case .lastFM:
+            if let lastFM = UserDefaults.standard.object(forKey: "lastFM") as? NSNumber {
                 return lastFM.boolValue
             }
             
@@ -42,14 +42,14 @@ class SettingsManager {
         }
     }
     
-    func updateValueForMoreSetting(setting: MoreSetting, value: NSNumber) {
+    func updateValueForMoreSetting(_ setting: MoreSetting, value: NSNumber) {
         switch setting {
-        case .Lyrics:
-            NSUserDefaults.standardUserDefaults().setObject(value, forKey: "lyrics")
-        case .ArtistInfo:
-            NSUserDefaults.standardUserDefaults().setObject(value, forKey: "artistInfo")
-        case .LastFM:
-            NSUserDefaults.standardUserDefaults().setObject(value, forKey: "lastFM")
+        case .lyrics:
+            UserDefaults.standard.set(value, forKey: "lyrics")
+        case .artistInfo:
+            UserDefaults.standard.set(value, forKey: "artistInfo")
+        case .lastFM:
+            UserDefaults.standard.set(value, forKey: "lastFM")
         default: break
             
         }

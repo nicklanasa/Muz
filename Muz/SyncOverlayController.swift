@@ -9,6 +9,30 @@
 import Foundation
 import UIKit
 import CoreData
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 class SyncOverlayController: OverlayController {
     @IBOutlet weak var syncButton: UIButton!
@@ -33,27 +57,27 @@ class SyncOverlayController: OverlayController {
         self.syncButton.applyRoundedStyle()
     }
     
-    @IBAction func syncButtonPressed(sender: AnyObject) {
+    @IBAction func syncButtonPressed(_ sender: AnyObject) {
         
-        self.syncButton.hidden = true
-        self.syncLibraryLabel.hidden = true
-        self.detailedLabel.hidden = true
-        self.progressView.hidden = false
+        self.syncButton.isHidden = true
+        self.syncLibraryLabel.isHidden = true
+        self.detailedLabel.isHidden = true
+        self.progressView.isHidden = false
         
-        let startTime = NSDate()
+        let startTime = Date()
         
-        self.syncButton.setTitle("", forState: .Normal)
+        self.syncButton.setTitle("", for: UIControlState())
         
         DataManager.manager.syncArtists({ (addedItems, error) -> () in
             
-            let endTime = NSDate()
-            let executionTime = endTime.timeIntervalSinceDate(startTime)
+            let endTime = Date()
+            let executionTime = endTime.timeIntervalSince(startTime)
             NSLog("syncLibrary() - executionTime = %f\n", (executionTime * 1000));
             
-            NSUserDefaults.standardUserDefaults().setObject(NSNumber(bool: true),
+            UserDefaults.standard.set(NSNumber(value: true as Bool),
                 forKey: "SyncLibrary")
             
-            self.dismissViewControllerAnimated(true, completion: { () -> Void in
+            self.dismiss(animated: true, completion: { () -> Void in
                 DataManager.manager.syncPlaylists({ (addedItems, error) -> () in
                 })
             })
@@ -62,7 +86,7 @@ class SyncOverlayController: OverlayController {
                 self.syncedItems = addedItems
                 if self.syncedItems?.count > 0 {
                     if let artist = self.syncedItems?[self.syncedItems!.count-1] as? Artist {
-                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        DispatchQueue.main.async(execute: { () -> Void in
                             self.imageView.setImageForArtist(artist: artist)
                             self.progressView.progress = Float(self.syncedItems!.count) / Float(total)
                         })

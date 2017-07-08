@@ -13,7 +13,7 @@ import CoreData
 class Album: NSManagedObject {
 
     @NSManaged var persistentID: String
-    @NSManaged var releaseDate: NSDate?
+    @NSManaged var releaseDate: Date?
     @NSManaged var title: String
     @NSManaged var artist: Artist
     @NSManaged var songs: NSSet

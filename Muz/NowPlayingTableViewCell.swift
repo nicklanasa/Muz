@@ -16,19 +16,19 @@ class NowPlayingTableViewCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var progressView: UIProgressView!
     
-    var updateTimer: NSTimer!
+    var updateTimer: Timer!
     let playerController = MPMusicPlayerController.iPodMusicPlayer()
     
     override func awakeFromNib() {
-        updateTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "updateProgress", userInfo: nil, repeats: true)
+        updateTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(NowPlayingTableViewCell.updateProgress), userInfo: nil, repeats: true)
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: "pausePlay")
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(NowPlayingTableViewCell.pausePlay))
         tapGesture.numberOfTapsRequired = 1
         self.songImageView.gestureRecognizers = [tapGesture]
         
-        NSNotificationCenter.defaultCenter().addObserver(self,
-            selector: "playerControllerDidNowPlayingItemDidChange",
-            name: MPMusicPlayerControllerNowPlayingItemDidChangeNotification,
+        NotificationCenter.default.addObserver(self,
+            selector: #selector(NowPlayingTableViewCell.playerControllerDidNowPlayingItemDidChange),
+            name: NSNotification.Name.MPMusicPlayerControllerNowPlayingItemDidChange,
             object: nil)
         
         if playerController.nowPlayingItem == nil {
@@ -43,7 +43,7 @@ class NowPlayingTableViewCell: UITableViewCell {
     
     func playerControllerDidNowPlayingItemDidChange() {
         if let _ = self.playerController.nowPlayingItem {
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            DispatchQueue.main.async(execute: { () -> Void in
                 self.updateNowPlaying()
             })
         }
@@ -78,7 +78,7 @@ class NowPlayingTableViewCell: UITableViewCell {
     }
     
     func pausePlay() {
-        if playerController.playbackState == .Playing {
+        if playerController.playbackState == .playing {
             playerController.stop()
         } else {
             playerController.play()

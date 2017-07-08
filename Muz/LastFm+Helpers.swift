@@ -10,11 +10,11 @@ import Foundation
 import MediaPlayer
 
 extension LastFm {
-    func scrobbleTracks(tracks: [AnyObject], completion: (results: AnyObject?, error: NSError?) -> ()) {
+    func scrobbleTracks(_ tracks: [AnyObject], completion: @escaping (_ results: AnyObject?, _ error: NSError?) -> ()) {
         
         let params = NSMutableDictionary()
         
-        for var i = 0; i < tracks.count; i++ {
+        for i in 0 ..< tracks.count {
             if let track = tracks[i] as? MPMediaItem {
                 // Only scrobble the last 50
                 if i > 49 {
@@ -30,16 +30,16 @@ extension LastFm {
             }
         }
         
-        LastFm.sharedInstance().performApiCallForMethod("track.scrobble",
+        LastFm.sharedInstance().performApiCall(forMethod: "track.scrobble",
             useCache: true,
-            withParams: params as [NSObject : AnyObject],
+            withParams: params as! [AnyHashable: Any],
             rootXpath: ".",
             returnDictionary: true,
             mappingObject: [:],
             successHandler: { (results) -> Void in
-            completion(results: results, error: nil)
-        }) { (error) -> Void in
-            completion(results: nil, error: error)
-        }
+            completion(results, nil)
+        } as! LastFmReturnBlockWithObject) { (error) -> Void in
+            completion(nil, error)
+        } as! LastFmReturnBlockWithError as! LastFmReturnBlockWithError as! LastFmReturnBlockWithError
     }
 }

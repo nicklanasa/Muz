@@ -19,14 +19,14 @@ UIWebViewDelegate {
     
     override func awakeFromNib() {
         webView.delegate = self
-        webView.hidden = true
+        webView.isHidden = true
     }
     
-    func updateWithLyrics(lyrics: NSString?) {
+    func updateWithLyrics(_ lyrics: NSString?) {
         activityIndicator.stopAnimating()
         if let lyricsString = lyrics {
             if lyricsString.length > 0 {
-                textView.text = lyricsString.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+                textView.text = lyricsString.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
             } else {
                 textView.text = "Unable to find lyrics."
             }
@@ -35,18 +35,18 @@ UIWebViewDelegate {
         }
     }
     
-    func webViewDidStartLoad(webView: UIWebView) {
+    func webViewDidStartLoad(_ webView: UIWebView) {
         activityIndicator.startAnimating()
     }
     
-    func webViewDidFinishLoad(webView: UIWebView) {
-        if !webView.loading {
+    func webViewDidFinishLoad(_ webView: UIWebView) {
+        if !webView.isLoading {
             activityIndicator.stopAnimating()
-            webView.hidden = false
+            webView.isHidden = false
         }
     }
     
-    func updateWithRequest(request: NSURLRequest) {
+    func updateWithRequest(_ request: URLRequest) {
         webView.loadRequest(request)
     }
     

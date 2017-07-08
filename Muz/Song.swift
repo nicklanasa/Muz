@@ -27,7 +27,7 @@ class Song: NSManagedObject {
     @NSManaged var discCount: NSNumber
     @NSManaged var discNumber: NSNumber
     @NSManaged var genre: String
-    @NSManaged var lastPlayedDate: NSDate
+    @NSManaged var lastPlayedDate: Date
     @NSManaged var lyrics: String
     @NSManaged var mediaType: NSNumber
     @NSManaged var persistentID: NSNumber
@@ -35,7 +35,7 @@ class Song: NSManagedObject {
     @NSManaged var playCount: NSNumber
     @NSManaged var podcastTitle: String
     @NSManaged var rating: NSNumber
-    @NSManaged var releaseDate: NSDate
+    @NSManaged var releaseDate: Date
     @NSManaged var skipCount: NSNumber
     @NSManaged var title: String
     @NSManaged var userGrouping: String

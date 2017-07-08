@@ -17,7 +17,7 @@ class LastFmRequest: WebRequest {
         super.sendURLRequest()
     }
     
-    override func connectionDidFinishLoading(connection: NSURLConnection) {
+    override func connectionDidFinishLoading(_ connection: NSURLConnection) {
         super.connectionDidFinishLoading(connection)
     }
     

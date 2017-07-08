@@ -17,12 +17,12 @@ class SimiliarArtistCollectionViewCell: UICollectionViewCell {
         artistImageView.layer.masksToBounds = true
     }
     
-    func updateWithArtist(artist: LastFmArtist) {
+    func updateWithArtist(_ artist: LastFmArtist) {
         artistLabel.text = artist.name
-        artistImageView.sd_setImageWithURL(artist.imageURL)
+        artistImageView.sd_setImage(with: artist.imageURL)
     }
     
-    func updateWithSong(song: Song, forArtist: Bool) {
+    func updateWithSong(_ song: Song, forArtist: Bool) {
         if forArtist {
             artistLabel.text = song.artist
             artistImageView.setImageForSong(song: song)
@@ -32,11 +32,11 @@ class SimiliarArtistCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    func updateWithSongData(song: NSDictionary, forArtist: Bool) {
+    func updateWithSongData(_ song: NSDictionary, forArtist: Bool) {
         if forArtist {
-            artistLabel.text = song.objectForKey("artist") as? String
+            artistLabel.text = song.object(forKey: "artist") as? String
         } else {
-            artistLabel.text = song.objectForKey("title") as? String
+            artistLabel.text = song.object(forKey: "title") as? String
         }
         artistImageView.setImageWithSongData(song: song)
     }

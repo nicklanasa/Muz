@@ -10,6 +10,41 @@ import Foundation
 import UIKit
 import CoreData
 import MediaPlayer
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func >= <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l >= r
+  default:
+    return !(lhs < rhs)
+  }
+}
+
 
 let ArtistsCacheName = "artists"
 let PlaylistsCacheName = "playlists"
@@ -29,46 +64,46 @@ class Datastore {
         configure()
     }
     
-    private func configure() {
-        let modelURL = NSBundle.mainBundle().URLForResource("Muz", withExtension: "momd")
-        self.managedObjectModel = NSManagedObjectModel(contentsOfURL: modelURL!)!
+    fileprivate func configure() {
+        let modelURL = Bundle.main.url(forResource: "Muz", withExtension: "momd")
+        self.managedObjectModel = NSManagedObjectModel(contentsOf: modelURL!)!
         
         let storeUrlString = String(format: "%@.sqlite", self.storeName)
-        let paths = NSFileManager.defaultManager().URLsForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask)
+        let paths = FileManager.default.urls(for: FileManager.SearchPathDirectory.documentDirectory, in: FileManager.SearchPathDomainMask.userDomainMask)
         if let documentsURL = paths.last {
-            let storeURL = documentsURL.URLByAppendingPathComponent(storeUrlString)
+            let storeURL = documentsURL.appendingPathComponent(storeUrlString)
             self.persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
             
             do {
-                try self.persistentStoreCoordinator.addPersistentStoreWithType(NSSQLiteStoreType,
-                    configuration: nil,
-                    URL: storeURL,
+                try self.persistentStoreCoordinator.addPersistentStore(ofType: NSSQLiteStoreType,
+                    configurationName: nil,
+                    at: storeURL,
                     options: nil)
             } catch {}
             
-            self.saveContext = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.PrivateQueueConcurrencyType)
+            self.saveContext = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.privateQueueConcurrencyType)
             self.saveContext.persistentStoreCoordinator = self.persistentStoreCoordinator
             self.saveContext.undoManager = nil
             
-            self.mainQueueContext = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.MainQueueConcurrencyType)
+            self.mainQueueContext = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.mainQueueConcurrencyType)
             self.mainQueueContext.undoManager = nil
-            self.mainQueueContext.parentContext = self.saveContext
+            self.mainQueueContext.parent = self.saveContext
             
-            self.workerContext = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.PrivateQueueConcurrencyType)
+            self.workerContext = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.privateQueueConcurrencyType)
             self.workerContext.undoManager = nil
-            self.workerContext.parentContext = self.mainQueueContext
+            self.workerContext.parent = self.mainQueueContext
             
         }
     }
     
     // MARK: Add songs
     
-    func addSongs(songs: NSArray?, completion: (addedItems: [AnyObject], error: NSErrorPointer) -> ()) {
+    func addSongs(_ songs: NSArray?, completion: @escaping (_ addedItems: [AnyObject], _ error: NSErrorPointer) -> ()) {
         let context = self.mainQueueContext
-        context.performBlock { () -> Void in
-            let startTime = NSDate()
+        context?.perform { () -> Void in
+            let startTime = Date()
             
-            let request = NSFetchRequest(entityName: "Song")
+            let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Song")
             
             let addedSongs = NSMutableArray(capacity: songs?.count ?? 0)
             let existedSongs = NSMutableArray(capacity: songs?.count ?? 0)
@@ -76,7 +111,7 @@ class Datastore {
             var count = 0
             
             for song in (songs as? [MPMediaItem])! {
-                count++
+                count += 1
                 if let artist = song.artist, let title = song.title {
                     
                     let predicate = NSPredicate(format: "title = %@ AND artist = %@", title, artist)
@@ -84,7 +119,7 @@ class Datastore {
                     request.predicate = predicate
                     let results: [AnyObject]?
                     do {
-                        results = try context.executeFetchRequest(request)
+                        results = try context?.fetch(request)
                     } catch {
                         fatalError()
                     }
@@ -93,37 +128,37 @@ class Datastore {
                     if results?.count > 0 {
                         managedSong = results?[0] as! Song
                     } else {
-                        managedSong = NSEntityDescription.insertNewObjectForEntityForName("Song",
-                            inManagedObjectContext: context) as! Song
+                        managedSong = NSEntityDescription.insertNewObject(forEntityName: "Song",
+                            into: context!) as! Song
                         managedSong.parseItem(song)
                     }
                     
-                    addedSongs.addObject(managedSong)
+                    addedSongs.add(managedSong)
                 }
             }
             
             self.saveDatastoreWithCompletion({ (error) -> () in
-                let endTime = NSDate()
-                let executionTime = endTime.timeIntervalSinceDate(startTime)
+                let endTime = Date()
+                let executionTime = endTime.timeIntervalSince(startTime)
                 NSLog("addSongs() - executionTime = %f\n addedSongs count: %d\n existedSongs count: %d", (executionTime * 1000), addedSongs.count, existedSongs.count);
                 
-                completion(addedItems: addedSongs as [AnyObject], error: error)
+                completion(addedSongs as [AnyObject], error)
             })
         }
     }
     
-    private func dispatchAddBlock(dispatchBlock: () -> ()) -> () {
-        dispatch_async(dispatch_get_main_queue(), dispatchBlock)
+    fileprivate func dispatchAddBlock(_ dispatchBlock: @escaping () -> ()) -> () {
+        DispatchQueue.main.async(execute: dispatchBlock)
     }
     
     
-    func resetLibrary(completion: (error: NSErrorPointer) -> ()) {
-        self.workerContext.performBlock { () -> Void in
+    func resetLibrary(_ completion: @escaping (_ error: NSErrorPointer) -> ()) {
+        self.workerContext.perform { () -> Void in
             var error: NSError?
-            let request = NSFetchRequest(entityName: "Artist")
+            let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Artist")
             let results: [AnyObject]?
             do {
-                results = try self.workerContext.executeFetchRequest(request)
+                results = try self.workerContext.fetch(request)
             } catch let error1 as NSError {
                 error = error1
                 results = nil
@@ -135,16 +170,16 @@ class Datastore {
                 
                 for album in artist.albums.allObjects as! [Album] {
                     for song in album.songs.allObjects as! [Song] {
-                        self.workerContext.deleteObject(song)
+                        self.workerContext.delete(song)
                     }
                     
-                    self.workerContext.deleteObject(album)
+                    self.workerContext.delete(album)
                 }
                 
-                self.workerContext.deleteObject(artist)
+                self.workerContext.delete(artist)
             }
             
-            completion(error: &error)
+            completion(&error)
         }
     }
     
@@ -154,17 +189,17 @@ class Datastore {
     - parameter artists:    The artists you want to add.
     - parameter completion: The completion block called at the end of the execution.
     */
-    func addArtists(artists: NSArray?, completion: (addedItems: [AnyObject], error: NSErrorPointer) -> (),
-        progress: (addedItems: [AnyObject], total: Int) -> ())
+    func addArtists(_ artists: NSArray?, completion: @escaping (_ addedItems: [AnyObject], _ error: NSErrorPointer) -> (),
+        progress: @escaping (_ addedItems: [AnyObject], _ total: Int) -> ())
     {
         let context = self.workerContext
-        context.performBlock { () -> Void in
+        context?.perform { () -> Void in
            
-            let startTime = NSDate()
-            let request = NSFetchRequest(entityName: "Artist")
+            let startTime = Date()
+            let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Artist")
             let addedArtists = NSMutableArray(capacity: artists?.count ?? 0)
             
-            artists?.enumerateObjectsUsingBlock({ (artist, idx, stop) -> Void in
+            artists?.enumerateObjects({ (artist, idx, stop) -> Void in
                 if let item = artist as? MPMediaItem {
                     
                     if let artistName = item.artist {
@@ -174,7 +209,7 @@ class Datastore {
                         request.predicate = predicate
                         let results: [AnyObject]?
                         do {
-                            results = try context.executeFetchRequest(request)
+                            results = try context?.fetch(request)
                         } catch {
                             fatalError()
                         }
@@ -183,40 +218,40 @@ class Datastore {
                         if results?.count > 0 {
                             managedArtist = results?[0] as! Artist
                         } else {
-                            managedArtist = NSEntityDescription.insertNewObjectForEntityForName("Artist",
-                                inManagedObjectContext: context) as! Artist
+                            managedArtist = NSEntityDescription.insertNewObject(forEntityName: "Artist",
+                                into: context!) as! Artist
                         }
                         
                         managedArtist.parseItem(item)
                         
                         // Add albums
-                        self.addAlbumForItem(item: item, artist: managedArtist, context: context)
+                        self.addAlbumForItem(item: item, artist: managedArtist, context: context!)
                         
-                        addedArtists.addObject(managedArtist)
+                        addedArtists.add(managedArtist)
                         
-                        progress(addedItems: addedArtists as [AnyObject], total: artists?.count ?? 0)
+                        progress(addedArtists as [AnyObject], artists?.count ?? 0)
                     }
                 }
             })
 
             self.saveDatastoreWithCompletion({ (error) -> () in
-                let endTime = NSDate()
-                let executionTime = endTime.timeIntervalSinceDate(startTime)
+                let endTime = Date()
+                let executionTime = endTime.timeIntervalSince(startTime)
                 NSLog("addArtists() - executionTime = %f\n addedSongs count: %d\n existedSongs count: %d", (executionTime * 1000), addedArtists.count);
 
-                completion(addedItems: addedArtists as [AnyObject], error: error)
+                completion(addedArtists as [AnyObject], error)
             })
         }
     }
     
-    func addAlbumsForArtist(artist artist: Artist, albums: NSArray?, completion: (addedItems: [AnyObject], error: NSErrorPointer) -> ()) {
-        self.workerContext.performBlock { () -> Void in
+    func addAlbumsForArtist(artist: Artist, albums: NSArray?, completion: @escaping (_ addedItems: [AnyObject], _ error: NSErrorPointer) -> ()) {
+        self.workerContext.perform { () -> Void in
             
-            let startTime = NSDate()
-            let request = NSFetchRequest(entityName: "Album")
+            let startTime = Date()
+            let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Album")
             let addedAlbums = NSMutableArray(capacity: albums?.count ?? 0)
             
-            albums?.enumerateObjectsUsingBlock({ (album, idx, stop) -> Void in
+            albums?.enumerateObjects({ (album, idx, stop) -> Void in
                 if let item = album as? MPMediaItem {
                     
                     if let title = item.albumTitle {
@@ -226,7 +261,7 @@ class Datastore {
                         request.predicate = predicate
                         let results: [AnyObject]?
                         do {
-                            results = try self.workerContext.executeFetchRequest(request)
+                            results = try self.workerContext.fetch(request)
                         } catch {
                             fatalError()
                         }
@@ -235,9 +270,9 @@ class Datastore {
                         if results?.count > 0 {
                             managedAlbum = results?[0] as! Album
                         } else {
-                            managedAlbum = NSEntityDescription.insertNewObjectForEntityForName("Album",
-                                inManagedObjectContext: self.workerContext) as! Album
-                            addedAlbums.addObject(managedAlbum)
+                            managedAlbum = NSEntityDescription.insertNewObject(forEntityName: "Album",
+                                into: self.workerContext) as! Album
+                            addedAlbums.add(managedAlbum)
                         }
                         
                         managedAlbum.parseItem(item)
@@ -249,14 +284,14 @@ class Datastore {
 
             })
             
-            artist.modifiedDate = NSDate()
+            artist.modifiedDate = Date()
             
             self.saveDatastoreWithCompletion({ (error) -> () in
-                let endTime = NSDate()
-                let executionTime = endTime.timeIntervalSinceDate(startTime)
+                let endTime = Date()
+                let executionTime = endTime.timeIntervalSince(startTime)
                 NSLog("addAlbums() - executionTime = %f\n addAlbums count: %d", (executionTime * 1000), addedAlbums.count);
                 
-                completion(addedItems: addedAlbums as [AnyObject], error: error)
+                completion(addedAlbums as [AnyObject], error)
             })
         }
 
@@ -269,21 +304,21 @@ class Datastore {
     
     - returns: The created/existing album or nil.
     */
-    func addAlbumForItem(item item: MPMediaItem, artist: Artist, context: NSManagedObjectContext) {
-        let request = NSFetchRequest(entityName: "Album")
+    func addAlbumForItem(item: MPMediaItem, artist: Artist, context: NSManagedObjectContext) {
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Album")
         
         let predicate = NSPredicate(format: "title = %@", item.albumTitle ?? "")
         request.fetchLimit = 1
         request.predicate = predicate
         let results: [AnyObject]?
         do {
-            results = try context.executeFetchRequest(request)
+            results = try context.fetch(request)
             var managedAlbum: Album!
             if results?.count > 0 {
                 managedAlbum = results?[0] as! Album
             } else {
-                managedAlbum = NSEntityDescription.insertNewObjectForEntityForName("Album",
-                    inManagedObjectContext: context) as! Album
+                managedAlbum = NSEntityDescription.insertNewObject(forEntityName: "Album",
+                    into: context) as! Album
             }
             
             managedAlbum.parseItem(item)
@@ -293,14 +328,14 @@ class Datastore {
         } catch { }
     }
     
-    func artistForSong(song song: Song) -> Artist? {
-        let request = NSFetchRequest(entityName: "Artist")
+    func artistForSong(song: Song) -> Artist? {
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Artist")
         let predicate = NSPredicate(format: "name = %@", song.artist)
         request.fetchLimit = 1
         request.predicate = predicate
         let results: [AnyObject]?
         do {
-            results = try self.workerContext.executeFetchRequest(request)
+            results = try self.workerContext.fetch(request)
             var managedArtist: Artist!
             if results?.count > 0 {
                 managedArtist = results?[0] as! Artist
@@ -313,14 +348,14 @@ class Datastore {
         }
     }
     
-    func artistForSongData(song song: NSDictionary) -> Artist? {
-        let request = NSFetchRequest(entityName: "Artist")
-        let predicate = NSPredicate(format: "name = %@", song.objectForKey("artist") as! String)
+    func artistForSongData(song: NSDictionary) -> Artist? {
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Artist")
+        let predicate = NSPredicate(format: "name = %@", song.object(forKey: "artist") as! String)
         request.fetchLimit = 1
         request.predicate = predicate
         let results: [AnyObject]?
         do {
-            results = try self.workerContext.executeFetchRequest(request)
+            results = try self.workerContext.fetch(request)
             var managedArtist: Artist!
             if results?.count > 0 {
                 managedArtist = results?[0] as! Artist
@@ -338,25 +373,25 @@ class Datastore {
     
     - returns: The added song.
     */
-    func addSongForItem(item item: MPMediaItem, album: Album, context: NSManagedObjectContext) {
+    func addSongForItem(item: MPMediaItem, album: Album, context: NSManagedObjectContext) {
         
-        let managedSong = NSEntityDescription.insertNewObjectForEntityForName("Song",
-            inManagedObjectContext: context) as! Song
+        let managedSong = NSEntityDescription.insertNewObject(forEntityName: "Song",
+            into: context) as! Song
         
         managedSong.parseItem(item)
         managedSong.album = album
     }
     
-    func updateSong(song song: Song, completion: () -> ()) {
-        song.lastPlayedDate = NSDate()
+    func updateSong(song: Song, completion: @escaping () -> ()) {
+        song.lastPlayedDate = Date()
         
         self.saveDatastoreWithCompletion({ (error) -> () in
             completion()
         })
     }
     
-    func updatePlaylist(playlist playlist: Playlist, completion: () -> ()) {
-        playlist.modifiedDate = NSDate()
+    func updatePlaylist(playlist: Playlist, completion: @escaping () -> ()) {
+        playlist.modifiedDate = Date()
         
         self.saveDatastoreWithCompletion({ (error) -> () in
             print("Updated playlist with new modified date: \(playlist.modifiedDate)")
@@ -364,20 +399,20 @@ class Datastore {
         })
     }
     
-    func addPlaylists(playlists: [AnyObject]?, completion: (addedPlaylists: [AnyObject]?) -> ()) {
+    func addPlaylists(_ playlists: [AnyObject]?, completion: (_ addedPlaylists: [AnyObject]?) -> ()) {
         
-        self.mainQueueContext.performBlock { () -> Void in
+        self.mainQueueContext.perform { () -> Void in
             
-            let request = NSFetchRequest()
-            request.entity = NSEntityDescription.entityForName("Playlist",
-                inManagedObjectContext: self.mainQueueContext)
+            let request = NSFetchRequest<NSFetchRequestResult>()
+            request.entity = NSEntityDescription.entity(forEntityName: "Playlist",
+                in: self.mainQueueContext)
             
-            let results = try? self.mainQueueContext.executeFetchRequest(request)
+            let results = try? self.mainQueueContext.fetch(request)
             
             if results?.count > 0 {
                 for existingPlaylist in results as! [Playlist] {
                     if existingPlaylist.persistentID != "" {
-                        self.mainQueueContext.deleteObject(existingPlaylist)
+                        self.mainQueueContext.delete(existingPlaylist)
                     }
                 }
             }
@@ -393,15 +428,15 @@ class Datastore {
         }
     }
 
-    func createPlaylistWithSimiliarArtists(artist: String!, artists: [AnyObject]!,
+    func createPlaylistWithSimiliarArtists(_ artist: String!, artists: [AnyObject]!,
         fetchLimit: NSInteger,
         name: String!,
         playlistType: PlaylistType,
-        completion: (addedSongs: [AnyObject]?) -> ()) {
+        completion: @escaping (_ addedSongs: [AnyObject]?) -> ()) {
         
         clearCache()
         
-        let request = NSFetchRequest(entityName: "Song")
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Song")
     
         var predicates = [NSPredicate]()
         
@@ -420,30 +455,30 @@ class Datastore {
         
         let results: [AnyObject]?
         do {
-            results = try self.workerContext.executeFetchRequest(request)
+            results = try self.workerContext.fetch(request)
             
             if results?.count > 0 {
                 
                 // Create smart playlist based on artists.
-                let playlist = NSEntityDescription.insertNewObjectForEntityForName("Playlist",
-                    inManagedObjectContext: self.workerContext) as! Playlist
+                let playlist = NSEntityDescription.insertNewObject(forEntityName: "Playlist",
+                    into: self.workerContext) as! Playlist
                 playlist.name = name
-                playlist.playlistType = NSNumber(unsignedLong: playlistType.rawValue)
+                playlist.playlistType = NSNumber(value: playlistType.rawValue as UInt)
                 playlist.persistentID = ""
-                playlist.modifiedDate = NSDate()
+                playlist.modifiedDate = Date()
                 
                 // Create PlaySongs
                 let playlistSongs = NSMutableSet()
                 var order = 0
                 
                 for song in results as! [Song] {
-                    let playlistSong = NSEntityDescription.insertNewObjectForEntityForName("PlaylistSong",
-                        inManagedObjectContext: self.workerContext) as! PlaylistSong
+                    let playlistSong = NSEntityDescription.insertNewObject(forEntityName: "PlaylistSong",
+                        into: self.workerContext) as! PlaylistSong
                     
                     playlistSong.parseSong(song, playlist: playlist, order: order)
-                    playlistSongs.addObject(playlistSong)
+                    playlistSongs.add(playlistSong)
                     print("Created new playlist song with title: \(song.title)")
-                    order++
+                    order += 1
                 }
                 
                 playlist.playlistSongs = playlistSongs
@@ -451,51 +486,51 @@ class Datastore {
             
             self.saveDatastoreWithCompletion { (error) -> () in
                 if results?.count > 0 {
-                    completion(addedSongs: results)
+                    completion(results)
                 } else {
-                    completion(addedSongs: nil)
+                    completion(nil)
                 }
             }
         } catch { }
     }
     
-    func createPlaylistWithArtist(artist: String!,
+    func createPlaylistWithArtist(_ artist: String!,
         name: String!,
         playlistType: PlaylistType,
-        completion: (addedSongs: [AnyObject]?) -> ()) {
+        completion: @escaping (_ addedSongs: [AnyObject]?) -> ()) {
             
         clearCache()
         
-        let request = NSFetchRequest(entityName: "Song")
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Song")
         
         let predicate = NSPredicate(format: "(artist contains[cd] %@)", artist)
         request.predicate = predicate
         
         let results: [AnyObject]?
         do {
-            results = try self.mainQueueContext.executeFetchRequest(request)
+            results = try self.mainQueueContext.fetch(request)
             if results?.count > 0 {
                 
                 // Create smart playlist based on artists.
-                let playlist = NSEntityDescription.insertNewObjectForEntityForName("Playlist",
-                    inManagedObjectContext: self.mainQueueContext) as! Playlist
+                let playlist = NSEntityDescription.insertNewObject(forEntityName: "Playlist",
+                    into: self.mainQueueContext) as! Playlist
                 playlist.name = name
-                playlist.playlistType = NSNumber(unsignedLong: playlistType.rawValue)
+                playlist.playlistType = NSNumber(value: playlistType.rawValue as UInt)
                 playlist.persistentID = ""
-                playlist.modifiedDate = NSDate()
+                playlist.modifiedDate = Date()
                 
                 // Create PlaySongs
                 let playlistSongs = NSMutableSet()
                 var order = 0
                 
                 for song in results as! [Song] {
-                    let playlistSong = NSEntityDescription.insertNewObjectForEntityForName("PlaylistSong",
-                        inManagedObjectContext: self.mainQueueContext) as! PlaylistSong
+                    let playlistSong = NSEntityDescription.insertNewObject(forEntityName: "PlaylistSong",
+                        into: self.mainQueueContext) as! PlaylistSong
                     
                     playlistSong.parseSong(song, playlist: playlist, order: order)
-                    playlistSongs.addObject(playlistSong)
+                    playlistSongs.add(playlistSong)
                     print("Created new playlist song with title: \(song.title)")
-                    order++
+                    order += 1
                 }
                 
                 playlist.playlistSongs = playlistSongs
@@ -503,137 +538,137 @@ class Datastore {
             
             self.saveDatastoreWithCompletion { (error) -> () in
                 if results?.count > 0 {
-                    completion(addedSongs: results)
+                    completion(results)
                 } else {
-                    completion(addedSongs: nil)
+                    completion(nil)
                 }
             }
-        } catch { completion(addedSongs: nil) }
+        } catch { completion(nil) }
     }
     
     // TODO: Change this to use worker context.
-    func addArtistSongsToPlaylist(playlist: Playlist, artist: String!,
-        completion: (addedSongs: [AnyObject]?) -> ()) {
+    func addArtistSongsToPlaylist(_ playlist: Playlist, artist: String!,
+        completion: @escaping (_ addedSongs: [AnyObject]?) -> ()) {
             
         clearCache()
         
-        let request = NSFetchRequest(entityName: "Song")
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Song")
         
         let predicate = NSPredicate(format: "(artist contains[cd] %@)", artist)
         request.predicate = predicate
         
         let results: [AnyObject]?
         do {
-            results = try self.mainQueueContext.executeFetchRequest(request)
+            results = try self.mainQueueContext.fetch(request)
             if results?.count > 0 {
                 // Create PlaySongs
                 let playlistSongs = NSMutableSet()
                 var order = playlist.playlistSongs.count
                 
                 for song in results as! [Song] {
-                    let playlistSong = NSEntityDescription.insertNewObjectForEntityForName("PlaylistSong",
-                        inManagedObjectContext: self.mainQueueContext) as! PlaylistSong
+                    let playlistSong = NSEntityDescription.insertNewObject(forEntityName: "PlaylistSong",
+                        into: self.mainQueueContext) as! PlaylistSong
                     
                     playlistSong.parseSong(song, playlist: playlist, order: order)
-                    playlistSongs.addObject(playlistSong)
+                    playlistSongs.add(playlistSong)
                     print("Created new playlist song with title: \(song.title)")
-                    order++
+                    order += 1
                 }
                 
                 let combinedSongs = NSMutableSet(set: playlist.playlistSongs)
-                combinedSongs.addObjectsFromArray(playlistSongs.allObjects)
+                combinedSongs.addObjects(from: playlistSongs.allObjects)
                 playlist.playlistSongs = combinedSongs
-                playlist.modifiedDate = NSDate()
+                playlist.modifiedDate = Date()
             }
             
             self.saveDatastoreWithCompletion { (error) -> () in
                 if results?.count > 0 {
-                    completion(addedSongs: results)
+                    completion(results)
                 } else {
-                    completion(addedSongs: nil)
+                    completion(nil)
                 }
             }
-        } catch { completion(addedSongs: nil) }
+        } catch { completion(nil) }
     }
     
-    func createPlaylistWithSongs(name: String, songs: [AnyObject]!, completion: (addedSongs: [AnyObject]?) -> ()) {
-        let playlist = NSEntityDescription.insertNewObjectForEntityForName("Playlist",
-            inManagedObjectContext: self.mainQueueContext) as! Playlist
+    func createPlaylistWithSongs(_ name: String, songs: [AnyObject]!, completion: @escaping (_ addedSongs: [AnyObject]?) -> ()) {
+        let playlist = NSEntityDescription.insertNewObject(forEntityName: "Playlist",
+            into: self.mainQueueContext) as! Playlist
         playlist.name = name
-        playlist.playlistType = NSNumber(unsignedLong: PlaylistType.None.rawValue)
+        playlist.playlistType = NSNumber(value: PlaylistType.none.rawValue as UInt)
         playlist.persistentID = ""
         
         let playlistSongs = NSMutableSet()
         var order = 0
         
         for song in songs as! [Song] {
-            let playlistSong = NSEntityDescription.insertNewObjectForEntityForName("PlaylistSong",
-                inManagedObjectContext: self.mainQueueContext) as! PlaylistSong
+            let playlistSong = NSEntityDescription.insertNewObject(forEntityName: "PlaylistSong",
+                into: self.mainQueueContext) as! PlaylistSong
             
             playlistSong.parseSong(song, playlist: playlist, order: order)
-            playlistSongs.addObject(playlistSong)
+            playlistSongs.add(playlistSong)
             print("Created new playlist song with title: \(song.title)")
-            order++
+            order += 1
         }
         
         playlist.playlistSongs = playlistSongs
-        playlist.modifiedDate = NSDate()
+        playlist.modifiedDate = Date()
         
         self.saveDatastoreWithCompletion { (error) -> () in
-            completion(addedSongs: playlistSongs.allObjects)
+            completion(playlistSongs.allObjects as [AnyObject])
         }
     }
     
-    func addSongsToPlaylist(songs: [AnyObject]!, playlist: Playlist, completion: (addedSongs: [AnyObject]?) -> ()) {
+    func addSongsToPlaylist(_ songs: [AnyObject]!, playlist: Playlist, completion: @escaping (_ addedSongs: [AnyObject]?) -> ()) {
         let playlistSongs = NSMutableSet(set: playlist.playlistSongs)
         var order = playlistSongs.count
         
         for song in songs as! [Song] {
-            let playlistSong = NSEntityDescription.insertNewObjectForEntityForName("PlaylistSong",
-                inManagedObjectContext: self.mainQueueContext) as! PlaylistSong
+            let playlistSong = NSEntityDescription.insertNewObject(forEntityName: "PlaylistSong",
+                into: self.mainQueueContext) as! PlaylistSong
             
             playlistSong.parseSong(song, playlist: playlist, order: order)
-            playlistSongs.addObject(playlistSong)
+            playlistSongs.add(playlistSong)
             print("Created new playlist song with title: \(song.title)")
-            order++
+            order += 1
         }
         
         playlist.playlistSongs = playlistSongs
-        playlist.modifiedDate = NSDate()
+        playlist.modifiedDate = Date()
         
         self.saveDatastoreWithCompletion { (error) -> () in
-            completion(addedSongs: playlistSongs.allObjects)
+            completion(playlistSongs.allObjects as [AnyObject])
         }
     }
     
-    func createEmptyPlaylistWithName(name: String, playlistType: PlaylistType, completion: () -> ()) {
-        let playlist = NSEntityDescription.insertNewObjectForEntityForName("Playlist",
-            inManagedObjectContext: self.mainQueueContext) as! Playlist
+    func createEmptyPlaylistWithName(_ name: String, playlistType: PlaylistType, completion: @escaping () -> ()) {
+        let playlist = NSEntityDescription.insertNewObject(forEntityName: "Playlist",
+            into: self.mainQueueContext) as! Playlist
         playlist.name = name
-        playlist.playlistType = NSNumber(unsignedLong: playlistType.rawValue)
+        playlist.playlistType = NSNumber(value: playlistType.rawValue as UInt)
         playlist.persistentID = ""
-        playlist.modifiedDate = NSDate()
+        playlist.modifiedDate = Date()
         
         self.saveDatastoreWithCompletion { (error) -> () in
             completion()
         } 
     }
     
-    private func createPlaylistWithPlaylist(playlist: MPMediaPlaylist, context: NSManagedObjectContext) -> Playlist? {
-        let request = NSFetchRequest(entityName: "Playlist")
+    fileprivate func createPlaylistWithPlaylist(_ playlist: MPMediaPlaylist, context: NSManagedObjectContext) -> Playlist? {
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Playlist")
         let predicate = NSPredicate(format: "persistentID = %@", String(playlist.persistentID))
         request.predicate = predicate
         let results: [AnyObject]?
         do {
-            results = try context.executeFetchRequest(request)
+            results = try context.fetch(request)
             if results?.count > 0 {
                 // Update
                 let existingPlaylist = results?[0] as! Playlist
                 existingPlaylist.parsePlaylist(playlist)
                 return existingPlaylist
             } else {
-                let newPlaylist = NSEntityDescription.insertNewObjectForEntityForName("Playlist",
-                    inManagedObjectContext: context) as! Playlist
+                let newPlaylist = NSEntityDescription.insertNewObject(forEntityName: "Playlist",
+                    into: context) as! Playlist
                 
                 newPlaylist.parsePlaylist(playlist)
                 
@@ -647,54 +682,54 @@ class Datastore {
                     }
                 }
                 
-                print("Created playlist with name: \(newPlaylist.name) and type: \(newPlaylist.playlistType.integerValue)")
+                print("Created playlist with name: \(newPlaylist.name) and type: \(newPlaylist.playlistType.intValue)")
                 
                 return newPlaylist
             }
         } catch { return nil }
     }
     
-    private func addSongToPlaylist(playlist: Playlist, song: Song, originalPlaylist: MPMediaPlaylist?, context: NSManagedObjectContext) {
-        let newPlaylistSong = NSEntityDescription.insertNewObjectForEntityForName("PlaylistSong",
-            inManagedObjectContext: context) as! PlaylistSong
+    fileprivate func addSongToPlaylist(_ playlist: Playlist, song: Song, originalPlaylist: MPMediaPlaylist?, context: NSManagedObjectContext) {
+        let newPlaylistSong = NSEntityDescription.insertNewObject(forEntityName: "PlaylistSong",
+            into: context) as! PlaylistSong
         newPlaylistSong.parsePlaylistSong(song, playlist: playlist, originalPlaylist: originalPlaylist)
     }
     
-    func songForSongName(songName: String, artist: String, completion: (song: Song?) -> ()) {
-        let request = NSFetchRequest()
-        request.entity = NSEntityDescription.entityForName("Song",
-            inManagedObjectContext: self.mainQueueContext)
+    func songForSongName(_ songName: String, artist: String, completion: (_ song: Song?) -> ()) {
+        let request = NSFetchRequest<NSFetchRequestResult>()
+        request.entity = NSEntityDescription.entity(forEntityName: "Song",
+            in: self.mainQueueContext)
         
         request.fetchLimit = 1
         
         let predicate = NSPredicate(format: "title = %@ AND artist = %@", songName, artist)
         request.predicate = predicate
         
-        let error = NSErrorPointer()
+        let error: NSErrorPointer = nil
         let results: [AnyObject]?
         do {
-            results = try self.mainQueueContext.executeFetchRequest(request)
+            results = try self.mainQueueContext.fetch(request)
         } catch let error1 as NSError {
-            error.memory = error1
+            error?.pointee = error1
             results = nil
         }
         
         if results?.count > 0 {
             if let song = results?[0] as? Song {
-                completion(song: song)
+                completion(song)
             }
             
-            completion(song: nil)
+            completion(nil)
         }
-        completion(song: nil)
+        completion(nil)
     }
     
     // MARK: NSFetchedResultsControllers
     
-    func artistsWithSortKey(sortKey: String, ascending: Bool, sectionNameKeyPath: String?) -> [AnyObject]? {
-        let request = NSFetchRequest()
-        request.entity = NSEntityDescription.entityForName("Song",
-            inManagedObjectContext: self.mainQueueContext)
+    func artistsWithSortKey(_ sortKey: String, ascending: Bool, sectionNameKeyPath: String?) -> [AnyObject]? {
+        let request = NSFetchRequest<NSFetchRequestResult>()
+        request.entity = NSEntityDescription.entity(forEntityName: "Song",
+            in: self.mainQueueContext)
         
         let predicate = NSPredicate(format: "(artist.length > 0)")
         request.predicate = predicate
@@ -704,24 +739,24 @@ class Datastore {
             request.propertiesToGroupBy = [property]
         }
         
-        request.resultType = NSFetchRequestResultType.DictionaryResultType
+        request.resultType = NSFetchRequestResultType.dictionaryResultType
         request.returnsDistinctResults = true
         
         let sort = NSSortDescriptor(key: sortKey, ascending: ascending)
         request.sortDescriptors = [sort]
         
         do {
-            return try self.mainQueueContext.executeFetchRequest(request)
+            return try self.mainQueueContext.fetch(request)
         } catch _ {
             return nil
         }
     }
     
-    func artistsController(predicate: NSPredicate?, sortKey: String, ascending: Bool, sectionNameKeyPath: String?) -> NSFetchedResultsController {
+    func artistsController(_ predicate: NSPredicate?, sortKey: String, ascending: Bool, sectionNameKeyPath: String?) -> NSFetchedResultsController<NSFetchRequestResult> {
         
-        let request = NSFetchRequest()
-        request.entity = NSEntityDescription.entityForName("Artist",
-            inManagedObjectContext: self.mainQueueContext)
+        let request = NSFetchRequest<NSFetchRequestResult>()
+        request.entity = NSEntityDescription.entity(forEntityName: "Artist",
+            in: self.mainQueueContext)
         
         if let artistPredicate = predicate {
             request.predicate = artistPredicate
@@ -736,11 +771,11 @@ class Datastore {
         cacheName: nil)
     }
     
-    func recommendationController(limit: Int) -> NSFetchedResultsController {
+    func recommendationController(_ limit: Int) -> NSFetchedResultsController<NSFetchRequestResult> {
         
-        let request = NSFetchRequest()
-        request.entity = NSEntityDescription.entityForName("Artist",
-            inManagedObjectContext: self.mainQueueContext)
+        let request = NSFetchRequest<NSFetchRequestResult>()
+        request.entity = NSEntityDescription.entity(forEntityName: "Artist",
+            in: self.mainQueueContext)
         
         request.fetchLimit = limit
         
@@ -753,11 +788,11 @@ class Datastore {
             cacheName: nil)
     }
     
-    func plsylistSsongsControllerWithSortKey(sortKey: String, ascending: Bool, sectionNameKeyPath: String?) -> NSFetchedResultsController {
+    func plsylistSsongsControllerWithSortKey(_ sortKey: String, ascending: Bool, sectionNameKeyPath: String?) -> NSFetchedResultsController<NSFetchRequestResult> {
         
-        let request = NSFetchRequest()
-        request.entity = NSEntityDescription.entityForName("PlaylistSong",
-            inManagedObjectContext: self.mainQueueContext)
+        let request = NSFetchRequest<NSFetchRequestResult>()
+        request.entity = NSEntityDescription.entity(forEntityName: "PlaylistSong",
+            in: self.mainQueueContext)
         
         let predicate = NSPredicate(format: "(artist.length > 0)")
         request.predicate = predicate
@@ -765,13 +800,13 @@ class Datastore {
         let properties = NSMutableArray()
         
         if let artistProperty: AnyObject = request.entity?.propertiesByName["artist"] {
-            properties.addObject(artistProperty)
+            properties.add(artistProperty)
         }
         
         request.propertiesToGroupBy = properties as [AnyObject]
         request.propertiesToFetch = properties as [AnyObject]
         request.returnsDistinctResults = true
-        request.resultType = NSFetchRequestResultType.DictionaryResultType
+        request.resultType = NSFetchRequestResultType.dictionaryResultType
         
         let sort = NSSortDescriptor(key: sortKey, ascending: ascending)
         request.sortDescriptors = [sort]
@@ -782,14 +817,14 @@ class Datastore {
             cacheName: ArtistsCacheName)
     }
     
-    func artistsAlbumsControllerWithSortKey(artist: Artist,
+    func artistsAlbumsControllerWithSortKey(_ artist: Artist,
         sortKey: String,
         ascending: Bool,
-        sectionNameKeyPath: String?) -> NSFetchedResultsController {
+        sectionNameKeyPath: String?) -> NSFetchedResultsController<NSFetchRequestResult> {
         
-        let request = NSFetchRequest()
-        request.entity = NSEntityDescription.entityForName("Album",
-            inManagedObjectContext: self.mainQueueContext)
+        let request = NSFetchRequest<NSFetchRequestResult>()
+        request.entity = NSEntityDescription.entity(forEntityName: "Album",
+            in: self.mainQueueContext)
         
         let predicate = NSPredicate(format: "artist like %@", artist)
         request.predicate = predicate
@@ -798,44 +833,44 @@ class Datastore {
         let fetch = NSMutableArray()
         
         if let albumProperty: AnyObject = request.entity?.propertiesByName["albumTitle"] {
-            groupBy.addObject(albumProperty)
-            fetch.addObject(albumProperty)
+            groupBy.add(albumProperty)
+            fetch.add(albumProperty)
         }
         
         if let titleProperty: AnyObject = request.entity?.propertiesByName["title"] {
-            groupBy.addObject(titleProperty)
-            fetch.addObject(titleProperty)
+            groupBy.add(titleProperty)
+            fetch.add(titleProperty)
         }
         
         if let artistProperty: AnyObject = request.entity?.propertiesByName["artist"] {
-            groupBy.addObject(artistProperty)
-            fetch.addObject(artistProperty)
+            groupBy.add(artistProperty)
+            fetch.add(artistProperty)
         }
         
         if let albumTrackNumberProperty: AnyObject = request.entity?.propertiesByName["albumTrackNumber"] {
-            groupBy.addObject(albumTrackNumberProperty)
-            fetch.addObject(albumTrackNumberProperty)
+            groupBy.add(albumTrackNumberProperty)
+            fetch.add(albumTrackNumberProperty)
         }
         
         if let artworkProperty: AnyObject = request.entity?.propertiesByName["artwork"] {
-            groupBy.addObject(artworkProperty)
-            fetch.addObject(artworkProperty)
+            groupBy.add(artworkProperty)
+            fetch.add(artworkProperty)
         }
         
         if let albumTrackCountProperty: AnyObject = request.entity?.propertiesByName["albumTrackCount"] {
-            groupBy.addObject(albumTrackCountProperty)
-            fetch.addObject(albumTrackCountProperty)
+            groupBy.add(albumTrackCountProperty)
+            fetch.add(albumTrackCountProperty)
         }
         
         if let playbackDurationProperty: AnyObject = request.entity?.propertiesByName["playbackDuration"] {
-            groupBy.addObject(playbackDurationProperty)
-            fetch.addObject(playbackDurationProperty)
+            groupBy.add(playbackDurationProperty)
+            fetch.add(playbackDurationProperty)
         }
         
         request.propertiesToGroupBy = groupBy as [AnyObject]
         request.propertiesToFetch = fetch as [AnyObject]
         request.returnsDistinctResults = true
-        request.resultType = NSFetchRequestResultType.DictionaryResultType
+        request.resultType = NSFetchRequestResultType.dictionaryResultType
         
         let sort = NSSortDescriptor(key: sortKey, ascending: ascending)
         let sortTrackNumber = NSSortDescriptor(key: "albumTrackNumber", ascending: true)
@@ -847,13 +882,13 @@ class Datastore {
             cacheName: ArtistsCacheName)
     }
     
-    func albumsControllerWithSortKey(sortKey: String,
+    func albumsControllerWithSortKey(_ sortKey: String,
         ascending: Bool,
-        sectionNameKeyPath: String?) -> NSFetchedResultsController {
-        let request = NSFetchRequest()
+        sectionNameKeyPath: String?) -> NSFetchedResultsController<NSFetchRequestResult> {
+        let request = NSFetchRequest<NSFetchRequestResult>()
             
-        request.entity = NSEntityDescription.entityForName("Album",
-            inManagedObjectContext: self.mainQueueContext)
+        request.entity = NSEntityDescription.entity(forEntityName: "Album",
+            in: self.mainQueueContext)
         
         let sort = NSSortDescriptor(key: sortKey, ascending: ascending)
         request.sortDescriptors = [sort]
@@ -864,19 +899,19 @@ class Datastore {
             cacheName: nil)
     }
     
-    func songsControllerWithSortKey(sortKey: String,
+    func songsControllerWithSortKey(_ sortKey: String,
         limit: NSInteger?,
         ascending: Bool,
-        sectionNameKeyPath: String?) -> NSFetchedResultsController {
+        sectionNameKeyPath: String?) -> NSFetchedResultsController<NSFetchRequestResult> {
         
-        let request = NSFetchRequest()
+        let request = NSFetchRequest<NSFetchRequestResult>()
         
         if let fetchLimit = limit {
             request.fetchLimit = fetchLimit
         }
         
-        request.entity = NSEntityDescription.entityForName("Song",
-            inManagedObjectContext: self.mainQueueContext)
+        request.entity = NSEntityDescription.entity(forEntityName: "Song",
+            in: self.mainQueueContext)
         
         let sort = NSSortDescriptor(key: sortKey, ascending: ascending)
         request.sortDescriptors = [sort]
@@ -887,23 +922,23 @@ class Datastore {
             cacheName: nil)
     }
     
-    func distinctArtistSongsWithSortKey(sortKey: String,
+    func distinctArtistSongsWithSortKey(_ sortKey: String,
         limit: NSInteger?,
         ascending: Bool) -> NSArray?
     {
         
-        let request = NSFetchRequest()
-        request.entity = NSEntityDescription.entityForName("Song",
-            inManagedObjectContext: self.workerContext)
+        let request = NSFetchRequest<NSFetchRequestResult>()
+        request.entity = NSEntityDescription.entity(forEntityName: "Song",
+            in: self.workerContext)
         
         request.fetchLimit = 100
         request.propertiesToFetch = ["persistentID", "lastPlayedDate", "artist"]
         request.returnsDistinctResults = true
-        request.resultType = .DictionaryResultType
+        request.resultType = .dictionaryResultType
         
         let sort = NSSortDescriptor(key: sortKey, ascending: ascending)
         request.sortDescriptors = [sort]
-        let results = try? self.workerContext.executeFetchRequest(request)
+        let results = try? self.workerContext.fetch(request)
         
         if let _ = limit {
             var recentArtists = Array<AnyObject>()
@@ -912,14 +947,14 @@ class Datastore {
                 for artistData in results as! [NSDictionary] {
                     
                     if recentArtists.count >= limit {
-                        return recentArtists
+                        return recentArtists as NSArray
                     }
                     
                     var found = false
                     
                     for artist in recentArtists as! [NSDictionary] {
-                        let artistName = artist.objectForKey("artist") as! String
-                        if artistName == artistData.objectForKey("artist") as! String {
+                        let artistName = artist.object(forKey: "artist") as! String
+                        if artistName == artistData.object(forKey: "artist") as! String {
                             found = true
                         }
                     }
@@ -929,7 +964,7 @@ class Datastore {
                     }
                 }
                 
-                return recentArtists
+                return recentArtists as NSArray
             }
         }
         
@@ -937,29 +972,29 @@ class Datastore {
     }
     
     func recentlyPlayedSongs(
-        limit limit: NSInteger?) -> NSArray?
+        limit: NSInteger?) -> NSArray?
     {
-        let request = NSFetchRequest()
-        request.entity = NSEntityDescription.entityForName("Song",
-            inManagedObjectContext: self.workerContext)
+        let request = NSFetchRequest<NSFetchRequestResult>()
+        request.entity = NSEntityDescription.entity(forEntityName: "Song",
+            in: self.workerContext)
         
         if let fetchLimit = limit {
             request.fetchLimit = fetchLimit
         }
         
         request.propertiesToFetch = ["persistentID", "lastPlayedDate", "title", "artist"]
-        request.resultType = .DictionaryResultType
+        request.resultType = .dictionaryResultType
         
         let sort = NSSortDescriptor(key: "lastPlayedDate", ascending: false)
         request.sortDescriptors = [sort]
-        return try? self.workerContext.executeFetchRequest(request)
+        return try? self.workerContext.fetch(request) as NSArray
     }
     
-    func lovedControllerWithSortKey(sortKey: String, ascending: Bool, sectionNameKeyPath: String?) -> NSFetchedResultsController {
+    func lovedControllerWithSortKey(_ sortKey: String, ascending: Bool, sectionNameKeyPath: String?) -> NSFetchedResultsController<NSFetchRequestResult> {
         
-        let request = NSFetchRequest()
-        request.entity = NSEntityDescription.entityForName("Song",
-            inManagedObjectContext: self.mainQueueContext)
+        let request = NSFetchRequest<NSFetchRequestResult>()
+        request.entity = NSEntityDescription.entity(forEntityName: "Song",
+            in: self.mainQueueContext)
         
         let predicate = NSPredicate(format: "rating > 3")
         request.predicate = predicate
@@ -975,13 +1010,13 @@ class Datastore {
             cacheName: ArtistsCacheName)
     }
     
-    func playlistsControllerWithSortKey(sortKey sortKey: String!,
+    func playlistsControllerWithSortKey(sortKey: String!,
         ascending: Bool,
         limit: NSInteger,
-        sectionNameKeyPath: String?) -> NSFetchedResultsController {
-        let request = NSFetchRequest()
-        request.entity = NSEntityDescription.entityForName("Playlist",
-            inManagedObjectContext: self.mainQueueContext)
+        sectionNameKeyPath: String?) -> NSFetchedResultsController<NSFetchRequestResult> {
+        let request = NSFetchRequest<NSFetchRequestResult>()
+        request.entity = NSEntityDescription.entity(forEntityName: "Playlist",
+            in: self.mainQueueContext)
         request.fetchLimit = limit
         
         let sort = NSSortDescriptor(key: sortKey, ascending: ascending)
@@ -993,11 +1028,11 @@ class Datastore {
             cacheName: nil)
     }
     
-    func playlistsControllerWithSectionName(sectionNameKeyPath: String?,
-        predicate: NSPredicate?) -> NSFetchedResultsController {
-        let request = NSFetchRequest()
-        request.entity = NSEntityDescription.entityForName("Playlist",
-            inManagedObjectContext: self.mainQueueContext)
+    func playlistsControllerWithSectionName(_ sectionNameKeyPath: String?,
+        predicate: NSPredicate?) -> NSFetchedResultsController<NSFetchRequestResult> {
+        let request = NSFetchRequest<NSFetchRequestResult>()
+        request.entity = NSEntityDescription.entity(forEntityName: "Playlist",
+            in: self.mainQueueContext)
         
         if let playlistPredicate = predicate {
             request.predicate = playlistPredicate
@@ -1013,11 +1048,11 @@ class Datastore {
             cacheName: nil)
     }
     
-    func playlistSongsControllerWithPlaylist(playlist: Playlist,
-        sectionNameKeyPath: String?) -> NSFetchedResultsController {
-        let request = NSFetchRequest()
-        request.entity = NSEntityDescription.entityForName("PlaylistSong",
-            inManagedObjectContext: self.mainQueueContext)
+    func playlistSongsControllerWithPlaylist(_ playlist: Playlist,
+        sectionNameKeyPath: String?) -> NSFetchedResultsController<NSFetchRequestResult> {
+        let request = NSFetchRequest<NSFetchRequestResult>()
+        request.entity = NSEntityDescription.entity(forEntityName: "PlaylistSong",
+            in: self.mainQueueContext)
         
         let sort = NSSortDescriptor(key: "persistentID", ascending: true)
         request.sortDescriptors = [sort]
@@ -1028,11 +1063,11 @@ class Datastore {
             cacheName: nil)
     }
     
-    func updatePlaylistSongOrder(playlistsongSource: Playlist,
-        sectionNameKeyPath: String?) -> NSFetchedResultsController {
-        let request = NSFetchRequest()
-        request.entity = NSEntityDescription.entityForName("PlaylistSong",
-            inManagedObjectContext: self.mainQueueContext)
+    func updatePlaylistSongOrder(_ playlistsongSource: Playlist,
+        sectionNameKeyPath: String?) -> NSFetchedResultsController<NSFetchRequestResult> {
+        let request = NSFetchRequest<NSFetchRequestResult>()
+        request.entity = NSEntityDescription.entity(forEntityName: "PlaylistSong",
+            in: self.mainQueueContext)
         
         let sort = NSSortDescriptor(key: "persistentID", ascending: true)
         request.sortDescriptors = [sort]
@@ -1043,13 +1078,13 @@ class Datastore {
             cacheName: nil)
     }
     
-    func deletePlaylistWithPlaylist(playlist: Playlist, completion: (error: NSErrorPointer?) -> ()) {
+    func deletePlaylistWithPlaylist(_ playlist: Playlist, completion: @escaping (_ error: NSErrorPointer?) -> ()) {
         
-        self.mainQueueContext.performBlock { () -> Void in
+        self.mainQueueContext.perform { () -> Void in
             var error: NSError?
             let object: NSManagedObject?
             do {
-                object = try self.mainQueueContext.existingObjectWithID(playlist.objectID)
+                object = try self.mainQueueContext.existingObject(with: playlist.objectID)
             } catch let error1 as NSError {
                 error = error1
                 object = nil
@@ -1058,14 +1093,14 @@ class Datastore {
             }
             
             if error == nil {
-                self.mainQueueContext.deleteObject(object!)
+                self.mainQueueContext.delete(object!)
             }
                         
             self.saveDatastoreWithCompletion { (error) -> () in
                 if error != nil {
-                    completion(error: error)
+                    completion(error)
                 } else {
-                    completion(error: nil)
+                    completion(nil)
                 }
             }
         }
@@ -1075,47 +1110,47 @@ class Datastore {
     
     // MARK: Saving
     
-    func saveDatastoreWithCompletion(completion: (error: NSErrorPointer) -> ()) {
-        let totalStartTime = NSDate()
-        self.workerContext.performBlock { () -> Void in
-            let error = NSErrorPointer()
-            var startTime = NSDate()
+    func saveDatastoreWithCompletion(_ completion: @escaping (_ error: NSErrorPointer) -> ()) {
+        let totalStartTime = Date()
+        self.workerContext.perform { () -> Void in
+            let error: NSErrorPointer = nil
+            var startTime = Date()
             do {
                 try self.workerContext.save()
             } catch let error1 as NSError {
-                error.memory = error1
+                error?.pointee = error1
             } catch {
                 fatalError()
             }
             
-            var endTime: NSDate!
-            var executionTime: NSTimeInterval!
+            var endTime: Date!
+            var executionTime: TimeInterval!
             
             if error == nil {
-                endTime = NSDate()
-                executionTime = endTime.timeIntervalSinceDate(startTime)
+                endTime = Date()
+                executionTime = endTime.timeIntervalSince(startTime)
                 NSLog("workerContext saveStore executionTime = %f", (executionTime * 1000));
                 
-                startTime = NSDate()
-                self.mainQueueContext.performBlockAndWait({ () -> Void in
+                startTime = Date()
+                self.mainQueueContext.performAndWait({ () -> Void in
                     do {
                         try self.mainQueueContext.save()
                     } catch let error1 as NSError {
-                        error.memory = error1
+                        error?.pointee = error1
                     } catch {
                         fatalError()
                     }
                 })
                 
                 if error == nil {
-                    endTime = NSDate()
-                    executionTime = endTime.timeIntervalSinceDate(startTime)
+                    endTime = Date()
+                    executionTime = endTime.timeIntervalSince(startTime)
                     
                     NSLog("mainQueueContext saveStore executionTime = %f",
                     (executionTime * 1000));
                     
-                    startTime = NSDate()
-                    self.saveContext.performBlockAndWait({ () -> Void in
+                    startTime = Date()
+                    self.saveContext.performAndWait({ () -> Void in
                         do {
                             try self.saveContext.save()
                         } catch { }
@@ -1123,23 +1158,23 @@ class Datastore {
                 }
             }
             
-            endTime = NSDate()
-            executionTime = endTime.timeIntervalSinceDate(startTime)
+            endTime = Date()
+            executionTime = endTime.timeIntervalSince(startTime)
             NSLog("workerContext saveStore executionTime = %f", (executionTime * 1000));
             
-            let totalEndTime = NSDate()
-            executionTime = totalEndTime.timeIntervalSinceDate(totalStartTime)
+            let totalEndTime = Date()
+            executionTime = totalEndTime.timeIntervalSince(totalStartTime)
             NSLog("Total Time saveStore executionTime = %f", (executionTime * 1000));
 
-            completion(error: error)
+            completion(error)
         }
     }
     
-    private func clearCache() {
-        NSFetchedResultsController.deleteCacheWithName(nil)
+    fileprivate func clearCache() {
+        NSFetchedResultsController<NSFetchRequestResult>.deleteCache(withName: nil)
     }
     
-    private func deleteAllObjectsInStoreWithCompletion(completion: (error: NSError?) -> ()) {
+    fileprivate func deleteAllObjectsInStoreWithCompletion(_ completion: (_ error: NSError?) -> ()) {
         clearCache()
         
         self.mainQueueContext.lock()
@@ -1151,23 +1186,23 @@ class Datastore {
         
         if let storeCoordinator = self.mainQueueContext.persistentStoreCoordinator {
             if let store = storeCoordinator.persistentStores.first {
-                let storeURL = storeCoordinator.URLForPersistentStore(store)
+                let storeURL = storeCoordinator.url(for: store)
                 
                 do {
-                    try storeCoordinator.removePersistentStore(store)
+                    try storeCoordinator.remove(store)
                     do {
-                        try NSFileManager.defaultManager().removeItemAtURL(storeURL)
+                        try FileManager.default.removeItem(at: storeURL)
                     } catch { }
                 } catch { }
                 
                 do {
-                    try persistentStoreCoordinator.addPersistentStoreWithType(NSSQLiteStoreType,
-                        configuration: nil,
-                        URL: storeURL,
+                    try persistentStoreCoordinator.addPersistentStore(ofType: NSSQLiteStoreType,
+                        configurationName: nil,
+                        at: storeURL,
                         options: nil)
                     self.workerContext.unlock()
                     self.mainQueueContext.unlock()
-                    completion(error: nil)
+                    completion(nil)
                 } catch {}
             }
         }

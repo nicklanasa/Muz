@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 protocol RecommendedSearchCellDelegate {
-    func recommendedSearchCell(cell: RecommendedSearchCell, didTapRecommendedButton button: AnyObject)
+    func recommendedSearchCell(_ cell: RecommendedSearchCell, didTapRecommendedButton button: AnyObject)
 }
 
 class RecommendedSearchCell: UITableViewCell {
@@ -19,13 +19,13 @@ class RecommendedSearchCell: UITableViewCell {
     
     var delegate: RecommendedSearchCellDelegate?
     
-    @IBAction func recommendedButtonTapped(sender: AnyObject) {
+    @IBAction func recommendedButtonTapped(_ sender: AnyObject) {
         self.delegate?.recommendedSearchCell(self, didTapRecommendedButton: sender)
     }
     
-    func updateWithSong(song song: NSDictionary) {
+    func updateWithSong(song: NSDictionary) {
         if let artist = song["artist"] as? String {
-            self.recommendedButton.setTitle(artist, forState: .Normal)
+            self.recommendedButton.setTitle(artist, for: UIControlState())
         }
     }
 }

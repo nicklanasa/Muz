@@ -11,9 +11,9 @@ import UIKit
 
 class LastFmBuyLinksViewController: UIViewController,
 UIActionSheetDelegate {
-    private var buyLinks = [AnyObject]()
+    fileprivate var buyLinks = [AnyObject]()
     
-    private var buyLinksActionSheet: UIActionSheet!
+    fileprivate var buyLinksActionSheet: UIActionSheet!
     
     var numberOfValidBuyLinks: Int = 0
     
@@ -41,29 +41,29 @@ UIActionSheetDelegate {
     /**
     Configures the internal UIActionSheet
     */
-    private func configureActionSheet() {
+    fileprivate func configureActionSheet() {
         self.buyLinksActionSheet = UIActionSheet(title: "Select source",
             delegate: self,
             cancelButtonTitle: "Cancel",
             destructiveButtonTitle: nil)
         
         for buyLink in self.buyLinks as! [LastFmBuyLink] {
-            if buyLink.name.characters.count > 0 && buyLink.price.integerValue > 0 {
+            if buyLink.name.characters.count > 0 && buyLink.price.intValue > 0 {
                 let buttonTitle = NSString(format: "%@", buyLink.name, buyLink.price)
-                self.buyLinksActionSheet.addButtonWithTitle(buttonTitle as String)
-                self.numberOfValidBuyLinks++
+                self.buyLinksActionSheet.addButton(withTitle: buttonTitle as String)
+                self.numberOfValidBuyLinks += 1
             }
         }
     }
     
-    func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
+    func actionSheet(_ actionSheet: UIActionSheet, clickedButtonAt buttonIndex: Int) {
         
         if buttonIndex == 0 {
             return
         }
         
         if let buyLink = self.buyLinks[buttonIndex - 1] as? LastFmBuyLink {
-            UIApplication.sharedApplication().openURL(buyLink.url)
+            UIApplication.shared.openURL(buyLink.url)
         }
     }
     
@@ -72,7 +72,7 @@ UIActionSheetDelegate {
     
     - parameter view: The view you want the show the action sheet in.
     */
-    func showInView(view: UIView) {
-        self.buyLinksActionSheet.showInView(view)
+    func showInView(_ view: UIView) {
+        self.buyLinksActionSheet.show(in: view)
     }
 }

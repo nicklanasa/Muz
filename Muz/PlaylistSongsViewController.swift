@@ -10,6 +10,30 @@ import Foundation
 import UIKit
 import MediaPlayer
 import CoreData
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 class PlaylistSongsViewController: RootViewController,
     UITableViewDelegate,
@@ -22,8 +46,8 @@ NSFetchedResultsControllerDelegate {
     var playlist: Playlist!
     var isReadOnly = false
     
-    private var sortedPlaylistSongs: [AnyObject]!
-    private var readOnlyPlaylistSongsQuery: MPMediaQuery?
+    fileprivate var sortedPlaylistSongs: [AnyObject]!
+    fileprivate var readOnlyPlaylistSongsQuery: MPMediaQuery?
     
     init(playlist: Playlist) {
         self.playlist = playlist
@@ -34,7 +58,7 @@ NSFetchedResultsControllerDelegate {
         super.init(nibName: "PlaylistSongsViewController", bundle: nil)
     }
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
@@ -42,7 +66,7 @@ NSFetchedResultsControllerDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         self.fetchPlaylistSongs()
         super.viewWillAppear(animated)
         
@@ -52,20 +76,20 @@ NSFetchedResultsControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.tableView.registerNib(UINib(nibName: "SongCell", bundle: nil), forCellReuseIdentifier: "Cell")
+        self.tableView.register(UINib(nibName: "SongCell", bundle: nil), forCellReuseIdentifier: "Cell")
         
         if let _ = self.playlist {
             self.navigationItem.title = self.playlist?.name
             let songs = NSSet(set: self.playlist.playlistSongs)
             let sort = NSSortDescriptor(key: "order", ascending: true)
-            self.sortedPlaylistSongs = songs.sortedArrayUsingDescriptors([sort])
+            self.sortedPlaylistSongs = songs.sortedArray(using: [sort]) as [AnyObject]
             
             if let persistentID = self.playlist.persistentID {
                 if persistentID.isEmpty {
                     self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit",
-                        style: .Plain,
+                        style: .plain,
                         target: self,
-                        action: "editPlaylist")
+                        action: #selector(PlaylistSongsViewController.editPlaylist))
                 }
             }
         }
@@ -77,9 +101,9 @@ NSFetchedResultsControllerDelegate {
     func editPlaylist() {
         self.tableView.setEditing(true, animated: true)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done",
-            style: .Plain,
+            style: .plain,
             target: self,
-            action: "finishEditing")
+            action: #selector(PlaylistSongsViewController.finishEditing))
     }
     
     func finishEditing() {
@@ -90,8 +114,8 @@ NSFetchedResultsControllerDelegate {
             
             for indexPath in selectedRows! {
                 let playlistSong = self.sortedPlaylistSongs[indexPath.row] as! PlaylistSong
-                playlistSongs.removeObject(playlistSong)
-                self.sortedPlaylistSongs.removeAtIndex(indexPath.row)
+                playlistSongs.remove(playlistSong)
+                self.sortedPlaylistSongs.remove(at: indexPath.row)
             }
             
             self.playlist.playlistSongs = playlistSongs
@@ -104,21 +128,21 @@ NSFetchedResultsControllerDelegate {
                 }
             })
             
-            self.tableView.deleteRowsAtIndexPaths(selectedRows!, withRowAnimation: .Fade)
+            self.tableView.deleteRows(at: selectedRows!, with: .fade)
         }
         
         self.tableView.setEditing(false, animated: true)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit",
-            style: .Plain,
+            style: .plain,
             target: self,
-            action: "editPlaylist")
+            action: #selector(PlaylistSongsViewController.editPlaylist))
     }
     
-    private func addPlaylist() {
+    fileprivate func addPlaylist() {
         
     }
     
-    private func fetchPlaylistSongs() {
+    fileprivate func fetchPlaylistSongs() {
         if let persistentID = self.playlist.persistentID {
             if !persistentID.isEmpty {
                 self.isReadOnly = true
@@ -130,11 +154,11 @@ NSFetchedResultsControllerDelegate {
         }
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if self.isReadOnly {
             return self.readOnlyPlaylistSongsQuery?.items?.count ?? 0
@@ -143,9 +167,9 @@ NSFetchedResultsControllerDelegate {
         return self.sortedPlaylistSongs.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell",
-            forIndexPath: indexPath) as! SongCell
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell",
+            for: indexPath) as! SongCell
                 
         if self.isReadOnly {
             let readOnlyPlaylist = self.readOnlyPlaylistSongsQuery?.collections?[indexPath.section] as! MPMediaPlaylist
@@ -157,28 +181,28 @@ NSFetchedResultsControllerDelegate {
             cell.updateWithSong(song)
         }
         
-        cell.accessoryType = .DisclosureIndicator
+        cell.accessoryType = .disclosureIndicator
         
         return cell
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if tableView.editing == true {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if tableView.isEditing == true {
             if self.tableView.indexPathsForSelectedRows?.count > 0 {
                 self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Delete",
-                    style: .Plain,
+                    style: .plain,
                     target: self,
-                    action: "finishEditing")
+                    action: #selector(PlaylistSongsViewController.finishEditing))
             } else {
                 self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done",
-                    style: .Plain,
+                    style: .plain,
                     target: self,
-                    action: "editPlaylist")
+                    action: #selector(PlaylistSongsViewController.editPlaylist))
             }
             
             return
         } else {
-            tableView.deselectRowAtIndexPath(indexPath, animated: true)
+            tableView.deselectRow(at: indexPath, animated: true)
             
             if self.isReadOnly {
                 let readOnlyPlaylist = self.readOnlyPlaylistSongsQuery?.collections?[indexPath.section] as! MPMediaPlaylist
@@ -211,33 +235,33 @@ NSFetchedResultsControllerDelegate {
         }
     }
     
-    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
     
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         
     }
     
-    func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         return true
     }
     
-    func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         let playlistSongSource = self.sortedPlaylistSongs[sourceIndexPath.row] as! PlaylistSong
         let playlistSongTo = self.sortedPlaylistSongs[destinationIndexPath.row] as! PlaylistSong
-        playlistSongSource.order = destinationIndexPath.row + 1
-        playlistSongTo.order = sourceIndexPath.row + 1
+        playlistSongSource.order = NSNumber(destinationIndexPath.row + 1)
+        playlistSongTo.order = NSNumber(sourceIndexPath.row + 1)
         
         do {
             try MediaSession.sharedSession.dataManager.datastore.mainQueueContext.save()
         } catch let error as NSError {
-            NSErrorPointer().memory = error
+            nil.pointee = error
         }
     }
     
-    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-        let deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default,
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle.default,
             title: "Delete",
             handler: { (action, indexPath) -> Void in
             

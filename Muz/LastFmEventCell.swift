@@ -18,25 +18,25 @@ class LastFmEventCell: UITableViewCell {
     @IBOutlet weak var upcomingEventsLabel: UILabel!
     
     override func awakeFromNib() {
-        bringSubviewToFront(collectionView)
+        bringSubview(toFront: collectionView)
     }
     
-    func updateWithEvents(lastFmEvents: [AnyObject]?) {
+    func updateWithEvents(_ lastFmEvents: [AnyObject]?) {
         
         if let _ = lastFmEvents {
-            UIView.animateWithDuration(0.3, animations: { () -> Void in
+            UIView.animate(withDuration: 0.3, animations: { () -> Void in
                 self.upcomingEventsLabel.alpha = 1.0
                 
-                }) { (success) -> Void in
+                }, completion: { (success) -> Void in
                     if success {
                         self.collectionView.reloadData()
                     }
-            }
+            }) 
         }
     }
     
     override func layoutSubviews() {
-        if upcomingEventsLabel.hidden {
+        if upcomingEventsLabel.isHidden {
             var collectionViewFrame = self.collectionView.frame
             collectionViewFrame.origin.y = 13
             self.collectionView.frame = collectionViewFrame

@@ -25,18 +25,18 @@ class ArtistCell: UITableViewCell {
         artistImageView.image = nil
     }
     
-    func updateWithItem(song: MPMediaItem) {
+    func updateWithItem(_ song: MPMediaItem) {
         artistLabel.text = song.artist
         infoLabel.text = song.artist
         
         if let _ = song.artwork {
-            artistImageView?.image = song.artwork?.imageWithSize(artistImageView.frame.size)
+            artistImageView?.image = song.artwork?.image(at: artistImageView.frame.size)
         } else {
             artistImageView?.image = UIImage(named: "noArtwork")
         }
     }
     
-    func updateWithArtist(artist: Artist) {
+    func updateWithArtist(_ artist: Artist) {
         artistLabel.text = artist.name
         if artist.albums.count > 0 {
             var songs = 0
@@ -47,10 +47,10 @@ class ArtistCell: UITableViewCell {
             
             infoLabel.text = String(format: "%d %@, %d %@", artist.albums.allObjects.count,
                 artist.albums.allObjects.count == 1 ? "album" : "albums", songs, songs == 1 ? "song" : "songs")
-            infoLabel.hidden = false
+            infoLabel.isHidden = false
             
         } else {
-            infoLabel.hidden = true
+            infoLabel.isHidden = true
         }
         
         artistImageView.setImageForArtist(artist: artist)

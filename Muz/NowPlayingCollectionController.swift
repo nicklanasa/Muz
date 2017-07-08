@@ -11,14 +11,14 @@ import UIKit
 import MediaPlayer
 
 protocol NowPlayingCollectionControllerDelegate {
-    func nowPlayingCollectionController(controller: NowPlayingCollectionController, didSelectItem item: MPMediaItem)
+    func nowPlayingCollectionController(_ controller: NowPlayingCollectionController, didSelectItem item: MPMediaItem)
 }
 
 class NowPlayingCollectionController: OverlayController,
 UITableViewDelegate,
 UITableViewDataSource {
     
-    private var currentlyPlayingCollection: MPMediaItemCollection?
+    fileprivate var currentlyPlayingCollection: MPMediaItemCollection?
     
     var delegate: NowPlayingCollectionControllerDelegate?
     
@@ -38,54 +38,54 @@ UITableViewDataSource {
         
         super.viewDidLoad()
         
-        tableView.registerNib(UINib(nibName: "SongCell", bundle: nil), forCellReuseIdentifier: "Cell")
-        tableView.registerNib(UINib(nibName: "ArtistAlbumHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "Header")
+        tableView.register(UINib(nibName: "SongCell", bundle: nil), forCellReuseIdentifier: "Cell")
+        tableView.register(UINib(nibName: "ArtistAlbumHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "Header")
         
         tableView.reloadData()
         
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "back"),
-            style: .Plain,
+            style: .plain,
             target: self,
-            action: "dismiss")
+            action: #selector(NowPlayingCollectionController.dismiss as (NowPlayingCollectionController) -> () -> ()))
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.overlayScreenName = "Songs"
     }
     
     func dismiss() {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return currentlyPlayingCollection?.items.count ?? 0
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell",
-            forIndexPath: indexPath) as! SongCell
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell",
+            for: indexPath) as! SongCell
         
         if let item = currentlyPlayingCollection?.items[indexPath.row] {
             cell.updateWithItem(item)
-            cell.accessoryType = .DetailDisclosureButton
+            cell.accessoryType = .detailDisclosureButton
         }
         
         return cell
     }
 
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // Get song.
         if let song = currentlyPlayingCollection?.items[indexPath.row]{
             delegate?.nowPlayingCollectionController(self, didSelectItem: song)
-            dismissViewControllerAnimated(true, completion: nil)
+            self.dismiss(animated: true, completion: nil)
         }
         
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }

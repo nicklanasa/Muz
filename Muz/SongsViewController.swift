@@ -39,7 +39,7 @@ UISearchDisplayDelegate {
         self.tabBarItem.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0)
     }
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
 
@@ -47,7 +47,7 @@ UISearchDisplayDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         self.screenName = "Songs"
         super.viewDidAppear(animated)
         
@@ -64,29 +64,29 @@ UISearchDisplayDelegate {
         }
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         self.tableView.setEditing(false, animated: false)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView.registerNib(UINib(nibName: "SongCell", bundle: nil), forCellReuseIdentifier: "Cell")
-        tableView.registerNib(UINib(nibName: "SongsHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "Header")
+        tableView.register(UINib(nibName: "SongCell", bundle: nil), forCellReuseIdentifier: "Cell")
+        tableView.register(UINib(nibName: "SongsHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "Header")
         
         tableView.backgroundView = UIView()
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "search"),
-            style: .Plain,
+            style: .plain,
             target: self,
-            action: "showSearch")
+            action: #selector(SongsViewController.showSearch))
     }
 
     func showSearch() {
         self.presentSearchOverlayController(SearchOverlayController(), blurredController: self)
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let numberOfRowsInSection = self.songsController.sections?[section].numberOfObjects {
             return numberOfRowsInSection
         } else {
@@ -94,23 +94,23 @@ UISearchDisplayDelegate {
         }
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return self.songsController.sections?.count ?? 0
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell",
-            forIndexPath: indexPath) as! SongCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell",
+            for: indexPath) as! SongCell
         
-        let song = self.songsController.objectAtIndexPath(indexPath) as! Song
+        let song = self.songsController.object(at: indexPath) as! Song
         cell.updateWithSong(song)
         return cell
     }
 
-    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if let sectionInfo = self.songsController.sections?[section] {
-            let header = tableView.dequeueReusableHeaderFooterViewWithIdentifier("Header") as! SongsHeader
+            let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "Header") as! SongsHeader
             header.infoLabel.text = sectionInfo.name
             return header
         } else {
@@ -118,31 +118,31 @@ UISearchDisplayDelegate {
         }
     }
     
-    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 30
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 55
     }
 
-    func sectionIndexTitlesForTableView(tableView: UITableView) -> [String]! {
+    func sectionIndexTitles(for tableView: UITableView) -> [String]! {
         return self.songsController.sectionIndexTitles
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         self.songsController.fetchRequest.predicate = nil
         self.searchDisplayController?.setActive(false, animated: false)
         
         // Get song.
-        let song = self.songsController.objectAtIndexPath(indexPath) as! Song
+        let song = self.songsController.object(at: indexPath) as! Song
         
         DataManager.manager.fetchSongsCollection { (collection, error) -> () in
             if collection != nil {
                 self.presentNowPlayViewController(song, collection: collection!)
             } else {
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                DispatchQueue.main.async(execute: { () -> Void in
                     UIAlertView(title: "Error!",
                         message: "Unable to get collection!",
                         delegate: self,
@@ -151,16 +151,16 @@ UISearchDisplayDelegate {
             }
         }
 
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
     
-    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-        let addAction = UITableViewRowAction(style: .Normal, title: "Add to playlist") { (action, indexPath) -> Void in
-            let song = self.songsController.objectAtIndexPath(indexPath) as! Song
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let addAction = UITableViewRowAction(style: .normal, title: "Add to playlist") { (action, indexPath) -> Void in
+            let song = self.songsController.object(at: indexPath) as! Song
             let createPlaylistOverlay = CreatePlaylistOverlay(songs: [song])
             self.presentModalOverlayController(createPlaylistOverlay, blurredController: self)
         }

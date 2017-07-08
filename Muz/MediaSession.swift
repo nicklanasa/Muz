@@ -9,6 +9,30 @@
 import Foundation
 import CoreData
 import MediaPlayer
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 let _sharedSession = MediaSession()
 
@@ -17,15 +41,15 @@ var CurrentQueueItems: MPMediaItemCollection!
 class MediaSession {
     
     let dataManager = DataManager.manager
-    var artistsQuery = MPMediaQuery.artistsQuery()
-    var albumsQuery = MPMediaQuery.albumsQuery()
-    var songsQuery = MPMediaQuery.songsQuery()
+    var artistsQuery = MPMediaQuery.artists()
+    var albumsQuery = MPMediaQuery.albums()
+    var songsQuery = MPMediaQuery.songs()
     
     var currentQueueCollection: MPMediaItemCollection?
     
     var isMediaLibraryEmpty: Bool {
         get {
-            let query = MPMediaQuery.songsQuery()
+            let query = MPMediaQuery.songs()
             return query.items?.count == 0
         }
     }
@@ -43,20 +67,20 @@ class MediaSession {
         LastFm.sharedInstance().apiKey = "d55a72556285ca314e7af8b0fb093e29"
         LastFm.sharedInstance().apiSecret = "affa81f90053b2114888298f3aeb27b9"
         
-        if let username = NSUserDefaults.standardUserDefaults().objectForKey("LastFMUsername") as? String {
-            if let password = NSUserDefaults.standardUserDefaults().objectForKey("LastFMPassword") as? String {
+        if let username = UserDefaults.standard.object(forKey: "LastFMUsername") as? String {
+            if let password = UserDefaults.standard.object(forKey: "LastFMPassword") as? String {
                 LastFm.sharedInstance().getSessionForUser(username, password: password, successHandler: { (userData) -> Void in
                     
-                    let session = userData["key"] as! String
+                    let session = userData?["key"] as! String
                     LastFm.sharedInstance().session = session
                     
-                    LastFm.sharedInstance().getRecentTracksForUserOrNil(username, limit: 2, successHandler: { (tracks) -> Void in
+                    LastFm.sharedInstance().getRecentTracks(forUserOrNil: username, limit: 2, successHandler: { (tracks) -> Void in
                         
                         var t: LastFmTrack?
                         
-                        for lastFMTrack in tracks as! [[NSObject : AnyObject]] {
-                            let track = LastFmTrack(JSON: lastFMTrack)
-                            if let _ = track.date {
+                        for lastFMTrack in tracks as! [[AnyHashable: Any]] {
+                            let track = LastFmTrack(json: lastFMTrack)
+                            if let _ = track?.date {
                                 t = track
                                 break
                             }
@@ -89,35 +113,35 @@ class MediaSession {
     
     // Playlists
     
-    func fetchPlaylists(completion: (playlists: [AnyObject]?) -> ()) {
-        let playlistQuery = MPMediaQuery.playlistsQuery()
-        completion(playlists: playlistQuery.collections)
+    func fetchPlaylists(_ completion: (_ playlists: [AnyObject]?) -> ()) {
+        let playlistQuery = MPMediaQuery.playlists()
+        completion(playlistQuery.collections)
     }
     
     // Artists
     
-    func fetchArtists(completion: (results: [AnyObject]?) -> ()) {
-        artistsQuery = MPMediaQuery.artistsQuery()
+    func fetchArtists(_ completion: (_ results: [AnyObject]?) -> ()) {
+        artistsQuery = MPMediaQuery.artists()
         self.removeAllPredicatesFromQuery(artistsQuery)
-        artistsQuery.addFilterPredicate(MPMediaPropertyPredicate(value: MPMediaType.Music.rawValue,
+        artistsQuery.addFilterPredicate(MPMediaPropertyPredicate(value: MPMediaType.music.rawValue,
             forProperty: MPMediaItemPropertyMediaType,
-            comparisonType: .EqualTo))
-        completion(results: artistsQuery.items)
+            comparisonType: .equalTo))
+        completion(artistsQuery.items)
     }
 
-    func fetchImageForArtist(artist artist: Artist, completion: (image: UIImage?) -> ()) {
+    func fetchImageForArtist(artist: Artist, completion: (_ image: UIImage?) -> ()) {
         
         self.removeAllPredicatesFromQuery(artistsQuery)
         
         artistsQuery.addFilterPredicate(MPMediaPropertyPredicate(value: artist.name,
             forProperty: MPMediaItemPropertyArtist,
-            comparisonType: .Contains))
+            comparisonType: .contains))
         
         var image: UIImage?
         if artistsQuery.items?.count > 0 {
             for item in artistsQuery.items! {
                 if let artwork = item.artwork {
-                    if let artistImage = artwork.imageWithSize(CGSizeMake(200, 200)) {
+                    if let artistImage = artwork.image(at: CGSize(width: 200, height: 200)) {
                         image = artistImage
                         break
                     }
@@ -125,15 +149,15 @@ class MediaSession {
             }
         }
         
-        completion(image: image)
+        completion(image)
     }
     
-    func fetchArtistCollectionForArtist(artist artist: String, completion: (collection: MPMediaItemCollection?) -> ()) {
+    func fetchArtistCollectionForArtist(artist: String, completion: (_ collection: MPMediaItemCollection?) -> ()) {
         self.removeAllPredicatesFromQuery(artistsQuery)
         
         artistsQuery.addFilterPredicate(MPMediaPropertyPredicate(value: artist,
             forProperty: MPMediaItemPropertyArtist,
-            comparisonType: .EqualTo))
+            comparisonType: .equalTo))
         
         var collection: MPMediaItemCollection?
         
@@ -141,17 +165,17 @@ class MediaSession {
             collection = MPMediaItemCollection(items: items)
         }
         
-        completion(collection: collection)
+        completion(collection)
     }
     
     // MARK: Albums
     
-    func fetchAlbumCollectionForAlbum(album album: Album, completion: (collection: MPMediaItemCollection?) -> ()) {
+    func fetchAlbumCollectionForAlbum(album: Album, completion: (_ collection: MPMediaItemCollection?) -> ()) {
         self.removeAllPredicatesFromQuery(albumsQuery)
         
         albumsQuery.addFilterPredicate(MPMediaPropertyPredicate(value: album.title,
             forProperty: MPMediaItemPropertyAlbumTitle,
-            comparisonType: .EqualTo))
+            comparisonType: .equalTo))
         
         var collection: MPMediaItemCollection?
         
@@ -159,28 +183,28 @@ class MediaSession {
             collection = MPMediaItemCollection(items: items)
         }
         
-        completion(collection: collection)
+        completion(collection)
     }
     
-    func fetchAlbumsForArtist(artist artist: Artist, completion: (results: [AnyObject]?) -> ()) {
+    func fetchAlbumsForArtist(artist: Artist, completion: (_ results: [AnyObject]?) -> ()) {
         self.removeAllPredicatesFromQuery(albumsQuery)
-        albumsQuery.addFilterPredicate(MPMediaPropertyPredicate(value: artist.persistentID, forProperty: MPMediaItemPropertyArtistPersistentID, comparisonType: .EqualTo))
-        completion(results: albumsQuery.items)
+        albumsQuery.addFilterPredicate(MPMediaPropertyPredicate(value: artist.persistentID, forProperty: MPMediaItemPropertyArtistPersistentID, comparisonType: .equalTo))
+        completion(albumsQuery.items)
     }
     
-    func fetchImageForAlbum(album album: Album, completion: (image: UIImage?) -> ()) {
+    func fetchImageForAlbum(album: Album, completion: (_ image: UIImage?) -> ()) {
         
         self.removeAllPredicatesFromQuery(albumsQuery)
         
         albumsQuery.addFilterPredicate(MPMediaPropertyPredicate(value: album.title,
             forProperty: MPMediaItemPropertyAlbumTitle,
-            comparisonType: .Contains))
+            comparisonType: .contains))
         
         var image: UIImage?
         if albumsQuery.items?.count > 0 {
             for item in albumsQuery.items! {
                 if let artwork = item.artwork {
-                    if let albumImage = artwork.imageWithSize(CGSizeMake(200, 200)) {
+                    if let albumImage = artwork.image(at: CGSize(width: 200, height: 200)) {
                         image = albumImage
                         break
                     }
@@ -188,12 +212,12 @@ class MediaSession {
             }
         }
         
-        completion(image: image)
+        completion(image)
     }
     
     // MARK: Songs
     
-    func fetchSongsCollection(completion: (collection: MPMediaItemCollection?) -> ()) {
+    func fetchSongsCollection(_ completion: (_ collection: MPMediaItemCollection?) -> ()) {
         self.removeAllPredicatesFromQuery(self.songsQuery)
     
         var collection: MPMediaItemCollection?
@@ -202,88 +226,88 @@ class MediaSession {
             collection = MPMediaItemCollection(items: items)
         }
         
-        completion(collection: collection)
+        completion(collection)
     }
     
-    func fetchItemForSong(song: Song, completion: (item: MPMediaItem?) -> ()) {
+    func fetchItemForSong(_ song: Song, completion: (_ item: MPMediaItem?) -> ()) {
         self.removeAllPredicatesFromQuery(songsQuery)
         
         let predicate = MPMediaPropertyPredicate(value: song.persistentID,
             forProperty: MPMediaItemPropertyPersistentID,
-            comparisonType: .EqualTo)
+            comparisonType: .equalTo)
         
         songsQuery.addFilterPredicate(predicate)
         
         if songsQuery.items?.count > 0 {
-            completion(item: songsQuery.items![0])
+            completion(songsQuery.items![0])
         } else {
-            completion(item: nil)
+            completion(nil)
         }
     }
     
-    func fetchImageForSong(song song: Song, completion: (image: UIImage?) -> ()) {
+    func fetchImageForSong(song: Song, completion: (_ image: UIImage?) -> ()) {
         
         self.removeAllPredicatesFromQuery(songsQuery)
         
         songsQuery.addFilterPredicate(MPMediaPropertyPredicate(value: song.persistentID,
             forProperty: MPMediaItemPropertyPersistentID,
-            comparisonType: .EqualTo))
+            comparisonType: .equalTo))
         
         var image: UIImage?
         if songsQuery.items?.count > 0 {
             let item = songsQuery.items![0]
             if let artwork = item.artwork {
-                if let songImage = artwork.imageWithSize(CGSizeMake(50, 50)) {
+                if let songImage = artwork.image(at: CGSize(width: 50, height: 50)) {
                     image = songImage
                 }
             }
         }
         
-        completion(image: image)
+        completion(image)
     }
     
-    func fetchImageWithSongData(song song: NSDictionary, completion: (image: UIImage?) -> ()) {
+    func fetchImageWithSongData(song: NSDictionary, completion: (_ image: UIImage?) -> ()) {
         
         self.removeAllPredicatesFromQuery(songsQuery)
         
-        let persistentID = song.objectForKey("persistentID") as! NSNumber
+        let persistentID = song.object(forKey: "persistentID") as! NSNumber
         
         songsQuery.addFilterPredicate(MPMediaPropertyPredicate(value: persistentID,
             forProperty: MPMediaItemPropertyPersistentID,
-            comparisonType: .EqualTo))
+            comparisonType: .equalTo))
         
         var image: UIImage?
         if songsQuery.items?.count > 0 {
             let item = songsQuery.items![0]
             if let artwork = item.artwork {
-                if let songImage = artwork.imageWithSize(CGSizeMake(50, 50)) {
+                if let songImage = artwork.image(at: CGSize(width: 50, height: 50)) {
                     image = songImage
                 }
             }
         }
         
-        completion(image: image)
+        completion(image)
     }
     
-    func fetchSongs(completion: (results: [AnyObject]?) -> ()) {
+    func fetchSongs(_ completion: (_ results: [AnyObject]?) -> ()) {
         self.removeAllPredicatesFromQuery(songsQuery)
-        completion(results: songsQuery.items)
+        completion(songsQuery.items)
     }
     
     // Helpers
     
-    func removeAllPredicatesFromQuery(query: MPMediaQuery) {
+    func removeAllPredicatesFromQuery(_ query: MPMediaQuery) {
         query.filterPredicates = nil
     }
     
     // MARK: OLD
     
-    func artistsCollectionWithQuery(artistsQuery: MPMediaQuery) -> [AnyObject]? {
+    func artistsCollectionWithQuery(_ artistsQuery: MPMediaQuery) -> [AnyObject]? {
         return artistsQuery.collections
     }
     
-    func artistsQueryWithFilters(filters: [MPMediaPredicate]?) -> MPMediaQuery {
-        let artistsQuery = MPMediaQuery.artistsQuery()
+    func artistsQueryWithFilters(_ filters: [MPMediaPredicate]?) -> MPMediaQuery {
+        let artistsQuery = MPMediaQuery.artists()
         
         if let predicates = filters {
             for predicate in predicates {
@@ -294,8 +318,8 @@ class MediaSession {
         return artistsQuery
     }
     
-    func songsQueryWithPredicate(predicate: MPMediaPropertyPredicate?) -> MPMediaQuery {
-        let songsQuery = MPMediaQuery.songsQuery()
+    func songsQueryWithPredicate(_ predicate: MPMediaPropertyPredicate?) -> MPMediaQuery {
+        let songsQuery = MPMediaQuery.songs()
         
         if let p = predicate {
             songsQuery.addFilterPredicate(p)
@@ -304,12 +328,12 @@ class MediaSession {
         return songsQuery
     }
     
-    func playedSongsAfterDate(date: NSDate) -> [AnyObject]? {
-        let songsQuery = MPMediaQuery.songsQuery()
+    func playedSongsAfterDate(_ date: Date) -> [AnyObject]? {
+        let songsQuery = MPMediaQuery.songs()
         songsQuery.filterPredicates = nil
         let items = songsQuery.items?.filter { (item) -> Bool in
             if let playedDate = item.lastPlayedDate {
-                return date.compare(playedDate) == .OrderedAscending
+                return date.compare(playedDate) == .orderedAscending
             }
             
             return false
@@ -318,40 +342,40 @@ class MediaSession {
         return items
     }
     
-    func artistsSectionIndexTitles(artistsQuery: MPMediaQuery) -> [AnyObject] {
+    func artistsSectionIndexTitles(_ artistsQuery: MPMediaQuery) -> [AnyObject] {
         let artistsSections = NSMutableArray()
         if let sections = artistsQuery.collectionSections {
             for section in sections {
-                artistsSections.addObject(section.title)
+                artistsSections.add(section.title)
             }
         }
         
         return artistsSections as [AnyObject]
     }
     
-    func playlistSongsForPlaylist(playlist: Playlist) -> MPMediaQuery {
+    func playlistSongsForPlaylist(_ playlist: Playlist) -> MPMediaQuery {
         print(Int(playlist.persistentID!))
         let predicate = MPMediaPropertyPredicate(value: Int(playlist.persistentID!),
             forProperty: MPMediaPlaylistPropertyPersistentID,
-            comparisonType: .EqualTo)
-        let playlistSongsQuery = MPMediaQuery.playlistsQuery()
+            comparisonType: .equalTo)
+        let playlistSongsQuery = MPMediaQuery.playlists()
         playlistSongsQuery.addFilterPredicate(predicate)
         return playlistSongsQuery
     }
     
-    func collectionWithPlaylistSongs(songs: [AnyObject]) -> MPMediaItemCollection? {
+    func collectionWithPlaylistSongs(_ songs: [AnyObject]) -> MPMediaItemCollection? {
         var items = [MPMediaItem]()
         
         for playlistSong in songs as! [PlaylistSong] {
-            let query = MPMediaQuery.songsQuery()
+            let query = MPMediaQuery.songs()
             print(playlistSong.song.persistentID)
             let predicate = MPMediaPropertyPredicate(value: playlistSong.song.persistentID,
                 forProperty: MPMediaItemPropertyPersistentID,
-                comparisonType: .EqualTo)
+                comparisonType: .equalTo)
             query.addFilterPredicate(predicate)
             
             if let playlistItems = query.items {
-                items.appendContentsOf(playlistItems)
+                items.append(contentsOf: playlistItems)
             }
         }
         

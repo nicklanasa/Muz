@@ -20,8 +20,8 @@ class TopAlbumCell: UITableViewCell {
         buyButton.applyBuyStyle()
     }
     
-    func updateWithAlbum(album: AnyObject,
-        indexPath: NSIndexPath,
+    func updateWithAlbum(_ album: AnyObject,
+        indexPath: IndexPath,
         target: AnyObject?) {
         if let artistAlbum = album as? NSDictionary {
             self.infoLabel.text = artistAlbum["artistName"] as? String
@@ -34,17 +34,17 @@ class TopAlbumCell: UITableViewCell {
             }
             
             if let image = artistAlbum["artworkUrl100"] as? String {
-                self.songImageView.sd_setImageWithURL(NSURL(string: image))
+                self.songImageView.sd_setImage(with: URL(string: image))
             } else {
                 self.songImageView.image = UIImage(named: "nowPlayingDefault")
             }
             
-            self.buyButton.hidden = false
+            self.buyButton.isHidden = false
             self.buyButton.tag = indexPath.row
             if let albumPrice = album["collectionPrice"] as? NSNumber {
                 if let albumLink = album["collectionViewUrl"] as? String {
-                    self.buyButton.setTitle("$\(albumPrice.description)", forState: .Normal)
-                    self.buyButton.addTarget(target, action: "openAlbumLink:", forControlEvents: .TouchUpInside)
+                    self.buyButton.setTitle("$\(albumPrice.description)", for: UIControlState())
+                    self.buyButton.addTarget(target, action: "openAlbumLink:", for: .touchUpInside)
                 }
             }
         } else {
@@ -53,18 +53,18 @@ class TopAlbumCell: UITableViewCell {
             self.infoLabel.text = artistAlbum.songs.count == 1 ? "\(artistAlbum.songs.count) song" : "\(artistAlbum.songs.count) songs"
             self.songImageView.setImageForAlbum(album: artistAlbum)
             
-            self.buyButton.hidden = true
+            self.buyButton.isHidden = true
         }
         
     }
     
-    func updateWithArtist(artist: AnyObject) {
+    func updateWithArtist(_ artist: AnyObject) {
         if let itunesArtist = artist as? NSDictionary {
             print(artist, terminator: "")
             self.songLabel.text = artist["artistName"] as? String
             self.infoLabel.text = artist["primaryGenreName"] as? String
             if let image = artist["artworkUrl100"] as? String {
-                self.songImageView.sd_setImageWithURL(NSURL(string: image))
+                self.songImageView.sd_setImage(with: URL(string: image))
             } else {
                 self.songImageView.image = UIImage(named: "nowPlayingDefault")
             }
@@ -81,36 +81,36 @@ class TopAlbumCell: UITableViewCell {
                 
                 infoLabel.text = String(format: "%d %@, %d %@", songs,
                     songs == 1 ? "album" : "albums", songs, songs == 1 ? "song" : "songs")
-                infoLabel.hidden = false
+                infoLabel.isHidden = false
                 
             } else {
-                infoLabel.hidden = true
+                infoLabel.isHidden = true
             }
             
             self.songImageView.setImageForArtist(artist: libraryArtist)
             
-            self.buyButton.hidden = true
+            self.buyButton.isHidden = true
         }
         
     }
     
-    func updateWithSong(song: AnyObject, indexPath: NSIndexPath, target: AnyObject?) {
+    func updateWithSong(_ song: AnyObject, indexPath: IndexPath, target: AnyObject?) {
         if let itunesSong = song as? NSDictionary {
-            self.songLabel.text = song.objectForKey("trackName") as? String
-            self.infoLabel.text = song.objectForKey("collectionName") as? String
-            if let image = song.objectForKey("artworkUrl100") as? String {
-                self.songImageView.sd_setImageWithURL(NSURL(string: image))
+            self.songLabel.text = song.object(forKey: "trackName") as? String
+            self.infoLabel.text = song.object(forKey: "collectionName") as? String
+            if let image = song.object(forKey: "artworkUrl100") as? String {
+                self.songImageView.sd_setImage(with: URL(string: image))
             } else {
                 self.songImageView.image = UIImage(named: "nowPlayingDefault")
             }
             
             self.buyButton.tag = indexPath.row
-            self.buyButton.hidden = false
+            self.buyButton.isHidden = false
             
             if let trackPrice = itunesSong["trackPrice"] as? NSNumber {
                 if let trackLink = itunesSong["trackViewUrl"] as? String {
-                    self.buyButton.setTitle("$\(trackPrice.description)", forState: .Normal)
-                    self.buyButton.addTarget(target, action: "openTrackLink:", forControlEvents: .TouchUpInside)
+                    self.buyButton.setTitle("$\(trackPrice.description)", for: UIControlState())
+                    self.buyButton.addTarget(target, action: "openTrackLink:", for: .touchUpInside)
                 }
             }
 
@@ -122,13 +122,13 @@ class TopAlbumCell: UITableViewCell {
             self.infoLabel.text = String(format: "%@ %@", librarySong.artist, librarySong.albumTitle)
             self.songImageView.setImageForSong(song: librarySong)
             
-            self.buyButton.hidden = true
+            self.buyButton.isHidden = true
         }
     }
     
     override func prepareForReuse() {
-        self.accessoryType = .None
+        self.accessoryType = .none
         self.songImageView.image = nil
-        self.buyButton.hidden = true
+        self.buyButton.isHidden = true
     }
 }

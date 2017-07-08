@@ -17,7 +17,7 @@ class PlaylistCell: UITableViewCell {
     @IBOutlet weak var infoLabel: UILabel!
     @IBOutlet weak var playlistTypeImageView: UIImageView!
     
-    private var playlistQuery = MPMediaQuery.playlistsQuery()
+    fileprivate var playlistQuery = MPMediaQuery.playlists()
     
     override func awakeFromNib() {
     }
@@ -26,14 +26,14 @@ class PlaylistCell: UITableViewCell {
         self.playlistTypeImageView.image = nil
     }
     
-    func updateWithPlaylist(playlist: Playlist) {
+    func updateWithPlaylist(_ playlist: Playlist) {
         self.nameLabel.text = playlist.name
         
-        if let playlistType = PlaylistType(rawValue: playlist.playlistType.unsignedLongValue) {
+        if let playlistType = PlaylistType(rawValue: playlist.playlistType.uintValue) {
             switch playlistType {
-            case .Genius:
+            case .genius:
                 self.playlistTypeImageView.image = UIImage(named: "genius")
-            case .Smart:
+            case .smart:
                 self.playlistTypeImageView.image = UIImage(named: "science")
             default:
                 self.playlistTypeImageView.image = UIImage(named: "playlistsWhite")
@@ -43,7 +43,7 @@ class PlaylistCell: UITableViewCell {
         self.updateInfoLabelWithPlaylist(playlist)
     }
     
-    private func updateInfoLabelWithPlaylist(playlist: Playlist) {
+    fileprivate func updateInfoLabelWithPlaylist(_ playlist: Playlist) {
         
         var songs = playlist.playlistSongs.allObjects
         var playlistDuration = 0.0
@@ -52,7 +52,7 @@ class PlaylistCell: UITableViewCell {
             if persistentID.characters.count > 0 {
                 let predicate = MPMediaPropertyPredicate(value: Int(persistentID),
                     forProperty: MPMediaPlaylistPropertyPersistentID,
-                    comparisonType: .EqualTo)
+                    comparisonType: .equalTo)
                 self.playlistQuery.addFilterPredicate(predicate)
                 
                 songs = playlistQuery.items ?? []
@@ -73,8 +73,8 @@ class PlaylistCell: UITableViewCell {
         
         self.infoLabel.text = songs.count == 1 ? "\(songs.count) song" : "\(songs.count) songs"
         
-        let sec = floor(playlistDuration % 60)
-        let min = floor(playlistDuration / 60) % 60
+        let sec = floor(playlistDuration.truncatingRemainder(dividingBy: 60))
+        let min = floor(playlistDuration / 60).truncatingRemainder(dividingBy: 60)
         let hours = floor(playlistDuration / 3600)
         
         if hours + min + sec > 0 {

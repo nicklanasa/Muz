@@ -12,7 +12,7 @@ import MediaPlayer
 import CoreData
 
 protocol PlaylistsViewControllerDelegate {
-    func playlistsViewController(controller: PlaylistsViewController, didSelectPlaylist playlist: Playlist)
+    func playlistsViewController(_ controller: PlaylistsViewController, didSelectPlaylist playlist: Playlist)
 }
 
 class PlaylistsViewController: RootViewController,
@@ -25,7 +25,7 @@ NSFetchedResultsControllerDelegate {
     var isForExistingPlaylist = false
     
     // The NSFetchedResultsController used to pull tasks for the selected date.
-    var playlistsController: NSFetchedResultsController?
+    var playlistsController: NSFetchedResultsController<NSFetchRequestResult>?
     
     var delegate: PlaylistsViewControllerDelegate?
     
@@ -44,7 +44,7 @@ NSFetchedResultsControllerDelegate {
         self.isForExistingPlaylist = existingPlaylist
     }
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
@@ -52,11 +52,11 @@ NSFetchedResultsControllerDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         self.playlistsController = nil
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         self.fetchPlaylists()
         super.viewWillAppear(animated)
         
@@ -66,19 +66,19 @@ NSFetchedResultsControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.tableView.registerNib(UINib(nibName: "PlaylistCell", bundle: nil), forCellReuseIdentifier: "Cell")
-        self.tableView.registerNib(UINib(nibName: "SongsHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "Header")
+        self.tableView.register(UINib(nibName: "PlaylistCell", bundle: nil), forCellReuseIdentifier: "Cell")
+        self.tableView.register(UINib(nibName: "SongsHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "Header")
     
         if !self.isForExistingPlaylist {
             let search = UIBarButtonItem(image: UIImage(named: "search"),
-                style: .Plain,
+                style: .plain,
                 target: self,
-                action: "showSearch")
+                action: #selector(PlaylistsViewController.showSearch))
             
             let addPlaylist = UIBarButtonItem(image: UIImage(named: "add"),
-                style: .Plain,
+                style: .plain,
                 target: self,
-                action: "addPlaylist");
+                action: #selector(PlaylistsViewController.addPlaylist));
             
             self.navigationItem.rightBarButtonItems = [addPlaylist, search]
         }
@@ -98,7 +98,7 @@ NSFetchedResultsControllerDelegate {
     /**
     Fetch playlists
     */
-    private func fetchPlaylists() {
+    fileprivate func fetchPlaylists() {
         if !self.isForExistingPlaylist {
             self.playlistsController = DataManager.manager.datastore.playlistsControllerWithSectionName(nil,
                 predicate: nil)
@@ -118,72 +118,72 @@ NSFetchedResultsControllerDelegate {
     
     // MARK: Sectors NSFetchedResultsControllerDelegate
     
-    func controllerWillChangeContent(controller: NSFetchedResultsController)
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>)
     {
         self.tableView.beginUpdates()
     }
     
-    func controller(controller: NSFetchedResultsController,
-        didChangeObject anObject: AnyObject,
-        atIndexPath indexPath: NSIndexPath?,
-        forChangeType type: NSFetchedResultsChangeType,
-        newIndexPath: NSIndexPath?)
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+        didChange anObject: Any,
+        at indexPath: IndexPath?,
+        for type: NSFetchedResultsChangeType,
+        newIndexPath: IndexPath?)
     {
         let tableView = self.tableView
-        var indexPaths:[NSIndexPath] = [NSIndexPath]()
+        var indexPaths:[IndexPath] = [IndexPath]()
         switch type {
             
-        case .Insert:
+        case .insert:
             indexPaths.append(newIndexPath!)
-            tableView.insertRowsAtIndexPaths(indexPaths, withRowAnimation: .Fade)
+            tableView?.insertRows(at: indexPaths, with: .fade)
             
-        case .Delete:
+        case .delete:
             indexPaths.append(indexPath!)
-            tableView.deleteRowsAtIndexPaths(indexPaths, withRowAnimation: .Fade)
+            tableView?.deleteRows(at: indexPaths, with: .fade)
             
-        case .Update:
+        case .update:
             indexPaths.append(indexPath!)
-            tableView.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: .Fade)
+            tableView?.reloadRows(at: indexPaths, with: .fade)
             
-        case .Move:
+        case .move:
             indexPaths.append(indexPath!)
-            tableView.deleteRowsAtIndexPaths(indexPaths, withRowAnimation: .Fade)
-            indexPaths.removeAtIndex(0)
+            tableView?.deleteRows(at: indexPaths, with: .fade)
+            indexPaths.remove(at: 0)
             indexPaths.append(newIndexPath!)
-            tableView.insertRowsAtIndexPaths(indexPaths, withRowAnimation: .Fade)
+            tableView?.insertRows(at: indexPaths, with: .fade)
         }
     }
     
-    func controller(controller: NSFetchedResultsController,
-        didChangeSection sectionInfo: NSFetchedResultsSectionInfo,
-        atIndex sectionIndex: Int,
-        forChangeType type: NSFetchedResultsChangeType)
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+        didChange sectionInfo: NSFetchedResultsSectionInfo,
+        atSectionIndex sectionIndex: Int,
+        for type: NSFetchedResultsChangeType)
     {
         switch type {
             
-        case .Insert:
-            self.tableView.insertSections(NSIndexSet(index: sectionIndex),
-                withRowAnimation: .Fade)
+        case .insert:
+            self.tableView.insertSections(IndexSet(integer: sectionIndex),
+                with: .fade)
             
-        case .Delete:
-            self.tableView.deleteSections(NSIndexSet(index: sectionIndex),
-                withRowAnimation: .Fade)
+        case .delete:
+            self.tableView.deleteSections(IndexSet(integer: sectionIndex),
+                with: .fade)
             
-        case .Update, .Move: print("Move or delete called in didChangeSection")
+        case .update, .move: print("Move or delete called in didChangeSection")
         }
     }
     
-    func controllerDidChangeContent(controller: NSFetchedResultsController)
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>)
     {
         self.tableView.endUpdates()
     }
 
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return self.playlistsController?.sections?.count ?? 0
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let numberOfRowsInSection = self.playlistsController?.sections?[section].numberOfObjects {
             return numberOfRowsInSection
         } else {
@@ -191,49 +191,49 @@ NSFetchedResultsControllerDelegate {
         }
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell",
-            forIndexPath: indexPath) as! PlaylistCell
-        let playlist = self.playlistsController?.objectAtIndexPath(indexPath) as! Playlist
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell",
+            for: indexPath) as! PlaylistCell
+        let playlist = self.playlistsController?.object(at: indexPath) as! Playlist
         cell.updateWithPlaylist(playlist)
         return cell
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if !self.isForExistingPlaylist {
-            tableView.deselectRowAtIndexPath(indexPath, animated: true)
-            let playlist = self.playlistsController?.objectAtIndexPath(indexPath) as! Playlist
+            tableView.deselectRow(at: indexPath, animated: true)
+            let playlist = self.playlistsController?.object(at: indexPath) as! Playlist
             DataManager.manager.datastore.updatePlaylist(playlist: playlist, completion: { () -> () in
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                DispatchQueue.main.async(execute: { () -> Void in
                     let playlistSongsViewController = PlaylistSongsViewController(playlist: playlist)
                     self.navigationController?.pushViewController(playlistSongsViewController, animated: true)
                 })
             })
         } else {
-            let playlist = self.playlistsController?.objectAtIndexPath(indexPath) as! Playlist
-            self.navigationController?.popViewControllerAnimated(true)
+            let playlist = self.playlistsController?.object(at: indexPath) as! Playlist
+            self.navigationController?.popViewController(animated: true)
             self.dismissWithPlaylist(playlist)
         }
     }
     
-    private func dismissWithPlaylist(playlist: Playlist) {
+    fileprivate func dismissWithPlaylist(_ playlist: Playlist) {
         self.delegate?.playlistsViewController(self, didSelectPlaylist: playlist)
     }
     
-    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        let playlist = self.playlistsController?.objectAtIndexPath(indexPath) as! Playlist
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        let playlist = self.playlistsController?.object(at: indexPath) as! Playlist
         return (playlist.persistentID!).characters.count == 0
     }
     
-    func tableView(tableView: UITableView,
-        commitEditingStyle editingStyle: UITableViewCellEditingStyle,
-        forRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView,
+        commit editingStyle: UITableViewCellEditingStyle,
+        forRowAt indexPath: IndexPath) {
         
     }
     
-    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-        let deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete", handler: { (action, indexPath) -> Void in
-            let playlist = self.playlistsController?.objectAtIndexPath(indexPath) as! Playlist
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "Delete", handler: { (action, indexPath) -> Void in
+            let playlist = self.playlistsController?.object(at: indexPath) as! Playlist
             MediaSession.sharedSession.dataManager.datastore.deletePlaylistWithPlaylist(playlist, completion: { (error) -> () in
                 if error == nil {
                     

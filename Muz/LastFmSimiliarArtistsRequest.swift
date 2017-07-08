@@ -9,7 +9,7 @@
 import Foundation
 
 protocol LastFmSimiliarArtistsRequestDelegate {
-    func lastFmSimiliarArtistsRequestDidComplete(request: LastFmSimiliarArtistsRequest, didCompleteWithLastFmArtists artists: [AnyObject]?)
+    func lastFmSimiliarArtistsRequestDidComplete(_ request: LastFmSimiliarArtistsRequest, didCompleteWithLastFmArtists artists: [AnyObject]?)
 }
 
 class LastFmSimiliarArtistsRequest: LastFmRequest {
@@ -26,17 +26,17 @@ class LastFmSimiliarArtistsRequest: LastFmRequest {
     override func sendURLRequest() {
         super.sendURLRequest()
         let lastFm = LastFm.sharedInstance()
-        lastFm.apiKey = self.apiKey
-        lastFm.apiSecret = self.apiSecret
-        lastFm.session = "similiarArtistsSession"
+        lastFm?.apiKey = self.apiKey
+        lastFm?.apiSecret = self.apiSecret
+        lastFm?.session = "similiarArtistsSession"
         
-        lastFm.getSimilarArtistsTo(self.artist, successHandler: { (data) -> Void in
+        lastFm?.getSimilarArtists(to: self.artist, successHandler: { (data) -> Void in
             
             let artists = NSMutableArray()
             
-            for similiarArtistJSON in data {
+            for similiarArtistJSON in data! {
                 if let JSON = similiarArtistJSON as? NSDictionary {
-                    artists.addObject(LastFmArtist(JSON: JSON as [NSObject : AnyObject]))
+                    artists.add(LastFmArtist(json: JSON as! [AnyHashable: Any]))
                 }
             }
             
@@ -48,7 +48,7 @@ class LastFmSimiliarArtistsRequest: LastFmRequest {
         }
     }
     
-    override func connectionDidFinishLoading(connection: NSURLConnection) {
+    override func connectionDidFinishLoading(_ connection: NSURLConnection) {
         super.connectionDidFinishLoading(connection)
     }
 }

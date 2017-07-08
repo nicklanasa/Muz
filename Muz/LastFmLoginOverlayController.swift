@@ -28,38 +28,38 @@ UITableViewDataSource {
         super.viewDidLoad()
         
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel",
-            style: .Plain,
+            style: .plain,
             target: self,
-            action: "dismiss")
+            action: #selector(LastFmLoginOverlayController.dismiss as (LastFmLoginOverlayController) -> () -> ()))
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Signup",
-            style: .Plain,
+            style: .plain,
             target: self,
-            action: "signup")
+            action: #selector(LastFmLoginOverlayController.signup))
         
-        tableView.registerNib(UINib(nibName: "LastFmLoginCell", bundle: nil), forCellReuseIdentifier: "Cell")
+        tableView.register(UINib(nibName: "LastFmLoginCell", bundle: nil), forCellReuseIdentifier: "Cell")
     }
     
     func signup() {
-        UIApplication.sharedApplication().openURL(NSURL(string: "https://m.last.fm/join")!)
+        UIApplication.shared.openURL(URL(string: "https://m.last.fm/join")!)
     }
     
     func dismiss() {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell",
-            forIndexPath: indexPath) as! LastFmLoginCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell",
+            for: indexPath) as! LastFmLoginCell
         
         return cell
     }

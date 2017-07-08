@@ -12,18 +12,18 @@ import UIKit
 class NavBarController: UINavigationController {
     override func viewDidLoad() {
         // Add transparency.
-        let rect = CGRectMake(0, 0, 1, 1)
+        let rect = CGRect(x: 0, y: 0, width: 1, height: 1)
         UIGraphicsBeginImageContextWithOptions(rect.size, false, 1.0);
         let context = UIGraphicsGetCurrentContext()
-        CGContextSetFillColorWithColor(context, UIColor.clearColor().CGColor)
-        CGContextFillRect(context, rect)
+        context?.setFillColor(UIColor.clear.cgColor)
+        context?.fill(rect)
         let transparentImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        self.navigationBar.setBackgroundImage(transparentImage, forBarMetrics: .Default)
+        self.navigationBar.setBackgroundImage(transparentImage, for: .default)
         self.navigationBar.shadowImage = transparentImage
-        self.navigationBar.tintColor = UIColor.whiteColor()
+        self.navigationBar.tintColor = UIColor.white
         self.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: MuzColor, NSFontAttributeName: MuzTitleFont]
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(image: UIImage(named: "back"), style: .Plain, target: self, action: "")
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(image: UIImage(named: "back"), style: .plain, target: self, action: "")
     }
 }

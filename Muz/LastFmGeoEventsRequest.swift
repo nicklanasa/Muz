@@ -16,21 +16,21 @@ class LastFmGeoEventsRequest: LastFmRequest {
         return _sharedRequest
     }
     
-    func getEvents(location: String!, completion: (events: [AnyObject]?, error: NSError?) -> ()) {
+    func getEvents(_ location: String!, completion: @escaping (_ events: [AnyObject]?, _ error: NSError?) -> ()) {
         let lastFm = LastFm.sharedInstance()
-        lastFm.apiKey = self.apiKey
-        lastFm.apiSecret = self.apiSecret
-        lastFm.session = "geoEvents"
+        lastFm?.apiKey = self.apiKey
+        lastFm?.apiSecret = self.apiSecret
+        lastFm?.session = "geoEvents"
         
-        lastFm.getEventsForLocation(location, successHandler: { (results) -> Void in
+        lastFm?.getEventsForLocation(location, successHandler: { (results) -> Void in
             let events = NSMutableArray()
             for event in results as! [NSDictionary] {
-                events.addObject(LastFmEvent(JSON: event as [NSObject : AnyObject]))
+                events.add(LastFmEvent(json: event as [AnyHashable: Any]))
             }
             
             completion(events: events as [AnyObject], error: nil)
         }) { (error) -> Void in
-            completion(events: nil, error: error)
-        }
+            completion(nil, error)
+        } as! LastFmReturnBlockWithError as! LastFmReturnBlockWithError as! LastFmReturnBlockWithError as! LastFmReturnBlockWithError as! LastFmReturnBlockWithError
     }
 }

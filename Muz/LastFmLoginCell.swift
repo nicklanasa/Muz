@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 protocol LastFmLoginCellDelegate {
-    func lastFmLoginCellDidTapLoginButton(cell: LastFmLoginCell)
+    func lastFmLoginCellDidTapLoginButton(_ cell: LastFmLoginCell)
 }
 
 class LastFmLoginCell: UITableViewCell, UITextFieldDelegate {
@@ -27,11 +27,11 @@ class LastFmLoginCell: UITableViewCell, UITextFieldDelegate {
         self.usernameTextfield.delegate = self
     }
     
-    @IBAction func loginButtonTapped(sender: AnyObject) {
+    @IBAction func loginButtonTapped(_ sender: AnyObject) {
         self.delegate?.lastFmLoginCellDidTapLoginButton(self)
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == self.passwordTextfield {
             self.delegate?.lastFmLoginCellDidTapLoginButton(self)
         }

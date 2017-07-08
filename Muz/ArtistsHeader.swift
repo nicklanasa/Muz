@@ -19,7 +19,7 @@ class ArtistsHeader: UITableViewHeaderFooterView {
         
     }
     
-    func updateWithData(data: NSDictionary) {
+    func updateWithData(_ data: NSDictionary) {
         
     }
 }

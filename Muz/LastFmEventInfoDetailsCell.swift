@@ -24,20 +24,20 @@ class LastFmEventInfoDetailsCell: UITableViewCell {
     
     var event: LastFmEvent!
     
-    func updateWithEvent(event: LastFmEvent) {
+    func updateWithEvent(_ event: LastFmEvent) {
         self.event = event
         self.headLinerValueLabel.text = event.headliner
-        self.attendenceValueLabel.text = event.attendance.integerValue.abbreviateNumber()
-        self.artistImageView.sd_setImageWithURL(event.image, placeholderImage: UIImage(named: "nowPlayingDefault"))
+        self.attendenceValueLabel.text = event.attendance.intValue.abbreviateNumber()
+        self.artistImageView.sd_setImage(with: event.image, placeholderImage: UIImage(named: "nowPlayingDefault"))
         self.descriptionTextView.text = event.eventDescription
         
         if event.eventDescription.characters.count == 0 {
             self.descriptionTextView.text = "Description unavailable"
         }
         
-        let formatter = NSDateFormatter()
-        formatter.dateStyle = .ShortStyle
-        let date = formatter.stringFromDate(event.startDate)
+        let formatter = DateFormatter()
+        formatter.dateStyle = .short
+        let date = formatter.string(from: event.startDate)
         
         self.titleLabel.text = event.title
         self.dateLabel.text = date

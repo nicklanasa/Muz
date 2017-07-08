@@ -10,12 +10,12 @@ import Foundation
 import UIKit
 
 enum SearchIndex: Int {
-    case Library
-    case Itunes
+    case library
+    case itunes
 }
 
 protocol SearchSwitchCellDelegate {
-    func searchSwitchCell(cell: SearchSwitchCell,
+    func searchSwitchCell(_ cell: SearchSwitchCell,
         searchIndexDidChange index: SearchIndex)
 }
 
@@ -26,10 +26,10 @@ class SearchSwitchCell: UITableViewCell {
     var delegate: SearchSwitchCellDelegate?
     
     override func awakeFromNib() {
-        self.bringSubviewToFront(self.searchSegmentationControl)
+        self.bringSubview(toFront: self.searchSegmentationControl)
     }
     
-    @IBAction func searchSegmentChanged(sender: AnyObject) {
+    @IBAction func searchSegmentChanged(_ sender: AnyObject) {
         if let index = SearchIndex(rawValue: searchSegmentationControl.selectedSegmentIndex) {
             self.delegate?.searchSwitchCell(self, searchIndexDidChange: index)
         }

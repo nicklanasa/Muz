@@ -10,10 +10,10 @@ import Foundation
 
 class WebRequest: NSObject, NSURLConnectionDataDelegate, NSURLConnectionDelegate {
     func sendURLRequest() {
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
     }
     
-    func connectionDidFinishLoading(connection: NSURLConnection) {
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+    func connectionDidFinishLoading(_ connection: NSURLConnection) {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
 }

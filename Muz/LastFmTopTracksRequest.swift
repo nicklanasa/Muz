@@ -9,7 +9,7 @@
 import Foundation
 
 protocol LastFmTopTracksRequestDelegate {
-    func lastFmTopTracksRequestDidComplete(request: LastFmTopTracksRequest, didCompleteWithTracks tracks: [AnyObject]?)
+    func lastFmTopTracksRequestDidComplete(_ request: LastFmTopTracksRequest, didCompleteWithTracks tracks: [AnyObject]?)
 }
 
 class LastFmTopTracksRequest: LastFmRequest {
@@ -24,16 +24,16 @@ class LastFmTopTracksRequest: LastFmRequest {
     override func sendURLRequest() {
         super.sendURLRequest()
         let lastFm = LastFm.sharedInstance()
-        lastFm.apiKey = self.apiKey
-        lastFm.apiSecret = self.apiSecret
-        lastFm.session = "topTracksSession"
+        lastFm?.apiKey = self.apiKey
+        lastFm?.apiSecret = self.apiSecret
+        lastFm?.session = "topTracksSession"
         
-        lastFm.getTopTracksForArtist(self.artist, successHandler: { (results) -> Void in
+        lastFm?.getTopTracks(forArtist: self.artist, successHandler: { (results) -> Void in
             let tracks = NSMutableArray()
             
-            for track in results {
+            for track in results! {
                 if let JSON = track as? NSDictionary {
-                    tracks.addObject(LastFmTrack(JSON: JSON as [NSObject : AnyObject]))
+                    tracks.add(LastFmTrack(json: JSON as! [AnyHashable: Any]))
                 }
             }
             

@@ -9,10 +9,34 @@
 import Foundation
 import UIKit
 import MediaPlayer
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 enum CreatePlaylistSourceType: NSInteger {
-    case Artist
-    case Song
+    case artist
+    case song
 }
 
 class CreatePlaylistOverlay: OverlayController,
@@ -25,7 +49,7 @@ PlaylistsViewControllerDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     
-    private var createPlaylistCell: CreatePlaylistCell!
+    fileprivate var createPlaylistCell: CreatePlaylistCell!
     
     var artist: String!
     var items: [MPMediaItem]!
@@ -33,7 +57,7 @@ PlaylistsViewControllerDelegate {
     var song: Song!
     var songs: [AnyObject]!
     
-    private var hud: MBProgressHUD!
+    fileprivate var hud: MBProgressHUD!
     
     var existingPlaylist: Playlist?
     
@@ -76,7 +100,7 @@ PlaylistsViewControllerDelegate {
         fatalError("init(coder:) has not been implemented")
     }
    
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         self.createPlaylistCell.nameTextField.becomeFirstResponder()
         
         self.overlayScreenName = "New Playlist"
@@ -85,44 +109,44 @@ PlaylistsViewControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.tableView.registerNib(UINib(nibName: "CreatePlaylistCell", bundle: nil), forCellReuseIdentifier: "Cell")
+        self.tableView.register(UINib(nibName: "CreatePlaylistCell", bundle: nil), forCellReuseIdentifier: "Cell")
         
         self.tableView.reloadData()
         
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel",
-            style: .Plain,
+            style: .plain,
             target: self,
-            action: "dismiss")
+            action: #selector(CreatePlaylistOverlay.dismiss as (CreatePlaylistOverlay) -> () -> ()))
     
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done",
-            style: .Plain,
+            style: .plain,
             target: self,
-            action: "createPlaylist")
+            action: #selector(CreatePlaylistOverlay.createPlaylist))
         
         let nib = UINib(nibName: "CreatePlaylistCell",
             bundle: nil)
-        self.createPlaylistCell = nib.instantiateWithOwner(self, options: nil)[0] as! CreatePlaylistCell
+        self.createPlaylistCell = nib.instantiate(withOwner: self, options: nil)[0] as! CreatePlaylistCell
         self.createPlaylistCell.delegate = self
         
         if let _ = self.artist {
-            self.createPlaylistCell.smartSwitch.enabled = true
+            self.createPlaylistCell.smartSwitch.isEnabled = true
         } else {
-            self.createPlaylistCell.smartSwitch.enabled = false
+            self.createPlaylistCell.smartSwitch.isEnabled = false
         }
     }
     
-    private func requestSimiliarArtists() {
+    fileprivate func requestSimiliarArtists() {
         let similiarArtistLastFmRequest = LastFmSimiliarArtistsRequest(artist: self.artist)
         similiarArtistLastFmRequest.delegate = self
         similiarArtistLastFmRequest.sendURLRequest()
     }
     
-    func lastFmSimiliarArtistsRequestDidComplete(request: LastFmSimiliarArtistsRequest,
+    func lastFmSimiliarArtistsRequestDidComplete(_ request: LastFmSimiliarArtistsRequest,
         didCompleteWithLastFmArtists artists: [AnyObject]?) {
         let index = self.createPlaylistCell.amountSegmentedControl.selectedSegmentIndex
-        let amount = Int(self.createPlaylistCell.amountSegmentedControl.titleForSegmentAtIndex(index)!)!
+        let amount = Int(self.createPlaylistCell.amountSegmentedControl.titleForSegment(at: index)!)!
         let name = self.createPlaylistCell.nameTextField.text
-        let playlistType = PlaylistType.Smart
+        let playlistType = PlaylistType.smart
         MediaSession.sharedSession.dataManager.datastore.createPlaylistWithSimiliarArtists(self.artist,
             artists: artists,
             fetchLimit: amount,
@@ -133,36 +157,36 @@ PlaylistsViewControllerDelegate {
     }
     
     func dismiss() {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 1 {
-            self.createPlaylistCell.selectionStyle = .None
+            self.createPlaylistCell.selectionStyle = .none
             return self.createPlaylistCell
         } else {
-            let cell = UITableViewCell(style: .Default, reuseIdentifier: "Cell")
+            let cell = UITableViewCell(style: .default, reuseIdentifier: "Cell")
             if let playlist = self.existingPlaylist {
                 cell.textLabel?.text = playlist.name
             } else {
                 cell.textLabel?.text = "Add to existing playlist"
             }
             cell.textLabel?.font = MuzSettingFont
-            cell.textLabel?.textColor = UIColor.whiteColor()
-            cell.accessoryType = .DisclosureIndicator
+            cell.textLabel?.textColor = UIColor.white
+            cell.accessoryType = .disclosureIndicator
             return cell
         }
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 1 {
             return CreatePlaylistCellHeight
         } else {
@@ -171,7 +195,7 @@ PlaylistsViewControllerDelegate {
     }
     
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 1 {
             
         } else {
@@ -187,22 +211,22 @@ PlaylistsViewControllerDelegate {
             }
         }
         
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 
     // MARK: CreatePlaylistCellDelegate
-    func createPlaylistCell(cell: CreatePlaylistCell, didStartEditing textField: UITextField!) {
+    func createPlaylistCell(_ cell: CreatePlaylistCell, didStartEditing textField: UITextField!) {
         
     }
     
-    func createPlaylistCell(cell: CreatePlaylistCell, shouldReturn textField: UITextField!) {
+    func createPlaylistCell(_ cell: CreatePlaylistCell, shouldReturn textField: UITextField!) {
         self.createPlaylist()
     }
 
     func createPlaylist() {
-        if self.createPlaylistCell.smartSwitch.on {
-            self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-            self.hud.mode = .Indeterminate
+        if self.createPlaylistCell.smartSwitch.isOn {
+            self.hud = MBProgressHUD.showAdded(to: self.view, animated: true)
+            self.hud.mode = .indeterminate
             self.hud.labelText = "Getting similiar artists"
             self.hud.labelFont = MuzTitleFont
             requestSimiliarArtists()
@@ -235,7 +259,7 @@ PlaylistsViewControllerDelegate {
                         } else {
                             MediaSession.sharedSession.dataManager.datastore.createPlaylistWithArtist(self.artist,
                                 name: self.createPlaylistCell.nameTextField.text,
-                                playlistType: .None) { (addedSongs) -> () in
+                                playlistType: .none) { (addedSongs) -> () in
                                     self.dismiss()
                             }
                         }
@@ -246,7 +270,7 @@ PlaylistsViewControllerDelegate {
             } else {
                 if self.createPlaylistCell.nameTextField.text?.characters.count > 0 {
                     MediaSession.sharedSession.dataManager.datastore.createEmptyPlaylistWithName(self.createPlaylistCell.nameTextField.text!,
-                        playlistType: .None) { () -> () in
+                        playlistType: .none) { () -> () in
                             self.dismiss()
                     }
                 } else {
@@ -257,14 +281,14 @@ PlaylistsViewControllerDelegate {
         }
     }
     
-    private func showEmptyPlaylistNameAlert() {
+    fileprivate func showEmptyPlaylistNameAlert() {
         UIAlertView(title: "Error!",
             message: "You must set a playlist name!",
             delegate: self,
             cancelButtonTitle: "Ok").show()
     }
     
-    private func handleCreatePlaylistFinishWithAddedSongs(addedSongs: [AnyObject]?) {
+    fileprivate func handleCreatePlaylistFinishWithAddedSongs(_ addedSongs: [AnyObject]?) {
         if let _ = addedSongs {
             self.dismiss()
         } else {
@@ -277,18 +301,18 @@ PlaylistsViewControllerDelegate {
         }
     }
     
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         self.createPlaylistCell.nameTextField.resignFirstResponder()
     }
     
-    func playlistsViewController(controller: PlaylistsViewController, didSelectPlaylist playlist: Playlist) {
+    func playlistsViewController(_ controller: PlaylistsViewController, didSelectPlaylist playlist: Playlist) {
         self.existingPlaylist = playlist
         self.tableView.reloadData()
         
-        self.createPlaylistCell.smartSwitch.on = false
+        self.createPlaylistCell.smartSwitch.isOn = false
         self.createPlaylistCell.smartSwitchDidChange(self.createPlaylistCell.smartSwitch)
-        self.createPlaylistCell.smartSwitch.enabled = false
+        self.createPlaylistCell.smartSwitch.isEnabled = false
         self.createPlaylistCell.nameTextField.text = ""
-        self.createPlaylistCell.nameTextField.enabled = false
+        self.createPlaylistCell.nameTextField.isEnabled = false
     }
 }

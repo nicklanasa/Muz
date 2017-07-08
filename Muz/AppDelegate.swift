@@ -16,7 +16,7 @@ let MuzFontTutorial = "ShadowsIntoLight"
 let MuzFont = UIFont(name: MuzFontName, size: 11)!
 let MuzSettingFont = UIFont(name: MuzFontName, size: 21)!
 let MuzTitleFont = UIFont(name: MuzFontNameMedium, size: 18)!
-let MuzColor = UIColor.whiteColor()
+let MuzColor = UIColor.white
 let MuzBlueColor = UIColor(red:255/255, green: 184/255, blue: 60/255, alpha: 1.0)
 let MuzGrayColor = UIColor(red:102/255, green: 102/255, blue: 102/255, alpha: 1.0)
 
@@ -31,30 +31,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIAlertViewDelegate {
     
     let forumID = 279388
 
-    private func muzWindow() -> UIWindow {
+    fileprivate func muzWindow() -> UIWindow {
         
         let colorView = UIView()
-        colorView.backgroundColor = UIColor.lightGrayColor().colorWithAlphaComponent(0.5)
+        colorView.backgroundColor = UIColor.lightGray.withAlphaComponent(0.5)
         
-        UINavigationBar.appearance().barTintColor = UIColor.blackColor()
-        UITabBarItem.appearance().setTitleTextAttributes([NSFontAttributeName: MuzFont], forState: UIControlState.Normal)
-        UIBarButtonItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.whiteColor()], forState: UIControlState.Normal)
-        UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffset(horizontal: -9999, vertical: 0), forBarMetrics: .Default)
+        UINavigationBar.appearance().barTintColor = UIColor.black
+        UITabBarItem.appearance().setTitleTextAttributes([NSFontAttributeName: MuzFont], for: UIControlState())
+        UIBarButtonItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.white], for: UIControlState())
+        UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffset(horizontal: -9999, vertical: 0), for: .default)
         UITableViewCell.appearance().selectedBackgroundView = colorView
-        UITableViewCell.appearance().backgroundColor = UIColor.clearColor()
-        UITableView.appearance().sectionIndexColor = UIColor.lightGrayColor()
-        UITableView.appearance().sectionIndexBackgroundColor = UIColor.clearColor()
-        UITableView.appearance().separatorStyle = .None
-        UITableView.appearance().separatorColor = UIColor.whiteColor()
-        UITextField.appearance().textColor = UIColor.whiteColor()
+        UITableViewCell.appearance().backgroundColor = UIColor.clear
+        UITableView.appearance().sectionIndexColor = UIColor.lightGray
+        UITableView.appearance().sectionIndexBackgroundColor = UIColor.clear
+        UITableView.appearance().separatorStyle = .none
+        UITableView.appearance().separatorColor = UIColor.white
+        UITextField.appearance().textColor = UIColor.white
         UISwitch.appearance().onTintColor = MuzBlueColor
         
-        UVStyleSheet.instance().navigationBarBackgroundColor = UIColor.clearColor()
-        UVStyleSheet.instance().navigationBarTintColor = UIColor.whiteColor()
-        UVStyleSheet.instance().navigationBarTextColor = UIColor.whiteColor()
-        UVStyleSheet.instance().tintColor = UIColor.blackColor()
+        UVStyleSheet.instance().navigationBarBackgroundColor = UIColor.clear
+        UVStyleSheet.instance().navigationBarTintColor = UIColor.white
+        UVStyleSheet.instance().navigationBarTextColor = UIColor.white
+        UVStyleSheet.instance().tintColor = UIColor.black
         
-        let mainScreen = UIScreen.mainScreen()
+        let mainScreen = UIScreen.main
         let window = UIWindow(frame: mainScreen.bounds)
         
         let tabbar = TabBarController()
@@ -73,7 +73,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIAlertViewDelegate {
         return window
     }
 
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
         // Preloads keyboard so there's no lag on initial keyboard appearance.
         let lagFreeField: UITextField = UITextField()
@@ -83,20 +83,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIAlertViewDelegate {
         lagFreeField.removeFromSuperview()
         
     
-        let types: UIUserNotificationType = ([.Alert, .Badge, .Sound])
-        let settings = UIUserNotificationSettings(forTypes: types, categories: nil)
+        let types: UIUserNotificationType = ([.alert, .badge, .sound])
+        let settings = UIUserNotificationSettings(types: types, categories: nil)
         application.registerUserNotificationSettings(settings)
         application.registerForRemoteNotifications()
         
-        if NSUserDefaults.standardUserDefaults().objectForKey("FirstTimer") == nil {
-            SettingsManager.defaultManager.updateValueForMoreSetting(.Lyrics, value: NSNumber(bool: true))
-            NSUserDefaults.standardUserDefaults().setObject(NSNumber(bool: false), forKey: "FirstTimer")
+        if UserDefaults.standard.object(forKey: "FirstTimer") == nil {
+            SettingsManager.defaultManager.updateValueForMoreSetting(.lyrics, value: NSNumber(value: true as Bool))
+            UserDefaults.standard.set(NSNumber(value: false as Bool), forKey: "FirstTimer")
         }
         
         self.window = muzWindow()
         
         let config = UVConfig(site: "nytekproductions.uservoice.com")
-        config.forumId = forumID
+        config?.forumId = forumID
         
         UserVoice.initialize(config)
         
@@ -111,41 +111,41 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIAlertViewDelegate {
         return true
     }
 
-    func applicationWillResignActive(application: UIApplication) {
+    func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
     }
 
-    func applicationDidEnterBackground(application: UIApplication) {
+    func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
         
-        NSNotificationCenter.defaultCenter().removeObserver(self,
-            name: MPMediaLibraryDidChangeNotification,
+        NotificationCenter.default.removeObserver(self,
+            name: NSNotification.Name.MPMediaLibraryDidChange,
             object: nil)
     }
 
-    func applicationWillEnterForeground(application: UIApplication) {
+    func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
         Appirater.appEnteredForeground(true)
         
-        MPMediaLibrary.defaultMediaLibrary().beginGeneratingLibraryChangeNotifications()
-        NSNotificationCenter.defaultCenter().addObserver(self,
-            selector: "updateLibrary:",
-            name: MPMediaLibraryDidChangeNotification,
+        MPMediaLibrary.default().beginGeneratingLibraryChangeNotifications()
+        NotificationCenter.default.addObserver(self,
+            selector: #selector(AppDelegate.updateLibrary(_:)),
+            name: NSNotification.Name.MPMediaLibraryDidChange,
             object: nil)
     }
 
-    func applicationDidBecomeActive(application: UIApplication) {
+    func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         MediaSession.sharedSession.syncUnscrobbledSongs()
     }
 
-    func applicationWillTerminate(application: UIApplication) {
+    func applicationWillTerminate(_ application: UIApplication) {
         MPMusicPlayerController.iPodMusicPlayer().stop()
     }
     
-    func updateLibrary(obj: NSNotification) {
+    func updateLibrary(_ obj: Notification) {
         print(obj.userInfo, terminator: "")
         if let _ = obj.object as? MPMediaLibrary {
             DataManager.manager.datastore.resetLibrary({ (error) -> () in
@@ -160,13 +160,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIAlertViewDelegate {
         }
     }
     
-    func application(application: UIApplication, handleWatchKitExtensionRequest userInfo: [NSObject : AnyObject]?, reply: (([NSObject : AnyObject]?) -> Void)) {
+    func application(_ application: UIApplication, handleWatchKitExtensionRequest userInfo: [AnyHashable: Any]?, reply: (@escaping ([AnyHashable: Any]?) -> Void)) {
         if let action = userInfo?["action"] as? String {
             
             let result = Dictionary<String, AnyObject>()
             
             if action == "pausePlay" {
-                if MPMusicPlayerController.iPodMusicPlayer().playbackState == .Playing {
+                if MPMusicPlayerController.iPodMusicPlayer().playbackState == .playing {
                     MPMusicPlayerController.iPodMusicPlayer().pause()
                 } else {
                     MPMusicPlayerController.iPodMusicPlayer().play()

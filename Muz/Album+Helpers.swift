@@ -11,7 +11,7 @@ import CoreData
 import MediaPlayer
 
 extension Album {
-    func parseItem(item: MPMediaItem) {
+    func parseItem(_ item: MPMediaItem) {
         
         self.persistentID = item.albumPersistentID.description
         
@@ -26,7 +26,7 @@ extension Album {
         }
     }
     
-    func addSong(song: Song?) {
+    func addSong(_ song: Song?) {
         if let managedSong = song {
             var found = false
             for albumSong in self.songs.allObjects as! [Song] {
@@ -38,7 +38,7 @@ extension Album {
             
             if !found {
                 let albumSongs = NSMutableSet(set: self.songs)
-                albumSongs.addObject(managedSong)
+                albumSongs.add(managedSong)
                 self.songs = NSSet(set: albumSongs)
             }
         }

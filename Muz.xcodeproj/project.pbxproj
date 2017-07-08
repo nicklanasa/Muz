@@ -20,7 +20,6 @@
 		01F9B1531AB5EB9C00D0513B /* Muz+ItunesSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F9B1521AB5EB9C00D0513B /* Muz+ItunesSearch.swift */; };
 		01F9B1551AB5F62800D0513B /* SearchOverlayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F9B1541AB5F62800D0513B /* SearchOverlayController.swift */; };
 		01F9B1571AB5F72C00D0513B /* SearchOverlayController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01F9B1561AB5F72C00D0513B /* SearchOverlayController.xib */; };
-		18FE78E2938CE235720BDF0D /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CC5E238686D44A286C24637D /* libPods.a */; };
 		CE167DA01A855A7700A9EC1A /* Artist.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE167D9F1A855A7700A9EC1A /* Artist.swift */; };
 		CE167DA31A855E6800A9EC1A /* Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE167DA21A855E6800A9EC1A /* Album.swift */; };
 		CE167DA51A855E6900A9EC1A /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE167DA41A855E6900A9EC1A /* Song.swift */; };
@@ -163,6 +162,7 @@
 		CEFEB1C41A843A270070A28D /* SyncOverlayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEFEB1C31A843A270070A28D /* SyncOverlayController.swift */; };
 		CEFEB1C61A843A5B0070A28D /* SyncOverlayController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEFEB1C51A843A5B0070A28D /* SyncOverlayController.xib */; };
 		CEFEB1C81A843DA00070A28D /* UIButton+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEFEB1C71A843DA00070A28D /* UIButton+Helpers.swift */; };
+		F65DE687030529552881FF68 /* libPods-Muz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B1DFF17ECCB7B2A5B294989 /* libPods-Muz.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -190,8 +190,8 @@
 		01F9B1521AB5EB9C00D0513B /* Muz+ItunesSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Muz+ItunesSearch.swift"; sourceTree = "<group>"; };
 		01F9B1541AB5F62800D0513B /* SearchOverlayController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchOverlayController.swift; sourceTree = "<group>"; };
 		01F9B1561AB5F72C00D0513B /* SearchOverlayController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchOverlayController.xib; sourceTree = "<group>"; };
-		B5C84601BD2F3431F5F52BE9 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
-		CC5E238686D44A286C24637D /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		5B1DFF17ECCB7B2A5B294989 /* libPods-Muz.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Muz.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A374C195EDA3578A735BD229 /* Pods-Muz.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Muz.release.xcconfig"; path = "Pods/Target Support Files/Pods-Muz/Pods-Muz.release.xcconfig"; sourceTree = "<group>"; };
 		CE167D9F1A855A7700A9EC1A /* Artist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Artist.swift; sourceTree = "<group>"; };
 		CE167DA21A855E6800A9EC1A /* Album.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Album.swift; sourceTree = "<group>"; };
 		CE167DA41A855E6900A9EC1A /* Song.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Song.swift; sourceTree = "<group>"; };
@@ -367,7 +367,7 @@
 		CEFEB1C31A843A270070A28D /* SyncOverlayController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncOverlayController.swift; sourceTree = "<group>"; };
 		CEFEB1C51A843A5B0070A28D /* SyncOverlayController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SyncOverlayController.xib; sourceTree = "<group>"; };
 		CEFEB1C71A843DA00070A28D /* UIButton+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton+Helpers.swift"; sourceTree = "<group>"; };
-		DB8E352653F602E2D8336D2A /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		D4799CFC44AD3D3DA93D40A1 /* Pods-Muz.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Muz.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Muz/Pods-Muz.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -375,7 +375,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				18FE78E2938CE235720BDF0D /* libPods.a in Frameworks */,
+				F65DE687030529552881FF68 /* libPods-Muz.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -434,11 +434,11 @@
 			name = Misc;
 			sourceTree = "<group>";
 		};
-		645DC876E38F9CCAA9D7D1A6 /* Pods */ = {
+		9BE8845D7B90D87968AA6FD6 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				B5C84601BD2F3431F5F52BE9 /* Pods.debug.xcconfig */,
-				DB8E352653F602E2D8336D2A /* Pods.release.xcconfig */,
+				D4799CFC44AD3D3DA93D40A1 /* Pods-Muz.debug.xcconfig */,
+				A374C195EDA3578A735BD229 /* Pods-Muz.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -454,7 +454,7 @@
 				CE7D81251A51C6EA001C1035 /* MobileCoreServices.framework */,
 				CE7D81231A51C6E2001C1035 /* CoreLocation.framework */,
 				CE7D81211A51C6D4001C1035 /* AudioToolbox.framework */,
-				CC5E238686D44A286C24637D /* libPods.a */,
+				5B1DFF17ECCB7B2A5B294989 /* libPods-Muz.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -521,8 +521,8 @@
 				CE444BB21A36A25500153F77 /* Muz */,
 				CE444BC81A36A25500153F77 /* MuzTests */,
 				CE444BB11A36A25500153F77 /* Products */,
-				645DC876E38F9CCAA9D7D1A6 /* Pods */,
 				B66FEEBAE05911F3D2B14F8A /* Frameworks */,
+				9BE8845D7B90D87968AA6FD6 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -792,11 +792,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CE444BCF1A36A25500153F77 /* Build configuration list for PBXNativeTarget "Muz" */;
 			buildPhases = (
-				03859290388A11A878ED8C07 /* Check Pods Manifest.lock */,
+				CAA3F9F7B1BB93FADDCF7125 /* [CP] Check Pods Manifest.lock */,
 				CE444BAC1A36A25500153F77 /* Sources */,
 				CE444BAD1A36A25500153F77 /* Frameworks */,
 				CE444BAE1A36A25500153F77 /* Resources */,
-				94664FFDA55135CA7F84611A /* Copy Pods Resources */,
+				4223848115442428BB88A163 /* [CP] Embed Pods Frameworks */,
+				12A4B19921A1352CFCA59A58 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -839,6 +840,7 @@
 					CE444BAF1A36A25500153F77 = {
 						CreatedOnToolsVersion = 6.1.1;
 						DevelopmentTeam = 6Q4UNB2LAJ;
+						LastSwiftMigration = 0830;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 0;
@@ -850,6 +852,7 @@
 					};
 					CE444BC41A36A25500153F77 = {
 						CreatedOnToolsVersion = 6.1.1;
+						LastSwiftMigration = 0830;
 						TestTargetID = CE444BAF1A36A25500153F77;
 					};
 				};
@@ -941,34 +944,49 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		03859290388A11A878ED8C07 /* Check Pods Manifest.lock */ = {
+		12A4B19921A1352CFCA59A58 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Muz/Pods-Muz-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		94664FFDA55135CA7F84611A /* Copy Pods Resources */ = {
+		4223848115442428BB88A163 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Muz/Pods-Muz-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CAA3F9F7B1BB93FADDCF7125 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1221,7 +1239,7 @@
 		};
 		CE444BD01A36A25500153F77 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B5C84601BD2F3431F5F52BE9 /* Pods.debug.xcconfig */;
+			baseConfigurationReference = D4799CFC44AD3D3DA93D40A1 /* Pods-Muz.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -1266,13 +1284,14 @@
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Muz/Muz-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
 		CE444BD11A36A25500153F77 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DB8E352653F602E2D8336D2A /* Pods.release.xcconfig */;
+			baseConfigurationReference = A374C195EDA3578A735BD229 /* Pods-Muz.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -1316,6 +1335,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Muz/Muz-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -1336,6 +1356,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "Nytek-Productions.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Muz.app/Muz";
 			};
 			name = Debug;
@@ -1352,6 +1373,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "Nytek-Productions.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Muz.app/Muz";
 			};
 			name = Release;

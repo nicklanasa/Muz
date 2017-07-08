@@ -12,7 +12,7 @@ import CoreData
 @objc(Playlist)
 class Playlist: NSManagedObject {
 
-    @NSManaged var modifiedDate: NSDate
+    @NSManaged var modifiedDate: Date
     @NSManaged var name: String
     @NSManaged var persistentID: String?
     @NSManaged var playlistType: NSNumber

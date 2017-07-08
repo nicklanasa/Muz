@@ -23,8 +23,8 @@ NowPlayingCollectionControllerDelegate {
     
     var sentScrobble = false
     
-    private var pinchGesture: UIPinchGestureRecognizer!
-    private var songTimer: NSTimer?
+    fileprivate var pinchGesture: UIPinchGestureRecognizer!
+    fileprivate var songTimer: Timer?
     
     @IBOutlet weak var artwork: UIImageView!
     @IBOutlet weak var songLabel: UILabel!
@@ -55,18 +55,18 @@ NowPlayingCollectionControllerDelegate {
         
         self.tabBarItem.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0)
         
-        NSNotificationCenter.defaultCenter().addObserver(self,
-            selector: "mediaLibraryDidChange",
-            name: MPMediaLibraryDidChangeNotification,
+        NotificationCenter.default.addObserver(self,
+            selector: #selector(NowPlayingViewController.mediaLibraryDidChange),
+            name: NSNotification.Name.MPMediaLibraryDidChange,
             object: nil)
     }
     
-    private func configureWithSong() {
+    fileprivate func configureWithSong() {
         if let song = self.song {
-            DataManager.manager.fetchItemForSong(song: song, completion: { (item) -> () in
+            DataManager.manager.fetchItemForSong(song, completion: { (item) -> () in
                 if let songItem = item, let collection = self.collection {
                     self.item = songItem
-                    self.playerController.setQueueWithItemCollection(collection)
+                    self.playerController.setQueue(with: collection)
                     self.playerController.nowPlayingItem = self.item
                     self.play()
                 }
@@ -84,15 +84,15 @@ NowPlayingCollectionControllerDelegate {
 //        }
     }
     
-    @IBAction func progressSliderTouchUpInside(sender: AnyObject) {
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
+    @IBAction func progressSliderTouchUpInside(_ sender: AnyObject) {
+        UIView.animate(withDuration: 0.3, animations: { () -> Void in
             self.progressOverlayView.alpha = 0.0
         })
     }
     
-    @IBAction func progressSliderValueChanged(sender: AnyObject) {
+    @IBAction func progressSliderValueChanged(_ sender: AnyObject) {
         if let currentlyPlayingItem = item {
-            UIView.animateWithDuration(0.3, animations: { () -> Void in
+            UIView.animate(withDuration: 0.3, animations: { () -> Void in
                 self.progressOverlayView.alpha = 0.8
                 
                 
@@ -108,7 +108,7 @@ NowPlayingCollectionControllerDelegate {
         }
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         self.screenName = "Now Playing"
         self.navigationItem.title = ""
         
@@ -116,17 +116,17 @@ NowPlayingCollectionControllerDelegate {
     }
     
     func dismiss() {
-        self.navigationController?.popViewControllerAnimated(true)
+        self.navigationController?.popViewController(animated: true)
     }
 
     func play() {
         self.playerController.play()
     }
     
-    private func startSongTimer() {
-        songTimer = NSTimer.scheduledTimerWithTimeInterval(0.4,
+    fileprivate func startSongTimer() {
+        songTimer = Timer.scheduledTimer(timeInterval: 0.4,
             target: self,
-            selector: Selector("updateProgress"),
+            selector: #selector(NowPlayingViewController.updateProgress),
             userInfo: nil,
             repeats: true)
     }
@@ -136,10 +136,10 @@ NowPlayingCollectionControllerDelegate {
             progressSlider.value = Float(playerController.currentPlaybackTime) / Float(item.playbackDuration)
             
             if progressSlider.value > 0.51 {
-                if SettingsManager.defaultManager.valueForMoreSetting(.LastFM) {
+                if SettingsManager.defaultManager.valueForMoreSetting(.lastFM) {
                     if !self.sentScrobble {
                         self.sentScrobble = true
-                        LastFm.sharedInstance().sendScrobbledTrack(self.item.title, byArtist: self.item.artist, onAlbum: self.item.albumTitle, withDuration: self.item.playbackDuration, atTimestamp: NSDate().timeIntervalSince1970 - self.playerController.currentPlaybackTime, successHandler: { (responseData) -> Void in
+                        LastFm.sharedInstance().sendScrobbledTrack(self.item.title, byArtist: self.item.artist, onAlbum: self.item.albumTitle, withDuration: self.item.playbackDuration, atTimestamp: Date().timeIntervalSince1970 - self.playerController.currentPlaybackTime, successHandler: { (responseData) -> Void in
                             print(responseData, terminator: "")
                             }, failureHandler: { (error) -> Void in
                                 print(error, terminator: "")
@@ -151,7 +151,7 @@ NowPlayingCollectionControllerDelegate {
         }
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         CurrentQueueItems = self.collection
         songTimer?.invalidate()
     }
@@ -163,59 +163,59 @@ NowPlayingCollectionControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let swipeLeftGesture = UISwipeGestureRecognizer(target: self, action: "nextSong")
-        swipeLeftGesture.direction = .Left
+        let swipeLeftGesture = UISwipeGestureRecognizer(target: self, action: #selector(NowPlayingViewController.nextSong))
+        swipeLeftGesture.direction = .left
         view.addGestureRecognizer(swipeLeftGesture)
         
-        let swipeRightGesture = UISwipeGestureRecognizer(target: self, action: "previousSong")
-        swipeRightGesture.direction = .Right
+        let swipeRightGesture = UISwipeGestureRecognizer(target: self, action: #selector(NowPlayingViewController.previousSong))
+        swipeRightGesture.direction = .right
         view.addGestureRecognizer(swipeRightGesture)
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: "playPause")
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(NowPlayingViewController.playPause))
         tapGesture.numberOfTapsRequired = 1
         artwork.addGestureRecognizer(tapGesture)
         
-        NSNotificationCenter.defaultCenter().addObserver(self,
-            selector: "playPause",
-            name: UIApplicationWillTerminateNotification,
+        NotificationCenter.default.addObserver(self,
+            selector: #selector(NowPlayingViewController.playPause),
+            name: NSNotification.Name.UIApplicationWillTerminate,
             object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self,
-            selector: "applicationDidEnterBackground",
-            name: UIApplicationDidEnterBackgroundNotification,
+        NotificationCenter.default.addObserver(self,
+            selector: #selector(NowPlayingViewController.applicationDidEnterBackground),
+            name: NSNotification.Name.UIApplicationDidEnterBackground,
             object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self,
-            selector: "playerControllerDidNowPlayingItemDidChange",
-            name: MPMusicPlayerControllerNowPlayingItemDidChangeNotification,
+        NotificationCenter.default.addObserver(self,
+            selector: #selector(NowPlayingViewController.playerControllerDidNowPlayingItemDidChange),
+            name: NSNotification.Name.MPMusicPlayerControllerNowPlayingItemDidChange,
             object: nil)
         
         playerController.beginGeneratingPlaybackNotifications()
         
         let nowPlayinglist = UIBarButtonItem(image: UIImage(named: "list"),
-            style: .Plain,
+            style: .plain,
             target: self,
-            action: "showNowPlayingCollectionController")
+            action: #selector(NowPlayingViewController.showNowPlayingCollectionController))
         
         let addToPlaylist = UIBarButtonItem(image: UIImage(named: "add"),
-            style: .Plain,
+            style: .plain,
             target: self,
-            action: "addToPlaylist")
+            action: #selector(NowPlayingViewController.addToPlaylist))
         
         let search = UIBarButtonItem(image: UIImage(named: "search"),
-            style: .Plain,
+            style: .plain,
             target: self,
-            action: "showSearch")
+            action: #selector(NowPlayingViewController.showSearch))
         
         self.navigationItem.rightBarButtonItems = [search, nowPlayinglist, addToPlaylist]
         
-        progressSlider.setThumbImage(UIImage(named: "thumbImage"), forState: .Normal)
-        progressSlider.setThumbImage(UIImage(named: "thumbImage"), forState: .Selected)
+        progressSlider.setThumbImage(UIImage(named: "thumbImage"), for: UIControlState())
+        progressSlider.setThumbImage(UIImage(named: "thumbImage"), for: .selected)
         
         if let item = self.playerController.nowPlayingItem {
             self.item = item
             
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            DispatchQueue.main.async(execute: { () -> Void in
                 self.updateNowPlaying()
                 self.sendNowPlaying()
                 
@@ -242,9 +242,9 @@ NowPlayingCollectionControllerDelegate {
         
         if let nowPlayingItem = self.playerController.nowPlayingItem {
             
-            let alertViewController = UIAlertController(title: "Create Playlist", message: "Please select what you want to create a playlist from.", preferredStyle: UIAlertControllerStyle.ActionSheet)
+            let alertViewController = UIAlertController(title: "Create Playlist", message: "Please select what you want to create a playlist from.", preferredStyle: UIAlertControllerStyle.actionSheet)
             
-            let addAllArtistSongsAction = UIAlertAction(title: "All songs from Artist", style: .Default) { (action) -> Void in
+            let addAllArtistSongsAction = UIAlertAction(title: "All songs from Artist", style: .default) { (action) -> Void in
                 if let title = self.item.title, let artist = self.item.artist {
                     DataManager.manager.datastore.songForSongName(title, artist: artist, completion: { (song) -> () in
                         if let playingSong = song {
@@ -270,7 +270,7 @@ NowPlayingCollectionControllerDelegate {
                 }
             }
             
-            let addSongAction = UIAlertAction(title: "Currently playing song", style: .Default) { (action) -> Void in
+            let addSongAction = UIAlertAction(title: "Currently playing song", style: .default) { (action) -> Void in
                 if let title = nowPlayingItem.title, let artist = nowPlayingItem.artist {
                     DataManager.manager.datastore.songForSongName(title, artist: artist, completion: { (song) -> () in
                         if let playingSong = song {
@@ -281,7 +281,7 @@ NowPlayingCollectionControllerDelegate {
                 }
             }
             
-            let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (action) -> Void in
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) -> Void in
                 
             }
             
@@ -293,7 +293,7 @@ NowPlayingCollectionControllerDelegate {
                 popoverController.barButtonItem = self.navigationItem.rightBarButtonItem
             }
             
-            self.presentViewController(alertViewController, animated: true, completion: nil)
+            self.present(alertViewController, animated: true, completion: nil)
             
         } else {
             UIAlertView(title: "Error!",
@@ -317,7 +317,7 @@ NowPlayingCollectionControllerDelegate {
     // MARK: MPMusicPlayerController
     
     func playPause() {
-        if self.playerController.playbackState == .Playing {
+        if self.playerController.playbackState == .playing {
             self.playerController.pause()
         } else {
             self.playerController.play()
@@ -333,7 +333,7 @@ NowPlayingCollectionControllerDelegate {
     }
     
     func nextSong() {
-        if self.playerController.repeatMode == .One {
+        if self.playerController.repeatMode == .one {
             self.updateNowPlaying()
             self.playerController.stop()
             self.playerController.play()
@@ -342,11 +342,11 @@ NowPlayingCollectionControllerDelegate {
             let artworkCenter = self.artwork.center
             let songLabelCenter = self.songLabel.center
             
-            UIView.animateWithDuration(0.15, animations: { () -> Void in
-                self.songLabel.frame = CGRectMake(0 - self.songLabel.frame.size.width,
-                    self.songLabel.frame.origin.y, self.songLabel.frame.size.width, self.songLabel.frame.size.height)
-                self.artwork.frame = CGRectMake(0 - self.artwork.frame.size.width,
-                    self.artwork.frame.origin.y, self.artwork.frame.size.width, self.artwork.frame.size.height)
+            UIView.animate(withDuration: 0.15, animations: { () -> Void in
+                self.songLabel.frame = CGRect(x: 0 - self.songLabel.frame.size.width,
+                    y: self.songLabel.frame.origin.y, width: self.songLabel.frame.size.width, height: self.songLabel.frame.size.height)
+                self.artwork.frame = CGRect(x: 0 - self.artwork.frame.size.width,
+                    y: self.artwork.frame.origin.y, width: self.artwork.frame.size.width, height: self.artwork.frame.size.height)
                 
                 self.songLabel.alpha = 0.0
                 self.artwork.alpha = 0.0
@@ -355,12 +355,12 @@ NowPlayingCollectionControllerDelegate {
                 
                 }, completion: { (success) -> Void in
                     
-                    self.songLabel.frame = CGRectMake(UIScreen.mainScreen().bounds.width + self.songLabel.frame.size.width,
-                        self.songLabel.frame.origin.y, self.songLabel.frame.size.width, self.songLabel.frame.size.height)
-                    self.artwork.frame = CGRectMake(UIScreen.mainScreen().bounds.width + self.artwork.frame.size.width,
-                        self.artwork.frame.origin.y, self.artwork.frame.size.width, self.artwork.frame.size.height)
+                    self.songLabel.frame = CGRect(x: UIScreen.main.bounds.width + self.songLabel.frame.size.width,
+                        y: self.songLabel.frame.origin.y, width: self.songLabel.frame.size.width, height: self.songLabel.frame.size.height)
+                    self.artwork.frame = CGRect(x: UIScreen.main.bounds.width + self.artwork.frame.size.width,
+                        y: self.artwork.frame.origin.y, width: self.artwork.frame.size.width, height: self.artwork.frame.size.height)
                     
-                    UIView.animateWithDuration(0.15, animations: { () -> Void in
+                    UIView.animate(withDuration: 0.15, animations: { () -> Void in
                         
                         self.songLabel.alpha = 1.0
                         self.artwork.alpha = 1.0
@@ -373,7 +373,7 @@ NowPlayingCollectionControllerDelegate {
     }
     
     func previousSong() {
-        if playerController.repeatMode == .One {
+        if playerController.repeatMode == .one {
             
             self.updateNowPlaying()
             
@@ -383,11 +383,11 @@ NowPlayingCollectionControllerDelegate {
             let artworkCenter = self.artwork.center
             let songLabelCenter = self.songLabel.center
             
-            UIView.animateWithDuration(0.15, animations: { () -> Void in
-                self.songLabel.frame = CGRectMake(UIScreen.mainScreen().bounds.width +  self.songLabel.frame.size.width,
-                    self.songLabel.frame.origin.y, self.songLabel.frame.size.width, self.songLabel.frame.size.height)
-                self.artwork.frame = CGRectMake(UIScreen.mainScreen().bounds.width +  self.artwork.frame.size.width,
-                    self.artwork.frame.origin.y, self.artwork.frame.size.width, self.artwork.frame.size.height)
+            UIView.animate(withDuration: 0.15, animations: { () -> Void in
+                self.songLabel.frame = CGRect(x: UIScreen.main.bounds.width +  self.songLabel.frame.size.width,
+                    y: self.songLabel.frame.origin.y, width: self.songLabel.frame.size.width, height: self.songLabel.frame.size.height)
+                self.artwork.frame = CGRect(x: UIScreen.main.bounds.width +  self.artwork.frame.size.width,
+                    y: self.artwork.frame.origin.y, width: self.artwork.frame.size.width, height: self.artwork.frame.size.height)
                 
                 self.songLabel.alpha = 0.0
                 self.artwork.alpha = 0.0
@@ -396,12 +396,12 @@ NowPlayingCollectionControllerDelegate {
                 
                 }, completion: { (success) -> Void in
                     
-                    self.songLabel.frame = CGRectMake(0 - self.songLabel.frame.size.width,
-                        self.songLabel.frame.origin.y, self.songLabel.frame.size.width, self.songLabel.frame.size.height)
-                    self.artwork.frame = CGRectMake(0 - self.artwork.frame.size.width,
-                        self.artwork.frame.origin.y, self.artwork.frame.size.width, self.artwork.frame.size.height)
+                    self.songLabel.frame = CGRect(x: 0 - self.songLabel.frame.size.width,
+                        y: self.songLabel.frame.origin.y, width: self.songLabel.frame.size.width, height: self.songLabel.frame.size.height)
+                    self.artwork.frame = CGRect(x: 0 - self.artwork.frame.size.width,
+                        y: self.artwork.frame.origin.y, width: self.artwork.frame.size.width, height: self.artwork.frame.size.height)
                     
-                    UIView.animateWithDuration(0.15, animations: { () -> Void in
+                    UIView.animate(withDuration: 0.15, animations: { () -> Void in
                         
                         self.songLabel.alpha = 1.0
                         self.artwork.alpha = 1.0
@@ -415,22 +415,22 @@ NowPlayingCollectionControllerDelegate {
 
     // MARK: Updating
     
-    func showInfoController(gesture: UIPinchGestureRecognizer?) {
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
-            UIView.animateWithDuration(0.3, animations: { () -> Void in
+    func showInfoController(_ gesture: UIPinchGestureRecognizer?) {
+        UIView.animate(withDuration: 0.3, animations: { () -> Void in
+            UIView.animate(withDuration: 0.3, animations: { () -> Void in
                 self.hideNowPlayingViews()
             })
         })
     }
     
-    func hideInfoController(gesture: UIPinchGestureRecognizer?) {
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
+    func hideInfoController(_ gesture: UIPinchGestureRecognizer?) {
+        UIView.animate(withDuration: 0.3, animations: { () -> Void in
             self.showNowPlayingViews()
         })
     }
     
-    private func hideNowPlayingViews() {
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
+    fileprivate func hideNowPlayingViews() {
+        UIView.animate(withDuration: 0.3, animations: { () -> Void in
             self.artwork.alpha = 0.0
             self.songLabel.alpha = 0.0
             self.progressSlider.alpha = 0.0
@@ -440,8 +440,8 @@ NowPlayingCollectionControllerDelegate {
         })
     }
     
-    private func showNowPlayingViews() {
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
+    fileprivate func showNowPlayingViews() {
+        UIView.animate(withDuration: 0.3, animations: { () -> Void in
             self.artwork.alpha = 1.0
             self.songLabel.alpha = 1.0
             self.progressSlider.alpha = 1.0
@@ -452,14 +452,14 @@ NowPlayingCollectionControllerDelegate {
         })
     }
     
-    private func updateView() {
+    fileprivate func updateView() {
         
         showNowPlayingViews()
         
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
+        UIView.animate(withDuration: 0.3, animations: { () -> Void in
             let noArtwork = UIImage(named: "nowPlayingDefault")!
             if let artwork = self.item.artwork {
-                if let image = artwork.imageWithSize(CGSize(width:500, height:500)) {
+                if let image = artwork.image(at: CGSize(width:500, height:500)) {
                     self.artwork.image = image
                     CurrentAppBackgroundImage = image.applyDarkEffect()
                 } else {
@@ -473,7 +473,7 @@ NowPlayingCollectionControllerDelegate {
             
             self.backgroundImageView.image = CurrentAppBackgroundImage
             
-            if let title = self.item.title, let artist = self.item.artist, albumTitle = self.item.albumTitle {
+            if let title = self.item.title, let artist = self.item.artist, let albumTitle = self.item.albumTitle {
                 let songInfo = NSString(format: "%@\n%@\n%@", title, artist, albumTitle)
                 let attributedSongInfo = NSMutableAttributedString(string: songInfo as String)
                 let songFont = UIFont(name: MuzFontName, size: 35)!
@@ -495,49 +495,49 @@ NowPlayingCollectionControllerDelegate {
         
         startSongTimer()
         
-        progressSlider.hidden = false
+        progressSlider.isHidden = false
         
-        if self.playerController.shuffleMode == .Off {
-            shuffleButton.setTitleColor(MuzColor, forState: .Normal)
+        if self.playerController.shuffleMode == .off {
+            shuffleButton.setTitleColor(MuzColor, for: UIControlState())
         } else {
-            shuffleButton.setTitleColor(MuzBlueColor, forState: .Normal)
+            shuffleButton.setTitleColor(MuzBlueColor, for: UIControlState())
         }
         
-        if self.playerController.repeatMode == .One {
-            self.repeatButton.setTitleColor(MuzBlueColor, forState: .Normal)
-        } else if self.playerController.repeatMode == .All {
-            self.repeatButton.setTitleColor(MuzBlueColor, forState: .Normal)
-            self.repeatButton.setTitle("Repeat All", forState: .Normal)
+        if self.playerController.repeatMode == .one {
+            self.repeatButton.setTitleColor(MuzBlueColor, for: UIControlState())
+        } else if self.playerController.repeatMode == .all {
+            self.repeatButton.setTitleColor(MuzBlueColor, for: UIControlState())
+            self.repeatButton.setTitle("Repeat All", for: UIControlState())
         } else {
             
-            self.repeatButton.setTitleColor(MuzColor, forState: .Normal)
-            self.repeatButton.setTitle("Repeat", forState: .Normal)
+            self.repeatButton.setTitleColor(MuzColor, for: UIControlState())
+            self.repeatButton.setTitle("Repeat", for: UIControlState())
         }
     }
     
-    private func updateNowPlaying() {
+    fileprivate func updateNowPlaying() {
         
         playerController.nowPlayingItem = self.item
         
         self.updateView()
         
-        if NSUserDefaults.standardUserDefaults().objectForKey("Tutorial") == nil {
+        if UserDefaults.standard.object(forKey: "Tutorial") == nil {
             tutorialView.alpha = 0.85
             
-            let tapGesture = UITapGestureRecognizer(target: self, action: "dismissTutorial")
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(NowPlayingViewController.dismissTutorial))
             tapGesture.numberOfTapsRequired = 1
             tutorialView.addGestureRecognizer(tapGesture)
-            NSUserDefaults.standardUserDefaults().setObject(NSNumber(bool: false), forKey: "Tutorial")
+            UserDefaults.standard.set(NSNumber(value: false as Bool), forKey: "Tutorial")
         } else {
             tutorialView.alpha = 0.0
         }
         
-        WKNotificationCenter.defaultCenterWithGroupIndentifier("group.muz").postNotificationObject(["nowPlayingArtwork": self.artwork.image!],
+        WKNotificationCenter.defaultCenter(withGroupIndentifier: "group.muz").postNotificationObject(["nowPlayingArtwork": self.artwork.image!],
             identifier: "nowPlayingArtwork")
     }
     
     func dismissTutorial() {
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
+        UIView.animate(withDuration: 0.3, animations: { () -> Void in
             self.tutorialView.alpha = 0.0
             self.tutorialView.removeFromSuperview()
         })
@@ -545,9 +545,9 @@ NowPlayingCollectionControllerDelegate {
     
     // MARK: IBAction
     
-    @IBAction func infoButtonPressed(sender: AnyObject) {
+    @IBAction func infoButtonPressed(_ sender: AnyObject) {
         if let _ = self.item {
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            DispatchQueue.main.async(execute: { () -> Void in
                 let controller = NowPlayingInfoViewController(item: self.item)
                 self.navigationController?.pushViewController(controller, animated: true)
             })
@@ -559,44 +559,44 @@ NowPlayingCollectionControllerDelegate {
         }
     }
     
-    private func updateShuffle() {
-        if playerController.shuffleMode == .Songs {
-            playerController.shuffleMode = .Off
-            shuffleButton.setTitleColor(MuzColor, forState: .Normal)
+    fileprivate func updateShuffle() {
+        if playerController.shuffleMode == .songs {
+            playerController.shuffleMode = .off
+            shuffleButton.setTitleColor(MuzColor, for: UIControlState())
         } else {
-            playerController.shuffleMode = .Songs
-            shuffleButton.setTitleColor(MuzBlueColor, forState: .Normal)
+            playerController.shuffleMode = .songs
+            shuffleButton.setTitleColor(MuzBlueColor, for: UIControlState())
         }
     }
     
-    @IBAction func shuffleButtonPressed(sender: AnyObject) {
+    @IBAction func shuffleButtonPressed(_ sender: AnyObject) {
         self.updateShuffle()
     }
     
-    @IBAction func repeatButtonPressed(sender: AnyObject) {
+    @IBAction func repeatButtonPressed(_ sender: AnyObject) {
         self.updateRepeat()
     }
     
     func updateRepeat() {
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
-            if self.playerController.repeatMode == .One {
-                self.playerController.repeatMode = .None
-                self.repeatButton.setTitleColor(MuzColor, forState: .Normal)
-                self.repeatButton.setTitle("Repeat", forState: .Normal)
-            } else if self.playerController.repeatMode == .All {
-                self.playerController.repeatMode = .One
-                self.repeatButton.setTitleColor(MuzBlueColor, forState: .Normal)
-                self.repeatButton.setTitle("Repeat", forState: .Normal)
+        UIView.animate(withDuration: 0.3, animations: { () -> Void in
+            if self.playerController.repeatMode == .one {
+                self.playerController.repeatMode = .none
+                self.repeatButton.setTitleColor(MuzColor, for: UIControlState())
+                self.repeatButton.setTitle("Repeat", for: UIControlState())
+            } else if self.playerController.repeatMode == .all {
+                self.playerController.repeatMode = .one
+                self.repeatButton.setTitleColor(MuzBlueColor, for: UIControlState())
+                self.repeatButton.setTitle("Repeat", for: UIControlState())
             } else {
-                self.playerController.repeatMode = .All
-                self.repeatButton.setTitleColor(MuzBlueColor, forState: .Normal)
-                self.repeatButton.setTitle("Repeat All", forState: .Normal)
+                self.playerController.repeatMode = .all
+                self.repeatButton.setTitleColor(MuzBlueColor, for: UIControlState())
+                self.repeatButton.setTitle("Repeat All", for: UIControlState())
             }
         })
 
     }
     
-    func nowPlayingCollectionController(controller: NowPlayingCollectionController,
+    func nowPlayingCollectionController(_ controller: NowPlayingCollectionController,
         didSelectItem item: MPMediaItem) {
         playerController.stop()
         playerController.nowPlayingItem = item

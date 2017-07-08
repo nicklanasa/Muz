@@ -11,15 +11,15 @@ import UIKit
 import CoreData
 
 enum MoreSectionType: NSInteger {
-    case Settings
-    case Info
+    case settings
+    case info
 }
 
 enum MoreSetting: NSInteger {
-    case Sync
-    case Lyrics
-    case ArtistInfo
-    case LastFM
+    case sync
+    case lyrics
+    case artistInfo
+    case lastFM
 }
 
 class MoreViewController: RootViewController,
@@ -31,11 +31,11 @@ UITableViewDataSource {
     var syncingHud: MBProgressHUD!
     
     // Make this DB driven
-    private let tableDataSectionSettings = ["Sync iPod library", "Lyrics"]
-    private let tableDataSectionInfo = ["Rate app", "Facebook", "Twitter", "Website", "Feedback"]
+    fileprivate let tableDataSectionSettings = ["Sync iPod library", "Lyrics"]
+    fileprivate let tableDataSectionInfo = ["Rate app", "Facebook", "Twitter", "Website", "Feedback"]
     
-    private let lyricsSwitch = UISwitch(frame: CGRectMake(0, 0, 50, 50))
-    private let backgroundArtworkSwitch = UISwitch(frame: CGRectMake(0, 0, 50, 50))
+    fileprivate let lyricsSwitch = UISwitch(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
+    fileprivate let backgroundArtworkSwitch = UISwitch(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
     
     init() {
         super.init(nibName: "MoreViewController", bundle: nil)
@@ -46,7 +46,7 @@ UITableViewDataSource {
         self.tabBarItem.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0)
     }
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
@@ -54,7 +54,7 @@ UITableViewDataSource {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         self.screenName = "More"
         super.viewWillAppear(animated)
     }
@@ -62,46 +62,46 @@ UITableViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.tableView.registerNib(UINib(nibName: "MoreLastFmSettingCell", bundle: nil), forCellReuseIdentifier: "LastFmCell")
-        self.tableView.registerNib(UINib(nibName: "LastFmLoginCell", bundle: nil), forCellReuseIdentifier: "LastFmLoginCell")
-        self.tableView.registerClass(NSClassFromString("UITableViewCell"), forCellReuseIdentifier: "Cell")
-        self.tableView.registerNib(UINib(nibName: "SongsHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "Header")
+        self.tableView.register(UINib(nibName: "MoreLastFmSettingCell", bundle: nil), forCellReuseIdentifier: "LastFmCell")
+        self.tableView.register(UINib(nibName: "LastFmLoginCell", bundle: nil), forCellReuseIdentifier: "LastFmLoginCell")
+        self.tableView.register(NSClassFromString("UITableViewCell"), forCellReuseIdentifier: "Cell")
+        self.tableView.register(UINib(nibName: "SongsHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "Header")
         
-        self.lyricsSwitch.addTarget(self, action: "updatedSetting:", forControlEvents: .ValueChanged)
+        self.lyricsSwitch.addTarget(self, action: #selector(MoreViewController.updatedSetting(_:)), for: .valueChanged)
     }
 
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
-        case MoreSectionType.Settings.rawValue: return self.tableDataSectionSettings.count
+        case MoreSectionType.settings.rawValue: return self.tableDataSectionSettings.count
         default: return self.tableDataSectionInfo.count
         }
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell",
-            forIndexPath: indexPath) 
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell",
+            for: indexPath) 
         
         cell.textLabel?.font = MuzSettingFont
         cell.textLabel?.text = ""
-        cell.textLabel?.textAlignment = .Left
+        cell.textLabel?.textAlignment = .left
         
         switch indexPath.section {
-        case MoreSectionType.Settings.rawValue:
+        case MoreSectionType.settings.rawValue:
             switch indexPath.row {
             default:
                 if indexPath.row == 0 {
-                    cell.textLabel?.textAlignment = .Center
+                    cell.textLabel?.textAlignment = .center
                     cell.textLabel?.font = MuzTitleFont
                     
                     cell.textLabel?.text = self.tableDataSectionSettings[indexPath.row] as String
                     
                 } else {
-                    self.lyricsSwitch.on = SettingsManager.defaultManager.valueForMoreSetting(.Lyrics)
+                    self.lyricsSwitch.isOn = SettingsManager.defaultManager.valueForMoreSetting(.lyrics)
                     cell.accessoryView = self.lyricsSwitch
                     
                     cell.textLabel?.text = self.tableDataSectionSettings[indexPath.row] as String
@@ -109,28 +109,28 @@ UITableViewDataSource {
             }
         default:
             cell.textLabel?.text = self.tableDataSectionInfo[indexPath.row] as String
-            cell.accessoryType = .DisclosureIndicator
+            cell.accessoryType = .disclosureIndicator
         }
         
-        cell.textLabel?.textColor = UIColor.whiteColor()
+        cell.textLabel?.textColor = UIColor.white
         
         return cell
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 55
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.section {
-        case MoreSectionType.Settings.rawValue:
+        case MoreSectionType.settings.rawValue:
             if indexPath.row == 0 {
-                self.syncingHud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-                self.syncingHud.mode = .DeterminateHorizontalBar
+                self.syncingHud = MBProgressHUD.showAdded(to: self.view, animated: true)
+                self.syncingHud.mode = .determinateHorizontalBar
                 self.syncingHud.labelText = "Syncing library..."
                 self.syncingHud.labelFont = MuzTitleFont
                 DataManager.manager.syncArtists({ (addedItems, error) -> () in
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    DispatchQueue.main.async(execute: { () -> Void in
                         self.syncingHud.hide(true)
                     })
                     
@@ -144,23 +144,23 @@ UITableViewDataSource {
             }
         default:
             switch indexPath.row {
-            case 0: UIApplication.sharedApplication().openURL(NSURL(string: "https://itunes.apple.com/us/app/muz/id951709415?ls=1&mt=8")!)
-            case 1: UIApplication.sharedApplication().openURL(NSURL(string: "https://www.facebook.com/muzapp?ref=bookmarks")!)
-            case 2: UIApplication.sharedApplication().openURL(NSURL(string: "https://twitter.com/muz_app")!)
-            case 3: UIApplication.sharedApplication().openURL(NSURL(string: "http://nytekproductions.com/muz/")!)
+            case 0: UIApplication.shared.openURL(URL(string: "https://itunes.apple.com/us/app/muz/id951709415?ls=1&mt=8")!)
+            case 1: UIApplication.shared.openURL(URL(string: "https://www.facebook.com/muzapp?ref=bookmarks")!)
+            case 2: UIApplication.shared.openURL(URL(string: "https://twitter.com/muz_app")!)
+            case 3: UIApplication.shared.openURL(URL(string: "http://nytekproductions.com/muz/")!)
             default:
-                UserVoice.presentUserVoiceInterfaceForParentViewController(self)
+                UserVoice.presentInterface(forParentViewController: self)
             }
         }
         
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    func updatedSetting(sender: AnyObject) {
+    func updatedSetting(_ sender: AnyObject) {
         if let settingSwitch = sender as? UISwitch {
-            let value = NSNumber(bool: settingSwitch.on)
+            let value = NSNumber(value: settingSwitch.isOn as Bool)
             if settingSwitch == self.lyricsSwitch {
-                SettingsManager.defaultManager.updateValueForMoreSetting(.Lyrics, value: value)
+                SettingsManager.defaultManager.updateValueForMoreSetting(.lyrics, value: value)
             }
         }
     }

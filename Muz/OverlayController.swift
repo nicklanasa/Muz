@@ -24,7 +24,7 @@ class OverlayController: UIViewController {
         self.backgroundImageView.image = self.screenShot.applyDarkEffect()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
 }

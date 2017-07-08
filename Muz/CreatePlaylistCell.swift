@@ -12,8 +12,8 @@ import UIKit
 let CreatePlaylistCellHeight: CGFloat = 214.0
 
 protocol CreatePlaylistCellDelegate {
-    func createPlaylistCell(cell: CreatePlaylistCell, didStartEditing textField: UITextField!)
-    func createPlaylistCell(cell: CreatePlaylistCell, shouldReturn textField: UITextField!)
+    func createPlaylistCell(_ cell: CreatePlaylistCell, didStartEditing textField: UITextField!)
+    func createPlaylistCell(_ cell: CreatePlaylistCell, shouldReturn textField: UITextField!)
 }
 
 class CreatePlaylistCell: UITableViewCell, UITextFieldDelegate {
@@ -30,25 +30,25 @@ class CreatePlaylistCell: UITableViewCell, UITextFieldDelegate {
         
     }
     
-    func textFieldDidBeginEditing(textField: UITextField) {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
         
         if textField.text == "Enter playlist name..." {
-            textField.textColor = UIColor.whiteColor()
+            textField.textColor = UIColor.white
             textField.text = ""
         }
         
         self.delegate?.createPlaylistCell(self, didStartEditing: textField)
     }
     
-    @IBAction func smartSwitchDidChange(sender: AnyObject) {
+    @IBAction func smartSwitchDidChange(_ sender: AnyObject) {
         if let smartSwitch = sender as? UISwitch {
-            if smartSwitch.on {
-                UIView.animateWithDuration(0.3, animations: { () -> Void in
+            if smartSwitch.isOn {
+                UIView.animate(withDuration: 0.3, animations: { () -> Void in
                     self.amountSegmentedControl.alpha = 1.0
                     self.amountLabel.alpha = 1.0
                 })
             } else {
-                UIView.animateWithDuration(0.3, animations: { () -> Void in
+                UIView.animate(withDuration: 0.3, animations: { () -> Void in
                     self.amountSegmentedControl.alpha = 0.0
                     self.amountLabel.alpha = 0.0
                 })
@@ -56,21 +56,21 @@ class CreatePlaylistCell: UITableViewCell, UITextFieldDelegate {
         }
     }
     
-    func textFieldDidEndEditing(textField: UITextField) {
+    func textFieldDidEndEditing(_ textField: UITextField) {
         if textField.text?.characters.count == 0 {
             textField.text = "Enter playlist name..."
-            textField.textColor = UIColor.lightGrayColor()
+            textField.textColor = UIColor.lightGray
         }
     }
     
-    func textField(textField: UITextField,
-        shouldChangeCharactersInRange range: NSRange,
+    func textField(_ textField: UITextField,
+        shouldChangeCharactersIn range: NSRange,
         replacementString string: String) -> Bool {
 
         return true
     }
 
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.delegate?.createPlaylistCell(self, shouldReturn: textField)
         return true
     }

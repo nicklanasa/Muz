@@ -10,22 +10,22 @@ import Foundation
 import UIKit
 
 enum TabBarItem: NSInteger {
-    case Artists
-    case Songs
-    case NowPlaying
-    case Playlists
-    case More
+    case artists
+    case songs
+    case nowPlaying
+    case playlists
+    case more
 }
 
 class TabBarController: UITabBarController {
     override func viewDidLoad() {
         
         // Add transparency.
-        let rect = CGRectMake(0, 0, 1, 1)
+        let rect = CGRect(x: 0, y: 0, width: 1, height: 1)
         UIGraphicsBeginImageContextWithOptions(rect.size, false, 1.0);
         let context = UIGraphicsGetCurrentContext()
-        CGContextSetFillColorWithColor(context, UIColor.clearColor().CGColor)
-        CGContextFillRect(context, rect)
+        context?.setFillColor(UIColor.clear.cgColor)
+        context?.fill(rect)
         let transparentImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         

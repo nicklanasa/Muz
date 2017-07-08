@@ -9,8 +9,8 @@ import Foundation
 import UIKit
 
 enum SwipeDirection {
-    case SwipeDirectionLeft
-    case SwipeDirectionRight
+    case swipeDirectionLeft
+    case swipeDirectionRight
 }
 
 class NowPlayingPageController: UIViewController, UIPageViewControllerDelegate, UIPageViewControllerDataSource {
@@ -18,7 +18,7 @@ class NowPlayingPageController: UIViewController, UIPageViewControllerDelegate, 
     let initialViewController: UIViewController
     let pageController: UIPageViewController
     var isAnimating: Bool
-    var currentDate: NSDate? = NSDate()
+    var currentDate: Date? = Date()
     
     var currentViewController: UIViewController?
     
@@ -27,11 +27,11 @@ class NowPlayingPageController: UIViewController, UIPageViewControllerDelegate, 
         currentViewController = viewController!
         isAnimating = false
     
-        pageController = UIPageViewController(transitionStyle: .Scroll,
-            navigationOrientation: .Horizontal,
+        pageController = UIPageViewController(transitionStyle: .scroll,
+            navigationOrientation: .horizontal,
             options: nil)
         pageController.setViewControllers([initialViewController],
-            direction: .Forward,
+            direction: .forward,
             animated: false,
             completion: nil)
         
@@ -43,7 +43,7 @@ class NowPlayingPageController: UIViewController, UIPageViewControllerDelegate, 
     
     override func viewDidLoad() {
         self.addChildViewController(pageController)
-        pageController.didMoveToParentViewController(self)
+        pageController.didMove(toParentViewController: self)
         self.view.addSubview(pageController.view)
     }   
 
@@ -51,12 +51,12 @@ class NowPlayingPageController: UIViewController, UIPageViewControllerDelegate, 
         fatalError("init(coder:) has not been implemented")
     }
     
-    func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         let previousVC = viewController as! RootViewController
         return previousVC
     }
     
-    func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         let nextVC = viewController as! RootViewController
         return nextVC
     }

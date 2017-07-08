@@ -10,38 +10,38 @@ import Foundation
 import MediaPlayer
 
 protocol LyricsRequestDelegate {
-    func lyricsRequestDidComplete(request: LyricsRequest, didCompleteWithLyrics lyrics: String?)
+    func lyricsRequestDidComplete(_ request: LyricsRequest, didCompleteWithLyrics lyrics: String?)
 }
 
 class LyricsRequest: WebRequest {
     
-    let url: NSURL?
+    let url: URL?
     let item: MPMediaItem?
     var delegate: LyricsRequestDelegate?
     
     var responseData = NSMutableData()
     
-    init(url: NSURL, item: MPMediaItem) {
+    init(url: URL, item: MPMediaItem) {
         self.url = url
         self.item = item
     }
     
     override func sendURLRequest() {
         super.sendURLRequest()
-        let request = NSURLRequest(URL: self.url!)
+        let request = URLRequest(url: self.url!)
         let connection = NSURLConnection(request: request, delegate: self)
         connection?.start()
     }
     
-    func connection(connection: NSURLConnection, didReceiveData data: NSData) {
-        responseData.appendData(data)
+    func connection(_ connection: NSURLConnection, didReceiveData data: Data) {
+        responseData.append(data)
     }
     
-    override func connectionDidFinishLoading(connection: NSURLConnection) {
+    override func connectionDidFinishLoading(_ connection: NSURLConnection) {
         super.connectionDidFinishLoading(connection)
         
         if responseData.length > 0 {
-            if let html = NSString(data: responseData, encoding: NSUTF8StringEncoding) {
+            if let html = NSString(data: responseData as Data, encoding: String.Encoding.utf8.rawValue) {
                 self.parseHTML(html)
             } else {
                 self.delegate?.lyricsRequestDidComplete(self, didCompleteWithLyrics: nil)
@@ -51,7 +51,7 @@ class LyricsRequest: WebRequest {
     
     // Lyric parsing
     
-    private func parseHTML(html: NSString) {
+    fileprivate func parseHTML(_ html: NSString) {
 //        let parser: HTMLParser!
 //        do {
 //            parser = try HTMLParser(string: html as String)
@@ -78,7 +78,7 @@ class LyricsRequest: WebRequest {
 //        self.delegate?.lyricsRequestDidComplete(self, didCompleteWithLyrics: nil)
     }
     
-    private func requestSongLyrics(url: NSString) {
+    fileprivate func requestSongLyrics(_ url: NSString) {
         
 //        var lyrics: String? = nil
 //        if let stringURL = url.stringByAddingPercentEscapesUsingEncoding(NSASCIIStringEncoding) {

@@ -19,7 +19,7 @@ UISearchDisplayDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     
-    var artistsController: NSFetchedResultsController!
+    var artistsController: NSFetchedResultsController<NSFetchRequestResult>!
     
     init() {
         super.init(nibName: "ArtistsViewController", bundle: nil)
@@ -31,7 +31,7 @@ UISearchDisplayDelegate {
         self.tabBarItem.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0)
     }
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
 
@@ -39,7 +39,7 @@ UISearchDisplayDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         let predicate = NSPredicate(format: "albums.@count != 0")
@@ -51,20 +51,20 @@ UISearchDisplayDelegate {
         fetchArtists()
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         self.tableView.setEditing(false, animated: false)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView.registerNib(UINib(nibName: "ArtistCell", bundle: nil), forCellReuseIdentifier: "Cell")
-        tableView.registerNib(UINib(nibName: "ArtistsHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "Header")
+        tableView.register(UINib(nibName: "ArtistCell", bundle: nil), forCellReuseIdentifier: "Cell")
+        tableView.register(UINib(nibName: "ArtistsHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "Header")
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "search"),
-            style: .Plain,
+            style: .plain,
             target: self,
-            action: "showSearch")
+            action: #selector(ArtistsViewController.showSearch))
         
         self.screenName = "Artists"
     }
@@ -82,67 +82,67 @@ UISearchDisplayDelegate {
     
     // MARK: Sectors NSFetchedResultsControllerDelegate
     
-    func controllerWillChangeContent(controller: NSFetchedResultsController)
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>)
     {
         self.tableView.beginUpdates()
     }
     
-    func controller(controller: NSFetchedResultsController,
-        didChangeObject anObject: AnyObject,
-        atIndexPath indexPath: NSIndexPath?,
-        forChangeType type: NSFetchedResultsChangeType,
-        newIndexPath: NSIndexPath?)
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+        didChange anObject: Any,
+        at indexPath: IndexPath?,
+        for type: NSFetchedResultsChangeType,
+        newIndexPath: IndexPath?)
     {
         let tableView = self.tableView
-        var indexPaths:[NSIndexPath] = [NSIndexPath]()
+        var indexPaths:[IndexPath] = [IndexPath]()
         switch type {
             
-        case .Insert:
+        case .insert:
             indexPaths.append(newIndexPath!)
-            tableView.insertRowsAtIndexPaths(indexPaths, withRowAnimation: .Fade)
+            tableView?.insertRows(at: indexPaths, with: .fade)
             
-        case .Delete:
+        case .delete:
             indexPaths.append(indexPath!)
-            tableView.deleteRowsAtIndexPaths(indexPaths, withRowAnimation: .Fade)
+            tableView?.deleteRows(at: indexPaths, with: .fade)
             
-        case .Update:
+        case .update:
             indexPaths.append(indexPath!)
-            tableView.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: .Fade)
+            tableView?.reloadRows(at: indexPaths, with: .fade)
             
-        case .Move:
+        case .move:
             indexPaths.append(indexPath!)
-            tableView.deleteRowsAtIndexPaths(indexPaths, withRowAnimation: .Fade)
-            indexPaths.removeAtIndex(0)
+            tableView?.deleteRows(at: indexPaths, with: .fade)
+            indexPaths.remove(at: 0)
             indexPaths.append(newIndexPath!)
-            tableView.insertRowsAtIndexPaths(indexPaths, withRowAnimation: .Fade)
+            tableView?.insertRows(at: indexPaths, with: .fade)
         }
     }
     
-    func controller(controller: NSFetchedResultsController,
-        didChangeSection sectionInfo: NSFetchedResultsSectionInfo,
-        atIndex sectionIndex: Int,
-        forChangeType type: NSFetchedResultsChangeType)
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+        didChange sectionInfo: NSFetchedResultsSectionInfo,
+        atSectionIndex sectionIndex: Int,
+        for type: NSFetchedResultsChangeType)
     {
         switch type {
             
-        case .Insert:
-            self.tableView.insertSections(NSIndexSet(index: sectionIndex),
-                withRowAnimation: .Fade)
+        case .insert:
+            self.tableView.insertSections(IndexSet(integer: sectionIndex),
+                with: .fade)
             
-        case .Delete:
-            self.tableView.deleteSections(NSIndexSet(index: sectionIndex),
-                withRowAnimation: .Fade)
+        case .delete:
+            self.tableView.deleteSections(IndexSet(integer: sectionIndex),
+                with: .fade)
             
-        case .Update, .Move: print("Move or delete called in didChangeSection")
+        case .update, .move: print("Move or delete called in didChangeSection")
         }
     }
     
-    func controllerDidChangeContent(controller: NSFetchedResultsController)
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>)
     {
         self.tableView.endUpdates()
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let numberOfRowsInSection = self.artistsController.sections?[section].numberOfObjects {
             return numberOfRowsInSection
         } else {
@@ -150,28 +150,28 @@ UISearchDisplayDelegate {
         }
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return self.artistsController.sections?.count ?? 0
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell",
-            forIndexPath: indexPath) as! ArtistCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell",
+            for: indexPath) as! ArtistCell
         
-        let artist = self.artistsController.objectAtIndexPath(indexPath) as! Artist
+        let artist = self.artistsController.object(at: indexPath) as! Artist
         cell.updateWithArtist(artist)
     
         return cell
     }
     
-    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 30
     }
     
-    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if let sectionInfo = self.artistsController.sections?[section] {
-            let header = tableView.dequeueReusableHeaderFooterViewWithIdentifier("Header") as! ArtistsHeader
+            let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "Header") as! ArtistsHeader
             header.infoLabel.text = sectionInfo.name
             return header
         } else {
@@ -179,30 +179,30 @@ UISearchDisplayDelegate {
         }
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.artistsController.fetchRequest.predicate = nil
         self.searchDisplayController?.setActive(false, animated: false)
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        let artist = self.artistsController.objectAtIndexPath(indexPath) as! Artist
+        tableView.deselectRow(at: indexPath, animated: true)
+        let artist = self.artistsController.object(at: indexPath) as! Artist
         let artistAlbumsViewController = ArtistAlbumsViewController(artist: artist)
         navigationController?.pushViewController(artistAlbumsViewController, animated: true)
     }
     
-    func sectionIndexTitlesForTableView(tableView: UITableView) -> [String]! {
+    func sectionIndexTitles(for tableView: UITableView) -> [String]! {
         return self.artistsController.sectionIndexTitles
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return ArtistCellHeight
     }
     
-    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
     
-    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-        let addAction = UITableViewRowAction(style: .Normal, title: "Add to playlist") { (action, indexPath) -> Void in
-            let artist = self.artistsController.objectAtIndexPath(indexPath) as! Artist
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let addAction = UITableViewRowAction(style: .normal, title: "Add to playlist") { (action, indexPath) -> Void in
+            let artist = self.artistsController.object(at: indexPath) as! Artist
             let createPlaylistOverlay = CreatePlaylistOverlay(artist: artist.name)
             self.presentModalOverlayController(createPlaylistOverlay, blurredController: self)
         }

@@ -11,7 +11,7 @@ import UIKit
 import MediaPlayer
 
 protocol ArtistAlbumHeaderDelegate {
-    func artistAlbumHeader(header: ArtistAlbumHeader, moreButtonTapped sender: AnyObject)
+    func artistAlbumHeader(_ header: ArtistAlbumHeader, moreButtonTapped sender: AnyObject)
 }
 
 class ArtistAlbumHeader: UITableViewHeaderFooterView {
@@ -33,14 +33,14 @@ class ArtistAlbumHeader: UITableViewHeaderFooterView {
         
     }
     
-    @IBAction func moreButtonTapped(sender: AnyObject) {
+    @IBAction func moreButtonTapped(_ sender: AnyObject) {
         self.delegate?.artistAlbumHeader(self, moreButtonTapped: sender)
     }
     
-    func updateWithItem(item: MPMediaItem) {
+    func updateWithItem(_ item: MPMediaItem) {
         
         if let artwork = item.artwork {
-            self.albumImageView?.image = artwork.imageWithSize(self.albumImageView.frame.size)
+            self.albumImageView?.image = artwork.image(at: self.albumImageView.frame.size)
         } else {
             self.albumImageView?.image = UIImage(named: "noArtwork")
         }
@@ -52,7 +52,7 @@ class ArtistAlbumHeader: UITableViewHeaderFooterView {
         }
         
         if let date = item.releaseDate {
-            let components = NSCalendar.currentCalendar().components(.Year, fromDate: date)
+            let components = (Calendar.current as NSCalendar).components(.year, from: date)
             yearLabel.text = "\(components.year)"
         } else {
             yearLabel.text = ""
@@ -60,17 +60,17 @@ class ArtistAlbumHeader: UITableViewHeaderFooterView {
         
     }
     
-    func updateWithAlbum(album album: Album) {
+    func updateWithAlbum(album: Album) {
         self.albumImageView.setImageForAlbum(album: album)
         self.albumImageView.applyRoundedStyle()
         
         albumLabel.text = album.title
         infoLabel.text = album.songs.count == 1 ? "\(album.songs.count) song" : "\(album.songs.count) songs"
         if let releaseDate = album.releaseDate {
-            let components = NSCalendar.currentCalendar().components(.Year, fromDate: releaseDate)
+            let components = (Calendar.current as NSCalendar).components(.year, from: releaseDate as Date)
             yearLabel.text = "\(components.year)"
         } else {
-            yearLabel.hidden = true
+            yearLabel.isHidden = true
         }
     }
 }

@@ -9,7 +9,7 @@
 import Foundation
 
 protocol LastFmArtistInfoRequestDelegate {
-    func lastFmArtistInfoRequestDidComplete(request: LastFmArtistInfoRequest, didCompleteWithLastFmArtist artist: LastFmArtist?)
+    func lastFmArtistInfoRequestDidComplete(_ request: LastFmArtistInfoRequest, didCompleteWithLastFmArtist artist: LastFmArtist?)
 }
 
 class LastFmArtistInfoRequest: LastFmRequest {
@@ -26,12 +26,12 @@ class LastFmArtistInfoRequest: LastFmRequest {
     override func sendURLRequest() {
         super.sendURLRequest()
         let lastFm = LastFm.sharedInstance()
-        lastFm.apiKey = "d55a72556285ca314e7af8b0fb093e29"
-        lastFm.apiSecret = "affa81f90053b2114888298f3aeb27b9"
-        lastFm.session = "artistInfoSession"
+        lastFm?.apiKey = "d55a72556285ca314e7af8b0fb093e29"
+        lastFm?.apiSecret = "affa81f90053b2114888298f3aeb27b9"
+        lastFm?.session = "artistInfoSession"
         
-        lastFm.getInfoForArtist(self.artist, successHandler: { (info) -> Void in
-            let artist = LastFmArtist(JSON: info)
+        lastFm?.getInfoForArtist(self.artist, successHandler: { (info) -> Void in
+            let artist = LastFmArtist(json: info)
             self.connectionDidFinishLoading(NSURLConnection())
             self.delegate?.lastFmArtistInfoRequestDidComplete(self, didCompleteWithLastFmArtist: artist)
         }) { (error) -> Void in
@@ -39,7 +39,7 @@ class LastFmArtistInfoRequest: LastFmRequest {
         }
     }
     
-    override func connectionDidFinishLoading(connection: NSURLConnection) {
+    override func connectionDidFinishLoading(_ connection: NSURLConnection) {
         super.connectionDidFinishLoading(connection)
     }
 }

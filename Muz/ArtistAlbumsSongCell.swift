@@ -18,7 +18,7 @@ class ArtistAlbumsSongCell: UITableViewCell {
     override func prepareForReuse() {
     }
     
-    func configure(song song: Song) {
+    func configure(song: Song) {
         self.songLabel.text = song.title
         
         print(song.albumTrackNumber, terminator: "")

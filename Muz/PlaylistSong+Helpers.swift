@@ -10,7 +10,7 @@ import Foundation
 import MediaPlayer
 
 extension PlaylistSong {
-    func parsePlaylistSong(song: Song, playlist: Playlist, originalPlaylist: MPMediaPlaylist?) {
+    func parsePlaylistSong(_ song: Song, playlist: Playlist, originalPlaylist: MPMediaPlaylist?) {
         self.song = song
         self.playlists = NSSet(object: playlist)
         
@@ -18,26 +18,26 @@ extension PlaylistSong {
             var count = 0
             for item in p.items {
                 if song.title == item.title {
-                    self.order = NSNumber(integer: count)
+                    self.order = NSNumber(value: count as Int)
                     break
                 }
-                count++
+                count += 1
             }
         } else {
-            self.order = NSNumber(unsignedLongLong: 0)
+            self.order = NSNumber(value: 0 as UInt64)
         }
     }
     
-    func updatePlaylistSong(song: Song, playlist: Playlist, originalPlaylist: MPMediaPlaylist?) {
+    func updatePlaylistSong(_ song: Song, playlist: Playlist, originalPlaylist: MPMediaPlaylist?) {
         self.song = song
         
         let playlists = NSMutableSet(set: self.playlists)
         
-        self.playlists.enumerateObjectsUsingBlock { (obj, idx) -> Void in
+        self.playlists.enumerateObjects { (obj, idx) -> Void in
             if let songPlaylist = obj as? Playlist {
                 if songPlaylist.persistentID == playlist.persistentID {
-                    playlists.removeObject(songPlaylist)
-                    playlists.addObject(playlist)
+                    playlists.remove(songPlaylist)
+                    playlists.add(playlist)
                 }
             }
         }
@@ -48,23 +48,23 @@ extension PlaylistSong {
             var count = 0
             for item in p.items {
                 if song.title == item.title {
-                    self.order = NSNumber(integer: count)
+                    self.order = NSNumber(value: count as Int)
                     break
                 }
-                count++
+                count += 1
             }
         } else {
-            self.order = NSNumber(unsignedLongLong: 0)
+            self.order = NSNumber(value: 0 as UInt64)
         }
     }
     
-    func parseSong(song: Song, playlist: Playlist, order: Int) {
+    func parseSong(_ song: Song, playlist: Playlist, order: Int) {
         self.song = song
         
         let playlists = NSMutableSet(set: self.playlists)
-        playlists.addObject(playlist)
+        playlists.add(playlist)
         self.playlists = playlists
         
-        self.order = NSNumber(integer: order)
+        self.order = NSNumber(value: order as Int)
     }
 }

@@ -11,7 +11,7 @@ import CoreData
 import MediaPlayer
 
 extension Artist {
-    func parseItem(item: MPMediaItem) {
+    func parseItem(_ item: MPMediaItem) {
         
         self.persistentID = item.artistPersistentID.description
         
@@ -20,7 +20,7 @@ extension Artist {
         }
     }
     
-    func addAlbum(album: Album?) {
+    func addAlbum(_ album: Album?) {
 //        if let managedAlbum = album {
 //            var found = false
 //            for artistAlbum in self.albums.allObjects as [Album] {

@@ -33,40 +33,40 @@ class LastFmEventMapController: RootViewController {
         loadMap()
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Open in maps",
-            style: .Plain,
+            style: .plain,
             target: self,
-            action: "openInMaps")
+            action: #selector(LastFmEventMapController.openInMaps))
         
         self.title = event.venue
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         self.screenName = "Event map"
     }
     
     func openInMaps() {
         for item in matchedItems {
             if let mapItem = item as? MKMapItem {
-                mapItem.openInMapsWithLaunchOptions(nil)
+                mapItem.openInMaps(launchOptions: nil)
                 break;
             }
         }
     }
     
-    private func loadMap() {
+    fileprivate func loadMap() {
         let request = MKLocalSearchRequest()
         request.naturalLanguageQuery = String(format: "%@ %@, %@", event.venue, event.city, event.country)
         
         let search = MKLocalSearch(request: request)
         var annotations = [AnyObject]()
         
-        search.startWithCompletionHandler { (response, error) -> Void in
+        search.start { (response, error) -> Void in
             if error == nil {
                 if response?.mapItems.count == 0 {
                     
                 } else {
                     for item in response!.mapItems {
-                        self.matchedItems.addObject(item)
+                        self.matchedItems.add(item)
                         
                         let point = MKPointAnnotation()
                         point.coordinate = item.placemark.coordinate
@@ -82,7 +82,7 @@ class LastFmEventMapController: RootViewController {
         }
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     }
 }

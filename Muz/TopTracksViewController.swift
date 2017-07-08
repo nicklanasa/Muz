@@ -18,7 +18,7 @@ class TopTracksViewController: RootViewController, LastFmTrackBuyLinksRequestDel
     
     var tracks: [AnyObject] = [AnyObject]() {
         didSet {
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            DispatchQueue.main.async(execute: { () -> Void in
                 self.activityIndicator.stopAnimating()
                 self.tableView.reloadData()
             })
@@ -29,16 +29,16 @@ class TopTracksViewController: RootViewController, LastFmTrackBuyLinksRequestDel
         didSet {
             let albumsIds = NSMutableArray()
             for album in albums as! [NSDictionary] {
-                if let albumID = album.objectForKey("collectionId") as? NSNumber {
-                    albumsIds.addObject(albumID.integerValue)
+                if let albumID = album.object(forKey: "collectionId") as? NSNumber {
+                    albumsIds.add(albumID.intValue)
                 }
             }
             
-            ItunesSearch.sharedInstance().getTracksForAlbums(albumsIds as [AnyObject], limitOrNil: NSNumber(int: 30), sucessHandler: { (tracks) -> Void in
+            ItunesSearch.sharedInstance().getTracksForAlbums(albumsIds as [AnyObject], limitOrNil: NSNumber(value: 30 as Int32), sucessHandler: { (tracks) -> Void in
                 let topTracks = NSMutableArray()
                 for track in tracks as! [NSDictionary] {
-                    if let _ = track.objectForKey("trackId") as? NSNumber {
-                        topTracks.addObject(track)
+                    if let _ = track.object(forKey: "trackId") as? NSNumber {
+                        topTracks.add(track)
                     }
                 }
                 
@@ -63,16 +63,16 @@ class TopTracksViewController: RootViewController, LastFmTrackBuyLinksRequestDel
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tableView.registerNib(UINib(nibName: "TopAlbumCell", bundle: nil), forCellReuseIdentifier: "TopAlbumCell")
+        self.tableView.register(UINib(nibName: "TopAlbumCell", bundle: nil), forCellReuseIdentifier: "TopAlbumCell")
         
         self.navigationItem.title = self.artist
         
         ItunesSearch.sharedInstance().affiliateToken = "10lSyo"
         
         ItunesSearch.sharedInstance().getIdForArtist(self.artist, successHandler: { (artists) -> Void in
-            if artists.count > 0 {
-                if let artistDict = artists.first as? NSDictionary {
-                    if let artistID = artistDict.objectForKey("artistId") as? NSNumber {
+            if (artists?.count)! > 0 {
+                if let artistDict = artists?.first as? NSDictionary {
+                    if let artistID = artistDict.object(forKey: "artistId") as? NSNumber {
                         ItunesSearch.sharedInstance().getAlbumsForArtist(artistID, limitOrNil: 100, successHandler: { (albums) -> Void in
                                 self.albums = albums
                             }, failureHandler: { (error) -> Void in
@@ -89,62 +89,62 @@ class TopTracksViewController: RootViewController, LastFmTrackBuyLinksRequestDel
         
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.tracks.count
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSectionsInTableView(_ tableView: UITableView) -> Int {
         return 1
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("TopAlbumCell",
-            forIndexPath: indexPath) as! TopAlbumCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "TopAlbumCell",
+            for: indexPath) as! TopAlbumCell
         
         let topTrack = self.tracks[indexPath.row] as! NSDictionary
-        cell.songLabel.text = topTrack.objectForKey("trackName") as? String
-        cell.infoLabel.text = topTrack.objectForKey("collectionName") as? String
-        if let image = topTrack.objectForKey("artworkUrl100") as? String {
-            cell.songImageView.sd_setImageWithURL(NSURL(string: image))
+        cell.songLabel.text = topTrack.object(forKey: "trackName") as? String
+        cell.infoLabel.text = topTrack.object(forKey: "collectionName") as? String
+        if let image = topTrack.object(forKey: "artworkUrl100") as? String {
+            cell.songImageView.sd_setImage(with: URL(string: image))
         } else {
             cell.songImageView.image = UIImage(named: "nowPlayingDefault")
         }
         
-        cell.buyButton.hidden = true
-        cell.selectionStyle = .None
-        cell.accessoryType = .None
+        cell.buyButton.isHidden = true
+        cell.selectionStyle = .none
+        cell.accessoryType = .none
         
         cell.buyButton.tag = indexPath.row
         
         if let trackPrice = topTrack["trackPrice"] as? NSNumber {
             if let _ = topTrack["trackViewUrl"] as? String {
-                cell.buyButton.setTitle("$\(trackPrice.description)", forState: .Normal)
-                cell.buyButton.addTarget(self, action: "openTrackLink:", forControlEvents: .TouchUpInside)
-                cell.buyButton.hidden = false
+                cell.buyButton.setTitle("$\(trackPrice.description)", for: UIControlState())
+                cell.buyButton.addTarget(self, action: #selector(TopTracksViewController.openTrackLink(_:)), for: .touchUpInside)
+                cell.buyButton.isHidden = false
             }
         }
         
         return cell
     }
     
-    func openTrackLink(sender: AnyObject?) {
+    func openTrackLink(_ sender: AnyObject?) {
         if let button = sender as? UIButton {
             print("Button tag: \(button.tag)\n", terminator: "")
             
             let track = self.tracks[button.tag] as! NSDictionary
             if let trackLink = track["trackViewUrl"] as? String {
-                UIApplication.sharedApplication().openURL(NSURL(string: trackLink)!)
+                UIApplication.shared.openURL(URL(string: trackLink)!)
             }
             
         }
     }
     
-    func fetchBuyLinks(sender: AnyObject?) {
+    func fetchBuyLinks(_ sender: AnyObject?) {
         if let _ = sender as? UIButton {
 //            print("Button tag: \(button.tag)\n")
 //            print("fetching buy links for top tracks...")
@@ -157,7 +157,7 @@ class TopTracksViewController: RootViewController, LastFmTrackBuyLinksRequestDel
         }
     }
     
-    func lastFmTrackBuyLinksRequestDidComplete(request: LastFmTrackBuyLinksRequest, didCompleteWithBuyLinks buyLinks: [AnyObject]?) {
+    func lastFmTrackBuyLinksRequestDidComplete(_ request: LastFmTrackBuyLinksRequest, didCompleteWithBuyLinks buyLinks: [AnyObject]?) {
         self.songBuyLinks = buyLinks
         
         if let buyLinks = songBuyLinks {
@@ -172,7 +172,7 @@ class TopTracksViewController: RootViewController, LastFmTrackBuyLinksRequestDel
         }
     }
     
-    private func showBuyAlbumError() {
+    fileprivate func showBuyAlbumError() {
         UIAlertView(title: "Error!",
             message: "Unable to find buy links for that song.",
             delegate: self,

@@ -10,9 +10,9 @@ import Foundation
 
 extension ItunesSearch {
     
-    typealias SearchCompletion = (error: NSError?, results: NSArray) -> ()
+    typealias SearchCompletion = (_ error: NSError?, _ results: NSArray) -> ()
     
-    func getAlbums(album: String, limit: Int, completion: SearchCompletion) {
+    func getAlbums(_ album: String, limit: Int, completion: @escaping SearchCompletion) {
         let params = NSMutableDictionary(dictionary: ["term" : album, "media" : "music", "entity" : "album"])
         
         if limit > 0 {
@@ -20,14 +20,14 @@ extension ItunesSearch {
         }
         
         
-        self.performApiCallForMethod("search", withParams: params as [NSObject : AnyObject], andFilters: [:], successHandler: { (albums) -> Void in
-            completion(error: nil, results: albums as! NSArray)
+        self.performApiCall(forMethod: "search", withParams: params as! [AnyHashable: Any], andFilters: [:], successHandler: { (albums) -> Void in
+            completion(nil, albums as! NSArray)
         }) { (error) -> Void in
-            completion(error: error, results: [])
-        }
+            completion(error, [])
+        } as! ItunesSearchReturnBlockWithError as! ItunesSearchReturnBlockWithError as! ItunesSearchReturnBlockWithError as! ItunesSearchReturnBlockWithError
     }
     
-    func getTracks(track: String, limit: Int, completion: SearchCompletion) {
+    func getTracks(_ track: String, limit: Int, completion: @escaping SearchCompletion) {
         let params = NSMutableDictionary(dictionary: ["term" : track, "media" : "music", "entity" : "musicTrack"])
         
         if limit > 0 {
@@ -35,10 +35,10 @@ extension ItunesSearch {
         }
         
         
-        self.performApiCallForMethod("search", withParams: params as [NSObject : AnyObject], andFilters: [:], successHandler: { (tracks) -> Void in
-            completion(error: nil, results: tracks as! NSArray)
+        self.performApiCall(forMethod: "search", withParams: params as! [AnyHashable: Any], andFilters: [:], successHandler: { (tracks) -> Void in
+            completion(nil, tracks as! NSArray)
             }) { (error) -> Void in
-                completion(error: error, results: [])
-        }
+                completion(error, [])
+        } as! ItunesSearchReturnBlockWithError as! ItunesSearchReturnBlockWithError as! ItunesSearchReturnBlockWithError as! ItunesSearchReturnBlockWithError
     }
 }

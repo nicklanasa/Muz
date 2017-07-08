@@ -23,20 +23,20 @@ UIActionSheetDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView.registerNib(UINib(nibName: "LastFmEventInfoDetailsCell", bundle: nil), forCellReuseIdentifier: "LastFmEventInfoDetailsCell")
+        tableView.register(UINib(nibName: "LastFmEventInfoDetailsCell", bundle: nil), forCellReuseIdentifier: "LastFmEventInfoDetailsCell")
         
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: "eventActions")
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(LastFmEventInfoController.eventActions))
     }
     
     func eventActions() {
-        let actionSheet = UIAlertController(title: "Select action", message: nil, preferredStyle: .ActionSheet)
-        actionSheet.addAction(UIAlertAction(title: "Open in Safari", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+        let actionSheet = UIAlertController(title: "Select action", message: nil, preferredStyle: .actionSheet)
+        actionSheet.addAction(UIAlertAction(title: "Open in Safari", style: UIAlertActionStyle.default, handler: { (action) -> Void in
             self.openInBrowser()
         }))
-        actionSheet.addAction(UIAlertAction(title: "View Map", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+        actionSheet.addAction(UIAlertAction(title: "View Map", style: UIAlertActionStyle.default, handler: { (action) -> Void in
             self.showMap()
         }))
-        actionSheet.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Destructive, handler: { (action) -> Void in
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.destructive, handler: { (action) -> Void in
             
         }))
         
@@ -44,14 +44,14 @@ UIActionSheetDelegate {
             popoverController.barButtonItem = self.navigationItem.rightBarButtonItem
         }
         
-        self.presentViewController(actionSheet, animated: true, completion: nil)
+        self.present(actionSheet, animated: true, completion: nil)
     }
     
    init() {
         super.init(nibName: "LastFmEventInfoController", bundle: nil)
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         self.screenName = "Event info"
     }
     
@@ -64,22 +64,22 @@ UIActionSheetDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return tableView.frame.height
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("LastFmEventInfoDetailsCell") as! LastFmEventInfoDetailsCell
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "LastFmEventInfoDetailsCell") as! LastFmEventInfoDetailsCell
         cell.updateWithEvent(event)
         return cell
     }
     
     func openInBrowser() {
-        UIApplication.sharedApplication().openURL(self.event.url)
+        UIApplication.shared.openURL(self.event.url)
     }
     
     func showMap() {

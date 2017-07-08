@@ -9,7 +9,7 @@
 import Foundation
 
 protocol LastFmArtistEventsRequestDelegate {
-    func lastFmArtistEventsRequestDidComplete(request: LastFmArtistEventsRequest, didCompleteWithEvents events: [AnyObject]?)
+    func lastFmArtistEventsRequestDidComplete(_ request: LastFmArtistEventsRequest, didCompleteWithEvents events: [AnyObject]?)
 }
 
 class LastFmArtistEventsRequest: LastFmRequest {
@@ -24,18 +24,18 @@ class LastFmArtistEventsRequest: LastFmRequest {
     override func sendURLRequest() {
         super.sendURLRequest()
         let lastFm = LastFm.sharedInstance()
-        lastFm.apiKey = self.apiKey
-        lastFm.apiSecret = self.apiSecret
-        lastFm.session = "artistsEventsSession"
+        lastFm?.apiKey = self.apiKey
+        lastFm?.apiSecret = self.apiSecret
+        lastFm?.session = "artistsEventsSession"
         
-        lastFm.getEventsForArtist(self.artist, successHandler: { (eventsArray) -> Void in
+        lastFm?.getEventsForArtist(self.artist, successHandler: { (eventsArray) -> Void in
             if self.delegate != nil {
                 
                 let events = NSMutableArray()
                 
-                for eventsJSON in eventsArray {
+                for eventsJSON in eventsArray! {
                     if let JSON = eventsJSON as? NSDictionary {
-                        events.addObject(LastFmEvent(JSON: JSON as [NSObject : AnyObject]))
+                        events.add(LastFmEvent(json: JSON as! [AnyHashable: Any]))
                     }
                 }
                 
@@ -49,7 +49,7 @@ class LastFmArtistEventsRequest: LastFmRequest {
         }
     }
     
-    override func connectionDidFinishLoading(connection: NSURLConnection) {
+    override func connectionDidFinishLoading(_ connection: NSURLConnection) {
         super.connectionDidFinishLoading(connection)
     }
 }

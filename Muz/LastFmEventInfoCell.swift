@@ -17,20 +17,20 @@ class LastFmEventInfoCell: UICollectionViewCell {
         artistImageView.layer.masksToBounds = true
     }
     
-    func updateWithEvent(event: LastFmEvent) {
-        artistImageView.sd_setImageWithURL(event.image, placeholderImage: UIImage(named: "nowPlayingDefault"))
+    func updateWithEvent(_ event: LastFmEvent) {
+        artistImageView.sd_setImage(with: event.image, placeholderImage: UIImage(named: "nowPlayingDefault"))
         
         if let _ = event.startDate {
-            let formatter = NSDateFormatter()
-            formatter.dateStyle = .ShortStyle
-            let date = formatter.stringFromDate(event.startDate)
+            let formatter = DateFormatter()
+            formatter.dateStyle = .short
+            let date = formatter.string(from: event.startDate)
             
             infoLabel.text = String(format: "%@\n%@\n%@", event.city, event.country, date)
         }
     }
     
-    func updateWithGeoEvent(event: LastFmEvent) {
-        artistImageView.sd_setImageWithURL(event.image, placeholderImage: UIImage(named: "nowPlayingDefault"))
+    func updateWithGeoEvent(_ event: LastFmEvent) {
+        artistImageView.sd_setImage(with: event.image, placeholderImage: UIImage(named: "nowPlayingDefault"))
         
         if let _ = event.title {
             infoLabel.text = String(format: "%@\n%@\n%@", event.title, event.city, event.country)

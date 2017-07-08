@@ -11,11 +11,11 @@ import CoreData
 import MediaPlayer
 
 extension Song {
-    func parseItem(item: MPMediaItem) {
+    func parseItem(_ item: MPMediaItem) {
         
-        self.persistentID = NSNumber(unsignedLongLong: item.persistentID)
+        self.persistentID = NSNumber(value: item.persistentID as UInt64)
         
-        self.mediaType = item.mediaType.rawValue
+        self.mediaType = NSNumber(item.mediaType.rawValue)
         
         if let title = item.title {
             self.title = title
@@ -41,79 +41,79 @@ extension Song {
             self.composer = composer
         }
         
-        self.playbackDuration = item.playbackDuration
+        self.playbackDuration = NSNumber(item.playbackDuration)
         
-        self.albumTrackNumber = item.albumTrackNumber
-        self.discNumber = item.discNumber
+        self.albumTrackNumber = NSNumber(item.albumTrackNumber)
+        self.discNumber = NSNumber(item.discNumber)
         
-        if item.respondsToSelector("lyrics") {
+        if item.responds(to: #selector(getter: MPMediaItem.lyrics)) {
             if let lyrics = item.lyrics {
                 self.lyrics = lyrics
             }
         }
         
-        if item.respondsToSelector("compilation") {
-            self.compilation = item.compilation
+        if item.responds(to: "compilation") {
+            self.compilation = item.isCompilation as NSNumber
         }
         
-        if item.respondsToSelector("releaseDate") {
+        if item.responds(to: #selector(getter: MPMediaItem.releaseDate)) {
             if let releaseDate = item.releaseDate {
                 self.releaseDate = releaseDate
             }
         }
         
-        if item.respondsToSelector("beatsPerMinute") {
-            self.beatsPerMinute = item.beatsPerMinute
+        if item.responds(to: #selector(getter: MPMediaItem.beatsPerMinute)) {
+            self.beatsPerMinute = NSNumber(item.beatsPerMinute)
         }
         
-        if item.respondsToSelector("comments") {
+        if item.responds(to: #selector(getter: MPMediaItem.comments)) {
             if let comments = item.comments {
                 self.comments = comments
             }
         }
         
-        if item.respondsToSelector("assetURL") {
+        if item.responds(to: #selector(getter: MPMediaItem.assetURL)) {
             if let assetURL = item.assetURL {
                 self.assetURL = assetURL.absoluteString
             }
         }
         
-        if item.respondsToSelector("cloudItem") {
-            self.cloudItem = item.cloudItem
+        if item.responds(to: "cloudItem") {
+            self.cloudItem = item.isCloudItem as NSNumber
         }
         
-        if item.respondsToSelector("playCount") {
-            self.playCount = item.playCount
+        if item.responds(to: #selector(getter: MPMediaItem.playCount)) {
+            self.playCount = NSNumber(item.playCount)
         }
         
-        if item.respondsToSelector("skipCount") {
-            self.skipCount = item.skipCount
+        if item.responds(to: #selector(getter: MPMediaItem.skipCount)) {
+            self.skipCount = NSNumber(item.skipCount)
         }
         
-        if item.respondsToSelector("rating") {
-            self.rating = item.rating
+        if item.responds(to: #selector(getter: MPMediaItem.rating)) {
+            self.rating = NSNumber(item.rating)
         }
         
-        if item.respondsToSelector("podcastTitle") {
+        if item.responds(to: #selector(getter: MPMediaItem.podcastTitle)) {
             if let podcastTitle = item.podcastTitle {
                 self.podcastTitle = podcastTitle
             }
         }
         
-        if item.respondsToSelector("lastPlayedDate") {
+        if item.responds(to: #selector(getter: MPMediaItem.lastPlayedDate)) {
             if let lastPlayedDate = item.lastPlayedDate {
                 self.lastPlayedDate = lastPlayedDate
             }
         }
         
-        if item.respondsToSelector("userGrouping") {
+        if item.responds(to: #selector(getter: MPMediaItem.userGrouping)) {
             if let userGrouping = item.userGrouping {
                 self.userGrouping = userGrouping
             }
         }
 
-        if item.respondsToSelector("bookmarkTime") {
-            self.bookmarkTime = item.bookmarkTime
+        if item.responds(to: #selector(getter: MPMediaItem.bookmarkTime)) {
+            self.bookmarkTime = NSNumber(item.bookmarkTime)
         }
     }
 }

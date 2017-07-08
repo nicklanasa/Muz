@@ -10,9 +10,9 @@ import Foundation
 import CoreGraphics
 
 extension UIImage {
-    func crop(rect: CGRect) -> UIImage? {
-        if let imageRef = CGImageCreateWithImageInRect(self.CGImage, rect) {
-            return UIImage(CGImage: imageRef)
+    func crop(_ rect: CGRect) -> UIImage? {
+        if let imageRef = self.cgImage?.cropping(to: rect) {
+            return UIImage(cgImage: imageRef)
         }
         
         return nil

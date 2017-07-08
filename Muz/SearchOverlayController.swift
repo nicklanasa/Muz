@@ -11,14 +11,14 @@ import UIKit
 import CoreData
 
 enum SearchResultsSection: Int {
-    case Artists
-    case Albums
-    case Tracks
+    case artists
+    case albums
+    case tracks
 }
 
 protocol SearchOverlayControllerDelegate {
-    func searchOverlayController(controller: SearchOverlayController, didTapArtist artist: Artist)
-    func searchOverlayController(controller: SearchOverlayController, didTapSong song: Song)
+    func searchOverlayController(_ controller: SearchOverlayController, didTapArtist artist: Artist)
+    func searchOverlayController(_ controller: SearchOverlayController, didTapSong song: Song)
 }
 
 class SearchOverlayController: OverlayController,
@@ -101,7 +101,7 @@ RecommendedSearchCellDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         self.searchDisplayController?.setActive(true, animated: true)
@@ -111,22 +111,22 @@ RecommendedSearchCellDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView.registerNib(UINib(nibName: "RecommendedSearchCell", bundle: nil),
+        tableView.register(UINib(nibName: "RecommendedSearchCell", bundle: nil),
             forCellReuseIdentifier: "RecommendedSearchCell")
-        tableView.registerNib(UINib(nibName: "ArtistsHeader", bundle: nil),
+        tableView.register(UINib(nibName: "ArtistsHeader", bundle: nil),
             forHeaderFooterViewReuseIdentifier: "Header")
         
-        searchDisplayController?.searchResultsTableView.registerNib(UINib(nibName: "ArtistCell", bundle: nil),
+        searchDisplayController?.searchResultsTableView.register(UINib(nibName: "ArtistCell", bundle: nil),
             forCellReuseIdentifier: "ArtistCell")
-        searchDisplayController?.searchResultsTableView.registerNib(UINib(nibName: "SongCell", bundle: nil),
+        searchDisplayController?.searchResultsTableView.register(UINib(nibName: "SongCell", bundle: nil),
             forCellReuseIdentifier: "SongCell")
-        searchDisplayController?.searchResultsTableView.registerNib(UINib(nibName: "TopAlbumCell", bundle: nil),
+        searchDisplayController?.searchResultsTableView.register(UINib(nibName: "TopAlbumCell", bundle: nil),
             forCellReuseIdentifier: "AblumCell")
-        searchDisplayController?.searchResultsTableView.registerNib(UINib(nibName: "ArtistsHeader", bundle: nil),
+        searchDisplayController?.searchResultsTableView.register(UINib(nibName: "ArtistsHeader", bundle: nil),
             forHeaderFooterViewReuseIdentifier: "Header")
         
-        searchDisplayController?.searchResultsTableView.backgroundColor = UIColor.clearColor()
-        searchDisplayController?.searchResultsTableView.separatorStyle = .None
+        searchDisplayController?.searchResultsTableView.backgroundColor = UIColor.clear
+        searchDisplayController?.searchResultsTableView.separatorStyle = .none
         
         self.recentSongs = DataManager.manager.datastore.distinctArtistSongsWithSortKey("lastPlayedDate",
             limit: 50,
@@ -137,15 +137,15 @@ RecommendedSearchCellDelegate {
     }
     
     func dismiss() {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView == self.searchDisplayController?.searchResultsTableView {
             if let searchSection = SearchResultsSection(rawValue: section) {
                 switch searchSection {
-                case .Artists: return self.artists?.count ?? 0
-                case .Albums: return self.albums?.count ?? 0
+                case .artists: return self.artists?.count ?? 0
+                case .albums: return self.albums?.count ?? 0
                 default: return self.tracks?.count ?? 0
                 }
             }
@@ -155,7 +155,7 @@ RecommendedSearchCellDelegate {
         return self.recentSongs?.count ?? 0
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         if tableView == self.searchDisplayController?.searchResultsTableView {
             return 3
         }
@@ -163,61 +163,61 @@ RecommendedSearchCellDelegate {
         return 1
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if tableView == self.searchDisplayController?.searchResultsTableView {
             return 65
         }
         return 40
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if tableView == self.searchDisplayController?.searchResultsTableView {
             
-            let cell = searchDisplayController?.searchResultsTableView.dequeueReusableCellWithIdentifier("AblumCell",
-                forIndexPath: indexPath) as! TopAlbumCell
+            let cell = searchDisplayController?.searchResultsTableView.dequeueReusableCell(withIdentifier: "AblumCell",
+                for: indexPath) as! TopAlbumCell
 
-            let songCell = searchDisplayController?.searchResultsTableView.dequeueReusableCellWithIdentifier("SongCell") as! SongCell
+            let songCell = searchDisplayController?.searchResultsTableView.dequeueReusableCell(withIdentifier: "SongCell") as! SongCell
             
-            songCell.buyButton.hidden = true
+            songCell.buyButton.isHidden = true
             songCell.songLabel.text = ""
             songCell.infoLabel.text = ""
             
-            cell.buyButton.hidden = true
+            cell.buyButton.isHidden = true
             cell.songLabel.text = ""
             cell.infoLabel.text = ""
-            cell.buyButton.removeTarget(self, action: "openTrackLink", forControlEvents: .TouchUpInside)
-            cell.buyButton.removeTarget(self, action: "openAlbumLink", forControlEvents: .TouchUpInside)
+            cell.buyButton.removeTarget(self, action: "openTrackLink", for: .touchUpInside)
+            cell.buyButton.removeTarget(self, action: "openAlbumLink", for: .touchUpInside)
             
             let searchSection = SearchResultsSection(rawValue: indexPath.section)!
             switch searchSection {
-            case .Artists:
-                let artist: AnyObject = self.artists![indexPath.row]
+            case .artists:
+                let artist: AnyObject = self.artists![indexPath.row] as AnyObject
                 
                 if let libraryArtist = artist as? Artist {
                     songCell.updateWithArtist(libraryArtist)
-                    songCell.buyButton.hidden = true
+                    songCell.buyButton.isHidden = true
                     return songCell
                 } else {
                     cell.updateWithArtist(artist)
                     return cell
                 }
-            case .Albums:
-                let album: AnyObject = self.albums![indexPath.row]
+            case .albums:
+                let album: AnyObject = self.albums![indexPath.row] as AnyObject
                 if let libraryAlbum = album as? Album {
                     songCell.updateWithAlbum(libraryAlbum)
-                    songCell.buyButton.hidden = true
+                    songCell.buyButton.isHidden = true
                     return songCell
                 } else {
                     cell.updateWithAlbum(album, indexPath: indexPath, target: self)
                     return cell
                 }
             default:
-                let topTrack: AnyObject = self.tracks![indexPath.row]
+                let topTrack: AnyObject = self.tracks![indexPath.row] as AnyObject
                 
                 if let librarySong = topTrack as? Song {
                     songCell.updateWithSong(librarySong)
-                    songCell.buyButton.hidden = true
+                    songCell.buyButton.isHidden = true
                     return songCell
                 } else {
                     cell.updateWithSong(topTrack, indexPath: indexPath, target: self)
@@ -226,8 +226,8 @@ RecommendedSearchCellDelegate {
             }
 
         } else {
-            let cell = tableView.dequeueReusableCellWithIdentifier("RecommendedSearchCell",
-                forIndexPath: indexPath) as! RecommendedSearchCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "RecommendedSearchCell",
+                for: indexPath) as! RecommendedSearchCell
             
             let song = self.recentSongs?[indexPath.row] as! NSDictionary
             cell.updateWithSong(song: song)
@@ -238,19 +238,19 @@ RecommendedSearchCellDelegate {
         }
     }
     
-    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if tableView == self.searchDisplayController?.searchResultsTableView {
-            let header = self.searchDisplayController?.searchResultsTableView.dequeueReusableHeaderFooterViewWithIdentifier("Header") as! ArtistsHeader
+            let header = self.searchDisplayController?.searchResultsTableView.dequeueReusableHeaderFooterView(withIdentifier: "Header") as! ArtistsHeader
             
             if tableView == self.searchDisplayController?.searchResultsTableView {
                 if let searchSection = SearchResultsSection(rawValue: section) {
                     switch searchSection {
-                    case .Artists:
+                    case .artists:
                         if self.artists?.count == 0 {
                             return nil
                         }
                         header.infoLabel.text = "Artists"
-                    case .Albums:
+                    case .albums:
                         if self.albums?.count == 0 {
                             return nil
                         }
@@ -267,20 +267,20 @@ RecommendedSearchCellDelegate {
             return header
         }
         
-        let header = UIView(frame: CGRectMake(0, 0, self.tableView.frame.size.width, 30))
-        header.backgroundColor = UIColor.clearColor()
+        let header = UIView(frame: CGRect(x: 0, y: 0, width: self.tableView.frame.size.width, height: 30))
+        header.backgroundColor = UIColor.clear
         return header
     }
     
-    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if tableView == self.searchDisplayController?.searchResultsTableView {
             if let searchSection = SearchResultsSection(rawValue: section) {
                 switch searchSection {
-                case .Artists:
+                case .artists:
                     if self.artists?.count == 0 {
                         return 0
                     }
-                case .Albums:
+                case .albums:
                     if self.albums?.count == 0 {
                         return 0
                     }
@@ -295,42 +295,42 @@ RecommendedSearchCellDelegate {
         return 30
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView == self.searchDisplayController?.searchResultsTableView {
             if tableView == self.searchDisplayController?.searchResultsTableView {
                 if let searchSection = SearchResultsSection(rawValue: indexPath.section) {
                     switch searchSection {
-                    case .Artists:
+                    case .artists:
                         if let artist = self.artists?[indexPath.row] as? NSDictionary {
                             // Open in iTunes Store
                             if let artistViewUrl = artist["artistViewUrl"] as? String {
-                                UIApplication.sharedApplication().openURL(NSURL(string: artistViewUrl)!)
+                                UIApplication.shared.openURL(URL(string: artistViewUrl)!)
                             }
                         } else {
-                            self.dismissViewControllerAnimated(true, completion: { () -> Void in
+                            self.dismiss(animated: true, completion: { () -> Void in
                                 let artist = self.artists?[indexPath.row] as! Artist
                                 self.delegate?.searchOverlayController(self, didTapArtist: artist)
                             })
                         }
-                    case .Albums:
+                    case .albums:
                         if let album = self.albums?[indexPath.row] as? NSDictionary {
                             // Open in iTunes Store
-                            if let cell = self.searchDisplayController?.searchResultsTableView.cellForRowAtIndexPath(indexPath) as? TopAlbumCell {
+                            if let cell = self.searchDisplayController?.searchResultsTableView.cellForRow(at: indexPath) as? TopAlbumCell {
                                 self.openAlbumLink(cell.buyButton)
                             }
                         } else {
-                            self.dismissViewControllerAnimated(true, completion: { () -> Void in
+                            self.dismiss(animated: true, completion: { () -> Void in
                                 let album = self.albums?[indexPath.row] as! Album
                                 self.delegate?.searchOverlayController(self, didTapArtist: album.artist)
                             })
                         }
                     default:
                         if let song = self.tracks?[indexPath.row] as? NSDictionary {
-                            if let cell = self.searchDisplayController?.searchResultsTableView.cellForRowAtIndexPath(indexPath) as? TopAlbumCell {
+                            if let cell = self.searchDisplayController?.searchResultsTableView.cellForRow(at: indexPath) as? TopAlbumCell {
                                 self.openTrackLink(cell.buyButton)
                             }
                         } else {
-                            self.dismissViewControllerAnimated(true, completion: { () -> Void in
+                            self.dismiss(animated: true, completion: { () -> Void in
                                 let song = self.tracks?[indexPath.row] as! Song
                                 self.delegate?.searchOverlayController(self, didTapSong: song)
                             })
@@ -340,14 +340,14 @@ RecommendedSearchCellDelegate {
             }
         }
         
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         self.searchBar.resignFirstResponder()
     }
     
-    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         self.resetData()
         if searchBar.selectedScopeButtonIndex == 0 {
             self.searchLibrary(searchText)
@@ -356,38 +356,38 @@ RecommendedSearchCellDelegate {
         }
     }
     
-    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
-        if self.searchDisplayController?.active == true {
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        if self.searchDisplayController?.isActive == true {
             self.searchDisplayController?.setActive(false, animated: true)
         } else {
             self.dismiss()
         }
     }
     
-    func searchDisplayControllerWillBeginSearch(controller: UISearchDisplayController) {
+    func searchDisplayControllerWillBeginSearch(_ controller: UISearchDisplayController) {
         self.searchDisplayController?.searchBar.showsCancelButton = false
         self.tableView.alpha = 0.0
         self.cancelButton.alpha = 0.0
-        self.searchBar.scopeBarBackgroundImage = self.backgroundImageView.image?.crop(CGRectMake(0, 0, self.searchBar.frame.size.width, self.searchBar.frame.size.width))
-        self.recentArtistsLabel.hidden = true
+        self.searchBar.scopeBarBackgroundImage = self.backgroundImageView.image?.crop(CGRect(x: 0, y: 0, width: self.searchBar.frame.size.width, height: self.searchBar.frame.size.width))
+        self.recentArtistsLabel.isHidden = true
     }
     
-    func searchDisplayControllerWillEndSearch(controller: UISearchDisplayController) {
+    func searchDisplayControllerWillEndSearch(_ controller: UISearchDisplayController) {
         self.searchDisplayController?.searchBar.showsCancelButton = true
         self.tableView.alpha = 1.0
         self.cancelButton.alpha = 1.0
-        self.recentArtistsLabel.hidden = false
+        self.recentArtistsLabel.isHidden = false
     }
     
-    func searchDisplayController(controller: UISearchDisplayController, willShowSearchResultsTableView tableView: UITableView) {
+    func searchDisplayController(_ controller: UISearchDisplayController, willShowSearchResultsTableView tableView: UITableView) {
 
     }
     
-    func searchDisplayController(controller: UISearchDisplayController, willHideSearchResultsTableView tableView: UITableView) {
+    func searchDisplayController(_ controller: UISearchDisplayController, willHideSearchResultsTableView tableView: UITableView) {
 
     }
     
-    func searchBar(searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+    func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
         self.resetData()
         
         if let searchText = self.searchBar.text {
@@ -399,35 +399,35 @@ RecommendedSearchCellDelegate {
         }
     }
     
-    func openTrackLink(sender: AnyObject?) {
+    func openTrackLink(_ sender: AnyObject?) {
         if let button = sender as? UIButton {
             
             let track = self.tracks?[button.tag] as! NSDictionary
             if let trackLink = track["trackViewUrl"] as? String {
-                UIApplication.sharedApplication().openURL(NSURL(string: trackLink)!)
+                UIApplication.shared.openURL(URL(string: trackLink)!)
             }
         }
     }
     
-    func openAlbumLink(sender: AnyObject?) {
+    func openAlbumLink(_ sender: AnyObject?) {
         if let button = sender as? UIButton {
             print("Button tag: \(button.tag)\n", terminator: "")
             
             let album = self.albums?[button.tag] as! NSDictionary
             if let albumLink = album["collectionViewUrl"] as? String {
-                UIApplication.sharedApplication().openURL(NSURL(string: albumLink)!)
+                UIApplication.shared.openURL(URL(string: albumLink)!)
             }
         }
     }
     
-    @IBAction func cancelButtonTapped(sender: AnyObject) {
+    @IBAction func cancelButtonTapped(_ sender: AnyObject) {
         self.dismiss()
     }
     
-    func recommendedSearchCell(cell: RecommendedSearchCell, didTapRecommendedButton button: AnyObject) {
+    func recommendedSearchCell(_ cell: RecommendedSearchCell, didTapRecommendedButton button: AnyObject) {
         if let artistButton = button as? UIButton {
             self.searchDisplayController?.setActive(true, animated: true)
-            if let searchText = artistButton.titleForState(.Normal) {
+            if let searchText = artistButton.title(for: UIControlState()) {
                 self.searchDisplayController?.setActive(true, animated: true)
                 self.searchDisplayController?.searchBar.text = searchText
                 self.searchBar(self.searchDisplayController!.searchBar, textDidChange: searchText)
@@ -435,11 +435,11 @@ RecommendedSearchCellDelegate {
         }
     }
     
-    func searchItunes(searchText: String) {
+    func searchItunes(_ searchText: String) {
         ItunesSearch.sharedInstance().getIdForArtist(searchText, successHandler: { (artists) -> Void in
-            if artists.count > 0 {
-                if let artistDict = artists.first as? NSDictionary {
-                    if let artistID = artistDict.objectForKey("artistId") as? NSNumber {
+            if (artists?.count)! > 0 {
+                if let artistDict = artists?.first as? NSDictionary {
+                    if let artistID = artistDict.object(forKey: "artistId") as? NSNumber {
                         ItunesSearch.sharedInstance().getAlbumsForArtist(artistID, limitOrNil: 1,
                             successHandler: { (artistAlbums) -> Void in
                                 self.artists = artistAlbums
@@ -463,7 +463,7 @@ RecommendedSearchCellDelegate {
         })
     }
     
-    func searchLibrary(searchText: String) {
+    func searchLibrary(_ searchText: String) {
         
         var songsPredicate: NSPredicate?
         var artistsPredicate: NSPredicate?

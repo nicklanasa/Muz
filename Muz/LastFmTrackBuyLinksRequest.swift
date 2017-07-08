@@ -9,7 +9,7 @@
 import Foundation
 
 protocol LastFmTrackBuyLinksRequestDelegate {
-    func lastFmTrackBuyLinksRequestDidComplete(request: LastFmTrackBuyLinksRequest, didCompleteWithBuyLinks buyLinks: [AnyObject]?)
+    func lastFmTrackBuyLinksRequestDidComplete(_ request: LastFmTrackBuyLinksRequest, didCompleteWithBuyLinks buyLinks: [AnyObject]?)
 }
 
 class LastFmTrackBuyLinksRequest: LastFmRequest {
@@ -25,18 +25,18 @@ class LastFmTrackBuyLinksRequest: LastFmRequest {
     
     override func sendURLRequest() {
         let lastFm = LastFm.sharedInstance()
-        lastFm.apiKey = self.apiKey
-        lastFm.apiSecret = self.apiSecret
-        lastFm.session = "trackBuyLinksSession"
+        lastFm?.apiKey = self.apiKey
+        lastFm?.apiSecret = self.apiSecret
+        lastFm?.session = "trackBuyLinksSession"
         
-        lastFm.getBuyLinksForTrack(self.title, artist: self.artist, country: "USA", successHandler: { (buyLinks) -> Void in
+        lastFm?.getBuyLinks(forTrack: self.title, artist: self.artist, country: "USA", successHandler: { (buyLinks) -> Void in
             if self.delegate != nil {
                 
                 let links = NSMutableArray()
                 
-                for buyLinksJSON in buyLinks {
+                for buyLinksJSON in buyLinks! {
                     if let JSON = buyLinksJSON as? NSDictionary {
-                        links.addObject(LastFmBuyLink(JSON: JSON as [NSObject : AnyObject]))
+                        links.add(LastFmBuyLink(json: JSON as! [AnyHashable: Any]))
                     }
                 }
                 
@@ -49,7 +49,7 @@ class LastFmTrackBuyLinksRequest: LastFmRequest {
         }
     }
     
-    override func connectionDidFinishLoading(connection: NSURLConnection) {
+    override func connectionDidFinishLoading(_ connection: NSURLConnection) {
         super.connectionDidFinishLoading(connection)
     }
 }

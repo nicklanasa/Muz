@@ -12,7 +12,7 @@ import CoreData
 @objc(Artist)
 class Artist: NSManagedObject {
 
-    @NSManaged var modifiedDate: NSDate
+    @NSManaged var modifiedDate: Date
     @NSManaged var name: String
     @NSManaged var persistentID: String
     @NSManaged var albums: NSSet

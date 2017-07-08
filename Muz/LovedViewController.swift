@@ -18,9 +18,9 @@ UITableViewDataSource {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
     
-    private var loved: [AnyObject]?
-    private var lovedQuery: MPMediaQuery!
-    private var sortedResults = NSMutableArray()
+    fileprivate var loved: [AnyObject]?
+    fileprivate var lovedQuery: MPMediaQuery!
+    fileprivate var sortedResults = NSMutableArray()
     
     init() {
         super.init(nibName: "LovedViewController", bundle: nil)
@@ -30,7 +30,7 @@ UITableViewDataSource {
             selectedImage: UIImage(named: "loved"))
     }
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
 
@@ -41,7 +41,7 @@ UITableViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.tableView.registerNib(UINib(nibName: "ArtistCell", bundle: nil), forCellReuseIdentifier: "Cell")
+        self.tableView.register(UINib(nibName: "ArtistCell", bundle: nil), forCellReuseIdentifier: "Cell")
         
         fetchLoved()
                 
@@ -51,20 +51,20 @@ UITableViewDataSource {
     /**
     Fetch songs with rating > 3 and use those items as loved songs.
     */
-    private func fetchLoved() {
+    fileprivate func fetchLoved() {
         
-        self.lovedQuery = MPMediaQuery.songsQuery()
+        self.lovedQuery = MPMediaQuery.songs()
         
         if let items = self.lovedQuery.items {
             var results = NSArray(objects: items)
             
             let sort = NSSortDescriptor(key: "playCount", ascending: false)
-            results = results.sortedArrayUsingDescriptors([sort])
+            results = results.sortedArray(using: [sort])
             
             for item in results {
                 if let song = item as? MPMediaItem {
                     if song.rating > 3 {
-                        self.sortedResults.addObject(song)
+                        self.sortedResults.add(song)
                     }
                 }
             }
@@ -73,24 +73,24 @@ UITableViewDataSource {
         }
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.sortedResults.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell",
-            forIndexPath: indexPath) as! ArtistCell
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell",
+            for: indexPath) as! ArtistCell
         let song = self.sortedResults[indexPath.row] as! MPMediaItem
         
         cell.artistLabel.text = song.title
         cell.infoLabel.text = song.artist
         
         if let artwork = song.artwork {
-            cell.artistImageView.image = artwork.imageWithSize(cell.artistImageView.frame.size)
+            cell.artistImageView.image = artwork.image(at: cell.artistImageView.frame.size)
         } else {
             cell.artistImageView.image = UIImage(named: "noArtwork")
         }
@@ -98,13 +98,13 @@ UITableViewDataSource {
         return cell
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let song = self.sortedResults[indexPath.row] as! MPMediaItem
         //presentNowPlayViewControllerWithItem(song)
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         self.searchBar.resignFirstResponder()
     }
 }

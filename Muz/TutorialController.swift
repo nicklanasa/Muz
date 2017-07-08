@@ -20,6 +20,6 @@ class TutorialController: UIViewController {
     }
     
     override func viewDidLoad() {
-        self.view.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+        self.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
     }
 }

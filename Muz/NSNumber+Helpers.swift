@@ -10,13 +10,13 @@ import Foundation
 
 extension Int {
     func abbreviateNumber() -> String {
-        func floatToString(val: Float) -> String {
+        func floatToString(_ val: Float) -> String {
             var ret: NSString = NSString(format: "%.1f", val)
             
-            let c = ret.characterAtIndex(ret.length - 1)
+            let c = ret.character(at: ret.length - 1)
             
             if c == 46 {
-                ret = ret.substringToIndex(ret.length - 1)
+                ret = ret.substring(to: ret.length - 1) as NSString
             }
             
             return ret as String
@@ -28,7 +28,7 @@ extension Int {
         if num >= 1000 {
             var abbrev = ["K","M","B"]
             
-            for var i = abbrev.count-1; i >= 0; i-- {
+            for var i = abbrev.count-1; i >= 0; i -= 1 {
                 let sizeInt = pow(10.0, Double(((i+1)*3)))
                 let size = Float(sizeInt)
                 
@@ -36,7 +36,7 @@ extension Int {
                     num = num/size
                     var numStr: String = floatToString(num)
                     if numStr.hasSuffix(".0") {
-                        numStr = numStr.substringToIndex(numStr.startIndex.advancedBy(numStr.characters.count-2))
+                        numStr = numStr.substring(to: numStr.characters.index(numStr.startIndex, offsetBy: numStr.characters.count-2))
                     }
                     
                     let suffix = abbrev[i]
@@ -46,7 +46,7 @@ extension Int {
         } else {
             abbrevNum = "\(num)"
             if abbrevNum.hasSuffix(".0") {
-                abbrevNum = abbrevNum.substringToIndex(abbrevNum.startIndex.advancedBy(abbrevNum.characters.count-2))
+                abbrevNum = abbrevNum.substring(to: abbrevNum.characters.index(abbrevNum.startIndex, offsetBy: abbrevNum.characters.count-2))
             }
         }
         

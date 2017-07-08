@@ -13,8 +13,8 @@ import MediaPlayer
 let LastFmArtistInfoCellHeight: CGFloat = 570.0
 
 protocol LastFmArtistInfoCellDelegate {
-    func lastFmArtistInfoCell(cell: LastFmArtistInfoCell, didTapTopAlbumsButton albums: [AnyObject]?)
-    func lastFmArtistInfoCell(cell: LastFmArtistInfoCell, didTapTopTracksButton tracks: [AnyObject]?)
+    func lastFmArtistInfoCell(_ cell: LastFmArtistInfoCell, didTapTopAlbumsButton albums: [AnyObject]?)
+    func lastFmArtistInfoCell(_ cell: LastFmArtistInfoCell, didTapTopTracksButton tracks: [AnyObject]?)
 }
 
 class LastFmArtistInfoCell: LastFmCell {
@@ -44,26 +44,26 @@ class LastFmArtistInfoCell: LastFmCell {
     var lastFmArtist: LastFmArtist?
     
     override func awakeFromNib() {
-        bringSubviewToFront(collectionView)
+        bringSubview(toFront: collectionView)
         
         artistImageView.layer.cornerRadius = 0
         artistImageView.layer.masksToBounds = true
         
-        self.buyAlbumButton.layer.borderColor = UIColor.whiteColor().CGColor
+        self.buyAlbumButton.layer.borderColor = UIColor.white.cgColor
         self.buyAlbumButton.layer.borderWidth = 1
         self.buyAlbumButton.layer.cornerRadius = 5
         
-        self.buySongButton.layer.borderColor = UIColor.whiteColor().CGColor
+        self.buySongButton.layer.borderColor = UIColor.white.cgColor
         self.buySongButton.layer.borderWidth = 1
         self.buySongButton.layer.cornerRadius = 5
     }
     
-    func updateWithArtist(lastFmArtist: LastFmArtist?) {
+    func updateWithArtist(_ lastFmArtist: LastFmArtist?) {
         self.lastFmArtist = lastFmArtist
         
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+        DispatchQueue.main.async(execute: { () -> Void in
             if let artist = lastFmArtist {
-                UIView.animateWithDuration(0.3, animations: { () -> Void in
+                UIView.animate(withDuration: 0.3, animations: { () -> Void in
                     self.artistLabel.alpha = 1.0
                     self.listenersLabel.alpha = 1.0
                     self.playsLabel.alpha = 1.0
@@ -73,18 +73,18 @@ class LastFmArtistInfoCell: LastFmCell {
                     self.listenersDescriptionLabel.alpha = 1.0
                     self.playsDescriptionLabel.alpha = 1.0
                     self.similiarArtistsLabel.alpha = 1.0
-                    self.artistImageView.sd_setImageWithURL(artist.imageURL)
-                    }) { (success) -> Void in
+                    self.artistImageView.sd_setImage(with: artist.imageURL)
+                    }, completion: { (success) -> Void in
                         if success {
-                            let numberFormatter = NSNumberFormatter()
-                            numberFormatter.numberStyle = .DecimalStyle
+                            let numberFormatter = NumberFormatter()
+                            numberFormatter.numberStyle = .decimal
                             
                             let plays = artist.plays ?? 0
                             let listeners = artist.listeners ?? 0
                             
                             self.artistLabel.text = artist.name.characters.count > 0 ? artist.name : "Unknown name."
-                            self.listenersLabel.text = listeners == 0 ? "" :  String(format: "%@", numberFormatter.stringFromNumber(listeners)!)
-                            self.playsLabel.text = plays == 0 ? "" : String(format: "%@", numberFormatter.stringFromNumber(plays)!)
+                            self.listenersLabel.text = listeners == 0 ? "" :  String(format: "%@", numberFormatter.string(from: listeners)!)
+                            self.playsLabel.text = plays == 0 ? "" : String(format: "%@", numberFormatter.string(from: plays)!)
                             
                             if artist.bio.characters.count > 0 {
                                 self.bioActivityIndicator.stopAnimating()
@@ -92,34 +92,34 @@ class LastFmArtistInfoCell: LastFmCell {
                             
                             self.bioTextView.text = artist.bio
                             
-                            self.artistImageView.sd_setImageWithURL(artist.imageURL)
+                            self.artistImageView.sd_setImage(with: artist.imageURL)
                             
                             self.collectionView.reloadData()
                             
-                            self.buyAlbumButton.hidden = false
-                            self.buySongButton.hidden = false
+                            self.buyAlbumButton.isHidden = false
+                            self.buySongButton.isHidden = false
                         }
-                }
+                }) 
             }
         })
     }
     
-    @IBAction func buySongButtonPressed(sender: AnyObject) {
+    @IBAction func buySongButtonPressed(_ sender: AnyObject) {
         self.delegate?.lastFmArtistInfoCell(self, didTapTopTracksButton: self.topTracks)
     }
     
-    @IBAction func buyAlbumButtonPressed(sender: AnyObject) {
+    @IBAction func buyAlbumButtonPressed(_ sender: AnyObject) {
         self.delegate?.lastFmArtistInfoCell(self, didTapTopAlbumsButton: self.topAlbums)
     }
     
-    private func showBuyAlbumError() {
+    fileprivate func showBuyAlbumError() {
         UIAlertView(title: "Error!",
             message: "Unable to find buy links for this album.",
             delegate: self,
             cancelButtonTitle: "Ok").show();
     }
     
-    private func showBuySongError() {
+    fileprivate func showBuySongError() {
         UIAlertView(title: "Error!",
             message: "Unable to find buy links for this song.",
             delegate: self,

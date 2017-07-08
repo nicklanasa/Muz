@@ -20,15 +20,15 @@ class NoMusicOverlayController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    @IBAction func openItunesButtonTapped(sender: AnyObject) {
-        UIApplication.sharedApplication().openURL(NSURL(string: "https://itunes.apple.com/us/music/")!)
+    @IBAction func openItunesButtonTapped(_ sender: AnyObject) {
+        UIApplication.shared.openURL(URL(string: "https://itunes.apple.com/us/music/")!)
     }
     
     override func viewDidLoad() {
-        self.view.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
-        self.view.frame = UIScreen.mainScreen().bounds
+        self.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        self.view.frame = UIScreen.main.bounds
         
-        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+        if UIDevice.current.userInterfaceIdiom == .pad {
             self.noMusicLabel.text = "Your music library is empty. Please add music to your iPad."
         } else {
             self.noMusicLabel.text = "Your music library is empty. Please add music to your iPhone."

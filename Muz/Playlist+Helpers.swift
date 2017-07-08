@@ -10,27 +10,27 @@ import Foundation
 import MediaPlayer
 
 enum PlaylistType: UInt {
-    case None = 0
-    case Smart = 1
-    case Genius = 6
+    case none = 0
+    case smart = 1
+    case genius = 6
 }
 
 extension Playlist {
-    func parsePlaylist(playlist: MPMediaPlaylist) {
+    func parsePlaylist(_ playlist: MPMediaPlaylist) {
         self.persistentID = String(playlist.persistentID)
         self.name = playlist.name ?? ""
-        self.playlistType = NSNumber(unsignedLong: playlistTypeForPlaylist(playlist).rawValue)
+        self.playlistType = NSNumber(value: playlistTypeForPlaylist(playlist).rawValue as UInt)
         
     }
     
-    func playlistTypeForPlaylist(playlist: MPMediaPlaylist) -> PlaylistType {
+    func playlistTypeForPlaylist(_ playlist: MPMediaPlaylist) -> PlaylistType {
         print(playlist.name)
         let playlistAttribute = playlist.playlistAttributes
         switch playlistAttribute.rawValue {
-        case PlaylistType.Genius.rawValue:
-            return PlaylistType.Genius
+        case PlaylistType.genius.rawValue:
+            return PlaylistType.genius
         default:
-            return PlaylistType.None
+            return PlaylistType.none
         }
     }
 }

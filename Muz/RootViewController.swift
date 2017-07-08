@@ -20,7 +20,7 @@ class RootViewController: UIViewController, SearchOverlayControllerDelegate {
         }
     }
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
 
@@ -28,23 +28,23 @@ class RootViewController: UIViewController, SearchOverlayControllerDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         configureBackgroundImage()
         
-        if NSUserDefaults.standardUserDefaults().objectForKey("SyncLibrary") == nil {
+        if UserDefaults.standard.object(forKey: "SyncLibrary") == nil {
             self.presentModalOverlayController(SyncOverlayController(), blurredController: self)
         }
         
-        NSNotificationCenter.defaultCenter().addObserver(self,
-            selector: "sendNowPlaying",
-            name: MPMusicPlayerControllerNowPlayingItemDidChangeNotification,
+        NotificationCenter.default.addObserver(self,
+            selector: #selector(RootViewController.sendNowPlaying),
+            name: NSNotification.Name.MPMusicPlayerControllerNowPlayingItemDidChange,
             object: nil)
     }
     
     func sendNowPlaying() {
         if let item = MPMusicPlayerController.iPodMusicPlayer().nowPlayingItem {
-            if let username = NSUserDefaults.standardUserDefaults().objectForKey("LastFMUsername") as? String {
-                if let password = NSUserDefaults.standardUserDefaults().objectForKey("LastFMPassword") as? String {
+            if let username = UserDefaults.standard.object(forKey: "LastFMUsername") as? String {
+                if let password = UserDefaults.standard.object(forKey: "LastFMPassword") as? String {
                     LastFm.sharedInstance().getSessionForUser(username, password: password, successHandler: { (userData) -> Void in
                         
                         LastFm.sharedInstance().sendNowPlayingTrack(item.title, byArtist: item.artist, onAlbum: item.albumTitle, withDuration: item.playbackDuration, successHandler: { (responseData) -> Void in
@@ -63,18 +63,18 @@ class RootViewController: UIViewController, SearchOverlayControllerDelegate {
     
     override func viewDidLoad() {
         if backgroundImageView == nil {
-            self.backgroundImageView = UIImageView(frame: UIScreen.mainScreen().bounds)
-            self.backgroundImageView.contentMode = UIViewContentMode.ScaleToFill
-            self.backgroundImageView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
-            self.view.insertSubview(self.backgroundImageView, atIndex: 0)
+            self.backgroundImageView = UIImageView(frame: UIScreen.main.bounds)
+            self.backgroundImageView.contentMode = UIViewContentMode.scaleToFill
+            self.backgroundImageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            self.view.insertSubview(self.backgroundImageView, at: 0)
         }
         
         self.configureBackgroundImage()
 
-        self.searchDisplayController?.searchResultsTableView.backgroundColor = UIColor.clearColor()
-        self.searchDisplayController?.searchResultsTableView.separatorStyle = .None
+        self.searchDisplayController?.searchResultsTableView.backgroundColor = UIColor.clear
+        self.searchDisplayController?.searchResultsTableView.separatorStyle = .none
         
-        self.searchDisplayController?.searchResultsTableView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+        self.searchDisplayController?.searchResultsTableView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
     }
     
     func configureBackgroundImage() {
@@ -92,8 +92,8 @@ class RootViewController: UIViewController, SearchOverlayControllerDelegate {
         self.navigationController?.pushViewController(nowPlayingViewController, animated: true)
     }
     
-    func presentNowPlayViewController(song: Song, collection: MPMediaItemCollection) {
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+    func presentNowPlayViewController(_ song: Song, collection: MPMediaItemCollection) {
+        DispatchQueue.main.async(execute: { () -> Void in
             let nowPlayingViewController = NowPlayingViewController(song: song, collection: collection)
             self.navigationController?.pushViewController(nowPlayingViewController, animated: true)
         })
@@ -105,22 +105,22 @@ class RootViewController: UIViewController, SearchOverlayControllerDelegate {
     - parameter controller:        The controller you wish you present.
     - parameter blurredController: The controller you wish to blur in the background.
     */
-    func presentModalOverlayController(controller: OverlayController, blurredController: UIViewController) {
+    func presentModalOverlayController(_ controller: OverlayController, blurredController: UIViewController) {
 
         UIGraphicsBeginImageContext(blurredController.view.bounds.size)
-        self.view.layer.renderInContext(UIGraphicsGetCurrentContext()!)
+        self.view.layer.render(in: UIGraphicsGetCurrentContext()!)
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
         controller.screenShot = image
         
         let nav = NavBarController(rootViewController: controller)
-        presentViewController(nav, animated: true, completion: nil)
+        present(nav, animated: true, completion: nil)
     }
     
-    func presentSearchOverlayController(controller: SearchOverlayController, blurredController: UIViewController) {
+    func presentSearchOverlayController(_ controller: SearchOverlayController, blurredController: UIViewController) {
         UIGraphicsBeginImageContext(blurredController.view.bounds.size)
-        self.view.layer.renderInContext(UIGraphicsGetCurrentContext()!)
+        self.view.layer.render(in: UIGraphicsGetCurrentContext()!)
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
@@ -130,7 +130,7 @@ class RootViewController: UIViewController, SearchOverlayControllerDelegate {
         
         controller.delegate = self
         
-        presentViewController(controller, animated: true, completion: nil)
+        present(controller, animated: true, completion: nil)
     }
     
     /**
@@ -138,37 +138,37 @@ class RootViewController: UIViewController, SearchOverlayControllerDelegate {
     
     - parameter controller: The controller you wish to blur in the background.
     */
-    func presentCreatePlaylistFromController(controller: OverlayController) {
+    func presentCreatePlaylistFromController(_ controller: OverlayController) {
         
         UIGraphicsBeginImageContext(self.view.bounds.size)
-        self.view.layer.renderInContext(UIGraphicsGetCurrentContext()!)
+        self.view.layer.render(in: UIGraphicsGetCurrentContext()!)
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
         self.addChildViewController(controller)
-        controller.didMoveToParentViewController(self)
+        controller.didMove(toParentViewController: self)
         
         controller.screenShot = image
         
         self.view.addSubview(controller.view)
         
         controller.view.alpha = 0.0
-        controller.view.frame = CGRectOffset(controller.view.frame, 0, UIScreen.mainScreen().bounds.size.height)
+        controller.view.frame = controller.view.frame.offsetBy(dx: 0, dy: UIScreen.main.bounds.size.height)
         
-        UIView.animateWithDuration(0.4, animations: { () -> Void in
-            controller.view.frame = CGRectOffset(controller.view.frame, 0, -400.0)
+        UIView.animate(withDuration: 0.4, animations: { () -> Void in
+            controller.view.frame = controller.view.frame.offsetBy(dx: 0, dy: -400.0)
             controller.view.alpha = 1.0
         })
     }
     
-    func searchOverlayController(controller: SearchOverlayController, didTapArtist artist: Artist) {
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+    func searchOverlayController(_ controller: SearchOverlayController, didTapArtist artist: Artist) {
+        DispatchQueue.main.async(execute: { () -> Void in
             let artistAlbums = ArtistAlbumsViewController(artist: artist)
             self.navigationController?.pushViewController(artistAlbums, animated: true)
         })
     }
     
-    func searchOverlayController(controller: SearchOverlayController, didTapSong song: Song) {
+    func searchOverlayController(_ controller: SearchOverlayController, didTapSong song: Song) {
         MediaSession.sharedSession.fetchArtistCollectionForArtist(artist: song.artist) { (collection) -> () in
             if collection != nil {
                 self.presentNowPlayViewController(song, collection: collection!)

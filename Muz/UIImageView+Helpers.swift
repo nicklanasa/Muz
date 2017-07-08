@@ -15,9 +15,9 @@ extension UIImageView {
         self.layer.masksToBounds = true
     }
     
-    func setImageForArtist(artist artist: Artist) {
+    func setImageForArtist(artist: Artist) {
         DataManager.manager.fetchImageForArtist(artist: artist) { (image, error) -> () in
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            DispatchQueue.main.async(execute: { () -> Void in
                 if let artistImage = image {
                     self.image = artistImage
                 } else {
@@ -27,9 +27,9 @@ extension UIImageView {
         }
     }
     
-    func setImageForAlbum(album album: Album) {
+    func setImageForAlbum(album: Album) {
         DataManager.manager.fetchImageForAlbum(album: album) { (image, error) -> () in
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            DispatchQueue.main.async(execute: { () -> Void in
                 if let albumImage = image {
                     self.image = albumImage
                 } else {
@@ -39,9 +39,9 @@ extension UIImageView {
         }
     }
     
-    func setImageForSong(song song: Song) {
+    func setImageForSong(song: Song) {
         DataManager.manager.fetchImageForSong(song: song) { (image, error) -> () in
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            DispatchQueue.main.async(execute: { () -> Void in
                 if let albumImage = image {
                     self.image = albumImage
                 } else {
@@ -51,9 +51,9 @@ extension UIImageView {
         }
     }
     
-    func setImageWithSongData(song song: NSDictionary) {
+    func setImageWithSongData(song: NSDictionary) {
         DataManager.manager.fetchImageWithSongData(song: song) { (image, error) -> () in
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            DispatchQueue.main.async(execute: { () -> Void in
                 if let albumImage = image {
                     self.image = albumImage
                 } else {
